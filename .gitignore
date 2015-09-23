@@ -44,4 +44,5 @@ Temporary Items
 
 #CUSTOM
 /distribution
-/backup
+/backup/*
+/nbproject
