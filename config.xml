@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget 
+	id="zotune.willsol.zo.laisiangtho.u1" 
+	version="1.1.9" 
+	android-versionCode="1.9.67" 
+	ios-CFBundleVersion="1967" 
+	xmlns="http://www.w3.org/ns/widgets" 
+	xmlns:cdv="http://cordova.apache.org/ns/1.0">
+	<name>Lai Siangtho</name>
+	<description>
+		the Holy Bible in languages
+	</description>
+	<author email="khensolomon@gmail.com" href="http://www.laisiangtho.com">
+		ZOMI.TODAY
+	</author>
+	<content src="ios.html" />
+	<plugin name="cordova-plugin-whitelist" version="1" />
+	<plugin name="File" value="org.apache.cordova.FileUtils" />
+	<plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
+	<preference name="DisallowOverscroll" value="true"/>
+	<preference name="StatusBarOverlaysWebView" value="true" />
+	<preference name="StatusBarBackgroundColor" value="#000000" />
+	<preference name="StatusBarStyle" value="lightcontent" />
+	<preference name="Orientation" value="default, portrait, landscape" />
+	<access origin="*" />
+	<allow-intent href="http://*/*" />
+	<allow-intent href="https://*/*" />
+	<allow-intent href="tel:*" />
+	<allow-intent href="sms:*" />
+	<allow-intent href="mailto:*" />
+	<allow-intent href="geo:*" />
+	<feature name="Device">
+		<param name="android-package" value="org.apache.cordova.device.Device" />
+		<param name="ios-package" value="CDVDevice" />
+	</feature>
+	<feature name="File">
+		<param name="ios-package" value="CDVFile" />
+		<param name="android-package" value="org.apache.cordova.FileUtils" />
+	</feature>
+	<feature name="FileTransfer">
+		<param name="ios-package" value="CDVFileTransfer" />
+		<param name="android-package" value="org.apache.cordova.FileTransfer" />
+	</feature>
+	<feature name="StatusBar">
+		<param name="ios-package" value="CDVStatusBar" onload="true" />
+	</feature>
+	<platform name="android">
+		<allow-intent href="market:*" />
+	</platform>
+	<platform name="tmp">
+		<!-- 29 -->
+		<icon src="res/ios/icon/" width="29" height="29" />
+		<icon src="res/ios/icon/" width="58" height="58" />
+		<icon src="res/ios/icon/" width="87" height="87" />
+		<!-- 40 -->
+		<icon src="res/ios/icon/" width="40" height="40" />
+		<icon src="res/ios/icon/" width="80" height="80" />
+		<icon src="res/ios/icon/" width="120" height="120" />
+		<!-- 60 -->
+		<icon src="res/ios/icon/" width="60" height="60" />
+		<icon src="res/ios/icon/" width="180" height="180" />
+		<!-- 76 -->
+		<icon src="res/ios/icon/" width="76" height="76" />
+		<icon src="res/ios/icon/" width="152" height="152" />
+	</platform>
+	<platform name="ios">
+		<allow-intent href="itms:*" />
+		<allow-intent href="itms-apps:*" />
+		<!-- iOS 8.0+ -->
+		<icon src="res/ios/icon/icon-small@3x.png" width="87" height="87" />
+		<!-- iPhone 6 Plus  -->
+		<icon src="res/ios/icon/icon-60@3x.png" width="180" height="180" />
+		<!-- iOS 7.0+ -->
+		<!-- iPhone / iPod Touch  -->
+		<icon src="res/ios/icon/icon-60.png" width="60" height="60" />
+		<icon src="res/ios/icon/icon-60@2x.png" width="120" height="120" />
+		<!-- iPad -->
+		<!-- Spotlight Icon -->
+		<icon src="res/ios/icon/icon-40.png" width="40" height="40" />
+		<icon src="res/ios/icon/icon-76.png" width="76" height="76" />
+		<icon src="res/ios/icon/icon-76@2x.png" width="152" height="152" />
+		<!-- iOS 6.1 -->
+		<icon src="res/ios/icon/icon-40@2x.png" width="80" height="80" />
+		<!-- iPhone / iPod Touch -->
+		<icon src="res/ios/icon/icon-57.png" width="57" height="57" />
+		<icon src="res/ios/icon/icon-57@2x.png" width="114" height="114" />
+		<!-- iPad -->
+		<icon src="res/ios/icon/icon-72.png" width="72" height="72" />
+		<icon src="res/ios/icon/icon-72@2x.png" width="144" height="144" />
+		<!-- iPhone Spotlight and Settings Icon -->
+		<icon src="res/ios/icon/icon-small.png" width="29" height="29" />
+		<icon src="res/ios/icon/icon-small@2x.png" width="58" height="58" />
+		<!-- iPad Spotlight and Settings Icon -->
+		<icon src="res/ios/icon/icon-50.png" width="50" height="50" />
+		<icon src="res/ios/icon/icon-50@2x.png" width="100" height="100" />
+		
+		<!-- iPhone Portrait iOS 8-->
+		<splash src="res/ios/splash/1242x2208.png" width="1242" height="2208"/>
+		<splash src="res/ios/splash/750x1334.png" width="750" height="1334"/>
+		<!-- iPhone Landscape iOS 8-->
+		<splash src="res/ios/splash/2208x1242.png" width="2208" height="1242"/>
+		<!-- iPhone Portrait iOS 7,8-->
+		<splash src="res/ios/splash/640x960.png" width="640" height="960"/>
+		<splash src="res/ios/splash/640x1136.png" width="640" height="1136"/>
+		<!-- iPad Portrait iOS 7,8-->
+		<splash src="res/ios/splash/768x1024.png" width="768" height="1024"/>
+		<splash src="res/ios/splash/1536x2048.png" width="1536" height="2048"/>
+		<!-- iPad Landscape iOS 7,8-->
+		<splash src="res/ios/splash/1024x768.png" width="1024" height="768"/>
+		<splash src="res/ios/splash/2048x1536.png" width="2048" height="1536"/>
+		<!-- iPhone Portrait iOS 6-->
+		<splash src="res/ios/splash/320x480.png" width="320" height="480"/>
+	</platform>
+</widget>

@@ -1,0 +1,58 @@
+application: mobile
+version: 1
+runtime: php
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /css/(.*)
+  static_files: css/\1
+  upload: css/(.*)
+
+- url: /js/(.*)
+  static_files: js/\1
+  upload: js/(.*)
+  
+- url: /fonts/(.*)
+  static_files: fonts/\1
+  upload: fonts/(.*)
+
+- url: /img/(.*)
+  static_files: img/\1
+  upload: img/(.*)
+  application_readable: true
+  
+- url: /laisiangtho/(.*)
+  static_files: laisiangtho/\1
+  upload: laisiangtho/(.*)
+  application_readable: true
+
+- url: /lang/(.*)
+  static_files: lang/\1
+  upload: lang/(.*)
+  application_readable: true
+
+- url: /android
+  script: android.html
+
+- url: /ios
+  script: ios.html
+
+- url: /chrome
+  script: chrome.html
+
+- url: /db
+  script: db.html
+
+- url: /deploy
+  script: deploy.html
+
+- url: /functionality
+  script: functionality.html
+
+- url: /.*
+  script: index.html

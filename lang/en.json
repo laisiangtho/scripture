@@ -1,0 +1,28 @@
+{
+	"l":{
+		"bible":"Bible","book":"Book","chapter":"Chapter","verse":"Verse","lookup":"Lookup","setting":"Setting","more":"More","parallel":"Parallel","bookmarks":"Bookmarks","todo":"Todo","about":"About","note":"Note",
+		
+		"BFCVB":"{b}...","BFVBC":"{b} {c}...","BFBCV":"{b} {c}:{v}...",
+		
+		"Loading":"Loading","Checking":"Checking","Searching":"Searching","Downloading":"Downloading",
+		"PercentLoaded":"{Percent}%...",
+		"Ready":"Ready","Error":"Error","Success":"Success","Discover":"Discover!","Paused":"Paused!",
+		
+		"IsNotReady":"{is} not ready yet, for using!",
+
+		"NotFound":"not found","IsNotFound":"{is} not found!","IsNotFoundIn":"{is} not found in {in}!","IsNotFoundInAt":" {is} not found in {in} at {at}!",
+		
+		"Selection":"Selection",
+
+		"AddBookmarks":"Add Bookmarks","BookmarkedAlready":"Bookmarked already!","Bookmarked":"Bookmarked!","NoBookmarks":"No bookmarks!",
+
+		"NoMatchFor":"No matches for {for}!",
+		"BookMustSelected":"Book must be selected!","ChapterMustSelected":"Chapter must be selected!","VerseMustSelected":"Verse must be selected!",
+
+		"FoundV":"Found {v} verses!","FoundBCV":"Found book:{b}, chapter:{c} & verse:{v}!",
+		
+		"NoBookSelected":"You have not selected any Book!","NoChapterSelected":"You have not selected any chapter!","NoVerseSelected":"You have not selected any verse!",
+		
+		"ShowMe":"show me"
+	}
+}

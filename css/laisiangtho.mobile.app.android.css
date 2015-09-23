@@ -1,0 +1,13 @@
+/*
+@font-face {
+	font-family: 'Mm3Web';
+	src: url('../fonts/mm3web.ttf') format('truetype');
+
+	font-weight: normal;
+	font-style: normal;
+}
+.mm3, .Myanmar3, .myanmar3 {font-family:'Mm3Web';}
+* { font-family: 'Mm3Web'; }
+footer, header div.main {-webkit-app-region:drag;}
+a, form, .zO, .hO, .control *{-webkit-app-region: no-drag;}
+*/

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Deploy</title>
+<link rel="api" href="http://api.laisiangtho.com/"/>
+<link rel="icon" href="img/icon.16.png" type="image/png"/>
+<script src="js/jquery.js"></script>
+<script src="js/jquery.ui.js"></script>
+<script src="js/jquery.mobile.js"></script>
+<script>
+/*
+// set
+localStorage.setItem('blah', 'blahblah')
+
+// check if it is set
+localStorage.getItem('blah')
+
+// check how many items are stored
+localStorage.length
+
+// another way to get the item 
+localStorage.key(0);
+
+//remove the item
+localStorage.removeItem('blah')
+
+localStorage.clear();
+JSON.stringify()->to JSON
+JSON.parse()->from JSON
+*/
+console.log('localstorge',localStorage.length);
+
+var judson=JSON.parse(localStorage.getItem(localStorage.key(0)));
+//console.log(judson.book[1].chapter[1].verse.v1);
+console.log(judson.book[1].chapter[1]);
+/*
+var abc={a:1,b:3};
+
+function test(q){
+	q.newvar='ok';
+};
+test(abc);
+console.log(abc);
+*/
+/*
+var config={
+	name:'Lai Siangtho', version:'1.0.6', build:'1.8.38',id:'laisiangtho',developer:'Khen Solomon Lethil',
+	file:{bible:'xml',lang:'json'},
+	css:{active:'active',deactivate:'deactivate',header:'header',content:'main',footer:'footer',scrollbar:'.scrollbar-inner,.scrollbar-inner-light'},
+	bible:["tedim", "mcl", "judson", "kjv", "bbe", "web", "hakha", "falam", "sizang", "paite", "mizo", "bokmal1906", "danish1933", "ostervald1877", "luther1912", "swedish1917","niv"],
+	bible:["tedim", "mcl", "judson", "kjv", "bbe", "web", "hakha", "falam", "sizang", "paite", "mizo", "bokmal1906", "danish1933", "ostervald1877", "luther1912", "swedish1917","niv"],
+	current:{},
+	page:['bible','book','reader','lookup','bookmark','note','setting','more','parallel','about','verse','todo'],
+	google:{
+		analytics:{
+			permission:true, tracker:'UA-18644721-2'
+		}
+	}
+};
+$(function(){
+			function availablebible(){
+				for(var i in config.bible){
+					console.log(i);
+				}
+			};
+			//availablebible();
+var obj = config.bible.reduce(function(o, v, i) {
+  o[v] ={index:i};
+  return o;
+}, {});
+console.log(obj);
+});
+*/
+</script>
+</head>
+<body id="l189">
+Deploy
+</body>
+</html>

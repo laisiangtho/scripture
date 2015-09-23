@@ -1,0 +1,21 @@
+@font-face {
+	font-family: 'Myanmar3';
+	src: url('../fonts/Myanmar3.eot');
+	src: url('../fonts/Myanmar3.eot?#iefix') format('embedded-opentype'),
+	     url('../fonts/Myanmar3.woff') format('woff'),
+	     url('../fonts/Myanmar3.ttf') format('truetype'),
+	     url('../fonts/Myanmar3.svg#Myanmar3') format('svg');
+	unicode-range: U+1000-109F, U+AA60-AA7B;
+	font-weight: normal;
+	font-style: normal;
+}
+.mm3, .Myanmar3, .myanmar3 {font-family:'Myanmar3';}
+* { font-family: Arial, 'Myanmar3', Helvetica, sans-serif; font-size:12px; }
+footer, header div.main{-webkit-app-region:drag;}
+a, form, .zO, .hO, .control * {-webkit-app-region: no-drag;}
+.working.wait>header>.status *{-webkit-app-region:drag;}
+
+/*
+header div:first-child {-webkit-app-region:drag;}
+form, .zO, .fA, .hO, .control *{-webkit-app-region: no-drag;}
+*/

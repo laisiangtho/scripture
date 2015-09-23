@@ -1,0 +1,31 @@
+{
+  "name": "Lai Siangtho Working",
+  "short_name": "Lai Siangtho",
+  "description": "the Holy Bible in languages! Available in Tedim, Hakha, Falam, Sizang, Paite, Mizo included KJV, BBE, WEB, JUDSON and +7.",
+  "manifest_version": 2,
+  "version": "1.1.7",
+  "icons": {
+    "16": "img/icon.16.png",
+	"32": "img/icon.32.png",
+	"48": "img/icon.48.png",
+    "128": "img/icon.128.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["js/chrome.js"]
+    }
+  },
+  "permissions": [
+	"<all_urls>","notifications","clipboardRead", "clipboardWrite",
+    {"fileSystem": ["write", "retainEntries", "directory"]},
+    "storage","unlimitedStorage","webview","syncFileSystem" 
+  ],
+  "file_handlers": {
+    "text": {
+      "types": [
+          "text/*"
+      ]
+    }
+  },
+  "offline_enabled": true
+}
