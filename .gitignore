@@ -55,4 +55,5 @@ Temporary Items
 /development/assets/output
 /development/img
 *.mp3
-''
+*Tmp*
+development/assets/js/job*
