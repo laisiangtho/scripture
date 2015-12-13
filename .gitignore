@@ -53,5 +53,5 @@ delete/
 Tmp/
 output/
 *.mp3
-*Tmp*
+*tmp*
 development/assets/js/job*
