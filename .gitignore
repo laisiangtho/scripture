@@ -47,11 +47,10 @@ Temporary Items
 /distribution
 /production
 /node_modules
-backup/
-nbproject/
-delete/
-tmp/
-output/
+backup
+nbproject
+delete
+output
+tmp
 *.mp3
-*tmp*
 development/assets/js/job*
