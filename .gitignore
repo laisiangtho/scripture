@@ -41,19 +41,17 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-
 # =========================
 #CUSTOM
 # =========================
 /distribution
 /production
 /node_modules
-*/backup/*
-/nbproject
-/delete
-/development/assets/delete
-/development/assets/output
-/development/img
+backup/
+nbproject/
+delete/
+Tmp/
+output/
 *.mp3
 *Tmp*
 development/assets/js/job*
