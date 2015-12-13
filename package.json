@@ -99,7 +99,10 @@
         "build-web": "node ./npm-build.js --os=web",
         "build-electron": "node ./npm-build.js --os=electron"
     },
-    "repository":"https://github.com/khensolomonlethil/laisiangtho",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/khensolomonlethil/laisiangtho.git"
+    },
     "keywords": [
         "Holy",
         "Bible",
