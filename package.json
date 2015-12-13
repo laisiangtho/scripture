@@ -1,0 +1,128 @@
+{
+    "name": "laisiangtho",
+    "version": "1.2.1",
+    "description": "the Holy Bible in languages",
+    "config": {
+        "common": {
+            "name": "Lai Siangtho",
+            "unique": ".n-.o-.v-build-.b",
+            "development": {
+                "root": "development",
+                "assets": "assets"
+            },
+            "production": {
+                "root": "production",
+                "main": "index",
+                "file": {
+                    "img": {
+                        "png$": true
+                    },
+                    "fontmya": {
+                        "(.*)": true
+                    },
+                    "fontello": {
+                        "json$": false
+                    },
+                    "laisiangtho": {
+                        "^[a-z\\d]+.json$": true
+                    },
+                    "lang": {
+                        "^[a-z]{2}.json$": true
+                    }
+                }
+            },
+            "version": "1.2.1",
+            "build": "1.2.1"
+        },
+        "individual": {
+            "chrome": {
+                "production": {
+                    "file": {
+                        "css": {
+                            "(mobile|tablet)": false
+                        },
+                        "js": {
+                            "(mobile|tablet|[A-Z]|org|\\d)": false
+                        }
+                    }
+                }
+            },
+            "ios": {
+                "production": {
+                    "file": {
+                        "css": {
+                            "(desktop|web|android)": false
+                        },
+                        "js": {
+                            "(desktop|web|chrome|[A-Z]|org|android)": false,
+                            "(\\d)": false
+                        }
+                    }
+                }
+            },
+            "android": {
+                "production": {
+                    "file": {
+                        "css": {
+                            "(desktop|web|ios)": false
+                        },
+                        "js": {
+                            "(desktop|web|chrome|ios|[A-Z]|org|\\d)": false
+                        }
+                    }
+                }
+            },
+            "web": {
+                "development": {
+                    "main": "index"
+                },
+                "production": {
+                    "file": {
+                        "css": {
+                            "(app)": false
+                        },
+                        "js": {
+                            "(app|[A-Z]|org|\\d)": false
+                        }
+                    }
+                }
+            },
+            "electron": {}
+        }
+    },
+    "main": "npm-index.js",
+    "scripts": {
+        "build": "node ./npm-build.js",
+        "build-chrome": "node ./npm-build.js --os=chrome",
+        "build-ios": "node ./npm-build.js --os=ios",
+        "build-android": "node ./npm-build.js --os=android",
+        "build-web": "node ./npm-build.js --os=web",
+        "build-electron": "node ./npm-build.js --os=electron"
+    },
+    "repository":"https://github.com/khensolomonlethil/laisiangtho",
+    "keywords": [
+        "Holy",
+        "Bible",
+        "Lai",
+        "Siangtho",
+        "Zomi"
+    ],
+    "author": "Khen Solomon Lethil",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/khensolomonlethil/laisiangtho/issues"
+    },
+    "homepage": "https://github.com/khensolomonlethil/laisiangtho#readme",
+    "devDependencies": {
+        "cli-color": "^1.1.0",
+        "fs-extra": "^0.26.2",
+        "gulp": "^3.9.0",
+        "gulp-concat": "^2.6.0",
+        "gulp-include": "^2.1.0",
+        "gulp-minify-css": "^1.2.1",
+        "gulp-sass": "^2.0.4",
+        "gulp-uglify": "^1.4.1",
+        "minimist": "^1.2.0",
+        "node.extend": "^1.1.5"
+    }
+}

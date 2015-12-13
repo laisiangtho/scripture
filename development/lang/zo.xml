@@ -1,0 +1,115 @@
+{
+	"l":{
+		"bible":"Lai Siangtho","book":"Laibu","chapter":"Alian","verse":"Aneu","lookup":"Zong","setting":"Dan","more":"Adang","parallel":"Etkakna","bookmarks":"Ciptehna","todo":"Hihding","about":"Athu","note":"Ciptehna",
+		
+		"BFCVB":"{b}...","BFVBC":"{b} {c}...","BFBCV":"{b} {c}:{v}...","Downloading":"Downloading",
+		"PercentLoaded":"{Percent}%...",
+		
+		"Loading":"Laklaitak","Checking":"Sinlaitak","Searching":"Zonglaitak",
+		"Ready":"Manta","Error":"Khial","Success":"Zota","Discover":"Zong!","Paused":"Khawlsak!",
+		
+		"IsNotReady":"{is} pen zat dingin hithei naikei!",
+
+		"NotFound":"mulo","IsNotFound":"{is} pen mulo!","IsNotFoundIn":"{in} tengah {is} pen mulo!","IsNotFoundInAt":"Hih {at} sunga om {in} tengah {is} pen mulo!",
+		
+		"Selection":"Telkhiatna",
+
+		"AddBookmarks":"Ciptehna","BookmarkedAlready":"Ciamtehkhinta!","Bookmarked":"Ciamtehkhin!","NoBookmarks":"Ciaptehna omlo!",
+
+		"NoMatchFor":"Hih {for} laimal dan mulo!",
+		"BookMustSelected":"Laibu teelding kulhi!","ChapterMustSelected":"Alian teelding kulhi!","VerseMustSelected":"Aneu teelding kulhi!",
+
+		"FoundV":"Aneu {v} mu!","FoundBCV":"Laibu:{b}, alian:{c} & aneu:{v} tengah mu!",
+		
+		"NoBookSelected":"Laibu teelna omlo!","NoChapterSelected":"Alian teelna omlo!","NoVerseSelected":"Aneu teelna omlo!",
+		
+		"ShowMe":"hong lakin"
+	},
+	"t":{
+		 "1":"Thuciam Lui","2":"Thuciam Thak"
+	},
+	"b":{
+		"1":"Piancilna",
+		"2":"Paikhiatna",
+		"3":"Siampi Laibu",
+		"4":"Gamlak Vakna",
+		"5":"Thu Hilhkikna",
+		"6":"Joshua",
+		"7":"Thukhente",
+		"8":"Ruth",
+		"9":"Samuel Masa",
+		"10":"Samuel Nihna",
+		"11":"Kumpi Masate",
+		"12":"Kumpi Nihnate",
+		"13":"Khang Thangthu Masa",
+		"14":"Khang Thangthu Nihna",
+		"15":"Ezra",
+		"16":"Nehemiah",
+		"17":"Esther",
+		"18":"Job",
+		"19":"Late",
+		"20":"Paunak",
+		"21":"Thuhilhna",
+		"22":"Solomon La",
+		"23":"Isaiah",
+		"24":"Jeremiah",
+		"25":"Kah La",
+		"26":"Ezekiel",
+		"27":"Daniel",
+		"28":"Hosea",
+		"29":"Joel",
+		"30":"Amos",
+		"31":"Obadiah",
+		"32":"Jonah",
+		"33":"Mikah",
+		"34":"Nahum",
+		"35":"Habakkuk",
+		"36":"Zefaniah",
+		"37":"Haggai",
+		"38":"Zekhariah",
+		"39":"Malakhi",
+		"40":"Matthai",
+		"41":"Marka",
+		"42":"Luka",
+		"43":"Johan",
+		"44":"Sawltak Tangthu",
+		"45":"Rom Laikhak",
+		"46":"Korin Masa",
+		"47":"Korin Nihna",
+		"48":"Galati",
+		"49":"Efesa",
+		"50":"Filippi",
+		"51":"Kolose",
+		"52":"Thesalonika Masa",
+		"53":"Thesalonika Nihna",
+		"54":"Timoti Masa",
+		"55":"Timoti Nihna",
+		"56":"Titus",
+		"57":"Filemon",
+		"58":"Hebru",
+		"59":"James",
+		"60":"Peter Masa",
+		"61":"Peter Nihna",
+		"62":"Johan Masa",
+		"63":"Johan Nihna",
+		"64":"Johan Thumna",
+		"65":"Jude",
+		"66":"Maangmuhna"
+	},
+	"s":{
+		"1":"Thubulphuh",
+		"2":"Taangthu",
+		"3":"La",
+		"4":"Siampite",
+		"5":"Siampi Atuamtuam",
+		"6":"Gupnathute",
+		"7":"Taangthu Tuamtuam",
+		"8":"Upna: Gentiles",
+		"9":"Upna: Atuamtuam",
+		"10":"Upna: Israel",
+		"11":"Upna: General Espitles"
+	},
+	"name":{
+		"1":["pian", "laibu masa"]
+	}
+}

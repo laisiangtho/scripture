@@ -42,7 +42,17 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# =========================
 #CUSTOM
+# =========================
 /distribution
-/backup/*
+/production
+/node_modules
+*/backup/*
 /nbproject
+/delete
+/development/assets/delete
+/development/assets/output
+/development/img
+*.mp3
+''

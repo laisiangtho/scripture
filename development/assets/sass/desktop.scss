@@ -1,0 +1,119 @@
+@import 'Config';
+/*
+<header>
+search option, search suggestion, chapter list
+<main>
+*/
+html{
+    &.landscape{}
+    &.portrait{}
+    body{
+        header{}
+        main{}
+        footer{}
+        #dialog{}
+    }
+}
+// LAYOUT
+body{
+    >*{
+        // div, header, main, footer
+        &:empty{}
+        *{}
+        >div{
+            >div{}
+        }
+    }
+    >div, header, footer{}
+    >div{
+        &#dialog{
+            >div{}
+        }
+    }
+    header, main, footer{
+        >div{
+            >div{}
+        }
+    }
+    header, footer{
+        >div{
+            >div{
+                >ul{
+                    >li{}
+                }
+            }
+        }
+    }
+    header{
+        @include user-select();
+        box-shadow:inset 0 -1px 1px 0px darken($ColorBackground,20%);background-color:darken($ColorBackground,1%);
+        >div{
+            &.bar{
+                height:32px;
+                box-shadow:inset 0px 1px 1px 0px darken($ColorBackground,20%);
+                border-top:3px solid darken($ColorBackground,3%);
+                padding-bottom: 7px;
+                &.logo{}
+                &.tab{}
+                &.name{}
+                &.misc{}
+            }
+            &.nav{
+                // todo?
+                // width:98%;padding:5px 1%;//height:38px;
+                padding-bottom: 7px;
+                &.dig{}
+                &.ctl{}
+            }
+            div{
+                &.logo{}
+                &.name{}
+                &.misc{}
+                &.tab{}
+                &.dig{}
+                &.ctl{}
+                ul{
+                    li{
+                        ul{
+                            li{}
+                        }
+                    }
+                }
+            }
+        }
+    }
+    main{
+        // todo#
+        // suppose to be dynamic
+        top:79px;bottom:0px;
+        >div{
+            &.container{
+            }
+            &.active{
+            }
+            &:not(.active){
+            }
+        }
+    }
+    footer{
+    }
+    // conditional
+    &.working{}
+    &.fullscreen{}
+}
+/*
+name: desktop.Dialog
+*/
+@import "desktop.Dialog";
+/*
+name: desktop.Header
+*/
+@import "desktop.Header";
+/*
+name: desktop.Main"
+*/
+@import "desktop.Main";
+/*
+name: desktop.Footer"
+*/
+@import "desktop.Footer";
