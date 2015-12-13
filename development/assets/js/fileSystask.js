@@ -1,7 +1,7 @@
 /*!
     fileSystask -- Javascript file System task
     Version 1.0.0
-    https://khensolomonlethil.github.io/filesystem
+    https://khensolomonlethil.github.io/laisiangtho/fileSystask
     (c) 2013-2015
 */
 (function(o) {
