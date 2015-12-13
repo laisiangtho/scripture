@@ -1,6 +1,12 @@
-#
-structure
-    javascript onload
-    //E:['Load','Watch',{'Meta link':['api']},'rootFileSystem'],Device:'ios',Platform:'app',Deploy:'mobile',App:'laisiangtho',Click:'vclick',On:'zO'
-    html
-    sass, css
+Structure
+=========
+- onload
+    - Agent need to improved!
+```
+$(document).laisiangtho({
+    E:[{'Metalink':['api']},'Load','Watch','DesktopLoad'],Device:'desktop',Platform:'web',App:'laisiangtho',Click:'click',On:'fO'
+}).Agent();
+```
+- html
+- sass
+- css
