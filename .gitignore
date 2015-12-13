@@ -50,7 +50,7 @@ Temporary Items
 backup/
 nbproject/
 delete/
-Tmp/
+tmp/
 output/
 *.mp3
 *tmp*
