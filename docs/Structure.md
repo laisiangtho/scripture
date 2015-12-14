@@ -7,3 +7,15 @@ STRUCTURE
 - development: (source)
 - docs: manual
 - node_modules: Nodejs
+
+Temparay Foldes and Files
+---------
+- /distribution
+- /production
+- /node_modules/
+- backup
+- nbproject
+- delete
+- output
+- tmp
+- development/assets/js/job*

@@ -1,8 +1,11 @@
 /*!
     fileSystask -- Javascript file System task
-    Version 1.0.0
+    Version 1.0.1
     https://khensolomonlethil.github.io/laisiangtho/fileSystask
     (c) 2013-2015
+
+    FIXED
+    - fileStatus is undefined
 */
 (function(o) {
     'use strict';
@@ -561,6 +564,7 @@
         this.save = function(Obj) {
             return new Promise(function(resolve, reject) {
                 // Obj.fileSystem={};
+
                 fn.request(
                     function(fs, status) {
                         try {
@@ -597,7 +601,11 @@
                                     );
                                 },
                                 function(e) {
-                                    Obj.fileStatus = e;
+                                    if(typeof Obj ==='object'){
+                                        Obj.fileStatus = e;
+                                    }else{
+                                        Obj= e;
+                                    }
                                     reject(Obj);
                                 }
                             );
@@ -766,8 +774,8 @@ var file = new fileSystask({
 // NOTE: how 'download' then 'save' work!
 file.download({
     Method: 'GET',
-    fileUrl: 'assets/jstest/delete.css',
-    fileCache: true,
+    fileUrl: 'assets/delete/delete.css',
+    fileCache: false,
     before: function(evt) {
         evt.setRequestHeader("Access-Control-Allow-Origin", "*");
     },

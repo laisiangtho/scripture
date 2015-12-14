@@ -30,6 +30,7 @@ fn=this, f0=obj,
                 f:['exe']
             },
             exe:{
+                description:'exe only apply Prototype!',
                 Load:{
                     o:['fO','config'],
                     f:['new Database(db,fO,config)','other','init']

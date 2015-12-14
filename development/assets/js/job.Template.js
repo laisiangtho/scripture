@@ -150,6 +150,9 @@ Object.defineProperties(Object.prototype,{
         }
     }
 });
+/*
+jsonTemplatask, Template, jTemplatask
+*/
 document.addEventListener('DOMContentLoaded', function () {
     job.help();
 });
