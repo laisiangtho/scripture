@@ -2,7 +2,7 @@
 // *** CHECK IS-FILE READY
 // var x=new f({bible:'tedim',reading:1}).xml(function(response){
 //     return response;
-// }).is();
+// }).has();
 // *** GET DATA
 // var x=new f({bible:'tedim',reading:1}).xml(function(response){
 //     console.log(response);
@@ -10,53 +10,39 @@
 // }).get();
 // FIXME: storage
 Core.prototype.xml = function(e) {
-    var t = this, o = this.arg[0];
-    var i = fO.lang[o.bible], s = i.l, n = i.b;
-    var l = this.url(config.id, [ o.bible ], config.file.bible);
-    this.is = function() {
-        if ($.isEmptyObject(fO[o.bible].bible)) {
-            if (fO.isCordova) {
-                l.local.resolveFileSystem(t.file.Cordova().read, function(e) {
-                    t.ResponseGood({
-                        msg: "to Local",
-                        status: false
-                    });
-                });
-            } else if (fO.isChrome) {
-                t.ResponseGood({
-                    msg: "to Webkit",
-                    status: false
-                });
-            } else {
-                db.get({
-                    table: o.bible
-                }).then(function(e) {
-                    if (e) {
-                        if ($.isEmptyObject(e)) {
+    var t = this, i = this.arg[0];
+    var o = fO.lang[i.bible], s = o.l, n = o.b;
+    var l = this.url(config.id, [ i.bible ], config.file.bible);
+    this.has = function() {
+        if ($.isEmptyObject(fO[i.bible].bible)) {
+            if (fileSystem.support) {
+                fileSystem.get({
+                    fileName: l.fileUrl,
+                    fileOption: {},
+                    fileObject: function() {
+                        t.file.read(this.fileEntry);
+                    },
+                    fileNotExists: function() {
+                        if (i.bible == i.downloading) {
+                            t.file.download();
+                        } else {
                             t.ResponseGood({
-                                msg: "to Store",
+                                msg: "fileNotExists",
                                 status: false
                             });
-                        } else {
-                            if (o.reading == o.bible) {
-                                fO[o.bible].bible = e;
-                                t.ResponseGood({
-                                    msg: "from Store",
-                                    status: true
-                                });
-                            } else {
-                                t.ResponseGood({
-                                    msg: "to Store",
-                                    status: true
-                                });
-                            }
                         }
-                    } else {
+                    },
+                    fileError: function(e) {
                         t.ResponseGood({
-                            msg: "to Store",
+                            msg: "to fileSystem.fileError",
                             status: false
                         });
                     }
+                });
+            } else {
+                t.ResponseGood({
+                    msg: "fileSystem NotOk, process ot db ",
+                    status: false
                 });
             }
         } else {
@@ -68,7 +54,7 @@ Core.prototype.xml = function(e) {
         return this;
     };
     this.get = function() {
-        if ($.isEmptyObject(fO[o.bible].bible)) {
+        if ($.isEmptyObject(fO[i.bible].bible)) {
             if (fO.isCordova) {
                 t.working({
                     msg: s.PleaseWait,
@@ -83,11 +69,11 @@ Core.prototype.xml = function(e) {
                 });
             } else {
                 db.get({
-                    table: o.bible
+                    table: i.bible
                 }).then(function(e) {
                     if (e) {
-                        fO[o.bible].bible = e;
-                        if ($.isEmptyObject(fO[o.bible].bible)) {
+                        fO[i.bible].bible = e;
+                        if ($.isEmptyObject(fO[i.bible].bible)) {
                             t.file.IndexDb().download();
                         } else {
                             t.ResponseGood({
@@ -116,7 +102,7 @@ Core.prototype.xml = function(e) {
             });
         } else {
             db.delete({
-                table: o.bible
+                table: i.bible
             }).then(function() {
                 t.ResponseBad({
                     status: true
@@ -139,9 +125,9 @@ Core.prototype.xml = function(e) {
                         var e = new window.XMLHttpRequest();
                         e.addEventListener("progress", function(e) {
                             if (e.lengthComputable) {
-                                var o = Math.floor(e.loaded / e.total * 100);
+                                var i = Math.floor(e.loaded / e.total * 100);
                                 t.working({
-                                    msg: s.PercentLoaded.replace(/{Percent}/, t.num(o))
+                                    msg: s.PercentLoaded.replace(/{Percent}/, t.num(i))
                                 });
                             }
                         }, false);
@@ -153,13 +139,13 @@ Core.prototype.xml = function(e) {
                     cache: true,
                     crossDomain: true,
                     async: true
-                }).done(function(e, o, i) {
+                }).done(function(e, i, o) {
                     t.JobType(e);
-                }).fail(function(o, i) {
+                }).fail(function(i, o) {
                     if (api) {
                         if (e) {
                             t.ResponseGood({
-                                msg: i,
+                                msg: o,
                                 status: false
                             });
                         } else {
@@ -167,7 +153,7 @@ Core.prototype.xml = function(e) {
                         }
                     } else {
                         t.ResponseGood({
-                            msg: i,
+                            msg: o,
                             status: false
                         });
                     }
@@ -180,28 +166,9 @@ Core.prototype.xml = function(e) {
             return this;
         },
         Cordova: function() {
-            this.download = function() {
-                t.working({
-                    msg: s.Downloading
-                });
-                var e = new FileTransfer();
-                e.onprogress = function(e) {
-                    if (e.lengthComputable) {
-                        var o = Math.floor(e.loaded / e.total * 100);
-                        t.working({
-                            msg: s.PercentLoaded.replace(/{Percent}/, t.num(o))
-                        });
-                    }
-                };
-                e.download(encodeURI(api + l.url), l.local, t.file.Cordova().content, function(e) {
-                    t.ResponseGood({
-                        msg: e.code,
-                        status: false
-                    });
-                });
-            };
+            this.download = function() {};
             this.read = function(e) {
-                if (o.reading == o.bible) {
+                if (i.bible == i.reading) {
                     this.content(e);
                 } else {
                     t.ResponseGood({
@@ -213,14 +180,14 @@ Core.prototype.xml = function(e) {
             this.get = function(e) {
                 this.content(e);
             };
-            this.content = function(e, o) {
+            this.content = function(e, i) {
                 e.file(function(e) {
-                    var o = new FileReader();
-                    o.onloadend = function(e) {
-                        var o = new DOMParser();
-                        t.JobType(o.parseFromString(e.target.result, l.type));
+                    var i = new FileReader();
+                    i.onloadend = function(e) {
+                        var i = new DOMParser();
+                        t.JobType(i.parseFromString(e.target.result, l.type));
                     };
-                    o.readAsText(e);
+                    i.readAsText(e);
                 }, function() {
                     t.ResponseGood({
                         msg: "fail to read Local",
@@ -248,12 +215,83 @@ Core.prototype.xml = function(e) {
         Web: function() {
             this.download = function() {};
             return this;
+        },
+        download: function() {
+            fileSystem.download({
+                Method: "GET",
+                fileUrl: l.fileUrl,
+                fileUrlLocal: l.fileUrl,
+                fileCache: false,
+                progress: function(e) {
+                    console.log(e);
+                },
+                done: function(e) {
+                    console.log("done", e);
+                },
+                fail: function(e) {
+                    console.log("fail", e);
+                },
+                success: function(e) {
+                    console.log("success", e);
+                    fileSystem.save(Object.assign(e, {
+                        success: function(e) {
+                            t.has();
+                        },
+                        fail: function(e) {
+                            t.ResponseGood({
+                                msg: "fail saving",
+                                status: false
+                            });
+                        },
+                        done: function(e) {}
+                    })).then(function(e) {
+                        console.log("save.then.success", e);
+                    });
+                }
+            }).then(function(e) {
+                console.log("download.then", e);
+            });
+        },
+        read: function(e) {
+            if (i.bible == i.reading) {
+                this.content(e);
+            } else {
+                t.ResponseGood({
+                    msg: "from Reading",
+                    status: true
+                });
+            }
+        },
+        content: function(e) {
+            e.file(function(e) {
+                var i = new FileReader();
+                i.onloadend = function() {
+                    t.JobType(new DOMParser().parseFromString(this.result, l.fileContentType));
+                };
+                i.readAsText(e);
+            }, function() {
+                t.ResponseGood({
+                    msg: "fail to read Local",
+                    status: false
+                });
+            });
+        },
+        remove: function(e) {
+            e.remove(function() {
+                t.ResponseBad({
+                    status: true
+                });
+            }, function(e) {
+                t.ResponseBad({
+                    status: false
+                });
+            });
         }
     };
     this.JobType = function(e) {
         var t = $(e).children().get(0).tagName;
         if ($.isFunction(this.Job[t])) {
-            fO[o.bible].bible = {
+            fO[i.bible].bible = {
                 info: {},
                 book: {}
             };
@@ -267,42 +305,42 @@ Core.prototype.xml = function(e) {
     };
     this.Job = {
         bible: function(e) {
-            var i = [], s = [], l = 0;
-            $(e).children().each(function(e, i) {
-                var s = $(i), l = s.children(), a = s.attr("id");
+            var o = [], s = [], l = 0;
+            $(e).children().each(function(e, o) {
+                var s = $(o), l = s.children(), f = s.attr("id");
                 if (l.length) {
-                    l.each(function(e, i) {
-                        var s = $(i), a = s.children(), i = s.attr("id"), r = s.get(0).tagName.toLowerCase(), f = 0;
-                        if ($.type(fO[o.bible].bible[r]) === "undefined") fO[o.bible].bible[r] = {};
-                        if (a.length) {
-                            fO[o.bible].bible[r][i] = {};
+                    l.each(function(e, o) {
+                        var s = $(o), f = s.children(), o = s.attr("id"), a = s.get(0).tagName.toLowerCase(), r = 0;
+                        if ($.type(fO[i.bible].bible[a]) === "undefined") fO[i.bible].bible[a] = {};
+                        if (f.length) {
+                            fO[i.bible].bible[a][o] = {};
                             setTimeout(function() {
-                                a.each(function(s, n) {
-                                    var b = $(n), d = b.children(), n = b.attr("id"), u = b.get(0).tagName.toLowerCase();
-                                    if ($.type(fO[o.bible].bible[r][i][u]) === "undefined") fO[o.bible].bible[r][i][u] = {};
-                                    if (d.length) {
-                                        fO[o.bible].bible[r][i][u][n] = {};
-                                        fO[o.bible].bible[r][i][u][n].verse = {};
+                                f.each(function(s, n) {
+                                    var b = $(n), u = b.children(), n = b.attr("id"), c = b.get(0).tagName.toLowerCase();
+                                    if ($.type(fO[i.bible].bible[a][o][c]) === "undefined") fO[i.bible].bible[a][o][c] = {};
+                                    if (u.length) {
+                                        fO[i.bible].bible[a][o][c][n] = {};
+                                        fO[i.bible].bible[a][o][c][n].verse = {};
                                         setTimeout(function() {
-                                            d.each(function(f, b) {
-                                                var c = $(b), h = c.children(), b = c.attr("id"), g = c.get(0).tagName.toLowerCase();
+                                            u.each(function(r, b) {
+                                                var d = $(b), h = d.children(), b = d.attr("id"), g = d.get(0).tagName.toLowerCase();
                                                 b = "v" + b;
-                                                fO[o.bible].bible[r][i][u][n].verse[b] = {};
-                                                fO[o.bible].bible[r][i][u][n].verse[b].text = c.text();
-                                                if (c.attr("ref")) fO[o.bible].bible[r][i][u][n].verse[b].ref = c.attr("ref").split(",");
-                                                if (c.attr("title")) fO[o.bible].bible[r][i][u][n].verse[b].title = c.attr("title").split(",");
+                                                fO[i.bible].bible[a][o][c][n].verse[b] = {};
+                                                fO[i.bible].bible[a][o][c][n].verse[b].text = d.text();
+                                                if (d.attr("ref")) fO[i.bible].bible[a][o][c][n].verse[b].ref = d.attr("ref").split(",");
+                                                if (d.attr("title")) fO[i.bible].bible[a][o][c][n].verse[b].title = d.attr("title").split(",");
                                                 if (l.length == e + 1) {
-                                                    if (a.length == s + 1) {
-                                                        if (d.length == f + 1) {
-                                                            if (fO.isCordova) {
+                                                    if (f.length == s + 1) {
+                                                        if (u.length == r + 1) {
+                                                            if (fileSystem.support) {
                                                                 t.ResponseGood({
                                                                     msg: "Saved",
                                                                     status: true
                                                                 });
                                                             } else {
                                                                 db.add({
-                                                                    table: o.bible,
-                                                                    data: fO[o.bible].bible
+                                                                    table: i.bible,
+                                                                    data: fO[i.bible].bible
                                                                 }).then(t.ResponseGood({
                                                                     msg: "Stored",
                                                                     status: true
@@ -314,31 +352,31 @@ Core.prototype.xml = function(e) {
                                             });
                                         }, 30 / e * s);
                                     } else if (n) {
-                                        fO[o.bible].bible[r][i][u][n] = b.text();
+                                        fO[i.bible].bible[a][o][c][n] = b.text();
                                     } else {
-                                        f++;
-                                        fO[o.bible].bible[r][i][u][f] = {
+                                        r++;
+                                        fO[i.bible].bible[a][o][c][r] = {
                                             title: b.text()
                                         };
-                                        if (b.attr("ref")) fO[o.bible].bible[r][i][u][f].ref = b.attr("ref").split(",");
+                                        if (b.attr("ref")) fO[i.bible].bible[a][o][c][r].ref = b.attr("ref").split(",");
                                     }
                                 }).promise().done(function() {
-                                    fO.msg.info.html(n[i]);
+                                    fO.msg.info.html(n[o]);
                                 });
                             }, 90 * e);
                         } else {
-                            fO[o.bible].bible[r][i] = s.text();
+                            fO[i.bible].bible[a][o] = s.text();
                         }
                     });
                 } else {
-                    var r = s.attr("id"), f = s.text();
+                    var a = s.attr("id"), r = s.text();
                 }
             });
         }
     };
     this.ResponseGood = function(e) {
-        i.local = e.status;
-        if (o.reading) {
+        o.local = e.status;
+        if (i.reading) {
             t.ResponseCallbacks(e);
         } else {
             db.update.lang().then(function() {
@@ -349,8 +387,8 @@ Core.prototype.xml = function(e) {
         return this;
     };
     this.ResponseBad = function(e) {
-        delete fO[o.bible].bible;
-        if (e.status) i.local = false;
+        delete fO[i.bible].bible;
+        if (e.status) o.local = false;
         db.update.lang().then(function() {
             t.ResponseCallbacks(e);
         });

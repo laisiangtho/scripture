@@ -4,9 +4,13 @@ Core.prototype.Load = function() {
     var fn=this,l7=[], l8={}, f0={
         reading:function(bID){
             if(config.bible.ready && fO.query.bible){
-                if(config.bible.ready==1){return fO.query.bible;}
-                else if(config.bible.ready==2){return bID;}
-                else{ return true;}
+                if(config.bible.ready==1){
+                    return fO.query.bible;
+                } else if(config.bible.ready==2){
+                    return bID;
+                } else{
+                    return true;
+                }
             }else{
                 return true;
             }
@@ -15,14 +19,15 @@ Core.prototype.Load = function() {
             var bID=l7.shift(); fO[bID]={};
             if(fO.lang[bID].info){
                 $("p").html(fO.lang[bID].info.name).promise().done(function(){
+                    // console.log(fO.query);
                     if(f0.reading(bID) == bID){
                         // TODO: ???
-                        f0.next();
-                        /*
-                        new Content({bible:bID,reading:bID}).XML(function(response){
+                        // reading->if->exists, download->if not exists
+                        new f({bible:bID,reading:bID,downloading:bID}).xml(function(response){
+                            // console.log('XML.has.Response',response);
                             f0.next();
-                        }).read();
-                        */
+                        }).has();
+
                     }else{
                         f0.next();
                     }
@@ -32,9 +37,8 @@ Core.prototype.Load = function() {
             }
         },
         json:function(bID,callback,x){
-            console.log('json');
             var o=fn.url(config.id,[bID],config.file.lang);
-            var request=$.ajax({url:(x)?x+o.url:o.url,dataType:o.data,contentType:o.content,cache:false});
+            var request=$.ajax({url:(x?x:'')+o.fileUrl,dataType:o.fileExtension,contentType:o.fileContentType,cache:false});
             request.done(function(j){
                 var lID=j.info.lang=j.info.lang || config.language.info.lang;
                 fO.msg.info.html(j.info.name);
@@ -68,11 +72,11 @@ Core.prototype.Load = function() {
                         next:function(){
                             $.extend(fO.lang[bID],this.merge());
                             $("p").html(lID).attr({class:'icon-database'}).promise().done(function(){
-                                callback();
                                 // TODO: ???
-                                // new fn.Content({bible:bID,reading:f0.reading(bID)}).XML(function(response){
-                                //     callback();
-                                // }).read();
+                                new f({bible:bID,reading:f0.reading(bID),downloading:null}).xml(function(response){
+                                    // console.log('XML.has.Response',response);
+                                    callback();
+                                }).has();
                             });
                         }
                     };
@@ -80,7 +84,8 @@ Core.prototype.Load = function() {
                 if(l8[lID]){
                     prepare(l8[lID],j).next();
                 }else{
-                    var o=fn.url('lang',[lID],config.file.lang), get=$.ajax({url:o.url,dataType:o.data,contentType:o.content,cache:false});
+                    var o=fn.url('lang',[lID],config.file.lang),
+                    get=$.ajax({url:o.fileUrl,dataType:o.fileExtension,contentType:o.fileContentType,cache:false});
                     get.done(function(langauge){
                         l8[lID]=prepare(config.language,langauge).merge();
                         prepare(l8[lID],j).next();
@@ -89,15 +94,16 @@ Core.prototype.Load = function() {
                         prepare(config.language,j).next();
                     });
                 }
+
             });
             request.fail(function(jqXHR, textStatus){
-                if(api){
+                if(api.name){
                     if(x){
                         db.RemoveLang(bID,function(){
                             l7.splice(l7.indexOf(bID), 1); callback();
                         });
                     }else{
-                        f0.json(bID,callback,api);
+                        f0.json(bID,callback,api.name);
                     }
                 }else{
                     db.RemoveLang(bID,function(){
@@ -156,18 +162,18 @@ Core.prototype.Load = function() {
             }
         },
         done:function(){
-            // TODO: a faster way, body id has to change
-            if(fO.todo.Design){
-                $(document.body).load("Desktop.design.html header, main, footer",function(){
+            // REVIEW: a faster way, body id has to change
+            if(fO.todo.Template){
+                $(document.body).load(config.file.template.replace(/{Deploy}/,fO.Deploy).replace(/{Platform}/,fO.Platform),function(){
                     fn.init();
+                }).promise().done(function(){
+                    this.attr('id',fO.App);
                 });
-                // $(document.body).load("Desktop.design.html header, main, footer",function(){
-                //     fn.init();
-                // }).promise().done(function(){
-                //     this.attr('id',fO.App);
-                // });
             }else{
                 fn.init();
+                // fO.template=[fO.Deploy,fO.Platform];
+                // config.file.template=config.file.template.replace(/{Deploy}/,fO.Deploy).replace(/{Platform}/,fO.Platform);
+                // console.warn('Template:false, will not process to init()',config.file.template);
             }
             $(document.body).keydown(function(e){
                 // TODO: shortcut keys
@@ -203,9 +209,36 @@ Core.prototype.Load = function() {
                 });
             };
             function process_trigger(){
-                fn.index(); l7=config.bible.available.concat();
-                // NOTE: got ready 'available' bible
-                if(fO.Ready==3){f0.start();}else{db.add({table:config.store.info,data:{build:config.build,version:config.version}}).then(f0.start());}
+                fn.index();
+                // NOTE: got ready 'config.bible.available'
+                l7=config.bible.available.concat();
+                // NOTE: testing fileSystem
+                fileSystem=new fileSystask({
+                    Base: 'Other',
+                    RequestQuota: 1073741824, //1024*1024*1024
+                    Permission: 1
+                }, {
+                    success: function(fs) {
+                        // TODO: nothing yet!
+                    },
+                    fail: function(err) {
+                        // NOTE: since fail, we remove {fileSystem}
+                        // fileSystem=null;
+                    },
+                    done: function(fs) {
+                        // NOTE: yes process
+                        // NOTE: 'fO.query.bible' only for testing, before Initiation is not completed
+                        // console.log(fileSystem);
+                        fO.query.bible='tedim';
+                        if(fO.Ready==3){
+                            f0.start();
+                        }else{
+                            db.add({table:config.store.info,data:{build:config.build,version:config.version}}).then(f0.start());
+                        }
+                    }
+                });
+                // this.fileSystem=function(){};
+                // if(fO.Ready==3){f0.start();}else{db.add({table:config.store.info,data:{build:config.build,version:config.version}}).then(f0.start());}
             };
         });
     });

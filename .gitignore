@@ -53,12 +53,11 @@ delete
 output
 tmp
 development/assets/*/*[0-9].*
-development/assets/*/*job*.*
+#development/assets/*/*job*.*
 development/assets/*/*Delete*.*
 development/assets/*/*Working*.*
 development/assets/*/*Tmp*.*
-#[job,Working,Tmp,Delete]*.*
-#development/assets/js/job*
-#development/*/*/[job,Working,Tmp,Delete]+
+development/assets/*/job*
+#development/assets/*/*[job,Working,Tmp,Delete]*.*
 #development/*/*/[0-9]+.*
 #development/assets/js/[0-9]+.*

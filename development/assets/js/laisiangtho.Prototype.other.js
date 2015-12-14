@@ -11,25 +11,52 @@ Core.prototype.hash = function(callback) {
     while (m = search.exec(q)) r[d(m[1])] = d(m[2]);
     callback(r);
 };
-Core.prototype.url = function(l, x, y) {
-    var Url = this.string([l, 47, x.join('/'), 46, y]),
-        Filename = Url.substring(Url.lastIndexOf('/') + 1),
-        Type = this.string(['application', 47, y]),
+Core.prototype.url = function(l, x, fileExtension) {
+    // TODO: object key need to merge and fix where its using...
+    var fileUrl = this.string([l, 47, x.join('/'), 46, fileExtension]),
+        fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1),
+        fileContentType = this.string(['application', 47, fileExtension]),
         Path = null,
         Local = null;
-    if (fO.isCordova) {
-        Path = cordova.file.dataDirectory;
-        Local = cordova.file.dataDirectory + Filename;
+    if(fO.isCordova) {
+        // Path = cordova.file.dataDirectory;
+        // Local = cordova.file.dataDirectory + Filename;
+    }else if (fO.isChrome) {
+        // Path = 'filesystem:';
+        // Local = Filename;
     }
     return {
-        url: Url,
-        data: y,
-        content: Type + ';charset=utf-8',
-        filename: Filename,
-        type: Type,
-        path: Path,
-        local: Local
+        // url: fileUrl,
+        // data: fileExtension,
+        // content: fileContentType + ';charset=utf-8',
+        // filename: fileName,
+        // type: fileContentType,
+        // path: Path,
+        // local: Local,
+        // required for fileSystem
+        fileName: fileName,
+        // fileOption: {create: false},
+        fileExtension: fileExtension,
+        fileUrl: fileUrl,
+        // fileSize: e.total,
+        fileCharset: fileContentType + ';charset=utf-8',
+        fileContentType: fileContentType,
+        // fileContent: e.target.responseText,
+        // responseXML: e.target.responseXML
     };
+/*
+fileName: fileName,
+fileOption: {
+    create: true
+},
+fileExtension: fileExtension,
+fileUrl: fileUrl,
+fileSize: e.total,
+fileCharset: fileCharset,
+fileType: fileType,
+fileContent: e.target.responseText,
+responseXML: e.target.responseXML
+*/
 };
 Core.prototype.num = function(n, l) {
     if (!l) l = fO.query.bible;
@@ -40,7 +67,7 @@ Core.prototype.num = function(n, l) {
 Core.prototype.string = function(x) {
     return $.map(x, function(v) {
         return $.isNumeric(v) ? String.fromCharCode(v) : v;
-    }).join('');
+    }).join('').toString();
 };
 Core.prototype.index = function() {
     config.bible.available = [];

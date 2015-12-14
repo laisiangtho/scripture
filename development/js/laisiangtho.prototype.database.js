@@ -101,5 +101,5 @@ Core.prototype.Database = function(e) {
     localforage.ready().then(function() {
         return e.apply(t);
     });
-    return "...!";
+    return "!";
 };

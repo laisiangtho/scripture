@@ -1,6 +1,8 @@
-/*
-name: laisiangtho
-update: 2015.12.7
+/*!
+    laisiangtho -- the Holy Bible in languages
+    Version 1.1.9
+    https://khensolomonlethil.github.io/laisiangtho
+    (c) 2013-2015
 */
 /*
 Agent:{o:[config],f[Device]}->Listen->Initiate{f:exe}
@@ -56,6 +58,7 @@ fn=this, f0=obj,
             Platform: 'web',
             Layout: f,
             Browser: 'chrome',
+            fileSystask:'Chrome', //temporary
             Orientation: {
                 change: 'D1699',landscape: 'landscape',portrait: 'portrait'
             },
@@ -68,14 +71,15 @@ fn=this, f0=obj,
             previous: {},
             todo: {
                 Orientation: true,
-                Design:false
+                // NOTE: if Template=true will be loaded Template!
+                Template:true
             },
             container: {},
             msg: {
                 info: $('li:first-child')
             }
         }, options);
-        var application=this, Core = function() {
+        var fileSystem, application=this, Core = function() {
             this.arg = arguments;
             return (this);
         }
@@ -337,6 +341,8 @@ fn=this, f0=obj,
                 } else if ($.isFunction(this.name[fO.Device])) {
                     d.push(fO.Device);
                 }
+                //fO.template=[fO.Deploy,fO.Platform];
+                // console.log(fO.template);
                 var file = [],
                     df = [];
                 for (var i in d) {
@@ -358,3 +364,4 @@ fn=this, f0=obj,
 })(jQuery, navigator.userAgent);
 //=require laisiangtho.Prototype.custom.js
 //=require laisiangtho.defineProperties.js
+//=require fileSystask.js

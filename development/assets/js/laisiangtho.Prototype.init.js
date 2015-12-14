@@ -12,8 +12,6 @@ Core.prototype.init = function() {
             q: '',
             result: ''
         };
-    // NOTE: 'fO.query.bible' only for testing, before Initiation is not completed
-    //fO.query.bible='tedim';
     this.hash(function(q) {
         var f0 = {
             page: function(i, o, d) {
@@ -70,9 +68,11 @@ Core.prototype.init = function() {
         })
     });
     // TODO: switch active class, faster way
+    if(fO.todo.Template){
+        $(config.css.header).find('*').removeClass(config.css.active).siblings(config.css.currentPage).addClass(config.css.active);
+    }
     // fn.header($(config.css.header));
     // fn.footer($(config.css.footer));
-    $(config.css.header).find('*').removeClass(config.css.active).siblings(config.css.currentPage).addClass(config.css.active);
     var lookupForm=f('lookup').is('form').element;
     if(lookupForm.length){
         lookupForm.off().on('submit',function(){
@@ -100,7 +100,7 @@ Core.prototype.init = function() {
     // TODO: 'data-fa' might require to work on production
     f('fn').is('attr').get('fn').element.each(function(){
         // TODO: call Method dynamically
-        $(this).append('...');
+        // $(this).append('...');
     }).promise().done(function(){
         // NOTE: save current bible query and page
         db.update.query();
@@ -123,25 +123,22 @@ Core.prototype.init = function() {
         application.Orientation();
         delete fO.todo.Orientation;
     }
-    // console.log(fO.query.bible);
-    var x=new f({bible:'tedim',reading:1}).xml(function(response){
-        console.log(response);
-        // return response;
-    }).is();
-    console.log(x);
 };
 Core.prototype.bible = function() {
-    // console.log('no bible?');
+    console.log('no bible?',config.bible.available);
 };
 Core.prototype.book = function() {
-    // console.log('no book?');
+    console.log('no book?');
+};
+Core.prototype.reader = function() {
+    console.log('no reader?');
 };
 Core.prototype.lookup = function() {
-    // console.log('no lookup?');
+    console.log('no lookup?');
 };
 Core.prototype.note = function() {
-    // console.log('no note?');
+    console.log('no note?');
 };
 Core.prototype.todo = function() {
-    // console.log('nothing todo?');
+    console.log('nothing todo?');
 };

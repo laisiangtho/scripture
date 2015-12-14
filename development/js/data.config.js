@@ -7,7 +7,8 @@ var config = {
     developer: "Khen Solomon Lethil",
     file: {
         bible: "xml",
-        lang: "json"
+        lang: "json",
+        template: "{Deploy}.{Platform}.html header, main, footer"
     },
     css: {
         active: "active",

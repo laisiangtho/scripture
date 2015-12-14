@@ -1,11 +1,66 @@
 /*!
     fileSystask -- Javascript file System task
-    Version 1.0.1
+    Version 1.0.2
     https://khensolomonlethil.github.io/laisiangtho/fileSystask
     (c) 2013-2015
-
+*/
+/*
     FIXED
-    - fileStatus is undefined
+    - fileStatus is undefined,
+    - create Global variables
+    - init calback(succes,fail,done)
+        - fail,done always return Object now!
+    - Base:Other now also try if navigator.webkitPersistentStorage
+*/
+/*
+    Name: (javascript file system,requestFileSystem)
+    fileSystem, localFiles, fileLocal, jDrive, fileRequest, fileTask, jDoctask, jFiletask, fileTask,  fileSystask
+    fileDocal, file, fileSyctem, falSystem, fileDocuments, fileRequest, file, fileSystem
+
+    lileSystem, letFileRequest
+    FalRequest, LequestFile, FalRequest,jileSystem
+    dokSystem, DudeDoc,LoadFileSystem, RequestFile, LocalFileRequest, LocalDocument,DocumentRequest, docalRequest
+    localDok, docalFile, localFile,
+    jRequest, jDocReqLoc,  jLocalDoc  jDoks, jLetRequest, lokalfileSystem
+
+    Setup:
+        var file=new fileSystask(
+            {
+                Base:Other, {Chrome,Cordova,Other} Default: Other
+                RequestQuota:1073741824, {Bytes} Default: 0
+                Permission:0 {1:PERSISTENT, 0:TEMPORARY} Default: TEMPORARY
+            }
+            {
+                done: complatedCallback, executed even success or error,
+                fail: failCallback,
+                success: successCallback
+            }
+        );
+        var file=new fileSystask();
+        var file=new fileSystask('Chrome');
+        var file=new fileSystask('Chrome',{});
+        var file=new fileSystask(null,{});
+        var fileSystem = new fileSystask({
+            Base: 'Cordova',
+            RequestQuota: 1073741824,
+            Permission: 1
+        }, {
+            done: function(status) {
+                // NOTE: complatedCallback, return value can be string, depend on success or error!
+                // REVIEW: executed either succes or fail!
+                console.log('init.done', status.message);
+            },
+            fail: function(status) {
+                // NOTE: failCallback, return value can be string!
+                // REVIEW: executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
+                console.log('init.fail', status.message);
+            },
+            success: function(fs) {
+                // NOTE: successCallback! Can be started from 'fs.root'!
+                // REVIEW: Browser supports 'requestFileSystem'!
+                console.warn('init.success', fs);
+            }
+        });
 */
 (function(o) {
     'use strict';
@@ -14,9 +69,13 @@
     // REVIEW: variables that being used here fn, OS, Task and the 'ClassName' of course!
     // REVIEW: well checkout the comment line....
     // XXX: and Thanks to Atom Editor & NodeJs, without it 'fileSystask' will be probably looking for where to start or waiting for fileSystask.js to be loaded!
+    window.requestFileSystask;
+    window.resolveFileSystask;
     window[o] = function(Setting, Init) {
         var fn = this,
-            OS = {}; // Chrome,Cordova,Other,
+            OS = {
+                // Ok:false
+            }; // Chrome,Cordova,Other
         // NOTE: Method should return callback  success or error according to it's result!
         var Task = {
             base: {
@@ -49,7 +108,26 @@
                 }
             },
             message: {
-                NoRequestFileSystem: 'No requestFileSystem API/Method'
+                RequestFileSystem: 'requestFileSystem API/Method supported!',
+                NoRequestFileSystem: 'No requestFileSystem API/Method!',
+                PleaseSeeStatus: 'Please see {status}!'
+            },
+            Callback:{
+                before:function(){
+                    // NOTE: before processing the task!
+                },
+                progress:function(){
+                    // NOTE: while processing!  completed 'Percentage' return!
+                },
+                done:function(){
+                    // NOTE: upon completion, either success or fail!
+                },
+                fail:function(){
+                    // NOTE: only the task fail, if not success!
+                },
+                success:function(){
+                    // NOTE: only the task success, if not fail
+                }
             },
             extension: {
                 mp3: {
@@ -135,36 +213,48 @@
                     });
                 }
 
-                function errorResponse(e) {
-                    if (typeof e === 'string') {
-                        OS.message = e;
-                    } else if (e.message) {
-                        OS = e;
-                    } else {
-                        OS.message = e;
-                    }
-                    return f1(Init.error, OS);
-                }
+                // function errorResponse(e) {
+                //     if (typeof e === 'string') {
+                //         OS.message = e;
+                //     } else if (e.message) {
+                //         OS = e;
+                //     } else {
+                //         OS.message = e;
+                //     }
+                //     return f1(Init.fail, OS);
+                // }
+                // Init=Object.assign({},Task.Callback,Init);
                 new Promise(function(resolve, reject) {
                     Task.Initiate[OS.Base](
                         function(e) {
-                            // NOTE: onDone
+                            // NOTE: success
                             OS.Ok = true;
-                            f1(Init.done, e);
+                            OS.message = Task.message.RequestFileSystem;
                             resolve(e);
                         },
                         function(e) {
-                            // NOTE: onError
+                            // NOTE: fail
                             OS.Ok = false;
-                            errorResponse(e);
-                            reject(e);
+                            if (typeof e === 'string') {
+                                OS.message = e;
+                            } else if (e.message) {
+                                OS.message = e.message;
+                                if(e.name)OS.name = e.name;
+                                if(e.code)OS.code = e.code;
+                            } else {
+                                OS.status = e;
+                                OS.message = Task.message.PleaseSeeStatus;
+                            }
+                            reject(OS);
                         }
                     );
                 }).then(function(e) {
-                    fn.status = OS;
-                    return e;
+                    f1(Init.success, e);
                 }, function(e) {
-                    return errorResponse(e);
+                    f1(Init.fail, e);
+                }).then(function(){
+                    fn.support=OS.Ok;
+                    f1(Init.done, OS);
                 });
             },
             Initiate: {
@@ -175,8 +265,9 @@
                             OS.RequestQuota,
                             function(grantedBytes) {
                                 OS.ResponseQuota = grantedBytes;
-                                window.resolveLocalFileSystemURL = window.webkitResolveLocalFileSystemURL;
-                                window.requestFileSystem = window.webkitRequestFileSystem(
+                                window.requestFileSystask=window.webkitRequestFileSystem;
+                                window.resolveFileSystask=window.webkitResolveLocalFileSystemURL;
+                                window.requestFileSystask(
                                     OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                                     grantedBytes,
                                     function(fileSystem) {
@@ -201,16 +292,16 @@
                 Cordova: function(done, error) {
                     // NOTE: see Cordova API
                     try {
-                        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-                        window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
-                        if (window.requestFileSystem) {
+                        window.requestFileSystask = window.requestFileSystem || window.webkitRequestFileSystem;
+                        window.resolveFileSystask = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
+                        if (window.requestFileSystask) {
                             if (window.LocalFileSystem) {
                                 window.PERSISTENT = window.LocalFileSystem.PERSISTENT;
                                 window.TEMPORARY = window.LocalFileSystem.TEMPORARY;
                             } else if (window.cordova && location.protocol === 'file:') {
                                 // window.PERSISTENT =window.PERSISTENT; window.TEMPORARY =window.TEMPORARY;
                             }
-                            window.requestFileSystem(
+                            window.requestFileSystask(
                                 OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                                 OS.RequestQuota,
                                 function(fileSystem) {
@@ -233,9 +324,9 @@
                 Other: function(done, error) {
                     // NOTE: see ??? API, probabbly Chrome is the only Browser that support!
                     try {
-                        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-                        window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
-                        window.requestFileSystem(
+                        window.requestFileSystask = window.requestFileSystem || window.webkitRequestFileSystem;
+                        window.resolveFileSystask = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
+                        window.requestFileSystask(
                             OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                             OS.RequestQuota,
                             function(fileSystem) {
@@ -246,8 +337,8 @@
                                 error(e);
                             }
                         );
-                        // if (window.requestFileSystem) {
-                        //     window.requestFileSystem(
+                        // if (window.requestFileSystask) {
+                        //     window.requestFileSystask(
                         //         OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                         //         OS.RequestQuota,
                         //         function(fileSystem) {
@@ -262,7 +353,12 @@
                         //     error('No FileSystem API');
                         // }
                     } catch (e) {
-                        error(e);
+                        if(navigator.webkitPersistentStorage){
+                            // console.log('must be Chrome');
+                            this.Chrome(done, error);
+                        }else{
+                            error(e);
+                        }
                     } finally {
                         // 'No API';
                     }
@@ -275,7 +371,9 @@
                             OS.RequestQuota,
                             function(grantedBytes) {
                                 OS.ResponseQuota = grantedBytes;
-                                window.requestFileSystem = window.webkitRequestFileSystem(
+                                // window.requestFileSystask = window.requestFileSystem || window.webkitRequestFileSystem;
+                                // window.resolveFileSystask = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
+                                window.requestFileSystask(
                                     OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                                     grantedBytes,
                                     function(fileSystem) {
@@ -294,14 +392,16 @@
                     } catch (e) {
                         error(e);
                     } finally {
-                        return window.webkitRequestFileSystem;
+                        return window.requestFileSystask;
                     }
                 },
                 Cordova: function(done, error) {
                     try {
-                        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-                        if (window.requestFileSystem) {
-                            window.requestFileSystem(
+                        // window.requestFileSystask = window.requestFileSystem || window.webkitRequestFileSystem;
+                        // window.resolveFileSystask = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
+                        // window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+                        if (window.requestFileSystask) {
+                            window.requestFileSystask(
                                 OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                                 OS.RequestQuota,
                                 function(fileSystem) {
@@ -317,14 +417,16 @@
                     } catch (e) {
                         error(e);
                     } finally {
-                        return window.requestFileSystem;
+                        return window.requestFileSystask;
                     }
                 },
                 Other: function(done, error) {
                     try {
-                        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-                        if (window.requestFileSystem) {
-                            window.requestFileSystem(
+                        // window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+                        // window.requestFileSystask = window.requestFileSystem || window.webkitRequestFileSystem;
+                        // window.resolveFileSystask = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
+                        if (window.requestFileSystask) {
+                            window.requestFileSystask(
                                 window.PERSISTENT,
                                 OS.RequestQuota,
                                 function(fileSystem) {
@@ -340,7 +442,7 @@
                     } catch (e) {
                         error(e);
                     } finally {
-                        return window.requestFileSystem;
+                        return window.requestFileSystask;
                     }
                 }
             },
@@ -352,7 +454,7 @@
                             OS.RequestQuota,
                             function(grantedBytes) {
                                 OS.ResponseQuota = grantedBytes;
-                                window.resolveLocalFileSystemURL = window.webkitResolveLocalFileSystemURL(url, done, error);
+                                window.resolveFileSystask(url, done, error);
                             },
                             function(e) {
                                 error(e);
@@ -361,32 +463,29 @@
                     } catch (e) {
                         error(e);
                     } finally {
-                        return window.resolveLocalFileSystemURL;
+                        return window.resolveFileSystask;
                     }
                 },
                 Cordova: function(url, done, error) {
                     try {
                         // REVIEW: file:///example.txt
-                        window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
-                        window.resolveLocalFileSystemURL(url, done, error);
+                        window.resolveFileSystask(url, done, error);
                     } catch (e) {
                         error(e);
                     } finally {
-                        return window.resolveLocalFileSystemURL;
+                        return window.resolveFileSystask;
                     }
                 },
                 Other: function(url, done, error) {
                     try {
-                        window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
-                        window.resolveLocalFileSystemURL(url, done, error);
+                        window.resolveFileSystask(url, done, error);
                     } catch (e) {
                         error(e);
                     } finally {
-                        return window.resolveLocalFileSystemURL;
+                        return window.resolveFileSystask;
                     }
                 }
             }
-
         };
         Task.Assigns(Setting);
         this.setting = function(arg) {
@@ -477,8 +576,7 @@
             });
         };
         this.download = function(Obj) {
-            // Obj=Object.assign({},Obj);
-            //{Before:function(){},Progress:function(){},Load:function(){},Error:function(){},Aborts:function(){}}
+            Obj=Object.assign({},Task.Callback,Obj);
             return new Promise(function(resolve, reject) {
                 var xmlHttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
                 var Percentage = 0;
@@ -496,140 +594,194 @@
                 }, false);
                 xmlHttp.addEventListener("load", function(e) {
                     // NOTE: promise should return responseText, responseType, responseURL and responseXML if success!
-                    var fileUrl = e.target.responseURL;
+                    var fileUrl = Obj.fileUrl;
+                    var fileUrlResponse = e.target.responseURL;
                     var fileName = fileUrl.replace(/[\#\?].*$/, '').substring(fileUrl.lastIndexOf('/') + 1);
+                    var fileUrlLocal = Obj.fileUrlLocal?Obj.fileUrlLocal:fileName;
                     var fileExtension = fileName.split('.').pop();
                     // NOTE: these are required when saving....
-                    var fileCharset, fileType;
+                    var fileCharset, fileContentType;
                     if (e.target.responseXML) {
                         fileCharset = e.target.responseXML.charset;
-                        fileType = e.target.responseXML.contentType;
+                        fileContentType = e.target.responseXML.contentType;
                     } else {
                         fileCharset = 'UTF-8';
                         if (Task.extension[fileExtension]) {
-                            fileType = Task.extension[fileExtension].ContentType;
+                            fileContentType = Task.extension[fileExtension].ContentType;
                         }
                     }
-                    // NOTE: Obj.Load() returned even 'Not Found'! since we might need to know the progress is completed,
-                    // NOTE: therefore promise.then should determine the return value is object or not.
-                    Obj.load(e);
+                    Obj.done(e);
                     if (xmlHttp.status == 200) {
                         resolve({
                             fileName: fileName,
                             fileOption: {
-                                create: true
+                                create: true,
+                                exclusive: true
                             },
                             fileExtension: fileExtension,
                             fileUrl: fileUrl,
-                            fileSize: e.total,
                             fileCharset: fileCharset,
-                            fileType: fileType,
+                            fileContentType: fileContentType,
+                            fileSize: e.total,
+                            fileUrlLocal: fileUrlLocal,
                             fileContent: e.target.responseText,
                             responseXML: e.target.responseXML
                         });
-                    } else if (xmlHttp.status == 404) {
-                        reject('Not Found: ' + xmlHttp.status);
-                    } else {
-                        reject('Error: ' + xmlHttp.status);
+                    } else if (xmlHttp.statusText) {
+                        reject({message:xmlHttp.statusText+': '+ fileUrl,code:xmlHttp.status});
+                    } else if(xmlHttp.status) {
+                        reject({message:'Error',code:xmlHttp.status});
+                    }else{
+                        reject({message:'Unknown Error',code:0});
                     }
                 }, false);
                 xmlHttp.addEventListener("error", function(e) {
-                    Obj.error(e);
                     reject(e);
                 }, false);
                 xmlHttp.addEventListener("abort", function(e) {
-                    Obj.abort(e);
                     reject(e);
                 }, false);
                 // request.onreadystatechange = callbackMethod;
                 // TODO: delete next line Obj.fileUrl
                 // Obj.fileUrl='assets/jstest/deletes.mp3';
                 if (Obj.fileCache) {
-                    Obj.fileUrl = Obj.fileUrl + (Obj.fileUrl.indexOf("?") > 0 ? "&" : "?") + "timestamp=" + new Date().getTime();
+                    Obj.fileUrlRequest = Obj.fileUrl + (Obj.fileUrl.indexOf("?") > 0 ? "&" : "?") + "_=" + new Date().getTime();
+                }else{
+                    Obj.fileUrlRequest = Obj.fileUrl;
                 }
-                xmlHttp.open(Obj.Method ? Obj.Method : 'GET', Obj.fileUrl, true);
-                if (typeof Obj.before === 'function') {
-                    Obj.before(xmlHttp);
-                }
+                xmlHttp.open(Obj.Method ? Obj.Method : 'GET', Obj.fileUrlRequest, true);
+                Obj.before(xmlHttp);
                 // NOTE: how 'before' function should do!
-                // xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*"); xmlHttp.withCredentials = true;
+                // xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+                // xmlHttp.withCredentials = true;
                 xmlHttp.send();
             }).then(function(e) {
+                Obj.success(e);
                 return e;
             }, function(e) {
-                Obj.error(e);
+                Obj.fail(e);
                 return e;
             });
         };
         this.save = function(Obj) {
+            Obj=Object.assign({},Task.Callback,Obj);
             return new Promise(function(resolve, reject) {
-                // Obj.fileSystem={};
-
                 fn.request(
                     function(fs, status) {
                         try {
-                            fs.root.getFile(Obj.fileName, Obj.fileOption,
+                            if(typeof Obj !== 'object' || !Obj.fileName){
+                                return reject(Obj);
+                            }
+                            Obj.fileUrlLocal=Obj.fileUrlLocal?Obj.fileUrlLocal:Obj.fileName;
+                            fs.root.getFile(Obj.fileUrlLocal, Obj.fileOption,
                                 function(fileEntry) {
                                     fileEntry.createWriter(
                                         function(writer) {
                                             // IDEA: return Object and assign Object are merged, let me know if we should return just done or error
                                             // Object.assign(writer,Obj);
                                             writer.onwriteend = function() {
-                                                // this.onwriteend = null; this.truncate(this.position);
-                                                if (typeof Obj.done === 'function') {
-                                                    Obj.done.apply(this);
-                                                }
-                                                resolve(writer);
+                                                this.onwriteend = null; this.truncate(this.position);
+                                                Obj.filefoldersCreatedFinal=true;
+                                                resolve(fileEntry);
                                             };
                                             writer.onerror = function(e) {
-                                                f1(Obj.error, e.message ? e : {
+                                                reject(e.message ? e : {
                                                     message: e
                                                 });
-                                                reject(e);
                                             };
-                                            if (!Obj.fileType) {
+                                            if (!Obj.fileContentType) {
                                                 if (Task.extension[Obj.fileExtension]) {
-                                                    Obj.fileType = Task.extension[Obj.fileExtension].ContentType;
+                                                    Obj.fileContentType = Task.extension[Obj.fileExtension].ContentType;
                                                 } else {
-                                                    Obj.fileType = Task.extension.other.ContentType;
+                                                    Obj.fileContentType = Task.extension.other.ContentType;
                                                 }
                                             }
                                             writer.write(new Blob([Obj.fileContent], {
-                                                type: Obj.fileType
+                                                type: Obj.fileContentType
                                             }));
+
                                         }
                                     );
                                 },
                                 function(e) {
-                                    if(typeof Obj ==='object'){
-                                        Obj.fileStatus = e;
+                                    if(Obj.filefoldersCreated){
+                                        if(typeof Obj ==='object'){
+                                            Obj.fileStatus = e;
+                                        }else{
+                                            Obj= e;
+                                        }
+                                        reject(Obj);
                                     }else{
-                                        Obj= e;
+                                        Obj.filefolders=Obj.fileUrlLocal.split('/').slice(0, -1);
+                                        if(Obj.filefolders.length >= 1){
+                                            Obj.filefoldersCreated=true;
+                                                function ObjCreateDir(rootDirEntry, folders) {
+                                                    if (folders[0] == '.' || folders[0] == '') {
+                                                        folders = folders.slice(1);
+                                                    }
+                                                    rootDirEntry.getDirectory(folders[0], {create: true}, function(dirEntry) {
+                                                        if (folders.length) {
+                                                            ObjCreateDir(dirEntry, folders.slice(1));
+                                                        }else{
+                                                            resolve(fn.save(Obj));
+                                                        }
+                                                    }, function(e){
+                                                        if(typeof Obj ==='object'){
+                                                            Obj.fileStatus = e;
+                                                        }else{
+                                                            Obj= e;
+                                                        }
+                                                        reject(Obj);
+                                                    });
+                                                };
+                                                ObjCreateDir(fs.root, Obj.filefolders);
+                                        }else{
+                                            if(typeof Obj ==='object'){
+                                                Obj.fileStatus = e;
+                                            }else{
+                                                Obj= e;
+                                            }
+                                            reject(Obj);
+                                        }
                                     }
-                                    reject(Obj);
                                 }
                             );
                         } catch (e) {
-                            Obj.fileStatus = e;
-                            f1(Obj.error, e.message ? e.message : {
-                                message: e
-                            });
-                            reject(Obj);
-                        } finally {}
+                            reject(e.message?e.message:{message:e});
+                        } finally {
+                            if(Obj.filefoldersCreated){
+                                if(Obj.filefoldersCreatedFinal){
+                                    Obj.done(Obj);
+                                }
+                            }else {
+                                Obj.done(Obj);
+                            }
+                        }
                     },
                     function(e) {
-                        Obj.fileStatus = e;
-                        f1(Obj.fileError, e.message ? e : {
-                            message: e
-                        });
-                        reject(Obj);
+                        Obj.done(e);
+                        reject(e.message?e:{message: e});
                     }
                 );
             }).then(function(e) {
+                if(Obj.filefoldersCreated){
+                    if(Obj.filefoldersCreatedFinal){
+                        Obj.success(e);
+                    }
+                }else {
+                    Obj.success(e);
+                }
                 return e;
             }, function(e) {
+                if(Obj.filefoldersCreated){
+                    if(Obj.filefoldersCreatedFinal){
+                        Obj.fail(e);
+                    }
+                }else {
+                    Obj.fail(e);
+                }
                 return e;
-            })
+            });
         };
 
         function f1(n, e) {
@@ -641,50 +793,23 @@
         };
     };
 }('fileSystask'));
-/*
-    Name: (javascript file system,requestFileSystem)
-    fileSystem, localFiles, fileLocal, jDrive, fileRequest, fileTask, jDoctask, jFiletask, fileTask,  fileSystask
-    fileDocal, file, fileSyctem, falSystem, fileDocuments, fileRequest, file, fileSystem
-
-    lileSystem, letFileRequest
-    FalRequest, LequestFile, FalRequest,jileSystem
-    dokSystem, DudeDoc,LoadFileSystem, RequestFile, LocalFileRequest, LocalDocument,DocumentRequest, docalRequest
-    localDok, docalFile, localFile,
-    jRequest, jDocReqLoc,  jLocalDoc  jDoks, jLetRequest, lokalfileSystem
-
-    Setup:
-        var file=new fileSystask(
-            {
-                Base:Other, {Chrome,Cordova,Other} Default: Other
-                RequestQuota:1073741824, {Bytes} Default: 0
-                Permission:0 {1:PERSISTENT, 0:TEMPORARY} Default: TEMPORARY
-            }
-            {
-                done:successCallback,
-                error:errorCallback
-            }
-        );
-        var file=new fileSystask();
-        var file=new fileSystask('Chrome');
-        var file=new fileSystask('Chrome',{});
-        var file=new fileSystask(null,{});
-*/
-var file = new fileSystask({
-    Base: 'Other', //[Chrome,Cordova,Other]
-    RequestQuota: 1073741824, //Bytes
-    Permission: 1
-}, {
-    done: function(fs, status) {
-        // NOTE: successCallback, can be started from 'fs.root'!
-        // REVIEW: Browser supports 'requestFileSystem'!
-        console.warn('init.success', fs, status);
-    },
-    error: function(err) {
-        // NOTE: errorCallback
-        // NOTE: function executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
-        console.log('init.error', err.message);
-    }
-});
+// var fileSystem = new fileSystask({
+//     Base: 'Other',
+//     RequestQuota: 1073741824,
+//     Permission: 1
+//     },
+//     {
+//         done: function(status) {
+//             console.log('init.done', status);
+//         },
+//         fail: function(status) {
+//             console.log('init.fail', status);
+//         },
+//         success: function(fs) {
+//             console.warn('init.success', fs);
+//         }
+//     }
+// );
 // NOTE: how 'get' work!
 // file.get(
 //     {
@@ -735,67 +860,89 @@ var file = new fileSystask({
 //         // REVIEW: as Web developer we mention what our scripts does or doing! this 'promise' is Promised to return max:'100'% at the end of progress!
 //         console.log(Percentage);
 //     },
-//     load:function(evt){
-//         // REVIEW: since we'd like to know the 'progress' is completed. however 'load' is executed even download url{is not success}!
-//         console.log('load');
+//     done:function(evt){
+//         // REVIEW: since we'd like to know the 'progress' is completed. however 'load' is executed even download is not success!
+//         console.log('done');
 //     },
-//     error:function(evt){
+//     fail:function(evt){
 //         // REVIEW: occur on major error like 'NoAPI/Method'
-//         console.log('error');
+//         console.log('fail');
 //     },
-//     abort:function(evt){
-//         console.log('abort');
+//     success:function(evt){
+//         console.log('success');
 //     }
 // }).then(function(e){
 //     console.log('then->',e);
 // });
 // NOTE: how 'save' work!
-// file.save(
+// fileSystem.save(
 //     {
 //         fileName:'style-new.css',
 //         fileOption: {create:true},
 //         fileExtension: 'css',
-//         fileUrl: '',
-//         fileSize: '',
-//         fileCharset: '',
-//         fileType: '',
-//         fileContent:'body{color:#ccc;}',
-//         responseXML: '',
-//         done:function(/*fileSystem, fileEntry*/){
-//             console.log('file.save.done');
+//         // fileUrlLocal: 'del/fee/style-new.css',
+//         fileUrlLocal: 'del/'+new Date().getTime()+'/style-new.css',
+//         fileUrl: 'slsl/sss/style-new.css',
+//         // fileSize: '',
+//         // fileCharset: '',
+//         // fileContentType: '',
+//         fileContent:'body {color:#888;}',
+//         // responseXML: '',
+//         done:function(status/*String or Object*/){
+//             console.log('file.save.done->',status);
 //         },
-//         error:function(status/*String or Object*/){
-//             console.log('file.save.error');
+//         fail:function(status/*String or Object*/){
+//             console.log('file.save.fail->',status);
+//         },
+//         success:function(fileEntry/*fileSystem, fileEntry*/){
+//             fileEntry.file(function(file) {
+//                 var reader = new FileReader();
+//                 reader.onloadend = function(e) {
+//                     var txtArea = document.createElement('textarea');
+//                     txtArea.value = this.result;
+//                     document.body.appendChild(txtArea);
+//                 };
+//                 reader.readAsText(file);
+//             });
 //         }
 //     }
-// ).then(function(e){
-//     console.log('save.then->',e);
+// ).then(function(fileEntry/*fileEntry if success, if not status*/){
+//     fileEntry.file(function(file) {
+//         var reader = new FileReader();
+//         reader.onloadend = function(e) {
+//             var txtArea = document.createElement('textarea');
+//             txtArea.value = this.result;
+//             document.body.appendChild(txtArea);
+//         };
+//         reader.readAsText(file);
+//     });
 // });
 // NOTE: how 'download' then 'save' work!
-file.download({
-    Method: 'GET',
-    fileUrl: 'assets/delete/delete.css',
-    fileCache: false,
-    before: function(evt) {
-        evt.setRequestHeader("Access-Control-Allow-Origin", "*");
-    },
-    progress: function(Percentage) {
-        console.log(Percentage);
-    },
-    load: function(evt) {
-        console.log('load');
-    },
-    error: function(evt) {
-        console.log('error');
-    },
-    abort: function(evt) {
-        console.log('abort');
-    }
-}).then(function(e) {
-    file.save(e).then(function(s) {
-        console.log(s);
-    });
-});
+// fileSystem.download({
+//     Method: 'GET',
+//     fileUrl: 'assets/delete/deletes.css',
+//     fileCache: false,
+//     before: function(evt) {
+//         evt.setRequestHeader("Access-Control-Allow-Origin", "*");
+//     },
+//     progress: function(Percentage) {
+//         console.log(Percentage);
+//     },
+//     done: function(evt) {
+//         console.log('download.done');
+//     },
+//     fail: function(evt) {
+//         console.log('download.fail');
+//     },
+//     success: function(evt) {
+//         console.log('download.success');
+//     }
+// }).then(function(e) {
+//     console.log(e);
+//     fileSystem.save(e).then(function(s) {
+//         console.log('download.then.save.then',s);
+//     });
+// });
 // OS={};
 // ithis={
 //     base:{
@@ -855,18 +1002,18 @@ file.download({
 //                 );
 //                 */
 //                 // NOTE: show
-//                 fileEntry.file(function(file) {
-//                     var reader = new FileReader();
-//                     reader.onloadend = function(e) {
-//                         var txtArea = document.createElement('textarea');
-//                         txtArea.value = this.result;
-//                         document.body.appendChild(txtArea);
-//                     };
-//                     reader.readAsText(file);
-//                 }, function(file) {
-//                     // NOTE: file is
-//                     console.warn(1, file);
-//                 });
+                // fileEntry.file(function(file) {
+                //     var reader = new FileReader();
+                //     reader.onloadend = function(e) {
+                //         var txtArea = document.createElement('textarea');
+                //         txtArea.value = this.result;
+                //         document.body.appendChild(txtArea);
+                //     };
+                //     reader.readAsText(file);
+                // }, function(file) {
+                //     // NOTE: file is
+                //     console.warn(1, file);
+                // });
 //                 // NOTE: link
 // var elem = document.createElement('link');
 // elem.rel = 'stylesheet';

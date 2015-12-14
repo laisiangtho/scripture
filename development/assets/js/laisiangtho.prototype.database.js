@@ -73,5 +73,5 @@ Core.prototype.Database = function(callback) {
     localforage.ready().then(function(){
         return callback.apply(fn);
     });
-    return '...!';
+    return '!';
 };

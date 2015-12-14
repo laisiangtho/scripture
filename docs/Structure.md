@@ -19,3 +19,23 @@ Temparay Foldes and Files
 - output
 - tmp
 - development/assets/js/job*
+
+Atom Editor shortcut keys for everyday
+
+Frontend
+---------
+
+```javascript
+jQuery(document).laisiangtho({
+    E:[
+        {'Metalink':['api']},
+        'Load',
+        'Watch'
+    ],
+    Device: 'desktop',
+    Platform: 'web',
+    App: 'laisiangtho',
+    Click: 'click',
+    On: 'fO'
+}).Agent();
+```

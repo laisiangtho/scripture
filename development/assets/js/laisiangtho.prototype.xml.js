@@ -2,7 +2,7 @@
 // *** CHECK IS-FILE READY
 // var x=new f({bible:'tedim',reading:1}).xml(function(response){
 //     return response;
-// }).is();
+// }).has();
 // *** GET DATA
 // var x=new f({bible:'tedim',reading:1}).xml(function(response){
 //     console.log(response);
@@ -15,37 +15,63 @@ Core.prototype.xml = function(callback) {
     var fn=this, q=this.arg[0];
     var lO=fO.lang[q.bible], lA=lO.l, lB=lO.b;
     var urlInfo=this.url(config.id,[q.bible],config.file.bible);
-    // NOTE: is, get, read, remove, check
-    this.is=function(){
+    // NOTE: has, get, remove
+    this.has=function(){
         if($.isEmptyObject(fO[q.bible].bible)){
-            if(fO.isCordova){
-                // NOTE: for Mobile and Tablet
-                // NOTE: fn.file.Cordova().read =Oa.XLO.reading
-                urlInfo.local.resolveFileSystem(fn.file.Cordova().read, function(error){
-                    fn.ResponseGood({msg:'to Local',status:false});
-                });
-            }else if(fO.isChrome){
-                // NOTE: for Chrome Package App using webkitRequestFileSystem
-                fn.ResponseGood({msg:'to Webkit',status:false});
-            }else{
-                // NOTE: ather that support INDEXDB
-                db.get({table:q.bible}).then(function(storeBible){
-                    if(storeBible){
-                        if($.isEmptyObject(storeBible)){
-                            fn.ResponseGood({msg:'to Store',status:false});
+            if(fileSystem.support){
+                fileSystem.get({
+                    // fileName:'styles.css',
+                    fileName:urlInfo.fileUrl,
+                    fileOption: {},
+                    fileObject:function(/*fileSystem, fileEntry*/){
+                        // console.log('found',urlInfo.fileUrl);
+                        fn.file.read(this.fileEntry);
+                    },
+                    fileNotExists:function(/*fileSystem, fileStatus*/){
+                        // console.log('not found',urlInfo.fileUrl);
+                        if(q.bible==q.downloading){
+                            fn.file.download();
                         }else{
-                            if(q.reading==q.bible){
-                                fO[q.bible].bible=storeBible;
-                                fn.ResponseGood({msg:'from Store',status:true});
-                            }else{
-                                fn.ResponseGood({msg:'to Store',status:true});
-                            }
+                            fn.ResponseGood({msg:'fileNotExists',status:false});
                         }
-                    }else{
-                        fn.ResponseGood({msg:'to Store',status:false});
+                    },
+                    fileError:function(status/*String or Object*/){
+                        fn.ResponseGood({msg:'to fileSystem.fileError',status:false});
                     }
                 });
+            }else{
+                // console.log('fileSystem is not ok');
+                fn.ResponseGood({msg:'fileSystem NotOk, process ot db ',status:false});
             }
+            // if(fO.isCordova){
+            //     // NOTE: for Mobile and Tablet
+            //     // NOTE: fn.file.Cordova().read =Oa.XLO.reading
+            //     urlInfo.local.resolveFileSystem(fn.file.Cordova().read, function(error){
+            //         fn.ResponseGood({msg:'to Local',status:false});
+            //     });
+            // }else if(fO.isChrome){
+            //     // NOTE: for Chrome Package App using webkitRequestFileSystem
+            //     fn.ResponseGood({msg:'to Webkit',status:false});
+            // }else if(fileSystem){
+            // }else{
+            //     // NOTE: ather that support INDEXDB
+            //     db.get({table:q.bible}).then(function(storeBible){
+            //         if(storeBible){
+            //             if($.isEmptyObject(storeBible)){
+            //                 fn.ResponseGood({msg:'to Store',status:false});
+            //             }else{
+            //                 if(q.reading==q.bible){
+            //                     fO[q.bible].bible=storeBible;
+            //                     fn.ResponseGood({msg:'from Store',status:true});
+            //                 }else{
+            //                     fn.ResponseGood({msg:'to Store',status:true});
+            //                 }
+            //             }
+            //         }else{
+            //             fn.ResponseGood({msg:'to Store',status:false});
+            //         }
+            //     });
+            // }
         }else{
             // TODO: must check why object is empty
             fn.ResponseGood({msg:'from Object',status:true});
@@ -151,21 +177,21 @@ Core.prototype.xml = function(callback) {
         },
         Cordova:function(){
             this.download=function(){
-                fn.working({msg:lA.Downloading});
-                var fileTransfer = new FileTransfer();
-                fileTransfer.onprogress=function(evt) {
-                    if(evt.lengthComputable){
-                        var Percentage = Math.floor(evt.loaded / evt.total * 100);
-                        fn.working({msg:lA.PercentLoaded.replace(/{Percent}/, fn.num(Percentage))});
-                    }
-                };
-                // NOTE this.content=fn.file.Cordova().content
-                fileTransfer.download(encodeURI(api+urlInfo.url), urlInfo.local, fn.file.Cordova().content, function(error){
-                    fn.ResponseGood({msg:error.code,status:false});
-                });
+                // fn.working({msg:lA.Downloading});
+                // var fileTransfer = new FileTransfer();
+                // fileTransfer.onprogress=function(evt) {
+                //     if(evt.lengthComputable){
+                //         var Percentage = Math.floor(evt.loaded / evt.total * 100);
+                //         fn.working({msg:lA.PercentLoaded.replace(/{Percent}/, fn.num(Percentage))});
+                //     }
+                // };
+                // // NOTE this.content=fn.file.Cordova().content
+                // fileTransfer.download(encodeURI(api+urlInfo.url), urlInfo.local, fn.file.Cordova().content, function(error){
+                //     fn.ResponseGood({msg:error.code,status:false});
+                // });
             };
             this.read=function(fileEntry){
-                if(q.reading==q.bible){
+                if(q.bible==q.reading){
                     this.content(fileEntry);
                 }else{
                     fn.ResponseGood({msg:'from Reading',status:true});
@@ -207,6 +233,74 @@ Core.prototype.xml = function(callback) {
             this.download=function(){
             }
             return this;
+        },
+        download:function(){
+            fileSystem.download({
+                Method: 'GET',
+                fileUrl: urlInfo.fileUrl,
+                fileUrlLocal: urlInfo.fileUrl,
+                // fileUrl: 'assetss/delete/delete.css',
+                fileCache: false,
+                // before: function(evt) {
+                //     evt.setRequestHeader("Access-Control-Allow-Origin", "*");
+                // },
+                progress: function(Percentage) {
+                    console.log(Percentage);
+                },
+                done: function(evt) {
+                    console.log('done',evt);
+                },
+                fail: function(evt) {
+                    console.log('fail',evt);
+                },
+                success: function(evt) {
+                    console.log('success',evt);
+                    fileSystem.save(Object.assign(evt,{
+                        success:function(e){
+                            fn.has();
+                        },
+                        fail:function(e){
+                            // console.log('save.fail');
+                            fn.ResponseGood({msg:'fail saving',status:false});
+                        },
+                        done:function(e){
+                            // console.log('save.done');
+                        }
+                    })).then(function(s) {
+                        console.log('save.then.success',s);
+                    });
+                }
+            }).then(function(e) {
+                console.log('download.then',e);
+            });
+            // fn.ResponseGood({msg:'downloading is true',status:false});
+        },
+        read:function(fileEntry){
+            if(q.bible==q.reading){
+                this.content(fileEntry);
+            }else{
+                fn.ResponseGood({msg:'from Reading',status:true});
+            }
+        },
+        content:function(fileEntry){
+            fileEntry.file(function(file) {
+                // NOTE file.name, file.localURL, file.type, new Date(file.lastModifiedDate), file.size
+                var reader=new FileReader();
+                reader.onloadend=function(){
+                    // this.result=e.target.result
+                    fn.JobType(new DOMParser().parseFromString(this.result,urlInfo.fileContentType));
+                };
+                reader.readAsText(file);
+            },function(){
+                fn.ResponseGood({msg:'fail to read Local',status:false});
+            });
+        },
+        remove:function(fileEntry){
+            fileEntry.remove(function() {
+                fn.ResponseBad({status:true});
+            },function(error){
+                fn.ResponseBad({status:false});
+            });
         }
     };
     this.JobType=function(j){
@@ -249,7 +343,8 @@ Core.prototype.xml = function(callback) {
                                                 if(d1.length == b+1){
                                                     if(d2.length == c+1){
                                                         if(d3.length == v+1){
-                                                            if(fO.isCordova){
+                                                            if(fileSystem.support){
+                                                                // fO.isCordova, fO.isChrome
                                                                 fn.ResponseGood({msg:'Saved',status:true});
                                                             }else{
                                                                 db.add({table:q.bible,data:fO[q.bible].bible}).then(fn.ResponseGood({msg:'Stored',status:true}));
