@@ -46,7 +46,7 @@ Temporary Items
 # =========================
 /distribution
 /production
-/node_modules
+/node_modules/
 backup
 nbproject
 delete
@@ -54,3 +54,4 @@ output
 tmp
 *.mp3
 development/assets/js/job*
+development/*/*/[Working,Tmp,Delete,0-9]
