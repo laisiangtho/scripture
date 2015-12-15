@@ -196,6 +196,7 @@ fn=this, f0=obj,
                     //document.getElementsByTagName('head')[0].appendChild(req);
                 }
             };
+            // console.log(this.Device.f1());
             o.go($.merge(o.meta, this.Device.f1()));
             this.createProperty('Orientation',function(){
                 $(config.css.content).css({
@@ -317,32 +318,55 @@ fn=this, f0=obj,
             f1: function() {
                 this.f3();
                 //var d=[fO.App];
-                var d = [];
+                var d = [], template=[], mobile='mobile', tablet='tablet',ios='ios',android='android';
                 fO.isCordova = this.name.cordova();
                 fO.isChrome = this.name.chrome();
+                if(!fO.Platform)fO.Platform ='web';
                 if (this.name.mobile()) {
                     fO.Deploy = 'mobile';
-                    d.push(fO.Deploy, fO.Platform);
+                    // d.push(fO.Deploy, fO.Platform);
                 } else if (this.name.tablet()) {
                     fO.Deploy = 'tablet';
-                    d.push(fO.Deploy, fO.Platform);
+                    // d.push(fO.Deploy, fO.Platform);
                 } else {
+                    if(!fO.Deploy)fO.Deploy ='desktop';
                     if ($.isFunction(this.name[fO.Device])) {
-                        d.push(fO.Deploy, fO.Platform); //console.log('//DEPLOY');
+
+                        // d.push(fO.Deploy, fO.Platform);
+                        console.log('//DEPLOY');
                     } else {
-                        fO.Deploy = fO.Device;
-                        d.push(fO.Deploy, fO.Platform); //console.log('//DESKTOP');
+                        // fO.Deploy = fO.Device;
+                        // d.push(fO.Deploy, fO.Platform);
+                        // console.log('//DESKTOP');
+                        // fO.Deploy = fO.Device;
+                        // d.push(fO.Device, fO.Platform);
+                        console.log('//DESKTOP');
                     }
                 }
+                // NOTE: for js, css
+                d.push(fO.Deploy, fO.Platform);
                 if (this.name.ios()) {
-                    d.push('ios');
+                    fO.Device='ios';
                 } else if (this.name.android()) {
-                    d.push('android');
+                    fO.Device='android';
                 } else if ($.isFunction(this.name[fO.Device])) {
-                    d.push(fO.Device);
+                    // NOTE: only deploying
+                } else{
+                    // NOTE: if fO.Deploy is not equal to desktop, {default.web.mobile} to avoid error, but need to update later
+                    if(fO.Deploy != 'desktop'){
+                        fO.Deploy ='desktop';
+                    }
+                    fO.Device='default';
                 }
-                //fO.template=[fO.Deploy,fO.Platform];
-                // console.log(fO.template);
+                d.push(fO.Device);
+                fO.DeviceTemplate=[fO.Device,fO.Platform,fO.Deploy];
+                // NOTE: for template {fO.Device,fO.Platform,fO.Deploy}
+                /*
+                chrome: Device:'desktop',Platform:'chrome', -> Device:'chrome',Platform:'app', Deploy:'desktop',
+                ios: Device:'ios',Platform:'app',Deploy:'mobile',
+                android: Device:'android',Platform:'app',Deploy:'mobile',
+                default: Device:'desktop',Platform:'web',
+                */
                 var file = [],
                     df = [];
                 for (var i in d) {

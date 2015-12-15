@@ -97,8 +97,8 @@ chrome.app.runtime.onLaunched.addListener(function() {
                     E: [ "Load", "Watch", {
                         "Meta link": [ "api" ]
                     } ],
-                    Device: "desktop",
-                    Platform: "chrome",
+                    Device: "chrome",
+                    Platform: "app",
                     App: "laisiangtho",
                     Click: "click",
                     On: "zO"

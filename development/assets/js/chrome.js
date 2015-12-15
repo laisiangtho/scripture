@@ -25,7 +25,7 @@ chrome.notifications.onClicked.addListener(function(id){
         window.open("https://chrome.google.com/webstore/detail/lai-siangtho/ahbpjkapcngbdcenpkflgmbpeigjlbpc", "target=_blank");
     }
 });
-chrome.runtime.onSuspend.addListener(function(){ 
+chrome.runtime.onSuspend.addListener(function(){
   // Do some simple clean-up tasks.
 });
 chrome.runtime.onUpdateAvailable.addListener(function(){
@@ -78,7 +78,7 @@ chrome.app.runtime.onLaunched.addListener(function(){
                 },
                 ready:function(){
                     app.jQuery(app.document).laisiangtho({
-                        E:['Load','Watch',{'Meta link':['api']}],Device:'desktop',Platform:'chrome',App:'laisiangtho',Click:'click',On:'zO'
+                        E:['Load','Watch',{'Meta link':['api']}],Device:'chrome',Platform:'app',App:'laisiangtho',Click:'click',On:'zO'
                     }).Agent({
                         win:{
                             minimize:function(){

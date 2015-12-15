@@ -164,11 +164,13 @@ Core.prototype.Load = function() {
         done:function(){
             // REVIEW: a faster way, body id has to change
             if(fO.todo.Template){
-                $(document.body).load(config.file.template.replace(/{Deploy}/,fO.Deploy).replace(/{Platform}/,fO.Platform),function(){
-                    fn.init();
-                }).promise().done(function(){
-                    this.attr('id',fO.App);
-                });
+                //config.file.template.replace(/{Deploy}/,fO.Deploy).replace(/{Platform}/,fO.Platform
+                // $(document.body).load(config.file.template.replace(/z/,fO.DeviceTemplate.join('.')),function(){
+                //     fn.init();
+                // }).promise().done(function(){
+                //     this.attr('id',fO.App);
+                // });
+                console.warn('done, will not process to init()');
             }else{
                 fn.init();
                 // fO.template=[fO.Deploy,fO.Platform];

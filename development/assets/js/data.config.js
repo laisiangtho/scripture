@@ -8,7 +8,8 @@ var config = {
     file: {
         bible: 'xml',
         lang: 'json',
-        template: '{Deploy}.{Platform}.html header, main, footer'
+        template: 'z.html header, main, footer'
+        // template: '{Deploy}.{Platform}.html header, main, footer'
     },
     css: {
         active: 'active',

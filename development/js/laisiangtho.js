@@ -294,11 +294,7 @@
                 },
                 done: function() {
                     if (fO.todo.Template) {
-                        e(document.body).load(config.file.template.replace(/{Deploy}/, fO.Deploy).replace(/{Platform}/, fO.Platform), function() {
-                            t.init();
-                        }).promise().done(function() {
-                            this.attr("id", fO.App);
-                        });
+                        console.warn("done, will not process to init()");
                     } else {
                         t.init();
                     }
@@ -1464,43 +1460,48 @@
             },
             f1: function() {
                 this.f3();
-                var t = [];
+                var t = [], n = [], i = "mobile", o = "tablet", s = "ios", a = "android";
                 fO.isCordova = this.name.cordova();
                 fO.isChrome = this.name.chrome();
+                if (!fO.Platform) fO.Platform = "web";
                 if (this.name.mobile()) {
                     fO.Deploy = "mobile";
-                    t.push(fO.Deploy, fO.Platform);
                 } else if (this.name.tablet()) {
                     fO.Deploy = "tablet";
-                    t.push(fO.Deploy, fO.Platform);
                 } else {
+                    if (!fO.Deploy) fO.Deploy = "desktop";
                     if (e.isFunction(this.name[fO.Device])) {
-                        t.push(fO.Deploy, fO.Platform);
+                        console.log("//DEPLOY");
                     } else {
-                        fO.Deploy = fO.Device;
-                        t.push(fO.Deploy, fO.Platform);
+                        console.log("//DESKTOP");
                     }
                 }
+                t.push(fO.Deploy, fO.Platform);
                 if (this.name.ios()) {
-                    t.push("ios");
+                    fO.Device = "ios";
                 } else if (this.name.android()) {
-                    t.push("android");
-                } else if (e.isFunction(this.name[fO.Device])) {
-                    t.push(fO.Device);
+                    fO.Device = "android";
+                } else if (e.isFunction(this.name[fO.Device])) {} else {
+                    if (fO.Deploy != "desktop") {
+                        fO.Deploy = "desktop";
+                    }
+                    fO.Device = "default";
                 }
-                var n = [], i = [];
-                for (var o in t) {
-                    i.push(t[o]);
-                    var s = i.join(".");
-                    n.push({
+                t.push(fO.Device);
+                fO.DeviceTemplate = [ fO.Device, fO.Platform, fO.Deploy ];
+                var r = [], f = [];
+                for (var l in t) {
+                    f.push(t[l]);
+                    var c = f.join(".");
+                    r.push({
                         type: "link",
-                        name: s
+                        name: c
                     }, {
                         type: "script",
-                        name: s
+                        name: c
                     });
                 }
-                return n;
+                return r;
             }
         };
         return this;
