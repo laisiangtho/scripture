@@ -52,6 +52,8 @@ nbproject
 delete
 output
 tmp
+*delete.*
+*Copy.*
 development/assets/*/*[0-9].*
 #development/assets/*/*job*.*
 development/assets/*/*Delete*.*
