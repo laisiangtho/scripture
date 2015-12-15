@@ -22,6 +22,7 @@ Usage:
     f('a-b-c').is('id').element return element
     f('x').is('class').element return element
     f('x').is('class').name return element
+    f('p').is('tag').name return <p>
 */
 Core.prototype.is = function(x) {
     var arg = this.arg[0], art='*';

@@ -44,18 +44,16 @@ Temporary Items
 # =========================
 #CUSTOM
 # =========================
-/distribution
-/production
-/node_modules/
+production/*/*
+node_modules/
 backup
 nbproject
 delete
 output
-tmp
+*tmp*/
 *delete.*
 *Copy.*
 development/assets/*/*[0-9].*
-#development/assets/*/*job*.*
 development/assets/*/*Delete*.*
 development/assets/*/*Working*.*
 development/assets/*/*Tmp*.*

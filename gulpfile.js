@@ -40,6 +40,21 @@ gulp.task('scripts',function(){
     }).on('error', console.log))
     .pipe(gulp.dest(path.join(rootDevelopment,'js')));
 });
+gulp.task('filesystask',function(){
+    gulp.src(path.join(rootAssets,'filesystask','fileSystask.js'))
+    .pipe(include())
+    .pipe(uglify({
+        mangle:false,
+        output:{
+            beautify: true,
+            comments:'license'
+        },
+        compress:false,
+        preserveComments:'license'
+    }))
+    .pipe(concat('fileSystask.min.js'))
+    .pipe(gulp.dest(path.join(rootAssets,'filesystask')));
+});
 gulp.task('jstest',function(){
     gulp.src(path.join(rootAssets,'jstest','*([^A-Z0-9-]).js'))
     .pipe(include())
@@ -59,6 +74,7 @@ gulp.task('jstest',function(){
 gulp.task('watch', function() {
     gulp.watch(path.join(rootAssets,'sass','*.scss'), ['sass']);
     gulp.watch(path.join(rootAssets,'js','*.js'), ['scripts']);
+    gulp.watch(path.join(rootAssets,'filesystask','*.js'), ['filesystask']);
 });
 //TASK
 gulp.task('default', ['watch']);

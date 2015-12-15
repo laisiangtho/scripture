@@ -4,17 +4,6 @@
     https://khensolomonlethil.github.io/laisiangtho
     (c) 2013-2015
 */
-/*
-Agent:{o:[config],f[Device]}->Listen->Initiate{f:exe}
-f.exe->Load{o:[fO,config],f:[new Database(db),other,init]}->Watch{f:[exe,is,get]}->Meta{f:[is,get]}
-Database{config,fO}
-*/
-/*
-Common Prototype
-    is
-    get
-fn=this, f0=obj,
-*/
 (function($, uA) {
     var f = 'laisiangtho',version = '1.9.86.2015.8.28';
     $.fn[f] = function(options) {
@@ -33,11 +22,11 @@ fn=this, f0=obj,
             },
             exe:{
                 description:'exe only apply Prototype!',
-                Load:{
+                load:{
                     o:['fO','config'],
                     f:['new Database(db,fO,config)','other','init']
                 },
-                Watch:{
+                watch:{
                     o:{},
                     f:['exe','is','get']
                 },
@@ -72,7 +61,7 @@ fn=this, f0=obj,
             todo: {
                 Orientation: true,
                 // NOTE: if Template=true will be loaded Template!
-                Template:true
+                Template:false
             },
             container: {},
             msg: {
@@ -103,18 +92,19 @@ fn=this, f0=obj,
         //=require laisiangtho.Prototype.other.js
         //=require laisiangtho.Prototype.init.js
         //=require laisiangtho.Prototype.xml.js
+        //=require laisiangtho.Prototype.bible.js
         //???require laisiangtho.Prototype.content.js
-        Core.prototype.Watch = function() {
+        Core.prototype.watch = function() {
             application.on(fO.Click, f(fO.On).is('class').name, function() {
                 f($(this)).exe(f($(this)).get('class'));
             });
         };
-        Core.prototype.Metalink = function() {
+        Core.prototype.metalink = function() {
             this.arg[0].loop(function(i,v){
                 window[v] = f(v).is('link').get('href');
             });
         };
-        Core.prototype.Metacontent = function() {
+        Core.prototype.metacontent = function() {
             this.arg[0].loop(function(i,v){
                 window[v] = f(v).is('meta').get('content');
             });
@@ -145,7 +135,6 @@ fn=this, f0=obj,
         //=require laisiangtho.Prototype.is.js
         //=require laisiangtho.Prototype.get.js
         this.Agent = function(obj) {
-            //h=fN.HTML();
             fO.Orientation.evt = (Object.prototype.hasOwnProperty.call(window, "onorientationchange")) ? "orientationchange" : "resize";
             var o = {
                 meta: [{
@@ -322,25 +311,14 @@ fn=this, f0=obj,
                 fO.isCordova = this.name.cordova();
                 fO.isChrome = this.name.chrome();
                 if(!fO.Platform)fO.Platform ='web';
+                if(!fO.Deploy)fO.Deploy ='desktop';
                 if (this.name.mobile()) {
                     fO.Deploy = 'mobile';
-                    // d.push(fO.Deploy, fO.Platform);
                 } else if (this.name.tablet()) {
                     fO.Deploy = 'tablet';
-                    // d.push(fO.Deploy, fO.Platform);
                 } else {
-                    if(!fO.Deploy)fO.Deploy ='desktop';
                     if ($.isFunction(this.name[fO.Device])) {
-
                         // d.push(fO.Deploy, fO.Platform);
-                        console.log('//DEPLOY');
-                    } else {
-                        // fO.Deploy = fO.Device;
-                        // d.push(fO.Deploy, fO.Platform);
-                        // console.log('//DESKTOP');
-                        // fO.Deploy = fO.Device;
-                        // d.push(fO.Device, fO.Platform);
-                        console.log('//DESKTOP');
                     }
                 }
                 // NOTE: for js, css
@@ -388,4 +366,4 @@ fn=this, f0=obj,
 })(jQuery, navigator.userAgent);
 //=require laisiangtho.Prototype.custom.js
 //=require laisiangtho.defineProperties.js
-//=require fileSystask.js
+//=require ../filesystask/fileSystask.min.js

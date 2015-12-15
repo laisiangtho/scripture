@@ -1,4 +1,5 @@
-Core.prototype.Load = function() {
+Core.prototype.load = function() {
+    h=this.HTML();
     $('p').addClass(config.css.active).html(config.version);
     $('h1').attr({title:config.build}).attr({class:'icon-fire'});
     var fn=this,l7=[], l8={}, f0={
@@ -19,8 +20,8 @@ Core.prototype.Load = function() {
             var bID=l7.shift(); fO[bID]={};
             if(fO.lang[bID].info){
                 $("p").html(fO.lang[bID].info.name).promise().done(function(){
-                    // console.log(fO.query);
-                    if(f0.reading(bID) == bID){
+                    // TODO: f0.reading(bID) == bID
+                    if(f0.reading(bID) == 0){
                         // TODO: ???
                         // reading->if->exists, download->if not exists
                         new f({bible:bID,reading:bID,downloading:bID}).xml(function(response){
@@ -164,23 +165,22 @@ Core.prototype.Load = function() {
         done:function(){
             // REVIEW: a faster way, body id has to change
             if(fO.todo.Template){
-                //config.file.template.replace(/{Deploy}/,fO.Deploy).replace(/{Platform}/,fO.Platform
-                // $(document.body).load(config.file.template.replace(/z/,fO.DeviceTemplate.join('.')),function(){
-                //     fn.init();
-                // }).promise().done(function(){
-                //     this.attr('id',fO.App);
-                // });
-                console.warn('done, will not process to init()');
+                $(document.body).load(config.file.template.replace(/z/,fO.DeviceTemplate.join('.')),function(){
+                    fn.init();
+                }).promise().done(function(){
+                    this.attr('id',fO.App);
+                });
             }else{
                 fn.init();
-                // fO.template=[fO.Deploy,fO.Platform];
-                // config.file.template=config.file.template.replace(/{Deploy}/,fO.Deploy).replace(/{Platform}/,fO.Platform);
-                // console.warn('Template:false, will not process to init()',config.file.template);
+                console.warn('Template:false, will not process to init()',config.file.template);
             }
             $(document.body).keydown(function(e){
                 // TODO: shortcut keys
-                if(e.which == 27)fO.todo.pause=true;
-                else if(e.which == 13)fO.todo.enter=true;
+                if(e.which == 27){
+                    fO.todo.pause=true;
+                }else if(e.which == 13){
+                    fO.todo.enter=true;
+                }
             });
         }
     };

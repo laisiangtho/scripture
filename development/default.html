@@ -7,20 +7,19 @@
 <link rel="apis" href="http://api.laisiangtho.com/"/>
 <link rel="icon" href="img/icon.16.png" type="image/png"/>
 <script src="js/jquery.js"></script>
-<!--<script src="js/jquery.ui.js"></script>
+<script src="js/jquery.ui.js"></script>
 <script src="js/jquery.ui.touchpunch.min.js"></script>
-<script src="js/jquery.mobile.custom.min.js"></script>-->
+<!--<script src="js/jquery.mobile.custom.min.js"></script>-->
 <script src="js/laisiangtho.js"></script>
 <script>
 $(function(){
     $(document).laisiangtho({
-        E:[{'Metalink':['api']},'Load','Watch','DesktopLoad'],
-        Device:'chrome',Platform:'app',
+        E:[{'metalink':['api']},'load','watch'],
+        Device:'desktop',Platform:'web',
         App:'laisiangtho',Click:'click',On:'fO'
     }).Agent();
 });
 </script>
-
 <link rel="stylesheet" href="fontello/laisiangtho.css">
 <link rel="stylesheet" href="css/laisiangtho.css">
 </head>
@@ -35,7 +34,7 @@ $(function(){
         <div>
             <ol>
                 <li id="msg">Wait</li>
-                <li fn="fb1">1</li>
+                <li id="contentmain">1</li>
                 <li fn="fb2">2</li>
                 <li fn="fb3">3</li>
             </ol>

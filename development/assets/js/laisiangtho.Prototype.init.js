@@ -124,9 +124,6 @@ Core.prototype.init = function() {
         delete fO.todo.Orientation;
     }
 };
-Core.prototype.bible = function() {
-    console.log('no bible?',config.bible.available);
-};
 Core.prototype.book = function() {
     console.log('no book?');
 };
