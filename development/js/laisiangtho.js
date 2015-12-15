@@ -4,9 +4,9 @@
     https://khensolomonlethil.github.io/laisiangtho
     (c) 2013-2015
 */
-(function(e, t) {
-    var n = "laisiangtho", o = "1.9.86.2015.8.28";
-    e.fn[n] = function(n) {
+(function(t, i) {
+    var e = "laisiangtho", n = "1.9.86.2015.8.28";
+    t.fn[e] = function(e) {
         help = {
             Agent: {
                 o: "config",
@@ -36,7 +36,7 @@
                 }
             }
         };
-        db = {}, fO = e.extend({
+        db = {}, fO = t.extend({
             E: [ "Action" ],
             App: r,
             Click: "click",
@@ -66,240 +66,277 @@
             },
             container: {},
             msg: {
-                info: e("li:first-child")
+                info: t("li:first-child")
             }
-        }, n);
-        var o, s = this, a = function() {
+        }, e);
+        var n, o = this, s = function() {
             this.arg = arguments;
             return this;
         };
         var r = window[fO.App] = function() {
-            var e = arguments;
-            function t() {
-                a.apply(this, e);
+            var t = arguments;
+            function i() {
+                s.apply(this, t);
             }
-            t.prototype = Object.create(a.prototype);
-            t.prototype.constructor = a;
-            return new t();
+            i.prototype = Object.create(s.prototype);
+            i.prototype.constructor = s;
+            return new i();
         };
-        a.prototype.tmp = function() {
+        s.prototype.tmp = function() {
             console.log("tmp");
         };
-        a.prototype.ClickTest = function(e) {
+        s.prototype.ClickTest = function(t) {
             this.arg[0].append("...");
         };
-        a.prototype.Load = function() {
-            e("p").addClass(config.css.active).html(config.version);
-            e("h1").attr({
-                title: config.build
-            }).attr({
-                "class": "icon-fire"
+        s.prototype.Watch = function() {
+            o.on(fO.Click, r(fO.On).is("class").name, function() {
+                r(t(this)).exe(r(t(this)).get("class"));
             });
-            var t = this, n = [], i = {}, s = {
-                reading: function(e) {
-                    if (config.bible.ready && fO.query.bible) {
-                        if (config.bible.ready == 1) {
-                            return fO.query.bible;
-                        } else if (config.bible.ready == 2) {
-                            return e;
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
-                },
-                start: function() {
-                    var t = n.shift();
-                    fO[t] = {};
-                    if (fO.lang[t].info) {
-                        e("p").html(fO.lang[t].info.name).promise().done(function() {
-                            if (s.reading(t) == t) {
-                                new r({
-                                    bible: t,
-                                    reading: t,
-                                    downloading: t
-                                }).xml(function(e) {
-                                    s.next();
-                                }).has();
-                            } else {
-                                s.next();
-                            }
-                        });
-                    } else {
-                        this.json(t, this.next);
-                    }
-                },
-                json: function(o, a, f) {
-                    var l = t.url(config.id, [ o ], config.file.lang);
-                    var c = e.ajax({
-                        url: (f ? f : "") + l.fileUrl,
-                        dataType: l.fileExtension,
-                        contentType: l.fileContentType,
-                        cache: false
-                    });
-                    c.done(function(n) {
-                        var f = n.info.lang = n.info.lang || config.language.info.lang;
-                        fO.msg.info.html(n.info.name);
-                        var l = function(n, i) {
-                            var l = {};
-                            return {
-                                is: {
-                                    index: function(e) {
-                                        l[e] = fO.lang[o].index;
-                                    },
-                                    name: function(o) {
-                                        l[o] = {};
-                                        for (var s in n[o]) {
-                                            var a = typeof i.b === "undefined" || typeof i.b[s] === "undefined" ? [] : [ i.b[s] ];
-                                            var r = typeof i.name === "undefined" || typeof i.name[s] === "undefined" ? [] : i.name[s];
-                                            e.merge(a, r);
-                                            l[o][s] = e.unique(t.array(n[o][s]).merge(a).data);
-                                        }
-                                    }
-                                },
-                                merge: function() {
-                                    for (var t in n) {
-                                        if (this.is[t]) {
-                                            this.is[t](t);
-                                        } else {
-                                            l[t] = i[t] ? e.extend({}, n[t], i[t]) : n[t];
-                                        }
-                                    }
-                                    return l;
-                                },
-                                next: function() {
-                                    e.extend(fO.lang[o], this.merge());
-                                    e("p").html(f).attr({
-                                        "class": "icon-database"
-                                    }).promise().done(function() {
-                                        new r({
-                                            bible: o,
-                                            reading: s.reading(o),
-                                            downloading: null
-                                        }).xml(function(e) {
-                                            a();
-                                        }).has();
-                                    });
-                                }
-                            };
-                        };
-                        if (i[f]) {
-                            l(i[f], n).next();
-                        } else {
-                            var c = t.url("lang", [ f ], config.file.lang), u = e.ajax({
-                                url: c.fileUrl,
-                                dataType: c.fileExtension,
-                                contentType: c.fileContentType,
-                                cache: false
-                            });
-                            u.done(function(e) {
-                                i[f] = l(config.language, e).merge();
-                                l(i[f], n).next();
-                            });
-                            u.fail(function(e, t) {
-                                l(config.language, n).next();
-                            });
-                        }
-                    });
-                    c.fail(function(e, t) {
-                        if (api.name) {
-                            if (f) {
-                                db.RemoveLang(o, function() {
-                                    n.splice(n.indexOf(o), 1);
-                                    a();
-                                });
-                            } else {
-                                s.json(o, a, api.name);
-                            }
-                        } else {
-                            db.RemoveLang(o, function() {
-                                n.splice(n.indexOf(o), 1);
-                                a();
-                            });
-                        }
-                    });
-                },
-                next: function() {
-                    if (n.length) {
-                        s.start();
-                    } else {
-                        e(window).bind(fO.Hash, function() {
-                            r().init();
-                        });
-                        function t() {
-                            db.get({
-                                table: config.store.note
-                            }).then(function(e) {
-                                if (e) {
-                                    fO.note = e;
-                                    s.done();
-                                } else {
-                                    db.add({
-                                        table: config.store.note,
-                                        data: config.store.noteData
-                                    }).then(function(e) {
-                                        fO.note = e;
-                                        s.done();
-                                    });
-                                }
-                            });
-                        }
-                        function i() {
-                            db.get({
-                                table: config.store.lookup
-                            }).then(function(e) {
-                                if (e) {
-                                    fO.lookup = e;
-                                    t();
-                                } else {
-                                    db.add({
-                                        table: config.store.lookup,
-                                        data: {
-                                            setting: fO.lookup.setting,
-                                            book: fO.lookup.book
-                                        }
-                                    }).then(function(e) {
-                                        fO.lookup = e;
-                                        t();
-                                    });
-                                }
-                            });
-                        }
-                        db.update.lang().then(i);
-                    }
-                },
-                available: function(n) {
+        };
+        s.prototype.Metalink = function() {
+            this.arg[0].loop(function(t, i) {
+                window[i] = r(i).is("link").get("href");
+            });
+        };
+        s.prototype.Metacontent = function() {
+            this.arg[0].loop(function(t, i) {
+                window[i] = r(i).is("meta").get("content");
+            });
+        };
+        s.prototype.exe = function(i) {
+            var e = this.arg[0], n = this[i[0]];
+            if (n) {
+                if (t.isFunction(n)) {
+                    return r(e)[i[0]](i);
+                } else {
+                    n = n[i[1]];
                     if (n) {
-                        fO.lang = t.array(config.bible.available, Object.keys(n)).merge().unique().reduce(function(t, i, o) {
-                            if (e.isPlainObject(n[i])) {
-                                t[i] = {
-                                    index: n[i].index || n[i].index == 0 || o
-                                };
-                            } else {
-                                t[i] = {
-                                    index: o
-                                };
+                        if (t.isFunction(n)) {
+                            return r(e)[i[0]][i[1]](i);
+                        } else {
+                            n = n[i[2]];
+                            if (n) {
+                                if (t.isFunction(n)) {
+                                    return r(e)[i[0]][i[1]][i[2]](i);
+                                }
                             }
-                            return t;
-                        }, {});
-                    } else {
-                        fO.lang = config.bible.available.reduce(function(e, t, n) {
-                            e[t] = {
-                                index: n
-                            };
-                            return e;
-                        }, {});
+                        }
+                    }
+                }
+            }
+            return false;
+        };
+        this.Agent = function(i) {
+            fO.Orientation.evt = Object.prototype.hasOwnProperty.call(window, "onorientationchange") ? "orientationchange" : "resize";
+            var e = {
+                meta: [ {
+                    type: "script",
+                    name: "localforage.min"
+                }, {
+                    type: "script",
+                    name: "data.bible"
+                }, {
+                    type: "script",
+                    name: "data.config"
+                } ],
+                type: {
+                    script: {
+                        attr: {
+                            src: null
+                        },
+                        extension: ".js",
+                        dir: "js/"
+                    },
+                    link: {
+                        attr: {
+                            rel: "stylesheet",
+                            href: null
+                        },
+                        extension: ".css",
+                        dir: "css/"
                     }
                 },
-                done: function() {
-                    if (fO.todo.Template) {
-                        console.warn("done, will not process to init()");
+                m: this,
+                go: function(t) {
+                    var i = t.shift(), n = i.type, o = (i.dir || e.type[n].dir) + i.name + e.type[n].extension, s = document.createElement(n);
+                    e.type[n].attr.loop(function(t, i) {
+                        s[t] = i || o;
+                    });
+                    s.onload = function() {
+                        fO.msg.info.html(i.name);
+                        if (t.length) {
+                            e.go(t);
+                        } else {
+                            e.m.Listen();
+                        }
+                    };
+                    document.head.appendChild(s);
+                }
+            };
+            e.go(t.merge(e.meta, this.Device.f1()));
+            this.createProperty("Orientation", function() {
+                t(config.css.content).css({
+                    top: t(config.css.header).outerHeight(),
+                    bottom: t(config.css.footer).outerHeight()
+                });
+            });
+        };
+        this.Listen = function() {
+            if (fO.isCordova) {
+                fO.msg.info.html("getting Device ready").attr({
+                    "class": "icon-database"
+                });
+                document.addEventListener("deviceready", this.Initiate, false);
+            } else {
+                fO.msg.info.attr({
+                    "class": "icon-database"
+                });
+                this.Initiate();
+            }
+        };
+        this.Initiate = function() {
+            fO.E.loop(function(i, e) {
+                i = t.type(e) === "object" ? Object.keys(e)[0] : e;
+                r(e[i]).exe(i.split(" "));
+            });
+        };
+        this.Device = {
+            name: {
+                is: function(t) {
+                    return i.toLowerCase().indexOf(t) !== -1;
+                },
+                ios: function() {
+                    return this.iphone() || this.ipod() || this.ipad();
+                },
+                iphone: function() {
+                    return !this.windows() && this.is("iphone");
+                },
+                ipod: function() {
+                    return this.is("ipod");
+                },
+                ipad: function() {
+                    return this.is("ipad");
+                },
+                android: function() {
+                    return !this.windows() && this.is("android");
+                },
+                androidPhone: function() {
+                    return this.android() && this.is("mobile");
+                },
+                androidTablet: function() {
+                    return this.android() && !this.is("mobile");
+                },
+                blackberry: function() {
+                    return this.is("blackberry") || this.is("bb10") || this.is("rim");
+                },
+                blackberryPhone: function() {
+                    return this.blackberry() && !this.is("tablet");
+                },
+                blackberryTablet: function() {
+                    return this.blackberry() && this.is("tablet");
+                },
+                windows: function() {
+                    return this.is("windows");
+                },
+                windowsPhone: function() {
+                    return this.windows() && this.is("phone");
+                },
+                windowsTablet: function() {
+                    return this.windows() && (this.is("touch") && !this.windowsPhone());
+                },
+                fxos: function() {
+                    return (this.is("(mobile;") || this.is("(tablet;")) && this.is("; rv:");
+                },
+                fxosPhone: function() {
+                    return this.fxos() && this.is("mobile");
+                },
+                fxosTablet: function() {
+                    return this.fxos() && this.is("tablet");
+                },
+                meego: function() {
+                    return this.is("meego");
+                },
+                cordova: function() {
+                    return window.cordova && location.protocol === "file:";
+                },
+                chrome: function() {
+                    return fO.Platform === "chrome";
+                },
+                nodeWebkit: function() {
+                    return typeof window.process === "object";
+                },
+                mobile: function() {
+                    return this.androidPhone() || this.iphone() || this.ipod() || this.windowsPhone() || this.blackberryPhone() || this.fxosPhone() || this.meego();
+                },
+                tablet: function() {
+                    return this.ipad() || this.androidTablet() || this.blackberryTablet() || this.windowsTablet() || this.fxosTablet();
+                }
+            },
+            f3: function() {
+                if (window.addEventListener) {
+                    window.addEventListener(fO.Orientation.evt, this.f2, false);
+                } else if (window.attachEvent) {
+                    window.attachEvent(fO.Orientation.evt, this.f2);
+                } else {
+                    window[fO.Orientation.evt] = this.f2;
+                }
+                this.f2();
+            },
+            f2: function() {
+                t(window.document.documentElement).attr({
+                    "class": window.innerHeight / window.innerWidth < 1 ? fO.Orientation.landscape : fO.Orientation.portrait
+                });
+                if (Object.prototype.hasOwnProperty.call(this, "Orientation")) this.Orientation();
+            },
+            f1: function() {
+                this.f3();
+                var i = [], e = [], n = "mobile", o = "tablet", s = "ios", r = "android";
+                fO.isCordova = this.name.cordova();
+                fO.isChrome = this.name.chrome();
+                if (!fO.Platform) fO.Platform = "web";
+                if (this.name.mobile()) {
+                    fO.Deploy = "mobile";
+                } else if (this.name.tablet()) {
+                    fO.Deploy = "tablet";
+                } else {
+                    if (!fO.Deploy) fO.Deploy = "desktop";
+                    if (t.isFunction(this.name[fO.Device])) {
+                        console.log("//DEPLOY");
                     } else {
-                        t.init();
+                        console.log("//DESKTOP");
                     }
-                    e(document.body).keydown(function(e) {
-                        if (e.which == 27) fO.todo.pause = true; else if (e.which == 13) fO.todo.enter = true;
+                }
+                i.push(fO.Deploy, fO.Platform);
+                if (this.name.ios()) {
+                    fO.Device = "ios";
+                } else if (this.name.android()) {
+                    fO.Device = "android";
+                } else if (t.isFunction(this.name[fO.Device])) {} else {
+                    if (fO.Deploy != "desktop") {
+                        fO.Deploy = "desktop";
+                    }
+                    fO.Device = "default";
+                }
+                i.push(fO.Device);
+                fO.DeviceTemplate = [ fO.Device, fO.Platform, fO.Deploy ];
+                var a = [], f = [];
+                for (var c in i) {
+                    f.push(i[c]);
+                    var h = f.join(".");
+                    a.push({
+                        type: "link",
+                        name: h
+                    }, {
+                        type: "script",
+                        name: h
+                    });
+                }
+                return a;
+            }
+        };
+        return this;
+    };
+})(jQuery, navigator.userAgent);o.enter = true;
                     });
                 }
             };
