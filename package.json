@@ -1,6 +1,6 @@
 {
     "name": "laisiangtho",
-    "version": "1.2.1",
+    "version": "1.1.9",
     "description": "the Holy Bible in languages!",
     "config": {
         "common": {
@@ -13,6 +13,7 @@
             "production": {
                 "root": "production",
                 "main": "index",
+                "type": "app",
                 "file": {
                     "img": {
                         "png$": true
@@ -28,21 +29,34 @@
                     },
                     "lang": {
                         "^[a-z]{2}.json$": true
+                    },
+                    "css": {
+                        "([A-Z]|\\d)": false
+                    },
+                    "js": {
+                        "([A-Z]|\\d)": false
+                    },
+                    "root": {
+                        "([A-Z]|\\d)": false
                     }
                 }
             },
-            "version": "1.2.1",
-            "build": "1.2.1"
+            "version": "1.1.9",
+            "build": "1.1.9"
         },
         "individual": {
             "chrome": {
                 "production": {
                     "file": {
                         "css": {
-                            "(mobile|tablet)": false
+                            "(mobile|web|tablet)": false
                         },
                         "js": {
-                            "(mobile|tablet|[A-Z]|org|\\d)": false
+                            "(mobile|web|tablet)": false
+                        },
+                        "root": {
+                            "(chrome|app)": true,
+                            "(web)":false
                         }
                     }
                 }
@@ -54,8 +68,11 @@
                             "(desktop|web|android)": false
                         },
                         "js": {
-                            "(desktop|web|chrome|[A-Z]|org|android)": false,
-                            "(\\d)": false
+                            "(desktop|web|chrome|android)": false
+                        },
+                        "root": {
+                            "(ios|app)": true,
+                            "(web)":false
                         }
                     }
                 }
@@ -67,22 +84,31 @@
                             "(desktop|web|ios)": false
                         },
                         "js": {
-                            "(desktop|web|chrome|ios|[A-Z]|org|\\d)": false
+                            "(desktop|web|chrome|ios)": false
+                        },
+                        "root": {
+                            "(android|app)": true,
+                            "(web)":false
                         }
                     }
                 }
             },
-            "web": {
+            "default": {
                 "development": {
-                    "main": "index"
+                    "main": "default"
                 },
                 "production": {
+                    "type": "web",
                     "file": {
                         "css": {
                             "(app)": false
                         },
                         "js": {
-                            "(app|[A-Z]|org|\\d)": false
+                            "(app)": false
+                        },
+                        "root": {
+                            "(default|web)": true,
+                            "(app)":false
                         }
                     }
                 }
@@ -96,12 +122,12 @@
         "build-chrome": "node ./npm-build.js --os=chrome",
         "build-ios": "node ./npm-build.js --os=ios",
         "build-android": "node ./npm-build.js --os=android",
-        "build-web": "node ./npm-build.js --os=web",
+        "build-default": "node ./npm-build.js --os=default",
         "build-electron": "node ./npm-build.js --os=electron"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/khensolomonlethil/laisiangtho.git"
+        "type": "git",
+        "url": "git+https://github.com/khensolomonlethil/laisiangtho.git"
     },
     "keywords": [
         "Holy",

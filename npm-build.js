@@ -2,14 +2,14 @@
 var util =require('util');
 var error=clc.red.bold, warn=clc.yellow, notice=clc.blue, success=clc.green;
 */
-//DEFAULT
+// IDEA: DEFAULT
 var path = require('path'),
     Argv = require('minimist')(process.argv);
-//COMMON PACKAGE
+// IDEA: COMMON PACKAGE
 var fs = require('fs-extra'),
     clc = require('cli-color'),
     extend = require('node.extend');
-//REQUIRE PACKAGE
+// IDEA: REQUIRE PACKAGE
 var Message = {
     "NoOS": "No OS specified: {-- --os=?}",
     "NoOSValid": "the specified: {os} is not valid",
@@ -17,9 +17,9 @@ var Message = {
     "MsgOk": "Ok: {msg}",
     "MsgError": "{msg}"
 };
-// REQUIRE DATA
+// NOTE: REQUIRE DATA
 var Package = JSON.parse(fs.readFileSync('package.json'));
-// SETTING, TASK
+// NOTE: SETTING, TASK
 var Setting = {},
     Task = {
         todo: [],
@@ -66,9 +66,9 @@ var Setting = {},
             production: function(dir, callback) {
                 dir.Exists(function(err) {
                     if (err) {
-                        //directory exists
+                        // NOTE: directory exists
                         dir.Empty(function(err) {
-                            //make it empty
+                            // NOTE: make it empty
                             if (err) {
                                 Task.exit(err);
                             } else {
@@ -76,7 +76,7 @@ var Setting = {},
                             }
                         });
                     } else {
-                        //new directory
+                        // NOTE: new directory
                         dir.Create(function(err) {
                             if (err) {
                                 Task.exit(err);
@@ -98,16 +98,19 @@ var Setting = {},
                         file.src = dir;
                         var dirName = file.dir.split(path.sep).pop();
                         if (dirName == Setting.development.root) {
-                            if (Setting.development.main == file.name) {
-                                if (file.ext == '.html') {
-                                    file.des = path.join(Setting.production.dir, Setting.production.main + file.ext);
-                                } else {
-                                    file.des = path.join(Setting.production.dir, fileName);
-                                }
+                            if (Object.keys(Setting.production.file.root).every(function(reg) {
+                                    return new RegExp(reg).test(fileName) === Setting.production.file.root[reg];
+                                })){
+                                    if (Setting.development.main == file.name && file.ext == '.html') {
+                                        file.des = path.join(Setting.production.dir, Setting.production.main + file.ext);
+                                    }else{
+                                        file.des = path.join(Setting.production.dir, fileName);
+                                    }
                                 callback(file, state);
                             }
                         } else {
                             if (Object.keys(Setting.production.file[dirName]).every(function(reg) {
+                                console.log(dirName,reg);
                                     return new RegExp(reg).test(fileName) === Setting.production.file[dirName][reg];
                                 })) {
                                 file.des = path.join(dir.replace(Setting.development.root, Setting.production.dir));
@@ -152,7 +155,7 @@ var Setting = {},
 Object.defineProperties(Object.prototype, {
     Exists: {
         value: function(callback) {
-            //callback(fs.existsSync(this.toString()));
+            // HACK: callback(fs.existsSync(this.toString()));
             fs.exists(this.toString(), function(error) {
                 callback(error);
             });
@@ -182,8 +185,8 @@ Object.defineProperties(Object.prototype, {
                 var dir = path.join(o, fileName);
                 var file = path.parse(dir);
                 var state = fs.statSync(dir);
-                //file.src=dir;
-                //file.dest='';
+                // HACK: file.src=dir;
+                // HACK: file.dest='';
                 callback(dir, file, state);
             });
         }

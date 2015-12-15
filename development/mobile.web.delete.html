@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Desktop</title>
+<link rel="api" href="http://api.laisiangtho.com/"/>
+<link rel="icon" href="img/icon.16.png" type="image/png"/>
+<script src="assets/js/Template.js" charset="utf-8"></script>
+<script>
+// $(function(){});
+</script>
+<link rel="stylesheet" href="fontello/laisiangtho.css">
+<link rel="stylesheet" href="css/laisiangtho.css">
+<link rel="stylesheet" href="css/desktop.css">
+<link rel="stylesheet" href="css/desktop.web.css">
+</head>
+<body id="sl189" class="working- wait-">
+<header>
+    <div class="bar">
+        <div class="logo">
+            <div class="laisiangtho icon-fire"><span>Lai Siangtho</span></div>
+        </div>
+        <div class="tab">
+            <ul>
+                <li class="bible active">
+                    <a href="#bible" class="icon-cross" title="Bible"></a>
+                </li>
+                <li class="book">
+                    <a href="#book" class="icon-bible" title="Book"></a>
+                </li>
+                <li class="reader">
+                    <a href="#reader" class="icon-chapter" title="Chapter"></a>
+                </li>
+                <li class="note">
+                    <a href="#note" class="icon-note" title="Note"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="name">
+            <div data-fa="title"></div>
+        </div>
+        <div class="misc">
+            <ul>
+                <li>
+                    <a class="icon-info"></a>
+                </li>
+                <li>
+                    <a class="win minimize icon-minimize"></a>
+                </li>
+                <li>
+                    <a class="win maximize icon-maximize"></a>
+                </li>
+                <li>
+                    <a class="win close icon-close"></a>
+                </li>
+            </ul>
+            <ul style="display:none;">
+                <li>
+                    <a class="page setting icon-setting"></a>
+                </li>
+                <li>
+                    <a class="page update icon-code"></a>
+                </li>
+                <li>
+                    <a class="about version fA icon-info"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="nav">
+        <div class="set">
+            <ul>
+                <li>
+                    <div class="icon-panel" title="Note"></div>
+                </li>
+                <li>
+                    <div class="icon-bookmarks" title="Note"></div>
+                    <ul class="hO">
+                        <li class="scrollbar" empty>scrollbar, note setting</li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="win fullscreen icon-screen-full" title="Fullscreen" fn="screen Full name"></div>
+                </li>
+            </ul>
+        </div>
+        <div class="dig lookup">
+            <form method="get" action="#lookup?" name="lookup">
+                <label>
+                    <span class="icon-bible"></span>
+                </label>
+                <label>
+                    <input name="q" type="text" autocomplete="off">
+                </label>
+                <label>
+                    <a href="#lookup?" class="lookup result fA" data-fa="msg" title="pasian kiangah">5၆၇</a>
+                </label>
+                <label for="search">
+                    <span class="icon-down-open"></span>
+                    <input name="search" type="button" value="">
+                </label>
+                <ul class="hW">
+                    <li empty>
+                        <ul>
+                            <li>scrollbar, search setting scrollbar, search setting</li>
+                            <li>scrollbar, search setting scrollbar, search setting scrollbar, search scrollbar, search setting scrollbar, search</li>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="ctl">
+            <ul>
+                <li>
+                    <div class="note zO icon-flag" title="Note"></div>
+                    <ul class="hO">
+                        <li class="scrollbar" empty>
+                            <ol class="list-lookup">
+                                <li id="t1" class="testament">
+                                    <p>ဓမ္မဟောင်း‌ကျမ်း
+                                        <span class="testament">+</span>
+                                    </p>
+                                    <ol class="section">
+                                        <li id="s1" class="">
+                                            <p class="some">ဥပဒေ
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="1" class="active">ကမ္ဘာဦးကျမ်း</li>
+                                                <li id="2" class="active">ထွက်မြောက်ရာကျမ်း</li>
+                                                <li id="3" class="">ဝတ်ပြုရာကျမ်း</li>
+                                                <li id="4" class="">တောလည်ရာကျမ်း</li>
+                                                <li id="5" class="">တရားဟောရာကျမ်း</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s2" class="">
+                                            <p class="no">ရာဇဝင်
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="6" class="">ယောရှုမှတ်စာ</li>
+                                                <li id="7" class="">တရားသူကြီးမှတ်စာ</li>
+                                                <li id="8" class="">ရုသဝတ္ထု</li>
+                                                <li id="9" class="">ဓမ္မရာဇဝင်​‌ပဋ္ဌမစောင်</li>
+                                                <li id="10" class="">ဓမ္မရာဇဝင်​‌ဒုတိယစောင်</li>
+                                                <li id="11" class="">ဓမ္မရာဇဝင်​တတိယစောင်</li>
+                                                <li id="12" class="">ဓမ္မရာဇဝင်​‌စတုတ္ထစောင်</li>
+                                                <li id="13" class="">ရာဇဝင်ချုပ်​ပဌမစောင်</li>
+                                                <li id="14" class="">ရာဇဝင်ချုပ်​ဒုတိယစောင်</li>
+                                                <li id="15" class="">ဧဇရမှတ်စာ</li>
+                                                <li id="16" class="">နေဟမိမှတ်စာ</li>
+                                                <li id="17" class="">ဧသတာဝတ္ထု</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s3" class="">
+                                            <p class="no">လင်္ကာ
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="18" class="">ယောဘဝတ္ထု</li>
+                                                <li id="19" class="">ဆာလံကျမ်း</li>
+                                                <li id="20" class="">သုတ္တံကျမ်း</li>
+                                                <li id="21" class="">ဒေသနာကျမ်း</li>
+                                                <li id="22" class="">ရှောလမုန်သီချင်း</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s4" class="">
+                                            <p class="no">ဗျာဒိတ်- တမန်တော်များ
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="23" class="">ဟေရှာယအနာဂတ္တိကျမ်း</li>
+                                                <li id="24" class="">ယေရမိအနာဂတ္တိကျမ်း</li>
+                                                <li id="25" class="">ယေရမိမြည်တမ်းစကား</li>
+                                                <li id="26" class="">ယေဇကျေလအနာဂတ္တိကျမ်း</li>
+                                                <li id="27" class="">ဒံယေလအနာဂတ္တိကျမ်း</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s5" class="">
+                                            <p class="no">ဗျာဒိတ်- တမန်တော်အသီးသီး
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="28" class="">ဟောရှေအနာဂတ္တိကျမ်း</li>
+                                                <li id="29" class="">ယောလအနာဂတ္တိကျမ်း</li>
+                                                <li id="30" class="">အာမုတ်အနာဂတ္တိကျမ်း</li>
+                                                <li id="31" class="">ဩဗဒိဗျာဒိတ်ရူပါရုံ</li>
+                                                <li id="32" class="">ယောနဝတ္ထု၊</li>
+                                                <li id="33" class="">မိက္ခာအနာဂတ္တိကျမ်း</li>
+                                                <li id="34" class="">နာဟုံအနာဂတ္တိကျမ်း</li>
+                                                <li id="35" class="">ဟဗက္ကုတ်အနာဂတ္တိကျမ်း</li>
+                                                <li id="36" class="">ဇေဖနိအနာဂတ္တိကျမ်း</li>
+                                                <li id="37" class="">ဟဂ္ဂဲအနာဂတ္တိကျမ်း</li>
+                                                <li id="38" class="">ဇာခရိအနာဂတ္တိကျမ်း</li>
+                                                <li id="39" class="">မာလခိအနာဂတ္တိကျမ်း</li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li id="t2" class="testament">
+                                    <p>ဓမ္မသစ်ကျမ်း
+                                        <span class="testament">+</span>
+                                    </p>
+                                    <ol class="section">
+                                        <li id="s6" class="">
+                                            <p class="no">သက်တော်စဉ်နှင့် တရားတော်
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="40" class="">ရှင်မဿဲခရစ်ဝင်</li>
+                                                <li id="41" class="">ရှင်မာကုခရစ်ဝင်</li>
+                                                <li id="42" class="">ရှင်လုကာခရစ်ဝင်</li>
+                                                <li id="43" class="">ရှင်ယောဟန်ခရစ်ဝင်</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s7" class="">
+                                            <p class="no">ရှေးဟောင်းသမိုင်းများ
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="44" class="">တမန်တော်ဝတ္ထု</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s8" class="">
+                                            <p class="no">အယူဝါဒ ဆိုင်ရာ- Gentiles
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="45" class="">ရောမ​ဩဝါဒစာ</li>
+                                                <li id="46" class="">ကောရိန္တု​ဩဝါသစာ​ပဌမစောင်</li>
+                                                <li id="47" class="">ကောရိန္တု​ဩဝါသစာ​ဒုတိယစောင်</li>
+                                                <li id="48" class="">ဂလာတိ​ဩဝါဒစာ</li>
+                                                <li id="49" class="">ဧဖက်​ဩဝါဒစာ</li>
+                                                <li id="50" class="">ဖိလိပ္ပိ​ဩဝါဒစာ</li>
+                                                <li id="51" class="">ကောလောသဲ​ဩဝါဒစာ</li>
+                                                <li id="52" class="">သက်သာလောနိတ်​ဩဝါဒစာ​ပဋ္ဌမစောင်</li>
+                                                <li id="53" class="">သက်သာလောနိတ်​ဩဝါဒစာ​ဒုတိယစောင်</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s9" class="">
+                                            <p class="no">အယူဝါဒ ဆိုင်ရာ- သီးခြား
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="54" class="">တိမောသေ​ဩဝါဒစာ​ပဋ္ဌမစောင်</li>
+                                                <li id="55" class="">တိမောသေ​ဩဝါဒစာ​ဒုတိယစောင်</li>
+                                                <li id="56" class="">တိတု​ဩဝါဒစာ</li>
+                                                <li id="57" class="">ဖိလေမုန်​ဩဝါဒစာ</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s10" class="">
+                                            <p class="no">အယူဝါဒ ဆိုင်ရာ- ဂျူး
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="58" class="">ဟေဗြဲ​ဩဝါဒစာ</li>
+                                            </ol>
+                                        </li>
+                                        <li id="s11" class="">
+                                            <p class="no">အယူဝါဒ ဆိုင်ရာ- အထွေထွေ
+                                                <span>+</span>
+                                            </p>
+                                            <ol class="book">
+                                                <li id="59" class="">ရှင်ယာကုပ်​‌ဩဝါဒစာ</li>
+                                                <li id="60" class="">ရှင်ပေတရု​ဩဝါဒစာ​ပဌမစောင်</li>
+                                                <li id="61" class="">ရှင်ပေတရု​ဩဝါဒစာ​ဒုတိယစောင်</li>
+                                                <li id="62" class="">ရှင်ယောဟန်​‌ဩဝါဒစာ​ပဌမစောင်</li>
+                                                <li id="63" class="">ရှင်ယောဟန်​‌ဩဝါဒစာ​ဒုတိယစောင်</li>
+                                                <li id="64" class="">ရှင်ယောဟန်​‌ဩဝါဒစာ​တတိယစောင်</li>
+                                                <li id="65" class="">ရှင်ယုဒ​ဩဝါဒစာ</li>
+                                                <li id="66" class="">ဗျာဒိတ်ကျမ်း</li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="chapter previous fA icon-previous" data-fa="namePrevious" title="Piancilna 20..."></div>
+                </li>
+                <li>
+                    <div class="chapter list fA" data-fa="nameCurrent" title="Chapter">၁</div>
+                    <ul class="hO">
+                        <li class="scrollbar" empty>
+                            asdfasdf
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="chapter next fA icon-next" data-fa="nameNext" title="Piancilna 22..."></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container" empty>Container</div>
+    <div class="bible book bookmark note setting todo" empty>bible active</div>
+    <div class="lookup active" empty>
+        <p>...start...</p>
+        <p>lookup</p> <a href="#" class="about version fA icon-info">asdfasdfasdf</a>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        th is<br>
+        <p>...end...</p>
+    </div>
+    <div class="reader" empty>reader</div>
+</main>
+<footer empty></footer>
+<div id="dialog" class="version" remove style="display:none;">
+    <div id="window">
+        <h1 title="1.9.85">Lai Siangtho</h1>
+        <h2>1.1.7</h2>
+        <p>
+            is the continuous version of what we have released in 2008 that was saying <span>some how we wanna serve resource which may seem any sense with you</span>. There has been a huge improvement, and one of the biggest was running on Multi-platform such as Chrome OS, Mac, Windows &amp; Linux. <a target="_blank" href="https://plus.google.com/u/0/communities/102261448761422230627">g+</a></p><p id="by"><a target="_blank" href="https://plus.google.com/u/0/+KhenSolomonLethil/posts">Khen Solomon Lethil</a>
+        </p>
+        <div id="clickme">Ok</div>
+    </div>
+</div>
+</body>
+</html>
