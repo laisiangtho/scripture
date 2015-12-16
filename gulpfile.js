@@ -51,7 +51,7 @@ gulp.task('filesystask',function(){
         },
         compress:false,
         preserveComments:'license'
-    }))
+    }).on('error', console.log))
     .pipe(concat('fileSystask.min.js'))
     .pipe(gulp.dest(path.join(rootAssets,'filesystask')));
 });

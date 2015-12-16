@@ -1,7 +1,7 @@
 this.save = function(Obj) {
     Obj=Object.assign({},Task.Callback,Obj);
     return new Promise(function(resolve, reject) {
-        fn.request(
+        fileSystask.request(
             function(fs, status) {
                 try {
                     if(typeof Obj !== 'object' || !Obj.fileName){
@@ -58,7 +58,7 @@ this.save = function(Obj) {
                                                 if (folders.length) {
                                                     ObjCreateDir(dirEntry, folders.slice(1));
                                                 }else{
-                                                    resolve(fn.save(Obj));
+                                                    resolve(fileSystask.save(Obj));
                                                 }
                                             }, function(e){
                                                 if(typeof Obj ==='object'){

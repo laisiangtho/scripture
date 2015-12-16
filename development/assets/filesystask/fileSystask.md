@@ -1,8 +1,8 @@
 fileSystask -- _Javascript file System task_
 ========
-Version 1.0.2
+Version 1.0.3
 
-https://khensolomonlethil.github.io/laisiangtho/fileSystask
+https://khensolomonlethil.github.io/laisiangtho
 
 (c) 2013-2015
 
@@ -16,15 +16,28 @@ dokSystem, DudeDoc,LoadFileSystem, RequestFile, LocalFileRequest, LocalDocument,
 localDok, docalFile, localFile,
 jRequest, jDocReqLoc,  jLocalDoc  jDoks, jLetRequest, lokalfileSystem
 
-FIXED
+#### FIXED
 - fileStatus is undefined,
 - create Global variables
-- init calback(succes,fail,done)
+- init calback(_succes, fail, done_)
     - fail,done always return Object now!
-- Base:Other now also try if navigator.webkitPersistentStorage
+- Base: _Other now also try if navigator.webkitPersistentStorage_
 
+#### TODO
+- [ ] Initiation should be completed, before other Method execute!
+- [x] fn -> fileSystask have been changed!
+- [x] assigning multi arguments are completed!
+- [x] arguments should be flexiable!
 
-Setup:
+#### Prototype!
+- [x] get (Ok) :sparkles:
+- [ ] download (required to check again)
+- [ ] save (required to check again)
+- [x] remove (Ok) :sparkles:
+
+:sparkles: :camel: :boom:
+
+#### Setup:
 ```javascript
 var file=new fileSystask(
     {
@@ -46,84 +59,68 @@ var fileSystem = new fileSystask({
     Base: 'Cordova',
     RequestQuota: 1073741824,
     Permission: 1
-}, {
-    done: function(status) {
-        // NOTE: complatedCallback, return value can be string, depend on success or error!
-        // REVIEW: executed either succes or fail!
-        console.log('init.done', status.message);
-    },
-    fail: function(status) {
-        // NOTE: failCallback, return value can be string!
-        // REVIEW: executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
-        console.log('init.fail', status.message);
-    },
-    success: function(fs) {
-        // NOTE: successCallback! Can be started from 'fs.root'!
-        // REVIEW: Browser supports 'requestFileSystem'!
-        console.warn('init.success', fs);
-    }
-});
-```
-Working
-```javascript
-var fileSystem = new fileSystask({
-    Base: 'Other',
-    RequestQuota: 1073741824,
-    Permission: 1
     },
     {
         done: function(status) {
-            console.log('init.done', status);
+            // NOTE: complatedCallback, return value can be string, depend on success or error!
+            // REVIEW: executed either success or fail!
+            console.log('init.done', status.message);
         },
         fail: function(status) {
-            console.log('init.fail', status);
+            // NOTE: failCallback, return value can be string!
+            // REVIEW: executed to warn the Browser does not support 'requestFileSystem', message might be different Browser to Browser!
+            console.log('init.fail', status.message);
         },
         success: function(fs) {
+            // NOTE: successCallback! Can be started from 'fs.root'!
+            // REVIEW: Browser supports 'requestFileSystem'!
             console.warn('init.success', fs);
         }
     }
 );
 ```
 NOTE: how **get** work!
+
+- if fileOption.create is true, fileContent, fileContentType are expected to be written!
+- if {fileReadAs==true} then 'readAsText' will be use to read!
+- if {fileNotFound=true} return successCallback when the file is not found! but you might still get fail Method execute, when fileOption.create is true and fail creating...
 ```javascript
-file.get(
-    {
-        // fileName:'styles.css',
-        fileName:'delete.css',
-        fileOption: {},
-        fileObject:function(/*fileSystem, fileEntry*/){
-            this.fileEntry.file(function(file) {
-                var reader = new FileReader();
-                reader.onloadend = function(e) {
-                    var txtArea = document.createElement('textarea');
-                    txtArea.value = this.result;
-                    document.body.appendChild(txtArea);
-                };
-                reader.readAsText(file);
-            }, function(file) {
-                // console.warn(1, file);
-            });
-            var elem = document.createElement('link');
-            elem.rel = 'stylesheet';
-            elem.type = 'text/css';
-            elem.href = this.fileEntry.toURL();
-            document.head.appendChild(elem); //or document.body
-            // console.log('file.get.Object');
-        },
-        fileNotExists:function(/*fileSystem, fileStatus*/){
-            console.warn('fileNotExists',this.fileStatus);
-        },
-        fileError:function(status/*String or Object*/){
-            console.warn('s',status);
-        }
+fileSystem.get({
+    // fileName: null,
+    fileOption: {
+        create: false
+    },
+    // fileExtension: null,
+    // fileUrl: null,
+    // fileCharset: null,
+    fileContentType: 'text/css',
+    // fileSize: null,
+    fileUrlLocal: 'styles/blue.css',
+    fileReadAs: 'readAsText',
+    fileNotFound: false,
+    fileContent: 'body { color:red;}',
+    // responseXML: null,
+    // responseURL: null,
+    done: function(e) {
+        // NOTE: task completed, and always returned!
+        console.log('done',e);
+    },
+    fail: function(e) {
+        // NOTE: only task fail
+        console.error('fail',e);
+    },
+    success: function(e) {
+        // NOTE: only task successfully completed!
+        console.warn('success',e);
     }
-).then(function(e/*As Object -> e.fileSystem{if get success}, e.fileEntry{if found}, e.fileStatus{if not found}*/){
-    console.log('file.get.then',e);
+}).then(function(e) {
+    // NOTE: arguments is depend of success or fail!
+    console.log('get.then',e);
 });
 ```
 NOTE: how **download** work!
 ```javascript
-file.download({
+fileSystem.download({
     Method:'GET',
     fileUrl:'assets/jstest/delete.css',
     fileCache:true,
@@ -225,9 +222,34 @@ fileSystem.download({
     });
 });
 ```
+NOTE: how **remove** work!
+```javascript
+fileSystem.remove({
+    fileOption: {
+        create: false
+    },
+    fileUrlLocal: 'laisiangtho/tedim.xml',
+    fileNotFound: true, // if true return successCallback, even the file is not found!
+    done: function(e) {
+        // NOTE: task completed, and always returned either success or fail!
+        console.log(e);
+    },
+    fails: function(e) {
+        // NOTE: only task fail
+        console.error(e);
+    },
+    success: function(e) {
+        // NOTE: only task successfully completed!
+        console.warn(e);
+    }
+}).then(function(e) {
+    // NOTE: arguments is depend of success or fail!
+    console.log(e);
+});
+```
 NOTE: how **request** work!
 ```javascript
-file.request(
+fileSystem.request(
     function(fs,status){
         // NOTE: successCallback
         console.warn('resolve.success');
@@ -240,7 +262,7 @@ file.request(
 ```
 NOTE: how **resolve** work!
 ```javascript
-file.resolve(
+fileSystem.resolve(
     'filesystem:http://localhost/persistent/style.css',
     function(fs,status){
         // NOTE: successCallback
@@ -260,5 +282,17 @@ document.addEventListener('DOMContentLoaded', function() {
             dude: "holla"
         };
     elem.addEventListener("click", obj, false);
+});
+```
+NOTE: how **Promise** process in Javascript!
+```javascript
+new Promise(function(resolve, reject) {
+    // NOTE: resolve, reject
+}).then(function(e) {
+    // NOTE: if success
+}, function(e) {
+    // NOTE: if fail
+}).then(function(e){
+    // NOTE: when done
 });
 ```

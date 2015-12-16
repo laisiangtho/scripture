@@ -18,7 +18,7 @@ this.download = function(Obj) {
         xmlHttp.addEventListener("load", function(e) {
             // NOTE: promise should return responseText, responseType, responseURL and responseXML if success!
             var fileUrl = Obj.fileUrl;
-            var fileUrlResponse = e.target.responseURL;
+            // var fileUrlResponse = e.target.responseURL;
             var fileName = fileUrl.replace(/[\#\?].*$/, '').substring(fileUrl.lastIndexOf('/') + 1);
             var fileUrlLocal = Obj.fileUrlLocal?Obj.fileUrlLocal:fileName;
             var fileExtension = fileName.split('.').pop();
@@ -48,7 +48,8 @@ this.download = function(Obj) {
                     fileSize: e.total,
                     fileUrlLocal: fileUrlLocal,
                     fileContent: e.target.responseText,
-                    responseXML: e.target.responseXML
+                    responseXML: e.target.responseXML,
+                    responseURL: e.target.responseURL
                 });
             } else if (xmlHttp.statusText) {
                 reject({message:xmlHttp.statusText+': '+ fileUrl,code:xmlHttp.status});

@@ -8,13 +8,14 @@
     'use strict';
     // TODO: none exists Method call(???) should do something?
     // TODO: callback return value(object,string) must be certain -> so far there isn't any array returned.
-    // REVIEW: variables that being used here fn, OS, Task and the 'ClassName' of course!
+    // REVIEW: variables that being used here fileSystask, OS, Task and the 'ClassName' of course!
     // REVIEW: well checkout the comment line....
     // XXX: and Thanks to Atom Editor & NodeJs, without it 'fileSystask' will be probably looking for where to start or waiting for fileSystask.js to be loaded!
+    // REVIEW: fn -> fileSystask
     window.requestfileSystask;
     window.resolvefileSystask;
     window[o] = function(Setting, Init) {
-        var fn = this,
+        var fileSystask = this,
             OS = {
                 // Ok:false
             };
@@ -70,6 +71,16 @@
                 success:function(){
                     // NOTE: only the task success, if not fail
                 }
+            },
+            Arguments:function(o,arg){
+                for (var i in arg) {
+                    if (arg.hasOwnProperty(i) && i == 0) {
+                        o=Object.assign({},this.Callback,arg[i]);
+                    }else if (arg.hasOwnProperty(i)) {
+                        o=Object.assign({},this.Callback,o,arg[i]);
+                    }
+                }
+                return o;
             },
             extension: {
                 mp3: {
@@ -154,17 +165,6 @@
                         Base: defaultName
                     });
                 }
-                // function errorResponse(e) {
-                //     if (typeof e === 'string') {
-                //         OS.message = e;
-                //     } else if (e.message) {
-                //         OS = e;
-                //     } else {
-                //         OS.message = e;
-                //     }
-                //     return f1(Init.fail, OS);
-                // }
-                // Init=Object.assign({},Task.Callback,Init);
                 new Promise(function(resolve, reject) {
                     Task.Initiate[OS.Base](
                         function(e) {
@@ -194,7 +194,7 @@
                 }, function(e) {
                     f1(Init.fail, e);
                 }).then(function(){
-                    fn.support=OS.Ok;
+                    fileSystask.support=OS.Ok;
                     f1(Init.done, OS);
                 });
             },
@@ -366,7 +366,7 @@
                         // window.resolvefileSystask = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL;
                         if (window.requestfileSystask) {
                             window.requestfileSystask(
-                                window.PERSISTENT,
+                                OS.Permission > 0 ? window.PERSISTENT : window.TEMPORARY,
                                 OS.RequestQuota,
                                 function(fileSystem) {
                                     done(fileSystem);
@@ -432,6 +432,7 @@
         //=require fileSystask.request.js
         //=require fileSystask.resolve.js
         //=require fileSystask.get.js
+        //=require fileSystask.remove.js
         //=require fileSystask.download.js
         //=require fileSystask.save.js
         function f1(n, e) {
