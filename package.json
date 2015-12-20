@@ -124,7 +124,7 @@
     "build-android": "node ./npm-build.js --os=android",
     "build-default": "node ./npm-build.js --os=default",
     "build-electron": "node ./npm-build.js --os=electron",
-    "build-template": "node ./npm-template.tmp.js --os=chrome"
+    "build-template": "node ./npm-template.js --os=null"
   },
   "repository": {
     "type": "git",
