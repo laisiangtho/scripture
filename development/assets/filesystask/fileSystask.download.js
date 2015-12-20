@@ -1,6 +1,8 @@
 this.download = function(Obj) {
-    Obj=Object.assign({},Task.Callback,Obj);
+    // NOTE: Obj{fileCache,Method,fileUrl}
+    Obj=Task.Arguments(Obj,arguments);
     return new Promise(function(resolve, reject) {
+        // NOTE: resolve, reject
         var xmlHttp = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
         var Percentage = 0;
         xmlHttp.addEventListener("progress", function(e) {
@@ -16,43 +18,89 @@ this.download = function(Obj) {
             }
         }, false);
         xmlHttp.addEventListener("load", function(e) {
-            // NOTE: promise should return responseText, responseType, responseURL and responseXML if success!
-            var fileUrl = Obj.fileUrl;
-            // var fileUrlResponse = e.target.responseURL;
-            var fileName = fileUrl.replace(/[\#\?].*$/, '').substring(fileUrl.lastIndexOf('/') + 1);
-            var fileUrlLocal = Obj.fileUrlLocal?Obj.fileUrlLocal:fileName;
-            var fileExtension = fileName.split('.').pop();
-            // NOTE: these are required when saving....
-            var fileCharset, fileContentType;
-            if (e.target.responseXML) {
-                fileCharset = e.target.responseXML.charset;
-                fileContentType = e.target.responseXML.contentType;
+            Obj.fileUrlResponse = e.target.responseURL;
+            Obj.fileName = Obj.fileUrl.replace(/[\#\?].*$/, '').substring(Obj.fileUrl.lastIndexOf('/') + 1);
+            Obj.fileExtension = Obj.fileName.split('.').pop();
+            if(Obj.fileUrlLocal){
+                // NOTE: Requested to save!
+                if(Obj.fileUrlLocal === true){
+                    // NOTE: if true, then extract path from url
+                    var fileUrlLocalTmp = Obj.fileUrl.match(/\/\/[^\/]+\/([^\.]+)/);
+                    if(fileUrlLocalTmp){
+                        Obj.fileUrlLocal = fileUrlLocalTmp[1].replace(/[\#\?].*$/, '');
+                    } else {
+                        Obj.fileUrlLocal = Obj.fileUrl.replace(/[\#\?].*$/, '');
+                    }
+                } else {
+                    Obj.fileUrlLocal = Obj.fileUrlLocal.replace(/[\#\?].*$/, '');
+                }
             } else {
-                fileCharset = 'UTF-8';
-                if (Task.extension[fileExtension]) {
-                    fileContentType = Task.extension[fileExtension].ContentType;
+                Obj.fileUrlLocal=Obj.fileName;
+            }
+            if (e.target.responseXML) {
+                Obj.fileCharset = e.target.responseXML.charset;
+                Obj.fileContentType = e.target.responseXML.contentType;
+            } else {
+                Obj.fileCharset = 'UTF-8';
+                if (Task.extension[Obj.fileExtension]) {
+                    Obj.fileContentType = Task.extension[Obj.fileExtension].ContentType;
                 }
             }
-            Obj.done(e);
+            Obj.responseXML = e.target.responseXML;
+            Obj.responseURL = e.target.responseURL;
             if (xmlHttp.status == 200) {
-                resolve({
-                    fileName: fileName,
-                    fileOption: {
-                        create: true,
-                        exclusive: true
-                    },
-                    fileExtension: fileExtension,
-                    fileUrl: fileUrl,
-                    fileCharset: fileCharset,
-                    fileContentType: fileContentType,
-                    fileSize: e.total,
-                    fileUrlLocal: fileUrlLocal,
-                    fileContent: e.target.responseText,
-                    responseXML: e.target.responseXML,
-                    responseURL: e.target.responseURL
-                });
+                Obj.fileSize = e.total;
+                Obj.fileContent = e.target.responseText;
+                if(typeof Obj.fileOption == 'object' && Obj.fileOption.create === true && Obj.fileUrlLocal && OS.Ok === true){
+                    fileRequest(Obj,function(fileRequestHas,o) {
+                        if(fileRequestHas == 1){
+                            // NOTE: file found {o:fileEntry}
+                            fileWriter(o,Obj,function(isFileWritten, fileWriterMsg){
+                                if(isFileWritten){
+                                    Obj.fileCreation=true;
+                                    resolve(Obj);
+                                } else {
+                                    Obj.fileCreation=fileWriterMsg;
+                                    reject(Obj);
+                                }
+                            });
+                        }else if(fileRequestHas == 2){
+                            // NOTE: file not found {o:fileSystemRoot}
+                            var isBecauseDir = dirCheck(Obj.fileUrlLocal);
+                            if(isBecauseDir){
+                                dirCreator(o, isBecauseDir, function(isDirCreated, dirCreatorMsg){
+                                    if(isDirCreated){
+                                        fileCreator(o,Obj,function(isFileCreated, fileCreatorMsg){
+                                            if(isFileCreated){
+                                                Obj.fileCreation=true;
+                                                resolve(Obj);
+                                            }else{
+                                                Obj.fileCreation=fileCreatorMsg;
+                                                reject(Obj);
+                                            }
+                                        });
+                                    } else{
+                                        Obj.fileCreation=dirCreatorMsg;
+                                        reject(Obj);
+                                    }
+                                });
+                            } else {
+                                Obj.fileCreation=o;
+                                reject(Obj);
+                            }
+                        } else{
+                            // NOTE: error {o:status response}
+                            Obj.fileCreation=o;
+                            reject(Obj);
+                        }
+                    });
+                } else {
+                    // NOTE: file Not to be saved!
+                    Obj.fileCreation=false;
+                    resolve(Obj);
+                }
             } else if (xmlHttp.statusText) {
-                reject({message:xmlHttp.statusText+': '+ fileUrl,code:xmlHttp.status});
+                reject({message:xmlHttp.statusText+': '+ Obj.fileUrl,code:xmlHttp.status});
             } else if(xmlHttp.status) {
                 reject({message:'Error',code:xmlHttp.status});
             }else{
@@ -73,17 +121,27 @@ this.download = function(Obj) {
         }else{
             Obj.fileUrlRequest = Obj.fileUrl;
         }
-        xmlHttp.open(Obj.Method ? Obj.Method : 'GET', Obj.fileUrlRequest, true);
-        Obj.before(xmlHttp);
-        // NOTE: how 'before' function should do!
-        // xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-        // xmlHttp.withCredentials = true;
-        xmlHttp.send();
+        if(Obj.fileUrl){
+            xmlHttp.open(Obj.requestMethod ? Obj.requestMethod : 'GET', Obj.fileUrlRequest, true);
+            Obj.before(xmlHttp);
+            // NOTE: how 'before' function should do!
+            // xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+            // xmlHttp.withCredentials = true;
+            xmlHttp.send();
+        }else{
+            reject({message:'fileUrl not provided',code:0});
+        }
     }).then(function(e) {
+        // NOTE: if success
         Obj.success(e);
         return e;
     }, function(e) {
+        // NOTE: if fail
         Obj.fail(e);
+        return e;
+    }).then(function(e){
+        // NOTE: when done
+        Obj.done(e);
         return e;
     });
 };

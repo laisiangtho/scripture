@@ -1,6 +1,6 @@
 /*!
     localForage -- Offline Storage, Improved
-    Version 1.3.0
+    Version 1.3.1
     https://mozilla.github.io/localForage
     (c) 2013-2015 Mozilla, Apache License 2.0
 */
@@ -66,7 +66,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	(function () {
+	var localForage = (function () {
 	    'use strict';
 
 	    // Custom drivers are stored here when `defineDriver()` is called.
@@ -468,10 +468,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return LocalForage;
 	    })();
 
-	    var localForage = new LocalForage();
-
-	    exports['default'] = localForage;
+	    return new LocalForage();
 	}).call(typeof window !== 'undefined' ? window : self);
+	exports['default'] = localForage;
 	module.exports = exports['default'];
 
 /***/ },
@@ -483,7 +482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	exports.__esModule = true;
-	(function () {
+	var asyncStorage = (function () {
 	    'use strict';
 
 	    var globalObject = this;
@@ -718,7 +717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            dbInfo.db = dbContext.db = db;
 	            self._dbInfo = dbInfo;
 	            // Share the final connection amongst related localForages.
-	            for (var k in forages) {
+	            for (var k = 0; k < forages.length; k++) {
 	                var forage = forages[k];
 	                if (forage !== self) {
 	                    // Self is already up-to-date.
@@ -912,10 +911,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var dbInfo;
 	            self.ready().then(function () {
 	                dbInfo = self._dbInfo;
-	                return _checkBlobSupport(dbInfo.db);
-	            }).then(function (blobSupport) {
-	                if (!blobSupport && value instanceof Blob) {
-	                    return _encodeBlob(value);
+	                if (value instanceof Blob) {
+	                    return _checkBlobSupport(dbInfo.db).then(function (blobSupport) {
+	                        if (blobSupport) {
+	                            return value;
+	                        }
+	                        return _encodeBlob(value);
+	                    });
 	                }
 	                return value;
 	            }).then(function (value) {
@@ -1153,8 +1155,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        keys: keys
 	    };
 
-	    exports['default'] = asyncStorage;
+	    return asyncStorage;
 	}).call(typeof window !== 'undefined' ? window : self);
+	exports['default'] = asyncStorage;
 	module.exports = exports['default'];
 
 /***/ },
@@ -1168,7 +1171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	exports.__esModule = true;
-	(function () {
+	var localStorageWrapper = (function () {
 	    'use strict';
 
 	    var globalObject = this;
@@ -1461,8 +1464,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        keys: keys
 	    };
 
-	    exports['default'] = localStorageWrapper;
+	    return localStorageWrapper;
 	}).call(typeof window !== 'undefined' ? window : self);
+	exports['default'] = localStorageWrapper;
 	module.exports = exports['default'];
 
 /***/ },
@@ -1472,7 +1476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	exports.__esModule = true;
-	(function () {
+	var localforageSerializer = (function () {
 	    'use strict';
 
 	    // Sadly, the best way to save binary data in WebSQL/localStorage is serializing
@@ -1726,8 +1730,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        bufferToString: bufferToString
 	    };
 
-	    exports['default'] = localforageSerializer;
+	    return localforageSerializer;
 	}).call(typeof window !== 'undefined' ? window : self);
+	exports['default'] = localforageSerializer;
 	module.exports = exports['default'];
 
 /***/ },
@@ -1746,7 +1751,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	exports.__esModule = true;
-	(function () {
+	var webSQLStorage = (function () {
 	    'use strict';
 
 	    var globalObject = this;
@@ -2088,8 +2093,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        keys: keys
 	    };
 
-	    exports['default'] = webSQLStorage;
+	    return webSQLStorage;
 	}).call(typeof window !== 'undefined' ? window : self);
+	exports['default'] = webSQLStorage;
 	module.exports = exports['default'];
 
 /***/ }

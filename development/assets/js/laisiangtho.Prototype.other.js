@@ -1,5 +1,308 @@
-//hash,url(string),num, string, index, array, working, done, body, header
-Core.prototype.hash = function(callback) {
+//container, info, chapter, hasHash,url(string), haspage, num, string, index, array, working, done, body, header
+Core.prototype.chapter={
+    name:{
+        previous:function(e){
+            e.arg[0].attr('title',this.text('next'));
+        },
+        current:function(e){
+            e.arg[0].html(e.num(fO.query.chapter));
+        },
+        next:function(e){
+            e.arg[0].attr('title',this.text('previous'));
+            // if(fO.todo.ActiveChapter){
+            //     //TODO if(fO.isCordova)-> REMOVE or empty it container
+            //     fO.todo.ActiveChapter.addClass(config.css.active).promise().done(function(){
+            //         delete fO.todo.ActiveChapter;
+            //     });
+            // }
+        },
+        has:{
+            next:function(){
+                var bID=parseInt(fO.query.book), cID=parseInt(fO.query.chapter)+1;
+                if(bible.info[bID].c<cID){
+                    bID++; bID=(bID>66)?1:bID; cID=1;
+                }
+                return {book:bID,chapter:cID};
+            },
+            previous:function(){
+                var bID=parseInt(fO.query.book), cID=parseInt(fO.query.chapter)-1;
+                if(cID<1){ bID--; bID=(bID<1)?66:bID; cID=bible.info[bID].c;}
+                return {book:bID,chapter:cID};
+            }
+        },
+        text:function(x) {
+            var q=this.has[x](), lD=fO.lang[fO.query.bible];
+            return lD.l.BFVBC.replace(/{b}/,lD.b[q.book]).replace(/{c}/,f().num(q.chapter));
+        }
+    },
+    next:function(e){
+        e.hash(2).hashChange(this.name.has.next());
+    },
+    previous:function(e){
+        e.hash(2).hashChange(this.name.has.previous());
+    },
+    book:function(bID){
+        //TODO
+        // return $(h.span).html(fN.Num(bible.info[bID].c)).on(fO.Click,function(){
+        //     var container=$(this).parent().parent();
+        //     if(container.children('ol').length){
+        //         container.children().eq(1).fadeOut(300).remove();
+        //         $(this).removeClass(config.css.active);
+        //     }else{
+        //         fN.Menu(bID).Chapter().appendTo(container).promise().done($(this).addClass(config.css.active));
+        //     }
+        // });
+    },
+    list:function(e,x){
+        var ol=e.arg[0].parent().children().eq(1);
+        if(ol.is(':hidden')){
+            new e.menu(fO.query.book).chapter().appendTo(ol.fadeIn(200).children().empty()).promise().done(function(){
+                this.children().on(fO.Click,function(){
+                    fO.todo.ActiveChapter=$(this);
+                });
+                f(ol).doClick(function(y){
+                    if(e.container.closest(ol,y,e.arg[0])){
+                        e.container.fade(ol,e.arg[0]);
+                        return true;
+                    }
+                });
+            });
+        }else{
+            e.container.fade(ol,e.arg[0]);
+        }
+    }
+};
+Core.prototype.lookup={
+    setting:function(e){
+        var ol=e.arg[0].parent().children().eq(1);
+        // new e.menu(fO.query.book).chapter().appendTo(ol.fadeIn(200).children().empty()).promise().done(function(){
+        if(ol.is(':hidden')){
+            e.arg[0].addClass(config.css.active);
+            new e.menu().lookup(ol.fadeIn(200).children().empty()).promise().done(function(){
+                f(ol).doClick(function(y){
+                    if(e.container.closest(ol,y,e.arg[0])){
+                        e.container.fade(ol,e.arg[0]);
+                        return true;
+                    }
+                });
+            });
+        }else{
+            // NOTE: here active class should remove!
+            e.container.fade(ol,e.arg[0]);
+        }
+    },
+    msg:function(e){
+        fO.msg.lookup=e.arg[0];
+        if (fO.query.result > 0) {
+            e.arg[0].text(e.num(fO.query.result)).attr('title',fO.query.q);
+        } else {
+            e.arg[0].empty();
+        }
+    }
+};
+Core.prototype.menu=function(o){
+    this.bible=function(){
+        var ol = $(h.ol,{id:'dragable',class:'row row-bible'});
+        config.bible.available.forEach(function(id){
+            var Om={bID:id,lang:fO.lang[id].info,local:fO.lang[id].local,classOffline:'icon-ok offline',classOnline:'icon-logout offline'};
+            Om.classAvailable=Om.local?config.css.available:config.css.notAvailable;
+            Om.isAvailable=(Om.local?Om.classOffline:Om.classOnline);
+            Om.classActive=(fO.query.bible==id?config.css.active:'')+' '+Om.classAvailable;
+            o(Om).appendTo(ol);
+        });
+        return ol;
+    };
+    this.chapter=function(){
+        var ol=$(h.ol,{class:'list-chapter'});
+        $.each(bible.info[o].v,function(chapter,verse){
+            chapter++;
+            $(h.li,{id:chapter,class:(fO.query.chapter==chapter?config.css.active:'')}).append(
+                $(h.a,{href:f().hash(2)+$.param({chapter:chapter})}).html(f().num(chapter)).append(
+                    $(h.sup).html(f().num(verse))
+                )
+            ).appendTo(ol);
+        });
+        return ol;
+    };
+    this.lookup=function(container){
+        var O2={
+            Query:function(o){
+                o.each(function(){
+                    var ol=$(this);
+                    ol.children().each(function(a,y){
+                        var y=$(y), id=f(y).get('id').element[0];//id=fN.Attr(y).id()[0];
+                        y.toggleClass(config.css.active); O2.ID(id);
+                    }).promise().done(function(){
+                        O2.Class(ol);
+                    });
+                });
+            },
+            Click:function(e,o){
+                var x=$(e.target);
+                if(x.get(0).tagName.toLowerCase()==='p'){
+                    this.Query(o);
+                }else{
+                    var li=x.parents('li'),sID=li.attr('id'); o.fadeToggle(100);
+                    x.toggleClass(config.css.active).promise().done(function(){
+                        if(this.hasClass(config.css.active)){
+                            fO.lookup.setting[sID]=true;
+                        }else{
+                            delete fO.lookup.setting[sID];
+                        }
+                    });
+                }
+                db.update.lookup();
+                // fD.UpdateLookUp();
+            },
+            Class:function(o){
+                // fN.is(config.css.active).class
+                // f(config.css.active).is('class').name
+                var total=o.children().length, active=o.children(f(config.css.active).is('class').name).length, catalog=o.parent().children().eq(0);
+                if(total===active){
+                    catalog.removeClass().addClass('yes');
+                }else if(active>0){
+                    catalog.removeClass().addClass('some');
+                }else{
+                    catalog.removeClass().addClass('no');
+                }
+            },
+            ID:function(id){
+                if(fO.lookup.book[id]){
+                    delete fO.lookup.book[id];
+                }else{
+                    fO.lookup.book[id]={};
+                }
+            }
+        },
+        container=$(h.ol,{class:'list-lookup'}).appendTo(container), lD=fO.lang[fO.query.bible];
+        $.each(bible.catalog,function(tID,cL){
+            var tTD=Object.keys(config.language)[0]+tID, tClass=(fO.lookup.setting[tTD]?config.css.active:'testament');
+            $(h.li,{id:tTD,class:tClass}).html(
+                $(h.p,{text:lD.t[tID]}).on(fO.Click,function(e){
+                    O2.Click(e,$(this).parent().children('ol').find('ol'));
+                }).append(
+                    $(h.span).text('+').addClass(tClass)
+                )
+            ).appendTo(container).promise().done(function(){
+                $(h.ol,{class:'section'}).appendTo(this).promise().done(function(){
+                    var it=this;
+                    $.each(cL,function(sID,bL){
+                        var sTD=Object.keys(config.language)[1]+sID, sClass=(fO.lookup.setting[sTD]?config.css.active:'');
+                        $(h.li,{id:sTD,class:sClass}).append(
+                            $(h.p,{text:lD.s[sID]}).on(fO.Click,function(e){
+                                O2.Click(e,$(this).parent().children('ol'));
+                            }).append(
+                                $(h.span,{text:'+'}).addClass(sClass)
+                            )
+                        ).appendTo(it).promise().done(function(){
+                            var ol=$(h.ol,{class:'book'}).appendTo(this);
+                            bL.forEach(function(bID){
+                                $(h.li,{id:bID,class:(fO.lookup.book[bID]?config.css.active:'')}).text(lD.b[bID]).on(fO.Click,function(){
+                                    $(this).toggleClass(config.css.active); O2.ID(bID); db.update.lookup();
+                                }).appendTo(ol);
+                            });
+                            ol.promise().done(function(){
+                                O2.Class(ol);
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        return container;
+    };
+    this.tmp=function(container){
+        console.log('OK...');
+    };
+};
+Core.prototype.container={
+    msg:{
+        info:function(e){
+            fO.msg.info=e.arg[0];
+            // NOTE: return true if you want to stop
+            return true;
+        }
+    },
+    closest:function(container,x,y){
+        if(container.is(':visible') && !$(x.target).closest('#dialog, .misc').length && !$(x.target).closest(container).length && !$(x.target).closest(y).length) return true;
+    },
+    fade:function(container,x,y){
+        container.fadeOut(300).promise().done(function(){
+            x.removeClass(config.css.active); if(y)y.removeAttr("style");
+        });
+    }
+};
+Core.prototype.info={
+    about:{
+        version:function(){
+            $(h.div,{id:'dialog',class:'version'}).append(
+                $(h.div,{id:'window'}).append(
+                    $(h.h1,{title:config.build}).text(config.name),
+                    $(h.h2).text(config.version),
+                    $(h.p).html(config.aboutcontent),
+                    $(h.p,{id:'by'}).append($(h.a,{target:'_blank',href:config.developerlink}).text(config.developer)),
+                    $(h.div,{id:'clickme'}).html('Ok').on(fO.Click,function(e){
+                        e.stopImmediatePropagation();
+                        $(this).parents('div').remove();
+                    })
+                )
+            ).appendTo('body').on(fO.Click,function(evt){
+                if(!$(evt.target).closest('#window').length){
+                    $('#clickme').effect( "highlight", {color:"#F30C10"}, 100 );
+                }
+            });
+        }
+    }
+};
+Core.prototype.doClick=function(callback){
+    var container = this.arg[0];
+    $(document).on(fO.Click,function(e){
+        if(container){
+            if(container.is(':visible')){
+                // e.preventDefault(); e.stopPropagation(); //e.stopImmediatePropagation();
+                if($.isFunction(callback) && callback(e)){
+                    // NOTE: container is now close
+                } else {
+                    // NOTE: container is busy
+                }
+            }
+        } else {
+            callback(e);
+        }
+    });
+};
+Core.prototype.url = function(l, x, fileExtension) {
+    // TODO: object key need to merge and fix where its using...
+    var fileUrl = this.string([l, 47, x.join('/'), 46, fileExtension]),
+        fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1),
+        fileContentType = this.string(['application', 47, fileExtension]);
+    return {
+        fileName: fileName,
+        // fileOption: {create: false},
+        fileExtension: fileExtension,
+        fileUrl: fileUrl,
+        fileCharset: fileContentType + ';charset=utf-8',
+        fileContentType: fileContentType
+    };
+};
+Core.prototype.hash=function(n){
+    return this.string([35,config.page[n],63]);
+};
+Core.prototype.dot=function(n){
+    // return this.string([35,config.page[n],63]);
+};
+Core.prototype.num = function(n, l) {
+    if (!l) l = fO.query.bible;
+    if(fO.lang[l].hasOwnProperty('n')){
+        return (Object.getOwnPropertyNames(fO.lang[l].n).length === 0) ? n : n.toString().replace(/[0123456789]/g, function(s) {
+            return fO.lang[l].n[s];
+        });
+    } else {
+        return n;
+    }
+};
+Core.prototype.hashURI= function(callback) {
+    //hash
     var q = location.hash,
         r = {
             page: q.split("?")[0].replace('#', '')
@@ -10,62 +313,6 @@ Core.prototype.hash = function(callback) {
         };
     while (m = search.exec(q)) r[d(m[1])] = d(m[2]);
     callback(r);
-};
-Core.prototype.url = function(l, x, fileExtension) {
-    // TODO: object key need to merge and fix where its using...
-    var fileUrl = this.string([l, 47, x.join('/'), 46, fileExtension]),
-        fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1),
-        fileContentType = this.string(['application', 47, fileExtension]),
-        Path = null,
-        Local = null;
-    if (fO.isCordova) {
-        // Path = cordova.file.dataDirectory;
-        // Local = cordova.file.dataDirectory + Filename;
-    } else if (fO.isChrome) {
-        // Path = 'filesystem:';
-        // Local = Filename;
-    }
-    return {
-        // url: fileUrl,
-        // data: fileExtension,
-        // content: fileContentType + ';charset=utf-8',
-        // filename: fileName,
-        // type: fileContentType,
-        // path: Path,
-        // local: Local,
-        // required for fileSystem
-        fileName: fileName,
-        // fileOption: {create: false},
-        fileExtension: fileExtension,
-        fileUrl: fileUrl,
-        // fileSize: e.total,
-        fileCharset: fileContentType + ';charset=utf-8',
-        fileContentType: fileContentType,
-        // fileContent: e.target.responseText,
-        // responseXML: e.target.responseXML
-    };
-    /*
-    fileName: fileName,
-    fileOption: {
-        create: true
-    },
-    fileExtension: fileExtension,
-    fileUrl: fileUrl,
-    fileSize: e.total,
-    fileCharset: fileCharset,
-    fileType: fileType,
-    fileContent: e.target.responseText,
-    responseXML: e.target.responseXML
-    */
-};
-Core.prototype.hashpage=function(n){
-    return this.string([35,config.page[n],63]);
-};
-Core.prototype.num = function(n, l) {
-    if (!l) l = fO.query.bible;
-    return (Object.getOwnPropertyNames(fO.lang[l].n).length === 0) ? n : n.toString().replace(/[0123456789]/g, function(s) {
-        return fO.lang[l].n[s];
-    });
 };
 Core.prototype.string = function(x) {
     return $.map(x, function(v) {
@@ -116,11 +363,16 @@ Core.prototype.array = function(d, o) {
     };
 };
 Core.prototype.working = function(q) {
+    // this.args[0].msg, this.args[0].wait
+    // f({wait:'',disable:'',msg:''}).working();
     if (fO.msg.info.is(":hidden")) {
         $('body').addClass(config.css.working).promise().done(fO.msg.info.slideDown(200));
     }
     if (q.wait === true) {
         $('body').addClass(config.css.wait);
+    }
+    if (q.wait === false) {
+        $('body').removeClass(config.css.wait);
     }
     if (q.disable === true) {
         $('body').addClass(config.css.disable);
@@ -129,7 +381,7 @@ Core.prototype.working = function(q) {
 };
 Core.prototype.done = function(callback) {
     fO.msg.info.slideUp(200).empty().promise().done(function() {
-        $('body').removeClass(config.css.working,config.css.wait,config.css.disable).promise().done(function() {
+        $('body').removeClass(config.css.working).removeClass(config.css.wait).removeClass(config.css.disable).promise().done(function() {
             if(callback)callback();
         });
     });
@@ -184,12 +436,6 @@ Core.prototype.template = function(dl, position) {
 Core.prototype.activeClass = function(container) {
     return container.find(f(config.css.active).is('class').name).removeClass(config.css.active).promise().done($(config.css.currentPage).addClass(config.css.active));
 };
-// Core.prototype.body = function() {
-//     return $('body').attr({
-//         id: fO.query.page,
-//         class: ''
-//     });
-// };
 // NOTE: previously used
 Core.prototype.HTML = function() {
     return {
@@ -208,6 +454,7 @@ Core.prototype.HTML = function() {
         sup: f('sup').is('tag').name
     };
 };
+/*
 //return {ol:this.is('ol').tag, ul:this.is('ul').tag, li:this.is('li').tag, a:this.is('a').tag, div:this.is('div').tag,p:this.is('p').tag,h1:this.is('h1').tag, h2:this.is('h2').tag,h3:this.is('h3').tag,h4:this.is('h4').tag, span:this.is('span').tag,em:this.is('em').tag,sup:this.is('sup').tag};
 // TODO: currently not using
 Core.prototype.header = function(container) {
@@ -259,3 +506,4 @@ Core.prototype.footer = function(container) {
         this.activeClass(container);
     }
 };
+*/

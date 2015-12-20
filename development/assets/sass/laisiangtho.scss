@@ -14,7 +14,8 @@ html{
 img{
     border:none;
 }
-a, .fA, span{
+a, span{
+    // a, .fA, span
     text-decoration:none;
     outline:none;
     -webkit-tap-highlight-color:rgba(0,0,0,0);
@@ -22,10 +23,12 @@ a, .fA, span{
     -webkit-user-select:none;
     -webkit-touch-callout:none;
 }
-#dialog, .fA, header, .zO, .s, .option span, ul, .io, .no, .control{
+#dialog, header, .io, .fO{
     // -webkit-touch-callout:none;
     // text-decoration:none;
     // outline:none;
+    // #dialog, .fA, header, .zO, .s, .option span, ul, .io, .no, .control
+    cursor: default;
     @include user-select();
 }
 *{
@@ -224,6 +227,10 @@ body {
                 }
             }
         }
+        > * {
+            // NOTE: only for testing
+            display: none;
+        }
     }
     // conditional
     &.fullscreen{}
@@ -237,7 +244,7 @@ body {
         main{
             >div{
                 &.container{
-                    display:block;z-index:10;text-align:center; margin:0px 0;padding:10px 2%;line-height:18px;box-shadow: 0px 1px 1px 1px #e0e0e0;background-color:rgba(255,255,255,0.95);
+                    display:block;z-index:10;text-align:center; margin:0px 0;padding:10px 2%;line-height:18px;box-shadow: 0px 1px 1px 1px #e0e0e0;//background-color:rgba(255,255,255,0.95);
                 }
                 &:not(.container){
                     overflow:hidden;
@@ -255,14 +262,16 @@ body {
         &.wait, &.disable{
             footer{
                 &:after{
-                    z-index:3;left:0px;width:100%;height:100%;max-height:100%;cursor: default;@include user-select();
+                    z-index:3;left:0px;width:100%;height:100%;max-height:100%;cursor: default;//@include user-select();
                 }
             }
             main{
                 >div{
                     &:not(.container){
+                        //@include user-select();
                         &:after{
-                            position:fixed;
+                            // NOTE: why?
+                            //position:fixed;
                         }
                     }
                 }

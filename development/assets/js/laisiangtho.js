@@ -5,8 +5,8 @@
     (c) 2013-2015
 */
 (function($, uA) {
-    var f = 'laisiangtho',version = '1.9.86.2015.8.28';
-    $.fn[f] = function(options) {
+    var laisiangtho = 'laisiangtho',version = '1.9.86.2015.8.28';
+    $.fn[laisiangtho] = function(options) {
         help={
             Agent:{
                 o:'config',
@@ -39,13 +39,13 @@
         //??? add VAR on production
         db={}, fO = $.extend({
             E: ['Action'],
-            App: f,
+            App: laisiangtho,
             Click: 'click',
-            On: f,
+            On: null,
             Hash: 'hashchange',
             Device: 'desktop',
             Platform: 'web',
-            Layout: f,
+            Layout: null,
             Browser: 'chrome',
             fileSystask:'Chrome', //temporary
             Orientation: {
@@ -61,13 +61,15 @@
             todo: {
                 Orientation: true,
                 // NOTE: if Template=true will be loaded Template!
-                Template:false
+                Template: true
             },
             container: {},
             msg: {
-                info: $('li:first-child')
+                info: $('li#msg')//li:first-child
+                // REVIEW: lookup
             }
         }, options);
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
         var fileSystem, application=this, Core = function() {
             this.arg = arguments;
             return (this);
@@ -81,23 +83,33 @@
             x.prototype.constructor = Core;
             return new x;
         };
+        // TODO: remove this
         Core.prototype.tmp = function() {
             console.log('tmp');
         };
+        // TODO: remove this
         Core.prototype.ClickTest = function(x) {
-            this.arg[0].append('...');
+            console.log('aaa');
+            // this.arg[0].append('...');
         };
         //=require laisiangtho.Prototype.load.js
         //=require laisiangtho.Prototype.database.js
         //=require laisiangtho.Prototype.other.js
         //=require laisiangtho.Prototype.init.js
         //=require laisiangtho.Prototype.xml.js
-        //=require laisiangtho.Prototype.bible.js
-        //???require laisiangtho.Prototype.content.js
+        //=require laisiangtho.Prototype.pageBible.js
+        //=require laisiangtho.Prototype.pageBook.js
+        //=require laisiangtho.Prototype.pageReader.js
+        //=require laisiangtho.Prototype.content.js
+        //=require laisiangtho.Prototype.regex.js
         Core.prototype.watch = function() {
             application.on(fO.Click, f(fO.On).is('class').name, function() {
-                f($(this)).exe(f($(this)).get('class'));
+                f($(this)).exe(f($(this)).get('class').element);
             });
+
+            // f(fO.On).is('class').element.on(fO.Click,function(){
+            //     f($(this)).exe(f($(this)).get('class').element);
+            // });
         };
         Core.prototype.metalink = function() {
             this.arg[0].loop(function(i,v){
@@ -110,20 +122,20 @@
             });
         };
         Core.prototype.exe = function(x) {
-            var z=this.arg[0], y=this[x[0]];
+            var o=this.arg[0], y=this[x[0]];
             if (y){
                 if ($.isFunction(y)) {
-                    return f(z)[x[0]](x);
+                    return f(o)[x[0]](x);
                 } else {
                     y=y[x[1]];
                     if(y){
                         if ($.isFunction(y)) {
-                            return f(z)[x[0]][x[1]](x);
+                            return f(o)[x[0]][x[1]](this,x);
                         }else{
                             y=y[x[2]];
                             if(y){
                                 if($.isFunction(y)) {
-                                    return f(z)[x[0]][x[1]][x[2]](x);
+                                    return f()[x[0]][x[1]][x[2]](this,x);
                                 }
                             }
                         }

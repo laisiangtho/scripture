@@ -44,20 +44,21 @@ Core.prototype.get = function(x) {
         return this.name || '';
     };
     this.split = function(y) {
+        y = y || ' ';
         return this.check().split(y);
     };
-    this.fn = function(tmp) {
+    this.fe = function(tmp) {
         if (d[x]) {
             this.element=this.split(d[x]);
         }
         return this;
     };
     if ($.isFunction(this[x])) {
-        return this.fn(this[x]());
+        return this.fe(this[x]());
     } else if (this[x]) {
         return this[x];
     } else if (x) {
-        return this.fn(this.attr());
+        return this.fe(this.attr());
     } else {
         return this;
     }

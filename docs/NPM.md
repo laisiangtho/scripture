@@ -29,3 +29,4 @@ devDependencies
 - npm install --save-dev merge
 - npm uninstall --save-dev merge
 - npm install --save-dev node.extend
+- npm install --save-dev xmldom

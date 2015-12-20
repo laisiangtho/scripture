@@ -31,8 +31,8 @@ jRequest, jDocReqLoc,  jLocalDoc  jDoks, jLetRequest, lokalfileSystem
 
 #### Prototype!
 - [x] get (Ok) :sparkles:
-- [ ] download (required to check again)
-- [ ] save (required to check again)
+- [x] download (Ok) :sparkles:
+- [x] save (Ok) :sparkles:
 - [x] remove (Ok) :sparkles:
 
 :sparkles: :camel: :boom:
@@ -82,8 +82,7 @@ var fileSystem = new fileSystask({
 NOTE: how **get** work!
 
 - if fileOption.create is true, fileContent, fileContentType are expected to be written!
-- if {fileReadAs==true} then 'readAsText' will be use to read!
-- if {fileNotFound=true} return successCallback when the file is not found! but you might still get fail Method execute, when fileOption.create is true and fail creating...
+- default {fileReadAs} is 'readAsText', can be used [readAsText, readAsArrayBuffer, readAsBinaryString, readAsDataURL]
 ```javascript
 fileSystem.get({
     // fileName: null,
@@ -97,20 +96,27 @@ fileSystem.get({
     // fileSize: null,
     fileUrlLocal: 'styles/blue.css',
     fileReadAs: 'readAsText',
-    fileNotFound: false,
     fileContent: 'body { color:red;}',
     // responseXML: null,
     // responseURL: null,
+    before: function(e) {
+        // NOTE: before task!
+        console.log('before',e);
+    },
+    progress: function(e) {
+        // NOTE: task is in progress!
+        console.log('progress',e);
+    },
     done: function(e) {
-        // NOTE: task completed, and always returned!
+        // NOTE: task completed, and always returned! (either in success or failure).
         console.log('done',e);
     },
     fail: function(e) {
-        // NOTE: only task fail
+        // NOTE: only when task fail
         console.error('fail',e);
     },
     success: function(e) {
-        // NOTE: only task successfully completed!
+        // NOTE: only when task successfully completed!
         console.warn('success',e);
     }
 }).then(function(e) {
@@ -121,32 +127,46 @@ fileSystem.get({
 NOTE: how **download** work!
 ```javascript
 fileSystem.download({
-    Method:'GET',
-    fileUrl:'assets/jstest/delete.css',
-    fileCache:true,
-    // fileUrl:'assets/jstest/include.Tmp.js',
-    // fileUrl:'assets/jstest/kjvCopy.xml',
-    // fileUrl:'//api.laisiangtho.com/laisiangtho/kjv.xml',
-    before:function(evt){
-        evt.setRequestHeader("Access-Control-Allow-Origin", "*");
+    requestMethod:'GET',
+    // fileName: fileName,
+    fileOption: {
+        create: true
     },
-    progress:function(Percentage){
-        // REVIEW: as Web developer we mention what our scripts does or doing! this 'promise' is Promised to return max:'100'% at the end of progress!
-        console.log(Percentage);
+    // fileExtension: fileExtension,
+    fileUrl: 'assets/delete/style1.css?qer=love',
+    // fileCharset: fileCharset,
+    fileContentType: 'text/css',
+    // fileSize: e.total,
+    // fileUrlLocal: 'love/me/with.css', // if not provided, if the download success and if fileOption.create:true then file name from fileUrl will be use to save, if ===true then remove the domain
+    // fileUrlLocal: 'delete/'+fileNameTmp+'/laisiangtho/tedim1.css?loev',
+    fileReadAs: 'readAsTexts',
+    fileContent: 'body { color:red;}',
+    fileCreation: '', // return true if file is created or updated, if not its message
+    // responseXML: e.target.responseXML,
+    // responseURL: e.target.responseURL,
+    before: function(e) {
+        // NOTE: before task!
+        console.log('download.before',e);
     },
-    done:function(evt){
-        // REVIEW: since we'd like to know the 'progress' is completed. however 'load' is executed even download is not success!
-        console.log('done');
+    progress: function(e) {
+        // NOTE: task is in progress!
+        console.log('download.progress',e);
     },
-    fail:function(evt){
-        // REVIEW: occur on major error like 'NoAPI/Method'
-        console.log('fail');
+    done: function(e) {
+        // NOTE: task completed, and always returned either success or fail!
+        console.log('download.done',e);
     },
-    success:function(evt){
-        console.log('success');
+    fail: function(e) {
+        // NOTE: only task fail
+        console.error('download.fail',e);
+    },
+    success: function(e) {
+        // NOTE: only task successfully completed!
+        console.warn('download.success',e);
     }
-}).then(function(e){
-    console.log('then->',e);
+}).then(function(e) {
+    // NOTE: arguments is depend of success or fail!
+    console.log('download.done.then',e);
 });
 ```
 NOTE: how **save** work!
@@ -197,7 +217,7 @@ fileSystem.save(
 NOTE: how **download** then **save** work!
 ```javascript
 fileSystem.download({
-    Method: 'GET',
+    requestMethod: 'GET',
     fileUrl: 'assets/delete/deletes.css',
     fileCache: false,
     before: function(evt) {
@@ -286,13 +306,19 @@ document.addEventListener('DOMContentLoaded', function() {
 ```
 NOTE: how **Promise** process in Javascript!
 ```javascript
-new Promise(function(resolve, reject) {
+return new Promise(function(resolve, reject) {
     // NOTE: resolve, reject
 }).then(function(e) {
     // NOTE: if success
+    Obj.success(e);
+    return e;
 }, function(e) {
     // NOTE: if fail
+    Obj.fail(e);
+    return e;
 }).then(function(e){
     // NOTE: when done
+    Obj.done(e);
+    return e;
 });
 ```

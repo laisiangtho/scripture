@@ -1,120 +1,53 @@
 this.save = function(Obj) {
-    Obj=Object.assign({},Task.Callback,Obj);
+    Obj=Task.Arguments(Obj,arguments);
     return new Promise(function(resolve, reject) {
-        fileSystask.request(
-            function(fs, status) {
-                try {
-                    if(typeof Obj !== 'object' || !Obj.fileName){
-                        return reject(Obj);
+        // NOTE: resolve, reject
+        fileRequest(Obj,function(fileRequestHas,o) {
+            if(fileRequestHas == 1){
+                // NOTE: file found {o:fileEntry}
+                fileWriter(o,Obj,function(isFileWritten, fileWriterMsg){
+                    if(isFileWritten){
+                        resolve(Obj);
+                    } else {
+                        reject(fileWriterMsg);
                     }
-                    Obj.fileUrlLocal=Obj.fileUrlLocal?Obj.fileUrlLocal:Obj.fileName;
-                    fs.root.getFile(Obj.fileUrlLocal, Obj.fileOption,
-                        function(fileEntry) {
-                            fileEntry.createWriter(
-                                function(writer) {
-                                    // IDEA: return Object and assign Object are merged, let me know if we should return just done or error
-                                    // Object.assign(writer,Obj);
-                                    writer.onwriteend = function() {
-                                        this.onwriteend = null; this.truncate(this.position);
-                                        Obj.filefoldersCreatedFinal=true;
-                                        resolve(fileEntry);
-                                    };
-                                    writer.onerror = function(e) {
-                                        reject(e.message ? e : {
-                                            message: e
-                                        });
-                                    };
-                                    if (!Obj.fileContentType) {
-                                        if (Task.extension[Obj.fileExtension]) {
-                                            Obj.fileContentType = Task.extension[Obj.fileExtension].ContentType;
-                                        } else {
-                                            Obj.fileContentType = Task.extension.other.ContentType;
-                                        }
-                                    }
-                                    writer.write(new Blob([Obj.fileContent], {
-                                        type: Obj.fileContentType
-                                    }));
-
-                                }
-                            );
-                        },
-                        function(e) {
-                            if(Obj.filefoldersCreated){
-                                if(typeof Obj ==='object'){
-                                    Obj.fileStatus = e;
+                });
+            }else if(fileRequestHas == 2){
+                // NOTE: file not found {o:fileSystemRoot}
+                var isBecauseDir = dirCheck(Obj.fileUrlLocal);
+                if(isBecauseDir){
+                    dirCreator(o, isBecauseDir, function(isDirCreated, dirCreatorMsg){
+                        if(isDirCreated){
+                            fileCreator(o,Obj,function(isFileCreated, fileCreatorMsg){
+                                if(isFileCreated){
+                                    resolve(Obj);
                                 }else{
-                                    Obj= e;
+                                    reject(fileCreatorMsg);
                                 }
-                                reject(Obj);
-                            }else{
-                                Obj.filefolders=Obj.fileUrlLocal.split('/').slice(0, -1);
-                                if(Obj.filefolders.length >= 1){
-                                    Obj.filefoldersCreated=true;
-                                        function ObjCreateDir(rootDirEntry, folders) {
-                                            if (folders[0] == '.' || folders[0] == '') {
-                                                folders = folders.slice(1);
-                                            }
-                                            rootDirEntry.getDirectory(folders[0], {create: true}, function(dirEntry) {
-                                                if (folders.length) {
-                                                    ObjCreateDir(dirEntry, folders.slice(1));
-                                                }else{
-                                                    resolve(fileSystask.save(Obj));
-                                                }
-                                            }, function(e){
-                                                if(typeof Obj ==='object'){
-                                                    Obj.fileStatus = e;
-                                                }else{
-                                                    Obj= e;
-                                                }
-                                                reject(Obj);
-                                            });
-                                        };
-                                        ObjCreateDir(fs.root, Obj.filefolders);
-                                }else{
-                                    if(typeof Obj ==='object'){
-                                        Obj.fileStatus = e;
-                                    }else{
-                                        Obj= e;
-                                    }
-                                    reject(Obj);
-                                }
-                            }
+                            });
+                        } else{
+                            reject(o);
                         }
-                    );
-                } catch (e) {
-                    reject(e.message?e.message:{message:e});
-                } finally {
-                    if(Obj.filefoldersCreated){
-                        if(Obj.filefoldersCreatedFinal){
-                            Obj.done(Obj);
-                        }
-                    }else {
-                        Obj.done(Obj);
-                    }
+                    });
+                } else {
+                    reject(o);
                 }
-            },
-            function(e) {
-                Obj.done(e);
-                reject(e.message?e:{message: e});
+            } else{
+                // NOTE: error {o:status response}
+                reject(o);
             }
-        );
+        });
     }).then(function(e) {
-        if(Obj.filefoldersCreated){
-            if(Obj.filefoldersCreatedFinal){
-                Obj.success(e);
-            }
-        }else {
-            Obj.success(e);
-        }
+        // NOTE: if success
+        Obj.success(e);
         return e;
     }, function(e) {
-        if(Obj.filefoldersCreated){
-            if(Obj.filefoldersCreatedFinal){
-                Obj.fail(e);
-            }
-        }else {
-            Obj.fail(e);
-        }
+        // NOTE: if fail
+        Obj.fail(e);
+        return e;
+    }).then(function(e){
+        // NOTE: when done
+        Obj.done(e);
         return e;
     });
 };

@@ -1,15 +1,14 @@
 var config = {
     name: 'Lai Siangtho beta',
     description:'the Holy Bible',
-    version: '1.1.7',
-    build: '1.9.84',
+    version: '1.1.9',
+    build: '1.9.86',
     id: 'laisiangtho',
     developer: 'Khen Solomon Lethil',
     file: {
         bible: 'xml',
         lang: 'json',
         template: 'z.html header, main, footer'
-        // template: '{Deploy}.{Platform}.html header, main, footer'
     },
     css: {
         active: 'active',
@@ -25,11 +24,10 @@ var config = {
         wait: 'wait',
         disable: 'disable'
     },
-    //bible:["1966","tedim", "mcl", "judson", "kjv", "bbe", "web", "hakha", "falam", "sizang", "paite", "mizo", "bokmal1906", "danish1933", "ostervald1877", "luther1912", "swedish1917","niv"],
     bible: {
         //exclusive:["tedim","judson","kjv"],
         available: ["tedim", "mcl", "judson", "kjv", "bbe", "web", "hakha", "falam", "sizang", "paite", "mizo", "bokmal1906", "danish1933", "ostervald1877", "luther1912", "swedish1917", "niv", "finish1938"],
-        ready: 1 //1=active,2=all
+        ready: 0 //1=active,2=all
     },
     header: {},
     footer: {},
@@ -44,7 +42,7 @@ var config = {
 };
 config.store = {
     name: config.id,
-    //version: 4,
+    version: 4,
     info: '0',
     lang: '1',
     query: '2',
@@ -121,7 +119,9 @@ config.language = {
         NoBookSelected: 'You have not selected any Book!',
         NoChapterSelected: 'You have not selected any chapter!',
         NoVerseSelected: 'You have not selected any verse!',
-        ShowMe: 'show me'
+        ShowMe: 'show me',
+        Yes: 'Yes',
+        No: 'No'
     },
     n: {},
     name: bible.name,

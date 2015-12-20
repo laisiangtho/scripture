@@ -13,7 +13,7 @@ img {
   border: none;
 }
 
-a, .fA, span {
+a, span {
   text-decoration: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
@@ -22,7 +22,8 @@ a, .fA, span {
   -webkit-touch-callout: none;
 }
 
-#dialog, .fA, header, .zO, .s, .option span, ul, .io, .no, .control {
+#dialog, header, .io, .fO {
+  cursor: default;
   -webkit-user-select: none;
 }
 
@@ -221,6 +222,10 @@ body#l189 div div ol li[title]:before {
   text-transform: uppercase;
 }
 
+body#l189 > * {
+  display: none;
+}
+
 body.working footer:after, body.working main > div:not(.container):after, body.working header:after {
   display: block;
   position: absolute;
@@ -237,7 +242,6 @@ body.working main > div.container, body.working main > div.active {
   padding: 10px 2%;
   line-height: 18px;
   box-shadow: 0px 1px 1px 1px #e0e0e0;
-  background-color: rgba(255, 255, 255, 0.95);
 }
 
 body.working main > div:not(.container) {
@@ -251,11 +255,6 @@ body.working.wait footer:after, body.working.wait main > div:not(.container):aft
   height: 100%;
   max-height: 100%;
   cursor: default;
-  -webkit-user-select: none;
-}
-
-body.working.wait main > div:not(.container):after, body.working.disable main > div:not(.container):after {
-  position: fixed;
 }
 
 body.working.wait footer:after, body.working.wait main > div:not(.container):after, body.working.wait header:after {

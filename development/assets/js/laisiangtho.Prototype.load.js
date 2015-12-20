@@ -4,8 +4,8 @@ Core.prototype.load = function() {
     $('h1').attr({title:config.build}).attr({class:'icon-fire'});
     var fn=this,l7=[], l8={}, f0={
         reading:function(bID){
-            if(config.bible.ready && fO.query.bible){
-                if(config.bible.ready==1){
+            if(config.bible.ready){
+                if(fO.query.bible && config.bible.ready==1){
                     return fO.query.bible;
                 } else if(config.bible.ready==2){
                     return bID;
@@ -21,14 +21,12 @@ Core.prototype.load = function() {
             if(fO.lang[bID].info){
                 $("p").html(fO.lang[bID].info.name).promise().done(function(){
                     // TODO: f0.reading(bID) == bID
-                    if(f0.reading(bID) == 0){
-                        // TODO: ???
+                    if(f0.reading(bID) == bID){
                         // reading->if->exists, download->if not exists
                         new f({bible:bID,reading:bID,downloading:bID}).xml(function(response){
-                            // console.log('XML.has.Response',response);
+                            // console.log('XML.has.Response.2',response);
                             f0.next();
                         }).has();
-
                     }else{
                         f0.next();
                     }
@@ -73,9 +71,9 @@ Core.prototype.load = function() {
                         next:function(){
                             $.extend(fO.lang[bID],this.merge());
                             $("p").html(lID).attr({class:'icon-database'}).promise().done(function(){
-                                // TODO: ???
-                                new f({bible:bID,reading:f0.reading(bID),downloading:null}).xml(function(response){
-                                    // console.log('XML.has.Response',response);
+                                // NOTE: this is happen on a fresh installation
+                                new f({bible:bID,reading:f0.reading(bID),downloading:f0.reading(bID)}).xml(function(response){
+                                    // console.log('XML.has.Response.1',response);
                                     callback();
                                 }).has();
                             });
@@ -171,8 +169,16 @@ Core.prototype.load = function() {
                     this.attr('id',fO.App);
                 });
             }else{
-                fn.init();
-                console.warn('Template:false, will not process to init()',config.file.template);
+                if(fO.todo.RemoveID){
+                    $(document.body).attr('id',fO.App).removeClass().promise().done(function(){
+                        // NOTE: remove splash
+                        this.children()[0].remove();
+                        // NOTE: remove dialog
+                        this.children().last().remove();
+                        fn.init();
+                    });
+                }
+                // console.warn('Template:false, will not process to init()',config.file.template);
             }
             $(document.body).keydown(function(e){
                 // TODO: shortcut keys
@@ -218,20 +224,20 @@ Core.prototype.load = function() {
                 fileSystem=new fileSystask({
                     Base: 'Other',
                     RequestQuota: 1073741824, //1024*1024*1024
-                    Permission: 1
+                    Permission: 0
                 }, {
                     success: function(fs) {
                         // TODO: nothing yet!
                     },
                     fail: function(err) {
-                        // NOTE: since fail, we remove {fileSystem}
-                        // fileSystem=null;
+                        // NOTE: since fail, sat {fileSystem} support: false
                     },
                     done: function(fs) {
                         // NOTE: yes process
                         // NOTE: 'fO.query.bible' only for testing, before Initiation is not completed
-                        // console.log(fileSystem);
-                        fO.query.bible='tedim';
+                        // TODO: remove support:false
+                        // fileSystem.support=false;
+                        // fO.query.bible='tedim';
                         if(fO.Ready==3){
                             f0.start();
                         }else{
@@ -239,8 +245,6 @@ Core.prototype.load = function() {
                         }
                     }
                 });
-                // this.fileSystem=function(){};
-                // if(fO.Ready==3){f0.start();}else{db.add({table:config.store.info,data:{build:config.build,version:config.version}}).then(f0.start());}
             };
         });
     });

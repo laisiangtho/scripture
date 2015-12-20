@@ -1,8 +1,8 @@
 var config = {
     name: "Lai Siangtho beta",
     description: "the Holy Bible",
-    version: "1.1.7",
-    build: "1.9.84",
+    version: "1.1.9",
+    build: "1.9.86",
     id: "laisiangtho",
     developer: "Khen Solomon Lethil",
     file: {
@@ -26,7 +26,7 @@ var config = {
     },
     bible: {
         available: [ "tedim", "mcl", "judson", "kjv", "bbe", "web", "hakha", "falam", "sizang", "paite", "mizo", "bokmal1906", "danish1933", "ostervald1877", "luther1912", "swedish1917", "niv", "finish1938" ],
-        ready: 1
+        ready: 0
     },
     header: {},
     footer: {},
@@ -42,6 +42,7 @@ var config = {
 
 config.store = {
     name: config.id,
+    version: 4,
     info: "0",
     lang: "1",
     query: "2",
@@ -118,7 +119,9 @@ config.language = {
         NoBookSelected: "You have not selected any Book!",
         NoChapterSelected: "You have not selected any chapter!",
         NoVerseSelected: "You have not selected any verse!",
-        ShowMe: "show me"
+        ShowMe: "show me",
+        Yes: "Yes",
+        No: "No"
     },
     n: {},
     name: bible.name,

@@ -12,7 +12,7 @@ Core.prototype.init = function() {
             q: '',
             result: ''
         };
-    this.hash(function(q) {
+    this.hashURI(function(q) {
         var f0 = {
             page: function(i, o, d) {
                 fO.query[i] = ($.inArray(o.toLowerCase(), config.page) >= 0) ? o : d;
@@ -68,19 +68,25 @@ Core.prototype.init = function() {
         })
     });
     // TODO: switch active class, faster way
-    if(fO.todo.Template){
-        $(config.css.header).find('*').removeClass(config.css.active).siblings(config.css.currentPage).addClass(config.css.active);
-    }
+    $(config.css.header).find('*').removeClass(config.css.active).siblings(config.css.currentPage).addClass(config.css.active);
+    // if(fO.todo.Template){
+    //     $(config.css.header).find('*').removeClass(config.css.active).siblings(config.css.currentPage).addClass(config.css.active);
+    // }
     // fn.header($(config.css.header));
     // fn.footer($(config.css.footer));
     var lookupForm=f('lookup').is('form').element;
     if(lookupForm.length){
         lookupForm.off().on('submit',function(){
             var x=$(this); x.serializeObject(fO.query);
-            // console.log(fO.query,fO.query.page);
             if(fO.query.page == x.attr('name')){
                 // NOTE: page is already lookup
-                x.find(f('q').is('input').name).attr('autocomplete', 'off').focus().select().promise().done(f().lookup());
+                x.find(f('q').is('input').name).attr('autocomplete', 'off').focus().select().promise().done(function() {
+                    if(fO.todo.lookup){
+                        console.log('already enter');
+                    } else {
+                        f().pagelookup();
+                    }
+                });
             }else{
                 x.attr('action').hashChange({q:fO.query.q});
             }
@@ -93,22 +99,36 @@ Core.prototype.init = function() {
         });
     }
     fO.container.main=$(config.css.content).children(config.css.currentPage);
-    // NOTE: find Method for current page, if not found send to the last config.page
-    fO.container.main.fadeIn(300).siblings().hide().promise().done(
-        this[$.isFunction(this[fO.query.page])?fO.query.page:$(config.page).get(-1)]()
-    );
-    // TODO: 'data-fa' might require to work on production
-    f('fn').is('attr').get('fn').element.each(function(){
+    // NOTE: check the page
+    var pageQuery='page'+fO.query.page, pageConfig='page'+$(config.page).get(-1);
+    // NOTE: load the page
+    // fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(function(){
+    //     fn[$.isFunction(fn[pageQuery])?pageQuery:pageConfig](fn);
+    // });
+    fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(function(){
+        fn[$.isFunction(fn[pageQuery])?pageQuery:pageConfig](fn);
+    });
+    f('fn').is('attr').element.each(function(i, e){
         // TODO: call Method dynamically
-        // $(this).append('...');
+        var x =$(e), y = f(x).get('fn'), xc=y.get('class').element, xf = y.get('fn').split();
+        if(fn[xc[0]]){
+            xf.unshift(xc[0]);
+            f(x).exe(xf);
+        }
     }).promise().done(function(){
-        // NOTE: save current bible query and page
+        // NOTE: update query(fO.query)
         db.update.query();
     });
+    // var pageQuery='page'+fO.query.page, pageConfig='page'+$(config.page).get(-1);
+    // fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(
+    //     this[$.isFunction(this[pageQuery])?pageQuery:pageConfig](this)
+    // );
     // $(f('fO').is('class').name).each(function(){
     //     var y=$(this), d=f(y).get('data-fa').split('-'), i=f(y).get('class').element;
     //     if(fA[i[0]]){
+    // class 0 data 0 -> send on
     //         if(d[0] && $.isFunction(fA[i[0]][d[0]]))fA[i[0]][d[0]](y,d,i);
+    // class 0,1->click on
     //         if(i[1] && $.isFunction(fA[i[0]][i[1]]))y.off().on(fO.Click,function(e){fA[i[0]][i[1]](e);});
     //     }
     // }).promise().done(function(){
@@ -118,24 +138,32 @@ Core.prototype.init = function() {
     // z.isAnalytics(function(o){
     //     o.sendPage(fO.query.page);
     // });
+    // NOTE: find Method for current page, if not found send to the last config.page
+    // fO.container.main.fadeIn(300).siblings().hide().promise().done(
+    //     this[$.isFunction(this[fO.query.page])?fO.query.page:$(config.page).get(-1)]()
+    // );
+    // fO.container.main.fadeIn(300).addClass(config.css.active).siblings().hide().promise().done(
+    //     this[$.isFunction(this[fO.query.page])?fO.query.page:$(config.page).get(-1)]()
+    // );
+    // fO.msg.info = $('main .container');
+    //get('class').element
+    // TODO: 'data-fa' might require to work on production
+    // f('fN').is('class').element.each(function(){
+    //     // TODO: call Method dynamically
+    //     // $(this).append('...');
+    // }).promise().done(function(){
+    //     // NOTE: save current bible query and page
+    //     db.update.query();
+    // });
     // TODO: Orientation change detecting, require for Mobile and Tablet
     if(fO.todo.Orientation){
         application.Orientation();
         delete fO.todo.Orientation;
     }
 };
-Core.prototype.book = function() {
-    console.log('no book?');
-};
-Core.prototype.reader = function() {
-    console.log('no reader?');
-};
-Core.prototype.lookup = function() {
-    console.log('no lookup?');
-};
-Core.prototype.note = function() {
+Core.prototype.pagenote = function() {
     console.log('no note?');
 };
-Core.prototype.todo = function() {
+Core.prototype.pagetodo = function() {
     console.log('nothing todo?');
 };

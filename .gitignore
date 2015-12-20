@@ -52,6 +52,7 @@ delete
 output
 *tmp*/
 *delete.*
+*tmp.*
 *Copy.*
 development/assets/*/*[0-9].*
 development/assets/*/*Delete*.*

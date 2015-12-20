@@ -1,316 +1,242 @@
-// NOTE: Example
-// *** CHECK IS-FILE READY
-// var x=new f({bible:'tedim',reading:1}).xml(function(response){
-//     return response;
-// }).has();
-// *** GET DATA
-// var x=new f({bible:'tedim',reading:1}).xml(function(response){
-//     console.log(response);
-//     return response;
-// }).get();
-// FIXME: storage
 Core.prototype.xml = function(callback) {
     // NOTE new f('arg').xml();
     // TODO: for Storage for Chrome using Webkit
     var fn=this, q=this.arg[0];
     var lO=fO.lang[q.bible], lA=lO.l, lB=lO.b;
     var urlInfo=this.url(config.id,[q.bible],config.file.bible);
+    var responseMsg =[];
+    /*
+    if(fileSystem.support){
+    }else if(window.indexedDB){
+    }else{
+    }
+    */
     // NOTE: has, get, remove
     this.has=function(){
         if($.isEmptyObject(fO[q.bible].bible)){
             if(fileSystem.support){
                 fileSystem.get({
-                    // fileName:'styles.css',
-                    fileName:urlInfo.fileUrl,
                     fileOption: {},
-                    fileObject:function(/*fileSystem, fileEntry*/){
-                        // console.log('found',urlInfo.fileUrl);
-                        fn.file.read(this.fileEntry);
+                    fileUrlLocal: urlInfo.fileUrl,
+                    fileReadAs: true,
+                    before:function () {
+                        responseMsg.push(q.bible.toUpperCase());
                     },
-                    fileNotExists:function(/*fileSystem, fileStatus*/){
-                        // console.log('not found',urlInfo.fileUrl);
+                    success:function(Obj){
+                        responseMsg.push('Found');
+                        fn.file.read(Obj.fileContent);
+                    },
+                    fail:function(Obj/*String or Object*/){
+                        responseMsg.push('NotFound');
                         if(q.bible==q.downloading){
-                            fn.file.download();
+                            responseMsg.push('SendTo');
+                            fn.file.download(true);
                         }else{
-                            fn.ResponseGood({msg:'fileNotExists',status:false});
+                            responseMsg.push('Sendback');
+                            fn.ResponseGood(false);
                         }
-                    },
-                    fileError:function(status/*String or Object*/){
-                        fn.ResponseGood({msg:'to fileSystem.fileError',status:false});
                     }
                 });
-            }else{
-                // console.log('fileSystem is not ok');
-                fn.ResponseGood({msg:'fileSystem NotOk, process ot db ',status:false});
+            }else if(window.indexedDB){
+                // TODO: db?
+                responseMsg.push('Store');
+                db.get({table:q.bible}).then(function(storeBible){
+                    if(storeBible){
+                        if($.isEmptyObject(storeBible)){
+                            responseMsg.push('Empty');
+                            if(q.bible==q.downloading){
+                                responseMsg.push('SendTo');
+                                fn.file.download(false);
+                            }else{
+                                responseMsg.push('Sendback');
+                                fn.ResponseGood(false);
+                            }
+                        }else{
+                            responseMsg.push('Reading');
+                            if(q.bible==q.reading){
+                                fO[q.bible].bible=storeBible;
+                                responseMsg.push('Success');
+                                fn.ResponseGood(true);
+                            }else{
+                                responseMsg.push('Disabled');
+                                fn.ResponseGood(true);
+                            }
+                        }
+                    }else{
+                        responseMsg.push('NotFound');
+                        if(q.bible==q.downloading){
+                            responseMsg.push('SendTo');
+                            fn.file.download(false);
+                        }else{
+                            responseMsg.push('Sendback');
+                            fn.ResponseGood(false);
+                        }
+                    }
+                });
+            } else {
+                responseMsg.push('fileSystemNotOk','indexedDBNotOK');
+                if(q.bible==q.downloading){
+                    responseMsg.push('CanNotSetDownloadingTRUE');
+                }
+                responseMsg.push('Sendback');
+                fn.ResponseGood(false);
             }
-            // if(fO.isCordova){
-            //     // NOTE: for Mobile and Tablet
-            //     // NOTE: fn.file.Cordova().read =Oa.XLO.reading
-            //     urlInfo.local.resolveFileSystem(fn.file.Cordova().read, function(error){
-            //         fn.ResponseGood({msg:'to Local',status:false});
-            //     });
-            // }else if(fO.isChrome){
-            //     // NOTE: for Chrome Package App using webkitRequestFileSystem
-            //     fn.ResponseGood({msg:'to Webkit',status:false});
-            // }else if(fileSystem){
-            // }else{
-            //     // NOTE: ather that support INDEXDB
-            //     db.get({table:q.bible}).then(function(storeBible){
-            //         if(storeBible){
-            //             if($.isEmptyObject(storeBible)){
-            //                 fn.ResponseGood({msg:'to Store',status:false});
-            //             }else{
-            //                 if(q.reading==q.bible){
-            //                     fO[q.bible].bible=storeBible;
-            //                     fn.ResponseGood({msg:'from Store',status:true});
-            //                 }else{
-            //                     fn.ResponseGood({msg:'to Store',status:true});
-            //                 }
-            //             }
-            //         }else{
-            //             fn.ResponseGood({msg:'to Store',status:false});
-            //         }
-            //     });
-            // }
         }else{
             // TODO: must check why object is empty
-            fn.ResponseGood({msg:'from Object',status:true});
+            responseMsg.push('AlreadyInObject');
+            fn.ResponseGood(true);
         }
         return this;
     };
     this.get=function(){
         if($.isEmptyObject(fO[q.bible].bible)){
-            if(fO.isCordova){
-                // NOTE: fn.file.Cordova().get=Oa.XLO.getting, fn.file.Cordova().download=Oa.XLO.downloading
-                fn.working({msg:lA.PleaseWait,wait:true}).promise().done(function(){
-                    urlInfo.local.resolveFileSystem(fn.file.Cordova().get, fn.file.Cordova().download);
-                });
-            }else if(fO.isChrome){
-                // NOTE: for Chrome Package App using webkitRequestFileSystem
-                fn.ResponseGood({msg:'to Webkit',status:false});
-            }else{
-                // NOTE: ather that support INDEXDB
-                db.get({table:q.bible}).then(function(storeBible){
-                    if(storeBible){
-                        fO[q.bible].bible=storeBible;
-                        if($.isEmptyObject(fO[q.bible].bible)){
-                            // NOTE: storage has this, but was empty
-                            fn.file.IndexDb().download();
-                        }else{
-                            // NOTE: storage has bible for this ID
-                            fn.ResponseGood({msg:'from Store',status:true});
-                        }
-                    }else{
-                        // NOTE: storage has no bible this ID
-                        fn.file.IndexDb().download();
+            if(fileSystem.support){
+                fileSystem.get({
+                    fileOption: {},
+                    fileUrlLocal: urlInfo.fileUrl,
+                    fileReadAs: true,
+                    before:function () {
+                        responseMsg.push(q.bible.toUpperCase());
+                        fn.working({msg:lA.PleaseWait,wait:true});
+                    },
+                    success:function(Obj){
+                        responseMsg.push('Found');
+                        fn.file.read(Obj.fileContent);
+                    },
+                    fail:function(Obj){
+                        responseMsg.push('NotFound','SendTo');
+                        fn.file.download(true);
                     }
                 });
+            }else if(window.indexedDB){
+                // TODO: db?
+                responseMsg.push('Store');
+                db.get({table:q.bible}).then(function(storeBible){
+                    if(storeBible){
+                        if($.isEmptyObject(storeBible)){
+                            responseMsg.push('Empty','SendTo');
+                            fn.file.download(false);
+                        }else{
+                            responseMsg.push('Reading');
+                            if(q.bible==q.reading){
+                                fO[q.bible].bible=storeBible;
+                                responseMsg.push('Success');
+                                fn.ResponseGood(true);
+                            }else{
+                                responseMsg.push('Disabled');
+                                fn.ResponseGood(true);
+                            }
+                        }
+                    }else{
+                        responseMsg.push('NotFound','SendTo');
+                        fn.ResponseGood(false);
+                    }
+                });
+            } else {
+                responseMsg.push('fileSystemNotOk','indexedDBNotOK');
+                responseMsg.push('GettingReadyForWeb');
+                fn.file.download(false);
             }
         }else{
-            fn.ResponseCallbacks({msg:'from Object',status:true});
+            responseMsg.push('AlreadyInObject');
+            // fn.ResponseGood(true);
+            fn.ResponseCallbacks(true);
         }
+        return this;
     };
     this.remove=function(){
-        if(fO.isCordova){
-            urlInfo.local.resolveFileSystem(fn.file.Cordova().remove, function(error){
-                fn.ResponseGood({status:true});
+        responseMsg.push(q.bible.toUpperCase());
+        if(fileSystem.support){
+            fileSystem.remove({
+                fileOption: {},
+                fileUrlLocal: urlInfo.fileUrl,
+                fileNotFound: true,
+                success:function(Obj){
+                    responseMsg.push('Removed');
+                    fn.ResponseBad(true);
+                },
+                fail:function(Obj){
+                    responseMsg.push('Fail');
+                    fn.ResponseBad(false);
+                }
             });
-        }else{
+        }else if(window.indexedDB){
+            // TODO: db?
+            responseMsg.push('Store');
             db.delete({table:q.bible}).then(function(){
-                fn.ResponseBad({status:true});
+                responseMsg.push('Removed');
+                fn.ResponseBad(true);
             });
+        } else {
+            responseMsg.push('fileSystemNotOk','indexedDBNotOK');
+            responseMsg.push('NothingToRemove','Sendback');
+            fn.ResponseBad(false);
         }
     };
     this.file={
         // NOTE: IndexDb, Web(Cordova, Chrome,None)
-        IndexDb:function(){
-            this.download=function(secondRequest){
-                $.ajax({
-                    //TODO headers:{}, xhrFields:{"withCredentials": true},
-                    beforeSend:function(xhr){
-                        fn.working({msg:lA.Downloading,wait:true});
-                        xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-                    },
-                    xhr:function(){
-                        var xhr=new window.XMLHttpRequest();
-                        xhr.addEventListener("progress", function(evt){
-                            if(evt.lengthComputable) {
-                                var Percentage=Math.floor(evt.loaded / evt.total * 100);
-                                fn.working({msg:lA.PercentLoaded.replace(/{Percent}/, fn.num(Percentage))});
-                            }
-                        }, false);
-                        //TODO uploading
-                        /*
-                        XMLHttpRequest.upload.addEventListener("progress", function(evt){
-                            if(evt.lengthComputable){
-                                var Percent=Math.floor(evt.loaded / evt.total * 100);
-                                fn.working({
-                                    msg:lA.PercentLoaded.replace(/{Percent}/, fn.num(Percentage)),
-                                    class:true
-                                });
-                            }
-                        }, false);
-                        */
-                        return xhr;
-                    },
-                    url:(secondRequest)?secondRequest+urlInfo.url:urlInfo.url,dataType:urlInfo.data,contentType:urlInfo.content,cache:true,crossDomain:true,async:true
-                }).done(function(j, status, d){
-                    fn.JobType(j);
-                }).fail(function(jqXHR, textStatus){
-                    if(api){
-                        // NOTE NodeJs might be confused!
-                        if(secondRequest){
-                            fn.ResponseGood({msg:textStatus,status:false});
-                        }else{
-                            fn.file.IndexDb().download(api);
-                        }
-                    }else{
-                        fn.ResponseGood({msg:textStatus,status:false});
-                    }
-                }).always(function(){});
-            }
-            this.read=function(){}
-            this.get=function(){}
-            this.content=function(){}
-            this.remove=function(){}
-            return this;
-        },
-        Cordova:function(){
-            this.download=function(){
-                // fn.working({msg:lA.Downloading});
-                // var fileTransfer = new FileTransfer();
-                // fileTransfer.onprogress=function(evt) {
-                //     if(evt.lengthComputable){
-                //         var Percentage = Math.floor(evt.loaded / evt.total * 100);
-                //         fn.working({msg:lA.PercentLoaded.replace(/{Percent}/, fn.num(Percentage))});
-                //     }
-                // };
-                // // NOTE this.content=fn.file.Cordova().content
-                // fileTransfer.download(encodeURI(api+urlInfo.url), urlInfo.local, fn.file.Cordova().content, function(error){
-                //     fn.ResponseGood({msg:error.code,status:false});
-                // });
-            };
-            this.read=function(fileEntry){
-                if(q.bible==q.reading){
-                    this.content(fileEntry);
-                }else{
-                    fn.ResponseGood({msg:'from Reading',status:true});
-                }
-            };
-            this.get=function(fileEntry){
-                this.content(fileEntry);
-            };
-            this.content=function(fileEntry,error){
-                fileEntry.file(function(file) {
-                    // NOTE file.name, file.localURL, file.type, new Date(file.lastModifiedDate), file.size
-                    var reader=new FileReader();
-                    reader.onloadend=function(e){
-                        var parser=new DOMParser();
-                        fn.JobType(parser.parseFromString(e.target.result,urlInfo.type));
-                    };
-                    reader.readAsText(file);
-                },function(){
-                    fn.ResponseGood({msg:'fail to read Local',status:false});
-                });
-            };
-            this.remove=function(fileEntry){
-                fileEntry.remove(function() {
-                    fn.ResponseBad({status:true});
-                },function(error){
-                    fn.ResponseBad({status:false});
-                });
-            };
-            return this;
-        },
-        Chrome:function(){
-            // TODO: webkitResolveLocalFileSystemURL
-            this.download=function(){
-            }
-            return this;
-        },
-        Web:function(){
-            // TODO: load XML
-            this.download=function(){
-            }
-            return this;
-        },
-        download:function(){
+        // fn.working({msg:lA.Downloading,wait:true});
+        // fn.working({msg:lA.PleaseWait,wait:true});
+        download:function(isfileToCreate){
             fileSystem.download({
-                Method: 'GET',
+                fileOption: {
+                    create: isfileToCreate
+                },
                 fileUrl: urlInfo.fileUrl,
-                fileUrlLocal: urlInfo.fileUrl,
-                // fileUrl: 'assetss/delete/delete.css',
-                fileCache: false,
-                // before: function(evt) {
-                //     evt.setRequestHeader("Access-Control-Allow-Origin", "*");
-                // },
+                fileUrlLocal: true,
+                before: function(e) {
+                    // NOTE: before task!
+                    // e.setRequestHeader("Access-Control-Allow-Origin", "*");
+                    responseMsg.push('Downloading');
+                    fn.working({msg:lA.Downloading,wait:true});
+                },
                 progress: function(Percentage) {
-                    console.log(Percentage);
+                    // NOTE: task is in progress!
+                    // fO.msg.info.html(e);
+                    fn.working({msg:lA.PercentLoaded.replace(/{Percent}/, fn.num(Percentage,q.bible))});
                 },
-                done: function(evt) {
-                    console.log('done',evt);
+                fail: function(e) {
+                    // NOTE: only task fail
+                    responseMsg.push('Fail');
+                    fn.ResponseGood(false);
                 },
-                fail: function(evt) {
-                    console.log('fail',evt);
-                },
-                success: function(evt) {
-                    console.log('success',evt);
-                    fileSystem.save(Object.assign(evt,{
-                        success:function(e){
-                            fn.has();
-                        },
-                        fail:function(e){
-                            // console.log('save.fail');
-                            fn.ResponseGood({msg:'fail saving',status:false});
-                        },
-                        done:function(e){
-                            // console.log('save.done');
-                        }
-                    })).then(function(s) {
-                        console.log('save.then.success',s);
-                    });
+                success: function(Obj) {
+                    // NOTE: only task successfully completed!
+                    responseMsg.push('Success');
+                    if(Obj.fileCreation === true){
+                        responseMsg.push('AndSaved');
+                    } else {
+                        responseMsg.push('NotSaved');
+                    }
+                    fn.file.read(Obj.fileContent);
                 }
-            }).then(function(e) {
-                console.log('download.then',e);
             });
-            // fn.ResponseGood({msg:'downloading is true',status:false});
         },
         read:function(fileEntry){
-            if(q.bible==q.reading){
+            responseMsg.push('Reading');
+            if(!q.downloading || q.bible==q.reading){
                 this.content(fileEntry);
             }else{
-                fn.ResponseGood({msg:'from Reading',status:true});
+                responseMsg.push('Disabled');
+                fn.ResponseGood(true);
             }
         },
-        content:function(fileEntry){
-            fileEntry.file(function(file) {
-                // NOTE file.name, file.localURL, file.type, new Date(file.lastModifiedDate), file.size
-                var reader=new FileReader();
-                reader.onloadend=function(){
-                    // this.result=e.target.result
-                    fn.JobType(new DOMParser().parseFromString(this.result,urlInfo.fileContentType));
-                };
-                reader.readAsText(file);
-            },function(){
-                fn.ResponseGood({msg:'fail to read Local',status:false});
-            });
-        },
-        remove:function(fileEntry){
-            fileEntry.remove(function() {
-                fn.ResponseBad({status:true});
-            },function(error){
-                fn.ResponseBad({status:false});
-            });
+        content:function(file){
+            responseMsg.push(urlInfo.fileExtension.toUpperCase());
+            fn.JobType(new DOMParser().parseFromString(file,urlInfo.fileContentType));
         }
     };
     this.JobType=function(j){
         // NOTE child
         var jobTypeFormat=$(j).children().get(0).tagName;
+        responseMsg.push(jobTypeFormat);
         if($.isFunction(this.Job[jobTypeFormat])){
             fO[q.bible].bible={info:{},book:{}};
             this.Job[jobTypeFormat](j);
         }else{
-            this.ResponseGood({msg:lA.IsNotFoundIn.replace(/{is}/,jobTypeFormat).replace(/{in}/,'jobType'),status:false});
+            responseMsg.push('NotFound');
+            this.ResponseGood(false);
+            // this.ResponseGood({msg:lA.IsNotFoundIn.replace(/{is}/,jobTypeFormat).replace(/{in}/,'jobType'),status:false});
         }
     };
     this.Job={
@@ -345,9 +271,14 @@ Core.prototype.xml = function(callback) {
                                                         if(d3.length == v+1){
                                                             if(fileSystem.support){
                                                                 // fO.isCordova, fO.isChrome
-                                                                fn.ResponseGood({msg:'Saved',status:true});
+                                                                responseMsg.push('Success');
+                                                                fn.ResponseGood(true);
+                                                            }else if(window.indexedDB){
+                                                                responseMsg.push('Stored');
+                                                                db.add({table:q.bible,data:fO[q.bible].bible}).then(fn.ResponseGood(true));
                                                             }else{
-                                                                db.add({table:q.bible,data:fO[q.bible].bible}).then(fn.ResponseGood({msg:'Stored',status:true}));
+                                                                responseMsg.push('NotStored');
+                                                                fn.ResponseGood(true);
                                                             }
                                                         }
                                                     }
@@ -381,32 +312,54 @@ Core.prototype.xml = function(callback) {
         }
     };
     // TODO: see if you can do smarter for the return Method
-    this.ResponseGood=function(response){
-        lO.local=response.status;
+    this.ResponseGood=function(status){
+        lO.local=status;
+        var responseStatus = lO.local.toString().toUpperCase();
+        responseMsg.push('LangVariableUpdatedAs',responseStatus);
+        responseMsg.push('LangDB');
         if(q.reading){
-            fn.ResponseCallbacks(response);
+            responseMsg.push('NotUpdatedDueToReadingIsTrue');
+            fn.ResponseCallbacks(status);
         }else{
             db.update.lang().then(function(){
-                fn.done(); fn.ResponseCallbacks(response);
+                responseMsg.push('UpdatedAs',responseStatus);
+                fn.done(); fn.ResponseCallbacks(status);
             });
         }
         return this;
     };
-    this.ResponseBad=function(response){
+    this.ResponseBad=function(status){
         // REVIEW: ?
-        // delete fO[q.bible].bible;
-        // if(response.status)fO.lang[q.bible].local=false;
         delete fO[q.bible].bible;
-        if(response.status)lO.local=false;
-        db.update.lang().then(function(){
-            fn.ResponseCallbacks(response);
-        });
+        responseMsg.push('Lang');
+        if(status)lO.local=false;
+        var responseStatus = lO.local.toString().toUpperCase();
+        if(status){
+            responseMsg.push('Removed');
+            db.update.lang().then(function(){
+                responseMsg.push('AndVariableUpdatedAs',responseStatus);
+                fn.done(); fn.ResponseCallbacks(true);
+            });
+        } else {
+            responseMsg.push('ButVariableUpdatedAs',responseStatus);
+            fn.ResponseCallbacks(true);
+        }
         return this;
     };
-    this.ResponseCallbacks=function(response){
-        this.msg=response;
-        // callback.apply(this,response);
-        callback(response);
+    this.ResponseCallbacks=function(status){
+        this.msg=responseMsg.join(' ');
+        callback({msg:this.msg,status:status});
     };
     return this;
 };
+// NOTE: Example
+// *** CHECK IS-FILE READY
+// var x=new f({bible:'tedim',reading:1}).xml(function(response){
+//     return response;
+// }).has();
+// *** GET DATA
+// var x=new f({bible:'tedim',reading:1}).xml(function(response){
+//     console.log(response);
+//     return response;
+// }).get();
+// FIXME: storage

@@ -39,6 +39,7 @@
                 return fn[typeof this](this);
             }
         },
+        /*
         requestFileSystem: {
             value: function(success, error) {
                 // NOTE: Cordova
@@ -54,6 +55,7 @@
                 window.resolveLocalFileSystemURL(this, success, error);
             }
         },
+        */
         XMLHttp: {
             value: function(success, error) {
                 var xmlhttp = new XMLHttpRequest();
@@ -65,7 +67,8 @@
         hashChange: {
             value: function(page) {
                 // TODO: try without jQuery
-                window.location.hash = this + jQuery.param(page);
+                window.location.hash = this.toString()+jQuery.param(page);
+                // window.location.hash = this + jQuery.param(page);
                 // x.attr('action').hashChange();
             }
         },

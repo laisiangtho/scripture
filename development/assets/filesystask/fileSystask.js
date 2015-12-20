@@ -82,6 +82,7 @@
                 }
                 return o;
             },
+            ReadAs:['readAsText','readAsArrayBuffer', 'readAsBinaryString', 'readAsDataURL'],
             extension: {
                 mp3: {
                     ContentType: 'audio/mp3'
@@ -427,6 +428,7 @@
             }
         };
         Task.Assigns(Setting);
+        //=require fileSystask.utility.js
         //=require fileSystask.setting.js
         //=require fileSystask.permission.js
         //=require fileSystask.request.js
@@ -435,12 +437,5 @@
         //=require fileSystask.remove.js
         //=require fileSystask.download.js
         //=require fileSystask.save.js
-        function f1(n, e) {
-            if (typeof n === 'function') {
-                return n(e);
-            } else {
-                return e;
-            }
-        };
     };
 }('fileSystask'));
