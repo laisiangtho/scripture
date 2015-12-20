@@ -4,9 +4,25 @@ Core.prototype.content=function(q,callbackContent){
         return f().num(n,q.bible);
     };
     function HolyBible(callbackBible) {
-        var Oj=this;
-        this.result={book:0,chapter:0,verse:0,str:''};
-        this.booklist={};
+        var Ob=this;//Ob
+        /*
+        fO.previous.booklist=Ob.query.current;
+        fO.previous.bible=q.bible;
+        fO.previous.book=q.book;
+        fO.previous.chapter=q.chapter;
+        fO.previous.q=q.q;
+        q.result=Ob.Result.Verse;
+
+        fO.previous.booklist=Ob.query.booklist;
+        fO.previous.bible=q.bible;
+        fO.previous.book=q.book;
+        fO.previous.chapter=q.chapter;
+        fO.previous.q=q.q;
+        q.result=Ob.Result.Verse;
+        */
+        // this.Result={Book:0,Chapter:0,Verse:0,str:''};
+        // this.booklist={};
+        this.Result={Book:0,Chapter:0,Verse:0,Str:'',Booklist:{}};
         this.get=function(callback){
             return callback(this);
         };
@@ -15,21 +31,25 @@ Core.prototype.content=function(q,callbackContent){
                 callback(response);
             }).get();
         };
-        this.verseMerged=function(list,vID){
+        this.verseMerge=function(list,vID){
             return $(list).map(function(t,i){
                 var v1=vID, v2=v1.split('-');
                 if(v1==i){return i;}else if(v2.length>1 && v2[0] <= i && v2[1] >= i){return i;}
             }).get();
         };
-        this.search=function(s,n){
+        this.verseRegex=function(s,n){
             //TODO
             if($.type(n) === "string"){
-                if(s.search(new RegExp(n, "gi")) > -1)return true;
+                if(s.search(new RegExp(n, "gi")) > -1) {
+                    return true;
+                } else {
+                    return false;
+                }
             }else{
                 return true;
             }
         };
-        this.replace=function(s,n){
+        this.verseReplace=function(s,n){
             //TODO s.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…")
             if($.type(n) === "string"){
                 return s.replace(new RegExp(n, "i"), '<b>$&</b>');
@@ -37,52 +57,60 @@ Core.prototype.content=function(q,callbackContent){
                 return s;
             }
         };
+        this.verseSearch=function(nQ){
+            if((this.LIST.length?this.verseMerge(this.LIST,this.VID):[this.VID]).length && this.verseRegex(this.VERSE.text,nQ)){
+                return true;
+            }
+        };
+
         this.query={
             chapter:function(){
-                Oj.booklist[q.book]={};
-                Oj.booklist[q.book][q.chapter]=[];
+                Ob.Result.Booklist[q.book]={};
+                Ob.Result.Booklist[q.book][q.chapter]=[];
                 this.is=function(){
-                    return fO.previous.booklist!==this.list() || fO.previous.bible!==q.bible || fO.previous.chapter!==q.chapter;
+                    // return fO.previous.booklist!==this.list() || fO.previous.bible!==q.bible || fO.previous.chapter!==q.chapter;
+                    return fO.previous.bible!==q.bible || fO.previous.chapter!==q.chapter;
                 };
-                return Oj.booklist;
+                return Ob.Result.Booklist;
             },
             list:function(){
-                // return Object.keys(Oj.booklist).join();
-                this.resultId=Object.keys(Oj.booklist);
-                // NOTE: this.current used to check on page
-                return this.current=this.resultId.join();
+                return Ob.Result.BooklistName=Object.keys(Ob.Result.Booklist).join();
             },
             book:function(){
-                Oj.booklist={};
+                Ob.Result.Booklist={};
                 if(Object.getOwnPropertyNames(fO.lookup.book).length > 0){
                     $.each(fO.lookup.book,function(bID,d){
-                        Oj.booklist[bID]={};
+                        Ob.Result.Booklist[bID]={};
                         if($.isEmptyObject(d)){
                             $.each(bible.info[bID].v,function(cID,f){
                                 cID++;
-                                Oj.booklist[bID][cID]=[];
+                                Ob.Result.Booklist[bID][cID]=[];
                             });
                         }else{
-                            Oj.booklist[bID]=d;
+                            Ob.Result.Booklist[bID]=d;
                         }
                     });
-                    return Oj.booklist;
+                    return Ob.Result.Booklist;
                 }
             },
             regex:function(){
-                return Oj.booklist=new regex(q).is(q.q);
+                return Ob.Result.Booklist=new regex(q).is(q.q);
             },
             prev:function(){
                 if(q.booklist){
-                    Oj.booklist=q.booklist;
-                    return Oj.booklist;
+                    Ob.Result.Booklist=q.booklist;
+                    return Ob.Result.Booklist;
                 }
             },
-            lookup:function(){
+            lookup:function(callbackBibleBefore){
+                this.callbackBibleBefore = callbackBibleBefore;
                 this.is=function(){
-                    var i=fO.previous.booklist!==this.list() || fO.previous.q!==q.q;
+                    //callbackBibleBeforeHas
+                    var i=fO.previous.booklist!=this.list() || fO.previous.q!=q.q;
+                    this.callbackBibleBeforeHas = (new regex(q).is(q.q))?'':q.q;
                     if(i){
                         //fN.Working({msg:lA.PleaseWait,wait:true});
+                        //var nQ=(new regex(q).is(q.q))?'':q.q;
                     }
                     return i;
                 };
@@ -90,43 +118,58 @@ Core.prototype.content=function(q,callbackContent){
             },
         };
         this.book=function(dQ){
-            var d1=new $.Deferred(), o={
+            var deferred=new $.Deferred(), o={
                 task:{
                   bible:Object.keys(dQ),
                   chapter:[],
                   verse:[]
                 },
-                bID:function(){
-                    Oj.BID=o.task.bible.shift();
-                    Oj.BNA=lB[Oj.BID];
-                    o.task.chapter=Object.keys(dQ[Oj.BID]);
+                BookID:function(){
+                    Ob.BID=o.task.bible.shift();
+                    Ob.BNA=lB[Ob.BID];
+                    o.task.chapter=Object.keys(dQ[Ob.BID]);
                 },
-                cID:function(){
-                    Oj.CID=o.task.chapter.shift();
-                    Oj.CNA=Oa.Num(Oj.CID);
-                    Oj.LIST=dQ[Oj.BID][Oj.CID];
-                    o.task.verse=Object.keys(Oj.LIST);
-                    //console.log(Oj.LIST);
+                ChapterID:function(){
+                    Ob.CID=o.task.chapter.shift();
+                    Ob.CNA=Oa.Num(Ob.CID);
+                    Ob.LIST=dQ[Ob.BID][Ob.CID];
+                    o.task.verse=Object.keys(Ob.LIST);
+                    //console.log(Ob.LIST);
                 },
-                vID:function(){
-                    Oj.VID=o.task.verse.shift();
+                VerseID:function(){
+                    Ob.VID=o.task.verse.shift();
+                },
+                isNew:function(){
+                    Ob.Result.Verse++;
+                    if(Ob.Result.b!==Ob.BID){
+                        Ob.Result.b=Ob.BID; Ob.Result.Book++;
+                        Ob.Result.NewBook=true;
+                    } else {
+                        Ob.Result.NewBook=false;
+                    }
+                    if(Ob.Result.b!==Ob.BID || Ob.Result.c!==Ob.CID){
+                        Ob.Result.c=Ob.CID; Ob.Result.Chapter++;
+                        Ob.Result.NewChapter=true;
+                    } else {
+                        Ob.Result.NewChapter=false;
+                    }
                 },
                 start:function(){
+                    // NOTE: as its just start, we set lookup:true and delete any pauses!
                     fO.todo.lookup=true;
                     delete fO.todo.pause;
-                    o.bID();
+                    o.BookID();
                     o.next();
                 },
                 next:function(){
-                    o.cID();
+                    o.ChapterID();
                     o.done().progress(function(){
                         // NOTE: Verse reading, this is working if callbackBible().promise notify()
-                        // d1.notify('verse->');
+                        deferred.notify();
                     }).fail(function(){
-                        // NOTE: fail
+                        // NOTE: as fail task need to know that there is no more todo
+                        deferred.reject();
                         delete fO.todo.lookup;
-                        console.log('lookup delete as fail');
-                        d1.reject();
                     }).done(function(){
                         // NOTE: Chapter reading
                         //  d1.notify('chapter->');
@@ -136,102 +179,113 @@ Core.prototype.content=function(q,callbackContent){
                             // NOTE: new Book start reading
                             o.start();
                         }else{
+                            // NOTE: as done, lookup task we removed!
+                            deferred.resolve();
                             delete fO.todo.lookup;
-                            console.log('lookup delete, as done');
-                            d1.resolve();
                         }
                     });
                 },
                 done:function(){
-                    var b=fO[q.bible].bible.book[Oj.BID],c=b.chapter[Oj.CID],v=c.verse;
+                    var b=fO[q.bible].bible.book[Ob.BID],c=b.chapter[Ob.CID],v=c.verse;
                     var d=new $.Deferred();
                     (function eachVerse(task) {
                         setTimeout(function(){
                             if(task.length){
                                 // NOTE: progress
                                 var i = task.shift();
-                                Oj.VID=i.slice(1);Oj.VNA=Oa.Num(Oj.VID);Oj.VERSE=v[i];
+                                Ob.VID=i.slice(1);Ob.VNA=Oa.Num(Ob.VID);Ob.VERSE=v[i];
                                 if(fO.todo.pause){
                                     d.reject();
                                     delete fO.todo.pause;
                                 } else {
-                                    callbackBible(Oj).progress(function(){
-                                        d.notify();
-                                    }).fail(function(){
-                                        d.reject();
-                                    }).done(function(){
-                                        // console.log(notifyChapter);
-                                        eachVerse(task);
-                                    });
+                                    if(Ob.query.callbackBibleBefore){
+                                        if(Ob[Ob.query.callbackBibleBefore](Ob.query.callbackBibleBeforeHas)){
+                                            o.isNew();
+                                            callbackBible(Ob).progress(function(){
+                                                d.notify();
+                                            }).fail(function(){
+                                                d.reject();
+                                            }).done(function(){
+                                                eachVerse(task);
+                                            });
+                                        } else {
+                                            d.notify();
+                                            eachVerse(task);
+                                        }
+                                    } else {
+                                        o.isNew();
+                                        callbackBible(Ob).progress(function(){
+                                            d.notify();
+                                        }).fail(function(){
+                                            d.reject();
+                                        }).done(function(){
+                                            // console.log(notifyChapter);
+                                            eachVerse(task);
+                                        });
+                                    }
                                 }
                             } else {
                                 // NOTE: done
                                 d.resolve();
                             }
-                        },3);
+                        });
                     })(Object.keys(v));
                     return d.promise();
                 }
             };
-
-            o.start();
-            return d1.promise();
+            return deferred.promise(o.start());
         };
     };
-    this.tmp=function(container) {
-        // delete fO.todo.enter;
-        // delete fO.todo.pause;
-        // delete fO.todo.enter;
+    this.Example=function(container) {
         var olb, olc, olv, ol;
-        new HolyBible(function(Oj) {
-
+        new HolyBible(function(Ob) {
             var d=new $.Deferred();
-            // var msg=lA.BFBCV.replace(/{b}/, Oj.BNA).replace(/{c}/, Oj.CNA).replace(/{v}/,Oj.VNA);
-            var msg=lA.BFVBC.replace(/{b}/, Oj.BNA).replace(/{c}/, Oj.CNA);
-            // fO.msg.info.html(msg).promise().done(function(){});
-            Oj.result.verse++;
+            // var msg=lA.BFBCV.replace(/{b}/, Ob.BNA).replace(/{c}/, Ob.CNA).replace(/{v}/,Ob.VNA);
+            // f().working({msg:msg});
+            var msg=lA.BFVBC.replace(/{b}/, Ob.BNA).replace(/{c}/, Ob.CNA);
             // console.log(msg);
-            // d.notify();
-            f().working({msg:msg}).promise().done(function(){
-                d.resolve();
-            });
-
+            // Ob.Result.verse++;
+            if(Ob.Result.NewBook){
+                console.log('yes new book', Ob.BNA);
+            } else {
+                console.log('no old book', Ob.BNA);
+            }
+            d.notify();
+            d.resolve();
             return d.promise();
-        }).get(function(Oj) {
-            Oj.xml(function(response){
+        }).get(function(Ob) {
+            Ob.xml(function(response){
                 if(response.status){
-                    if(Oj.query.lookup()){
-                        // console.log('----',Oj.booklist);
-                        if(Oj.query.is()){
-                            // f().working({wait:true});
+                    if(Ob.query.lookup('verseSearch')){
+                        if(Ob.query.is()){
                             ol=$(h.ol,{class:q.bible}).appendTo(container);
-                            Oj.book(Oj.booklist).progress(function(e){
+                            Ob.book(Ob.Result.Booklist).progress(function(e){
                                 // NOTE: reading bible, 'lookup.progress'
-                                // var msg=lA.BFBCV.replace(/{b}/, Oj.BNA).replace(/{c}/, Oj.CNA).replace(/{v}/,Oj.VNA);
-                                var msg=lA.BFBCV.replace(/{b}/, Oj.BNA).replace(/{c}/, Oj.CNA).replace(/{v}/,Oj.VNA);
-                                // console.log('lookup.progress',e,Oj.BNA, Oj.CNA, Oj.VNA);
-                                // fO.msg.info.html(msg);
-                                // f().working({msg:msg,wait:true});
+                                // NOTE: progress only return if callbackBible has notify!
+                                // console.log('Example.process');
+                                // var msg=lA.BFBCV.replace(/{b}/, Ob.BNA).replace(/{c}/, Ob.CNA).replace(/{v}/,Ob.VNA);
+                                var msg=lA.BFVBC.replace(/{b}/, Ob.BNA).replace(/{c}/, Ob.CNA);
+                                f().working({msg:msg});
                             }).done(function(){
                                 // NOTE: reading done
-                                console.log('lookup.done');
+                                // NOTE: done only return if callbackBible has resolve!
+                                console.log('Example.done');
                             }).fail(function(){
                                 // NOTE: reading fail
-                                // f().working({msg:lA.Paused,wait:false}).promise().done(function(){
-                                //     delete fO.todo.pause;
-                                // });
                             }).always(function(){
                                 // NOTE: task completed
                                 f().done();
-                                console.log('lookup.always');
                             });
                         } else {
-                            console.log('Oj.query.is empty');
+                            // NOTE: Ob.query.is empty!
+                            console.log('Ob.query.is empty');
                         }
                     } else {
-                        console.log('Oj.query.lookup empty');
+                        // NOTE: Ob.query.* is empty
+                        console.log('Ob.query.lookup empty');
                     }
                 } else {
+                    // NOTE: download fail
                     console.log('download fail');
                 }
             });
@@ -239,43 +293,37 @@ Core.prototype.content=function(q,callbackContent){
     };
     this.chapter=function(container) {
         var olb, olc, olv, ol;
-        new HolyBible(function(Oj){
-            // console.log('new bible content reading start now..........');
+        new HolyBible(function(Ob){
             var d=new $.Deferred();
-            var msg=lA.BFBCV.replace(/{b}/, Oj.BNA).replace(/{c}/, Oj.CNA).replace(/{v}/,Oj.VNA);
-            // fO.msg.info.html(msg).promise().done(function(){});
-            Oj.result.verse++;
-            if(Oj.result.b!==Oj.BID){
-                Oj.result.b=Oj.BID; Oj.result.book++;
-                olb=$(h.ol).appendTo($(h.li,{id:Oj.BID,class:'bID'}).append(
+            if(Ob.Result.NewBook){
+                olb=$(h.ol).appendTo($(h.li,{id:Ob.BID,class:'bID'}).append(
                     $(h.div).append(
-                        $(h.h2).text(Oj.BNA)
+                        $(h.h2).text(Ob.BNA)
                     )
                 ).appendTo(ol));
             }
-            if(Oj.result.b!==Oj.BID || Oj.result.c!==Oj.CID){
-                Oj.result.c=Oj.CID; Oj.result.chapter++;
-                olc=$(h.ol,{class:'verse'}).appendTo($(h.li,{id:Oj.CID,class:'cID'}).append(
+            if(Ob.Result.NewChapter){
+                olc=$(h.ol,{class:'verse'}).appendTo($(h.li,{id:Ob.CID,class:'cID'}).append(
                     $(h.div).append(
-                        $(h.h3,{class:'no'}).text(Oj.CNA).on(fO.Click,function(){
+                        $(h.h3,{class:'no'}).text(Ob.CNA).on(fO.Click,function(){
                             $(this).parents('li').children('ol').children().each(function(){
                                 if($(this).attr("id"))$(this).toggleClass(config.css.active);
                             });
                         })
                         //TODO
-                        // typeof Oj[fO.Deploy].menuChapter === 'function' && Oj[fO.Deploy].menuChapter(container)
+                        // typeof Ob[fO.Deploy].menuChapter === 'function' && Ob[fO.Deploy].menuChapter(container)
                     )
                 ).appendTo(olb));
             }
-            if(Oj.VERSE.title){
-                $(h.li,{class:'title'}).html(Oj.VERSE.title.join(', ')).appendTo(olc);
+            if(Ob.VERSE.title){
+                $(h.li,{class:'title'}).html(Ob.VERSE.title.join(', ')).appendTo(olc);
             }
-            $(h.li,{id:Oj.VID,'data-verse':Oj.VNA}).html(Oj.replace(Oj.VERSE.text,q.q)).appendTo(olc).on(fO.Click,function(){
+            $(h.li,{id:Ob.VID,'data-verse':Ob.VNA}).html(Ob.verseReplace(Ob.VERSE.text,q.q)).appendTo(olc).on(fO.Click,function(){
                 $(this).toggleClass(config.css.active);
             }).promise().always(function(){
                 d.resolve();
-                // if(Oj.VERSE.ref){
-                //     Oj.Option(olc).Reference(Oj.VERSE.ref).promise().always(function(){
+                // if(Ob.VERSE.ref){
+                //     Ob.Option(olc).Reference(Ob.VERSE.ref).promise().always(function(){
                 //         d.resolve();
                 //     });
                 // }else{
@@ -283,31 +331,26 @@ Core.prototype.content=function(q,callbackContent){
                 // }
             });
             return d.promise();
-        }).get(function(Oj){
-            Oj.xml(function(response){
+        }).get(function(Ob){
+            Ob.xml(function(response){
                 if(response.status){
-                    // NOTE: xml / bible is ready!
-                    if(Oj.query.chapter()){
-                        //var msg=lA.BFVBC.replace(/{b}/, lB[q.book]).replace(/{c}/, Oa.Num(q.chapter));
-                        if(Oj.query.is()){
+                    if(Ob.query.chapter()){
+                        if(Ob.query.is()){
                             if(fO.todo.containerEmpty){
                                 delete fO.todo.containerEmpty;
                             }else{
                                 container.empty();
                             }
-                            // console.log(Oj.booklist);
+                            // console.log(Ob.Result.Booklist);
                             ol=$(h.ol,{class:q.bible}).appendTo(container);
-                            Oj.book(Oj.booklist).progress(function(){
-                                console.log('book.progress');
+                            Ob.book(Ob.Result.Booklist).progress(function(){
+                                // console.log('book.progress');
                             }).done(function(){
-                                console.log('book.done');
+                                // console.log('book.done');
                             }).always(function(){
-                                // console.log('book.always');
-                                fO.previous.booklist=Oj.query.current;
                                 fO.previous.bible=q.bible;
                                 fO.previous.book=q.book;
                                 fO.previous.chapter=q.chapter;
-                                q.result=Oj.result.verse;
                             });
                         } else {
                             // NOTE: previous task -> same chapter
@@ -328,40 +371,85 @@ Core.prototype.content=function(q,callbackContent){
     };
     this.lookup=function(container) {
         var olb, olc, olv, ol;
-        new HolyBible(function(Oj) {
+        new HolyBible(function(Ob) {
             var d=new $.Deferred();
-            var msg=lA.BFBCV.replace(/{b}/, Oj.BNA).replace(/{c}/, Oj.CNA).replace(/{v}/,Oj.VNA);
-            // fO.msg.info.html(msg).promise().done(function(){});
-            Oj.result.verse++;
-            // console.log(msg);
             d.notify();
-            d.resolve();
+            if(Ob.Result.NewBook){
+                olb=$(h.ol).appendTo($(h.li,{id:Ob.BID,class:'bID'}).append(
+                    $(h.div).append(
+                        $(h.h2).text(Ob.BNA)
+                    )
+                ).appendTo(ol));
+            }
+            if(Ob.Result.NewChapter){
+                olc=$(h.ol,{class:'verse'}).appendTo($(h.li,{id:Ob.CID,class:'cID'}).append(
+                    $(h.div).append(
+                        $(h.h3,{class:'no'}).text(Ob.CNA).on(fO.Click,function(){
+                            $(this).parents('li').children('ol').children().each(function(){
+                                if($(this).attr("id"))$(this).toggleClass(config.css.active);
+                            });
+                        })
+                        //TODO
+                        // typeof Ob[fO.Deploy].menuChapter === 'function' && Ob[fO.Deploy].menuChapter(container)
+                    )
+                ).appendTo(olb));
+            }
+            if(Ob.VERSE.title){
+                $(h.li,{class:'title'}).html(Ob.VERSE.title.join(', ')).appendTo(olc);
+            }
+            $(h.li,{id:Ob.VID,'data-verse':Ob.VNA}).html(Ob.verseReplace(Ob.VERSE.text,q.q)).appendTo(olc).on(fO.Click,function(){
+                $(this).toggleClass(config.css.active);
+            }).promise().always(function(){
+                d.resolve();
+                // if(Ob.VERSE.ref){
+                //     Ob.Option(olc).Reference(Ob.VERSE.ref).promise().always(function(){
+                //         d.resolve();
+                //     });
+                // }else{
+                //     d.resolve();
+                // }
+            });
             return d.promise();
-        }).get(function(Oj) {
-            Oj.xml(function(response){
+        }).get(function(Ob) {
+            Ob.xml(function(response){
                 if(response.status){
-                    if(Oj.query.lookup()){
-                        // console.log('----',Oj.booklist);
-                        if(Oj.query.is()){
+                    if(Ob.query.lookup('verseSearch')){
+                        if(Ob.query.is()){
+                            if(fO.todo.containerEmpty){
+                                delete fO.todo.containerEmpty;
+                            }else{
+                                container.empty();
+                            }
                             ol=$(h.ol,{class:q.bible}).appendTo(container);
-                            Oj.book(Oj.booklist).progress(function(e){
-                                // NOTE: reading bible
-                                // var msg=lA.BFBCV.replace(/{b}/, e.BNA).replace(/{c}/, e.CNA).replace(/{v}/,e.VNA);
-                                console.log('lookup.progress',e);
+                            Ob.book(Ob.Result.Booklist).progress(function(e){
+                                // NOTE: reading bible, 'lookup.progress'
+                                // NOTE: progress only return if callbackBible has notify!
+                                var msg=lA.BFVBC.replace(/{b}/, Ob.BNA).replace(/{c}/, Ob.CNA);
+                                fO.msg.lookup.html(Oa.Num(Ob.Result.Verse));
+                                f().working({msg:msg});
                             }).done(function(){
                                 // NOTE: reading done
-                                console.log('lookup.done');
+                                // NOTE: done only return if callbackBible has resolve!
+                            }).fail(function(){
+                                // NOTE: reading fail
                             }).always(function(){
                                 // NOTE: task completed
-                                console.log('lookup.always');
+                                fO.previous.booklist=Ob.Result.BooklistName;
+                                fO.previous.q=q.q;
+                                q.result=Ob.Result.Verse;
+                                fO.msg.lookup.attr('title',q.q);
+                                f().done();
                             });
                         } else {
-                            console.log('Oj.query.is empty');
+                            // NOTE: Ob.query.is empty!
+                            console.log('Ob.query.is same');
                         }
                     } else {
-                        console.log('Oj.query.lookup empty');
+                        // NOTE: Ob.query.* is empty
+                        console.log('Ob.query.lookup empty');
                     }
                 } else {
+                    // NOTE: download fail
                     console.log('download fail');
                 }
             });
