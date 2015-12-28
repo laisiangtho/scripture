@@ -7,24 +7,6 @@
     <link rel="apis" href="http://api.laisiangtho.com/"/>
     <link rel="icon" href="img/icon.16.png" type="image/png"/>
     <!-- start for script testing -->
-    <!-- <script src="js/jquery.js"></script>
-    <script src="js/jquery.ui.js"></script>
-    <script src="js/jquery.ui.touchpunch.min.js"></script>
-    <script src="js/laisiangtho.js"></script> -->
-    <script>
-    // $(function(){
-    //     $(document).laisiangtho({
-    //         E:[{'metalink':['api']},'load','watch'],
-    //         Device:'desktop',Platform:'web',
-    //         App:'laisiangtho',Click:'click',On:'fO',
-    //         // NOTE: only for testing purpose
-    //         todo: {
-    //             Template:false,
-    //             RemoveID:true
-    //         }
-    //     }).Agent();
-    // });
-    </script>
     <link rel="stylesheet" href="fontello/laisiangtho.css">
     <link rel="stylesheet" href="css/laisiangtho.css">
     <!-- end for script testing -->
@@ -175,16 +157,22 @@
 <main>
     <div class="container" fn="msg info" empty>What</div>
     <div class="bible book bookmark note setting todo active" empty>
-      <div class="wrp wrp-bible">
-        <ol id="dragable" class="row row-bible ui-sortable">
-          <li id="tedim" class="active now">
-            <p>
-              <span class="icon-ok offline"></span>
-              <a href="#book?bible=tedim">Lai Siangtho</a>
-              <span class="icon-menu drag ui-sortable-handle"></span>
-            </p>
-          </li>
-          <li id="mcl" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=mcl">Myanmar Bible (ခေတ်သုံး)</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="judson" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=judson">Myanmar Bible (ယုဒသန်)</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="kjv" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=kjv">King James Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="bbe" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=bbe">Bible in Basic English</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="web" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=web">World English Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="hakha" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=hakha">Hakha Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="falam" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=falam">Falam Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="sizang" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=sizang">Sizang Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="paite" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=paite">Paite Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="mizo" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=mizo">Mizo Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="bokmal1906" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=bokmal1906">Det Norsk Bibelselskap</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="danish1933" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=danish1933">Danish Version</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="ostervald1877" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=ostervald1877">La Bible Ostervald 1877</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="luther1912" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=luther1912">German Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="swedish1917" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=swedish1917">Svenska 1917</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="niv" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=niv">New International Version</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="finish1938" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=finish1938">Finnish 1938</a><span class="icon-menu drag ui-sortable-handle"></span></p></li></ol></div>
+      <div class="wrp wrp-book">
+        <ol class="testament" id="1">
+          <li id="t-1">
+            <h1>Thuciam Lui</h1>
+            <ol class="catalog">
+              <li id="c-1">
+                <h2>Thubulphuh</h2>
+                <ol class="book">
+                  <li id="b-1" class="active">
+                    <p>
+                      <a href="#reader?book=1">Piancilna</a>
+                    </p>
+                  </li>
+                  <li id="b-2" class="">
+                    <p><a href="#reader?book=2">Paikhiatna</a></p></li><li id="b-3" class=""><p><a href="#reader?book=3">Siampi Laibu</a></p></li><li id="b-4" class=""><p><a href="#reader?book=4">Gamlak Vakna</a></p></li><li id="b-5" class=""><p><a href="#reader?book=5">Thu Hilhkikna</a></p></li></ol></li><li id="c-2"><h2>Taangthu</h2><ol class="book"><li id="b-6" class=""><p><a href="#reader?book=6">Joshua</a></p></li><li id="b-7" class=""><p><a href="#reader?book=7">Thukhente</a></p></li><li id="b-8" class=""><p><a href="#reader?book=8">Ruth</a></p></li><li id="b-9" class=""><p><a href="#reader?book=9">Samuel Masa</a></p></li><li id="b-10" class=""><p><a href="#reader?book=10">Samuel Nihna</a></p></li><li id="b-11" class=""><p><a href="#reader?book=11">Kumpi Masate</a></p></li><li id="b-12" class=""><p><a href="#reader?book=12">Kumpi Nihnate</a></p></li><li id="b-13" class=""><p><a href="#reader?book=13">Khang Thangthu Masa</a></p></li><li id="b-14" class=""><p><a href="#reader?book=14">Khang Thangthu Nihna</a></p></li><li id="b-15" class=""><p><a href="#reader?book=15">Ezra</a></p></li><li id="b-16" class=""><p><a href="#reader?book=16">Nehemiah</a></p></li><li id="b-17" class=""><p><a href="#reader?book=17">Esther</a></p></li></ol></li><li id="c-3"><h2>La</h2><ol class="book"><li id="b-18" class=""><p><a href="#reader?book=18">Job</a></p></li><li id="b-19" class=""><p><a href="#reader?book=19">Late</a></p></li><li id="b-20" class=""><p><a href="#reader?book=20">Paunak</a></p></li><li id="b-21" class=""><p><a href="#reader?book=21">Thuhilhna</a></p></li><li id="b-22" class=""><p><a href="#reader?book=22">Solomon La</a></p></li></ol></li><li id="c-4"><h2>Siampite</h2><ol class="book"><li id="b-23" class=""><p><a href="#reader?book=23">Isaiah</a></p></li><li id="b-24" class=""><p><a href="#reader?book=24">Jeremiah</a></p></li><li id="b-25" class=""><p><a href="#reader?book=25">Kah La</a></p></li><li id="b-26" class=""><p><a href="#reader?book=26">Ezekiel</a></p></li><li id="b-27" class=""><p><a href="#reader?book=27">Daniel</a></p></li></ol></li><li id="c-5"><h2>Siampi Atuamtuam</h2><ol class="book"><li id="b-28" class=""><p><a href="#reader?book=28">Hosea</a></p></li><li id="b-29" class=""><p><a href="#reader?book=29">Joel</a></p></li><li id="b-30" class=""><p><a href="#reader?book=30">Amos</a></p></li><li id="b-31" class=""><p><a href="#reader?book=31">Obadiah</a></p></li><li id="b-32" class=""><p><a href="#reader?book=32">Jonah</a></p></li><li id="b-33" class=""><p><a href="#reader?book=33">Mikah</a></p></li><li id="b-34" class=""><p><a href="#reader?book=34">Nahum</a></p></li><li id="b-35" class=""><p><a href="#reader?book=35">Habakkuk</a></p></li><li id="b-36" class=""><p><a href="#reader?book=36">Zefaniah</a></p></li><li id="b-37" class=""><p><a href="#reader?book=37">Haggai</a></p></li><li id="b-38" class=""><p><a href="#reader?book=38">Zekhariah</a></p></li><li id="b-39" class=""><p><a href="#reader?book=39">Malakhi</a></p></li></ol></li></ol></li></ol><ol class="testament" id="2"><li id="t-2"><h1>Thuciam Thak</h1><ol class="catalog"><li id="c-6"><h2>Gupnathute</h2><ol class="book"><li id="b-40" class=""><p><a href="#reader?book=40">Matthai</a></p></li><li id="b-41" class=""><p><a href="#reader?book=41">Marka</a></p></li><li id="b-42" class=""><p><a href="#reader?book=42">Luka</a></p></li><li id="b-43" class=""><p><a href="#reader?book=43">Johan</a></p></li></ol></li><li id="c-7"><h2>Taangthu Tuamtuam</h2><ol class="book"><li id="b-44" class=""><p><a href="#reader?book=44">Sawltak Tangthu</a></p></li></ol></li><li id="c-8"><h2>Upna: Gentiles</h2><ol class="book"><li id="b-45" class=""><p><a href="#reader?book=45">Rom Laikhak</a></p></li><li id="b-46" class=""><p><a href="#reader?book=46">Korin Masa</a></p></li><li id="b-47" class=""><p><a href="#reader?book=47">Korin Nihna</a></p></li><li id="b-48" class=""><p><a href="#reader?book=48">Galati</a></p></li><li id="b-49" class=""><p><a href="#reader?book=49">Efesa</a></p></li><li id="b-50" class=""><p><a href="#reader?book=50">Filippi</a></p></li><li id="b-51" class=""><p><a href="#reader?book=51">Kolose</a></p></li><li id="b-52" class=""><p><a href="#reader?book=52">Thesalonika Masa</a></p></li><li id="b-53" class=""><p><a href="#reader?book=53">Thesalonika Nihna</a></p></li></ol></li><li id="c-9"><h2>Upna: Atuamtuam</h2><ol class="book"><li id="b-54" class=""><p><a href="#reader?book=54">Timoti Masa</a></p></li><li id="b-55" class=""><p><a href="#reader?book=55">Timoti Nihna</a></p></li><li id="b-56" class=""><p><a href="#reader?book=56">Titus</a></p></li><li id="b-57" class=""><p><a href="#reader?book=57">Filemon</a></p></li></ol></li><li id="c-10"><h2>Upna: Israel</h2><ol class="book"><li id="b-58" class=""><p><a href="#reader?book=58">Hebru</a></p></li></ol></li><li id="c-11"><h2>Upna: General Espitles</h2><ol class="book"><li id="b-59" class=""><p><a href="#reader?book=59">James</a></p></li><li id="b-60" class=""><p><a href="#reader?book=60">Peter Masa</a></p></li><li id="b-61" class=""><p><a href="#reader?book=61">Peter Nihna</a></p></li><li id="b-62" class=""><p><a href="#reader?book=62">Johan Masa</a></p></li><li id="b-63" class=""><p><a href="#reader?book=63">Johan Nihna</a></p></li><li id="b-64" class=""><p><a href="#reader?book=64">Johan Thumna</a></p></li><li id="b-65" class=""><p><a href="#reader?book=65">Jude</a></p></li><li id="b-66" class=""><p><a href="#reader?book=66">Maangmuhna</a></p></li></ol></li></ol></li></ol></div>
+
     </div>
     <div class="lookup active">
         <div class="wrp wrp-lookup d1" empty="true"></div>
@@ -194,15 +182,5 @@
     </div>
 </main>
 <footer empty></footer>
-<div id="dialog" class="version" style="display:none;" remove>
-    <div id="window">
-        <h1 title="1.9.85">Lai Siangtho</h1>
-        <h2>1.1.7</h2>
-        <p>
-            is the continuous version of what we have released in 2008 that was saying <span>some how we wanna serve resource which may seem any sense with you</span>. There has been a huge improvement, and one of the biggest was running on Multi-platform such as Chrome OS, Mac, Windows &amp; Linux. <a target="_blank" href="https://plus.google.com/u/0/communities/102261448761422230627">g+</a></p><p id="by"><a target="_blank" href="https://plus.google.com/u/0/+KhenSolomonLethil/posts">Khen Solomon Lethil</a>
-        </p>
-        <div id="clickme">Ok</div>
-    </div>
-</div>
 </body>
 </html>

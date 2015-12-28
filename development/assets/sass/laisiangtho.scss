@@ -162,13 +162,12 @@ body {
     main{
         z-index:1;max-height:100%;overflow:hidden;
         >div{
-            &.container{
+            &.container, &.active{
                 max-height:100%;-webkit-overflow-scrolling:touch;overflow:auto;
                 @include text-size-adjust(100%);
                 @include box-sizing();
             }
             &.active{
-                @extend .container;
                 height:100%;
             }
             &:not(.active){
@@ -242,9 +241,9 @@ body {
             }
         }
         main{
-            >div{
+            div{
                 &.container{
-                    display:block;z-index:10;text-align:center; margin:0px 0;padding:10px 2%;line-height:18px;box-shadow: 0px 1px 1px 1px #e0e0e0;//background-color:rgba(255,255,255,0.95);
+                    display:block;text-align: center;z-index:10; margin:0px 0;padding:10px 2%;line-height:18px;box-shadow: 0px 1px 1px 1px #e0e0e0;//background-color:rgba(255,255,255,0.95);
                 }
                 &:not(.container){
                     overflow:hidden;

@@ -1,4 +1,103 @@
 @import 'Config';
-div{}
-ul{}
-ol{}
+div{
+  // common container
+  &.wrp {
+    display:table; width: 100%;color: #ccc;
+    ol{
+      list-style: none;
+      li{}
+    }
+    &.wrp-bible{
+      ol{
+        display:table; width: 100%;vertical-align: middle;
+        li{
+          display:inline-block; padding: 1%;width: 300px;
+          border:0px solid #ccc;
+          p{
+            display:table; width: 98%;height: 35px; box-shadow: 0px 0px 0px 0px darken($ColorBackground,15%);
+            *{display: table-cell;padding:0;vertical-align: middle;}
+            span{
+              width:35px; border-radius:50px;padding:0;text-align: center;
+              &:first-child{
+                box-shadow: -1px 0px 1px 1px darken($ColorBackground,15%);
+                &:hover{
+                  &::before{
+                    color:#666;
+                  }
+                }
+              }
+              &:last-child{
+                &:hover{
+                  &::before{
+                    color:red;
+                  }
+                }
+              }
+            }
+            a{
+              padding-left:5px;line-height: 20px;overflow: hidden; white-space: nowrap;color:darken($ColorBackground,30%);
+              &:hover{
+                color:darken($ColorBackground,40%);
+              }
+            }
+
+          }
+          &.active{
+            p{
+              a{
+                color:darken($ColorBackground,50%);
+              }
+            }
+            &.now{}
+          }
+        }
+      }
+    }
+    &.wrp-book{
+      >ol{
+        display:inline-table; width: 30%; margin:0px; padding:1%;
+        >li{
+          // testament
+
+          h1{
+            border: 1px solid #ccc;
+          }
+          >ol{
+            padding:1% 2%;
+            display:block;border: 1px solid #ccc;
+            li{
+              // catalog
+              border: 0px solid #ccc;
+              h2{}
+              ol{
+                padding:1% 2%;
+                li{
+                  // book
+                  border: 0px solid #ccc;
+                  p{
+                    a{
+                      color: #ccc;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    &.wrp-tmp{}
+  }
+}
+// NOTE: ol should be used only data-container
+ol{
+  li{
+
+  }
+}
+// NOTE: ul should be used only data-structure
+ul{
+  li{
+
+  }
+}

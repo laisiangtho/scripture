@@ -226,7 +226,7 @@ body#l189 > * {
   display: none;
 }
 
-body.working footer:after, body.working main > div:not(.container):after, body.working header:after {
+body.working footer:after, body.working main div:not(.container):after, body.working header:after {
   display: block;
   position: absolute;
   top: 0px;
@@ -234,21 +234,21 @@ body.working footer:after, body.working main > div:not(.container):after, body.w
   pointer-events: auto;
 }
 
-body.working main > div.container, body.working main > div.active {
+body.working main div.container {
   display: block;
-  z-index: 10;
   text-align: center;
+  z-index: 10;
   margin: 0px 0;
   padding: 10px 2%;
   line-height: 18px;
   box-shadow: 0px 1px 1px 1px #e0e0e0;
 }
 
-body.working main > div:not(.container) {
+body.working main div:not(.container) {
   overflow: hidden;
 }
 
-body.working.wait footer:after, body.working.wait main > div:not(.container):after, body.working.wait header:after, body.working.disable footer:after, body.working.disable main > div:not(.container):after, body.working.disable header:after {
+body.working.wait footer:after, body.working.wait main div:not(.container):after, body.working.wait header:after, body.working.disable footer:after, body.working.disable main div:not(.container):after, body.working.disable header:after {
   z-index: 3;
   left: 0px;
   width: 100%;
@@ -257,11 +257,11 @@ body.working.wait footer:after, body.working.wait main > div:not(.container):aft
   cursor: default;
 }
 
-body.working.wait footer:after, body.working.wait main > div:not(.container):after, body.working.wait header:after {
+body.working.wait footer:after, body.working.wait main div:not(.container):after, body.working.wait header:after {
   background-color: rgba(246, 245, 245, 0.5);
 }
 
-body.working.wait main > div.container, body.working.wait main > div.active {
+body.working.wait main > div.container {
   box-shadow: 0px 0px 1px 1px #e0e0e0;
   background-color: rgba(255, 255, 255, 0.95);
 }
@@ -270,11 +270,11 @@ body.working.wait header:after {
   box-shadow: inset 1px 0px 1px 1px #e0e0e0;
 }
 
-body.working.disable footer:after, body.working.disable main > div:not(.container):after, body.working.disable header:after {
+body.working.disable footer:after, body.working.disable main div:not(.container):after, body.working.disable header:after {
   background-color: rgba(246, 245, 245, 0.6);
 }
 
-body.working.disable main > div.container, body.working.disable main > div.active {
+body.working.disable main > div.container {
   margin: 1%;
   box-shadow: 0px 0px 0px 0px #e0e0e0;
   background-color: rgba(255, 255, 255, 0);
