@@ -1,8 +1,8 @@
 Core.prototype.load = function() {
-    h=this.HTML();
+    h=this.HTML(); fn=this;
     $('p').addClass(config.css.active).html(config.version);
     $('h1').attr({title:config.build}).attr({class:'icon-fire'});
-    var fn=this,l7=[], l8={}, f0={
+    var l7=[], l8={}, f0={
         reading:function(bID){
             if(config.bible.ready){
                 if(fO.query.bible && config.bible.ready==1){
@@ -164,9 +164,7 @@ Core.prototype.load = function() {
             // REVIEW: a faster way, body id has to change
             if(fO.todo.Template){
                 $(document.body).load(config.file.template.replace(/z/,fO.DeviceTemplate.join('.')),function(){
-                    fn.init();
-                }).promise().done(function(){
-                    this.attr('id',fO.App);
+                    $(this).attr('id',fO.App);fn.init();
                 });
             }else{
                 if(fO.todo.RemoveID){
@@ -222,9 +220,14 @@ Core.prototype.load = function() {
                 l7=config.bible.available.concat();
                 // NOTE: testing fileSystem
                 fileSystem=new fileSystask({
-                    Base: 'Other',
+                    Base: 'Chrome',
                     RequestQuota: 1073741824, //1024*1024*1024
+                    Permission: 1
+                    /*
+                    Base: 'Other',
+                    RequestQuota: 1073741824,
                     Permission: 0
+                    */
                 }, {
                     success: function(fs) {
                         // TODO: nothing yet!

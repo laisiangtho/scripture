@@ -1,20 +1,33 @@
 //container, info, chapter, hasHash,url(string), haspage, num, string, index, array, working, done, body, header
 Core.prototype.chapter={
+    note:{
+        active:function(e){
+            new Note({bID:fO.query.book,cID:fO.query.chapter}).search(function(y){
+                if(y){
+                    e.arg[0].addClass(config.css.active);
+                    fO.todo.ChapterNoteActive=true;
+                } else {
+                    fO.todo.ChapterNoteActive=false;
+                }
+            });
+        }
+    },
     name:{
         previous:function(e){
             e.arg[0].attr('title',this.text('next'));
         },
         current:function(e){
             e.arg[0].html(e.num(fO.query.chapter));
+            if(fO.todo.ActiveChapter){
+                // NOTE: while chapter list displaying and click
+                //TODO if(fO.isCordova)-> REMOVE or empty it container
+                fO.todo.ActiveChapter.addClass(config.css.active).promise().done(function(){
+                    delete fO.todo.ActiveChapter;
+                });
+            }
         },
         next:function(e){
             e.arg[0].attr('title',this.text('previous'));
-            // if(fO.todo.ActiveChapter){
-            //     //TODO if(fO.isCordova)-> REMOVE or empty it container
-            //     fO.todo.ActiveChapter.addClass(config.css.active).promise().done(function(){
-            //         delete fO.todo.ActiveChapter;
-            //     });
-            // }
         },
         has:{
             next:function(){
@@ -53,43 +66,44 @@ Core.prototype.chapter={
         //     }
         // });
     },
-    list:function(e,x){
-        var ol=e.arg[0].parent().children().eq(1);
-        if(ol.is(':hidden')){
-            new e.menu(fO.query.book).chapter().appendTo(ol.fadeIn(200).children().empty()).promise().done(function(){
+    list:function(e){
+        var ul=e.arg[0].next();
+        if(ul.is(':hidden')){
+            new e.menu(fO.query.book).chapter($(h.ol,{class:'list-chapter'})).appendTo(ul.fadeToggle(100).children().empty()).promise().always(function(){
                 this.children().on(fO.Click,function(){
                     fO.todo.ActiveChapter=$(this);
                 });
-                f(ol).doClick(function(y){
-                    if(e.container.closest(ol,y,e.arg[0])){
-                        e.container.fade(ol,e.arg[0]);
+                f(ul).doClick(function(y){
+                    if(e.container.closest(ul,y,e.arg[0])){
+                        e.container.fade(ul,e.arg[0]);
                         return true;
                     }
                 });
             });
         }else{
-            e.container.fade(ol,e.arg[0]);
+            e.container.fade(ul,e.arg[0]);
         }
     }
 };
 Core.prototype.lookup={
     setting:function(e){
-        var ol=e.arg[0].parent().children().eq(1);
-        // new e.menu(fO.query.book).chapter().appendTo(ol.fadeIn(200).children().empty()).promise().done(function(){
-        if(ol.is(':hidden')){
-            e.arg[0].addClass(config.css.active);
-            new e.menu().lookup(ol.fadeIn(200).children().empty()).promise().done(function(){
-                f(ol).doClick(function(y){
-                    if(e.container.closest(ol,y,e.arg[0])){
-                        e.container.fade(ol,e.arg[0]);
+        var ul=e.arg[0].next();
+        if(ul.is(':hidden')){
+            new e.menu(fO.query.book).lookup(ul.fadeToggle(100).children().empty()).promise().always(function(){
+                f(ul).doClick(function(y){
+                    if(e.container.closest(ul,y,e.arg[0])){
+                        e.container.fade(ul,e.arg[0]);
                         return true;
                     }
                 });
             });
         }else{
-            // NOTE: here active class should remove!
-            e.container.fade(ol,e.arg[0]);
+            e.container.fade(ul,e.arg[0]);
         }
+
+    },
+    query:function(e){
+        e.arg[0].val(fO.query.q);
     },
     msg:function(e){
         fO.msg.lookup=e.arg[0];
@@ -101,8 +115,8 @@ Core.prototype.lookup={
     }
 };
 Core.prototype.menu=function(o){
-    this.bible=function(){
-        var ol = $(h.ol,{id:'dragable',class:'row row-bible'});
+    this.bible=function(ol){
+        // var ol = $(h.ol,{id:'dragable',class:'row row-bible'});
         config.bible.available.forEach(function(id){
             var Om={bID:id,lang:fO.lang[id].info,local:fO.lang[id].local,classOffline:'icon-ok offline',classOnline:'icon-logout offline'};
             Om.classAvailable=Om.local?config.css.available:config.css.notAvailable;
@@ -112,8 +126,8 @@ Core.prototype.menu=function(o){
         });
         return ol;
     };
-    this.chapter=function(){
-        var ol=$(h.ol,{class:'list-chapter'});
+    this.chapter=function(ol){
+        // var ol=$(h.ol,{class:'list-chapter'});
         $.each(bible.info[o].v,function(chapter,verse){
             chapter++;
             $(h.li,{id:chapter,class:(fO.query.chapter==chapter?config.css.active:'')}).append(
@@ -132,7 +146,7 @@ Core.prototype.menu=function(o){
                     ol.children().each(function(a,y){
                         var y=$(y), id=f(y).get('id').element[0];//id=fN.Attr(y).id()[0];
                         y.toggleClass(config.css.active); O2.ID(id);
-                    }).promise().done(function(){
+                    }).promise().always(function(){
                         O2.Class(ol);
                     });
                 });
@@ -142,7 +156,7 @@ Core.prototype.menu=function(o){
                 if(x.get(0).tagName.toLowerCase()==='p'){
                     this.Query(o);
                 }else{
-                    var li=x.parents('li'),sID=li.attr('id'); o.fadeToggle(100);
+                    var li=x.parent().parent().toggleClass(config.css.active), sID=li.attr('id'); //li.toggleClass(config.css.active);
                     x.toggleClass(config.css.active).promise().done(function(){
                         if(this.hasClass(config.css.active)){
                             fO.lookup.setting[sID]=true;
@@ -152,11 +166,8 @@ Core.prototype.menu=function(o){
                     });
                 }
                 db.update.lookup();
-                // fD.UpdateLookUp();
             },
             Class:function(o){
-                // fN.is(config.css.active).class
-                // f(config.css.active).is('class').name
                 var total=o.children().length, active=o.children(f(config.css.active).is('class').name).length, catalog=o.parent().children().eq(0);
                 if(total===active){
                     catalog.removeClass().addClass('yes');
@@ -183,8 +194,8 @@ Core.prototype.menu=function(o){
                 }).append(
                     $(h.span).text('+').addClass(tClass)
                 )
-            ).appendTo(container).promise().done(function(){
-                $(h.ol,{class:'section'}).appendTo(this).promise().done(function(){
+            ).appendTo(container).promise().always(function(){
+                $(h.ol,{class:'section'}).appendTo(this).promise().always(function(){
                     var it=this;
                     $.each(cL,function(sID,bL){
                         var sTD=Object.keys(config.language)[1]+sID, sClass=(fO.lookup.setting[sTD]?config.css.active:'');
@@ -194,14 +205,14 @@ Core.prototype.menu=function(o){
                             }).append(
                                 $(h.span,{text:'+'}).addClass(sClass)
                             )
-                        ).appendTo(it).promise().done(function(){
+                        ).appendTo(it).promise().always(function(){
                             var ol=$(h.ol,{class:'book'}).appendTo(this);
                             bL.forEach(function(bID){
                                 $(h.li,{id:bID,class:(fO.lookup.book[bID]?config.css.active:'')}).text(lD.b[bID]).on(fO.Click,function(){
                                     $(this).toggleClass(config.css.active); O2.ID(bID); db.update.lookup();
                                 }).appendTo(ol);
                             });
-                            ol.promise().done(function(){
+                            ol.promise().always(function(){
                                 O2.Class(ol);
                             });
                         });
@@ -227,7 +238,7 @@ Core.prototype.container={
         if(container.is(':visible') && !$(x.target).closest('#dialog, .misc').length && !$(x.target).closest(container).length && !$(x.target).closest(y).length) return true;
     },
     fade:function(container,x,y){
-        container.fadeOut(300).promise().done(function(){
+        container.fadeOut(100).promise().always(function(){
             x.removeClass(config.css.active); if(y)y.removeAttr("style");
         });
     }
@@ -256,7 +267,7 @@ Core.prototype.info={
 };
 Core.prototype.doClick=function(callback){
     var container = this.arg[0];
-    $(document).on(fO.Click,function(e){
+    $(document.body).on(fO.Click,function(e){
         if(container){
             if(container.is(':visible')){
                 // e.preventDefault(); e.stopPropagation(); //e.stopImmediatePropagation();
@@ -292,11 +303,15 @@ Core.prototype.dot=function(n){
     // return this.string([35,config.page[n],63]);
 };
 Core.prototype.num = function(n, l) {
-    if (!l) l = fO.query.bible;
-    if(fO.lang[l].hasOwnProperty('n')){
-        return (Object.getOwnPropertyNames(fO.lang[l].n).length === 0) ? n : n.toString().replace(/[0123456789]/g, function(s) {
-            return fO.lang[l].n[s];
-        });
+    if(!l) l = fO.query.bible;
+    if(fO.lang.hasOwnProperty(l)){
+        if(fO.lang[l].hasOwnProperty('n')){
+            return (Object.getOwnPropertyNames(fO.lang[l].n).length === 0) ? n : n.toString().replace(/[0-9]/g, function(s) {
+                return fO.lang[l].n[s];
+            });
+        } else {
+            return n;
+        }
     } else {
         return n;
     }
@@ -386,6 +401,45 @@ Core.prototype.done = function(callback) {
         });
     });
 };
+Core.prototype.activeClass = function(container) {
+    return container.find(f(config.css.active).is('class').name).removeClass(config.css.active).promise().done($(config.css.currentPage).addClass(config.css.active));
+};
+Core.prototype.loop= function(callback) {
+    var tmp={
+        object: function(o) {
+            for (var i in o) {
+                callback(i, o[i], o);
+            }
+        },
+        array: function(o) {
+            for (var i = 0, len = o.length; i < len; i++) {
+                callback(o, i, o[i]);
+            }
+        }
+    };
+    var tmpIs=typeof this.arg[0];
+    return tmp[tmpIs](this.arg[0]);
+};
+// NOTE: previously used
+Core.prototype.HTML = function() {
+    return {
+        ol: f('ol').is('tag').name,
+        ul: f('ul').is('tag').name,
+        li: f('li').is('tag').name,
+        a: f('a').is('tag').name,
+        div: f('div').is('tag').name,
+        p: f('p').is('tag').name,
+        h1: f('h1').is('tag').name,
+        h2: f('h2').is('tag').name,
+        h3: f('h3').is('tag').name,
+        h4: f('h4').is('tag').name,
+        h5: f('h5').is('tag').name,
+        span: f('span').is('tag').name,
+        em: f('em').is('tag').name,
+        sup: f('sup').is('tag').name
+    };
+};
+/*
 Core.prototype.template = function(dl, position) {
     // NOTE: not using at the moment!
     //this.iQ=arguments[0]; this.obj=arguments[1];
@@ -432,78 +486,5 @@ Core.prototype.template = function(dl, position) {
         ($.type(dl) !== 'object' ? $(dl) : dl)[position || 'append'](j);
     }
     return j;
-};
-Core.prototype.activeClass = function(container) {
-    return container.find(f(config.css.active).is('class').name).removeClass(config.css.active).promise().done($(config.css.currentPage).addClass(config.css.active));
-};
-// NOTE: previously used
-Core.prototype.HTML = function() {
-    return {
-        ol: f('ol').is('tag').name,
-        ul: f('ul').is('tag').name,
-        li: f('li').is('tag').name,
-        a: f('a').is('tag').name,
-        div: f('div').is('tag').name,
-        p: f('p').is('tag').name,
-        h1: f('h1').is('tag').name,
-        h2: f('h2').is('tag').name,
-        h3: f('h3').is('tag').name,
-        h4: f('h4').is('tag').name,
-        span: f('span').is('tag').name,
-        em: f('em').is('tag').name,
-        sup: f('sup').is('tag').name
-    };
-};
-/*
-//return {ol:this.is('ol').tag, ul:this.is('ul').tag, li:this.is('li').tag, a:this.is('a').tag, div:this.is('div').tag,p:this.is('p').tag,h1:this.is('h1').tag, h2:this.is('h2').tag,h3:this.is('h3').tag,h4:this.is('h4').tag, span:this.is('span').tag,em:this.is('em').tag,sup:this.is('sup').tag};
-// TODO: currently not using
-Core.prototype.header = function(container) {
-    if (config.header[fO.query.page]) {
-        if (fO.todo.headerChanged != fO.query.page) {
-            container.replaceWith(f({
-                header: config.header[fO.query.page]
-            }).template()).promise().done(function() {
-                fO.todo.headerChanged = fO.query.page;
-                container.find(config.css.currentPage).addClass(config.css.active).siblings().removeClass(config.css.active);
-                //z.screen.Status();
-                fO.todo.Orientation = true;
-            });
-        }
-    } else if (fO.todo.headerChanged) {
-        container.replaceWith(f({
-            header: config.body.header
-        }).template()).promise().done(function() {
-            delete fO.todo.headerChanged;
-            container.find(config.css.currentPage).addClass(config.css.active).siblings().removeClass(config.css.active);
-            //z.screen.Status();
-            fO.todo.Orientation = true;
-        });
-    } else {
-        this.activeClass(container);
-    }
-};
-// TODO: currently not using
-Core.prototype.footer = function(container) {
-    if (config.footer[fO.query.page]) {
-        if (fO.todo.footerChanged != fO.query.page) {
-            container.replaceWith(f({
-                footer: config.footer[fO.query.page]
-            }).template()).promise().done(function() {
-                fO.todo.footerChanged = fO.query.page;
-                $(config.css.currentPage).addClass(config.css.active);
-                fO.todo.Orientation = true;
-            });
-        }
-    } else if (fO.todo.footerChanged) {
-        container.replaceWith(f({
-            footer: config.body.footer
-        }).template()).promise().done(function() {
-            delete fO.todo.footerChanged;
-            $(config.css.currentPage).addClass(config.css.active);
-            fO.todo.Orientation = true;
-        });
-    } else {
-        this.activeClass(container);
-    }
 };
 */

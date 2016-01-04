@@ -25,10 +25,10 @@
   background-color: #bdbdbd;
 }
 
-html body a, html body form, html body .zO, html body .hO, html body .control * {
+html body a, html body form, html body .fO {
   -webkit-app-region: no-drag;
 }
 
-html body footer, html body header div.main, html body.working.wait header .status {
+html body footer, html body header div.bar, html body.working.wait header > div.nav * {
   -webkit-app-region: drag;
 }

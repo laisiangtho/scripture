@@ -3,6 +3,9 @@ $Font: Arial, 'Myanmar3', Helvetica, sans-serif;
 $FontSize: 100%;//11pt
 $Color: #333;
 $ColorBackground:#F8F8F8;
+$WidthMobile:500px;
+$WidthTablet:820px;
+$WidthDesktop:1210px;
 @mixin text-size-adjust($value: none) {
     -webkit-text-size-adjust: $value;
     -moz-text-size-adjust: $value;
@@ -38,8 +41,14 @@ $ColorBackground:#F8F8F8;
     ::-webkit-scrollbar-thumb { background-color:#{$color};border-top-left-radius:#{$border}px;border-top-right-radius:#{$border}px;border-bottom-right-radius:#{$border}px;border-bottom-left-radius:#{$border}px;}
     ::-webkit-scrollbar-thumb:window-inactive {background-color:#{$color};}
 }
+// inherit
+// text-overflow:ellipsis;
 // @-moz-document url-prefix() {}
 // -webkit-overflow-scrolling:touch;overflow:auto;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;
 // help?
 // todo? = adjust
 // todo# = either remove or add
+// &:before, &:after{
+// }
+// &:before{}
+// &:after{}

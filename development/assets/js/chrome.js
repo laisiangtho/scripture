@@ -32,10 +32,10 @@ chrome.runtime.onUpdateAvailable.addListener(function(){
 });
 chrome.app.runtime.onLaunched.addListener(function(){
     chrome.app.window.create(
-        'chrome.package.html',{
+        'index.html',{
             frame: "none",
             id: "laisiangtho",
-            innerBounds:{width:700,height:500, left:600, minWidth:300, minHeight:400}
+            innerBounds:{width:700,height:500, left:600, minWidth:330, minHeight:400}
         },
         function(win) {
             app=win.contentWindow;
@@ -43,8 +43,9 @@ chrome.app.runtime.onLaunched.addListener(function(){
                 data:{
                     'jquery':{type:'script'},
                     'jquery.ui':{type:'script'},
+                    'jquery.ui.touchpunch.min':{type:'script'},
                     'chrome.google-analytics-bundle':{type:'script'},
-                    'jquery.laisiangtho':{type:'script'}
+                    'laisiangtho':{type:'script'}
                 },
                 script:{
                     attr:{src:''},extension:'.js',dir:'js/'
@@ -74,26 +75,16 @@ chrome.app.runtime.onLaunched.addListener(function(){
                 done:function(){
                     app.localStorage=chrome.storage.local;
                     app.screenStatus=win;
-                    app.laisiangtho={};
+                    // app.laisiangtho={};
                 },
                 ready:function(){
-                    app.jQuery(app.document).laisiangtho({
-                        E:['Load','Watch',{'Meta link':['api']}],Device:'chrome',Platform:'app',App:'laisiangtho',Click:'click',On:'zO'
-                    }).Agent({
-                        win:{
-                            minimize:function(){
-                                win.minimize();
-                            },maximize:function(event){
-                                if(win.isFullscreen() || win.isMaximized()) win.restore();
-                                else win.maximize();
-                            },fullscreen:function(x,b){
-                                if(win.isFullscreen()) win.restore();
-                                else win.fullscreen();
-                                //if(win.isFullscreen()) win.restore();else win.fullscreen();
-                            },close:function(event){
-                                win.close();
-                            }
-                        },
+                    app.jQuery(app.document.body).laisiangtho({
+                        E:[{'metalink':['api']},'load','watch'],
+                        Device:'chrome',Platform:'app',
+                        App:'laisiangtho',Click:'click',On:'fO'
+                    }).Agent();
+                    /*
+                    {
                         analytics:{
                             config:function(obj){
                                 //obj.isTrackingPermitted();
@@ -111,31 +102,28 @@ chrome.app.runtime.onLaunched.addListener(function(){
                                 //this.tracker.sendEvent(q.bible,q.key,q.result);
                             }
                         }
-                    });
+                    }
+                    */
                 }
         };
         app.addEventListener('DOMContentLoaded', function(event){
-            laisiangtho.init();
+            laisiangtho.init(event);
         });
         app.addEventListener('load', function(event){
-            laisiangtho.ready();
+            laisiangtho.ready(event);
         }, false);
-        win.onBoundsChanged.addListener(function(){
-        });
-        win.onClosed.addListener(function(){
-        });
-        win.onRestored.addListener(function(){
-            if(!win.isFullscreen())app.laisiangtho.screen.Full.is();
-            if(!win.isMaximized())app.laisiangtho.screen.Max.is();
-        });
-        win.onFullscreened.addListener(function(){
-            app.laisiangtho.screen.Full.is(true);
-        });
-        win.onMaximized.addListener(function(){
-            app.laisiangtho.screen.Max.is(true);
-        });
-        win.onMinimized.addListener(function(){
-        });
-        win.focus();
+        // win.onBoundsChanged.addListener(function(){
+        // });
+        // win.onClosed.addListener(function(){
+        // });
+        // win.onRestored.addListener(function(){
+        // });
+        // win.onFullscreened.addListener(function(){
+        // });
+        // win.onMaximized.addListener(function(){
+        // });
+        // win.onMinimized.addListener(function(){
+        // });
+        // win.focus();
     });
 });

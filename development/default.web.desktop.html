@@ -54,7 +54,7 @@
 <header>
     <div class="bar">
         <div class="logo">
-            <div class="ClickTest laisiangtho icon-fire fO"><span>Lai Siangtho</span></div>
+            <div class="laisiangtho icon-fire"><span>Lai Siangtho</span></div>
         </div>
         <div class="tab">
             <ul>
@@ -76,7 +76,7 @@
             <div data-fa="title"></div>
         </div>
         <div class="misc">
-            <ul>
+            <ul only="chromeApp">
                 <li>
                     <a class="info about version fO icon-info"></a>
                 </li>
@@ -90,7 +90,7 @@
                     <a class="win close icon-close fN"></a>
                 </li>
             </ul>
-            <ul style="display:none;">
+            <ul style="display:none;" only="defaultWeb">
                 <li>
                     <a class="page setting icon-setting"></a>
                 </li>
@@ -98,7 +98,7 @@
                     <a class="page update icon-code"></a>
                 </li>
                 <li>
-                    <a class="about version fA icon-info"></a>
+                    <a class="info about version fO icon-info"></a>
                 </li>
             </ul>
         </div>
@@ -110,9 +110,9 @@
                     <div class="icon-panel" title="Note"></div>
                 </li>
                 <li>
-                    <div class="icon-bookmarks" title="Note"></div>
-                    <ul class="hO">
-                        <li class="scrollbar" empty>scrollbar, note setting</li>
+                    <div class="chapter icon-bookmarks" fn="note active" title="Note"></div>
+                    <ul class="hO" style="display: none;">
+                        <li class="scrollbar" empty="true"></li>
                     </ul>
                 </li>
                 <li>
@@ -129,14 +129,14 @@
                     <input name="q" type="text" autocomplete="off">
                 </label>
                 <label>
-                    <a href="#lookup?" class="lookup result fA" fn="msg" title="pasian kiangah">5၆၇</a>
+                    <a href="#lookup?" class="lookup result fA" fn="msg" title="pasian kiangah" empty="true">5၆၇</a>
                 </label>
                 <label for="search">
                     <span class="icon-down-open"></span>
                     <input name="search" type="button" value="">
                 </label>
                 <ul class="hW">
-                    <li empty>
+                    <li empty="true">
                         <ul>
                             <li>scrollbar, search setting scrollbar, search setting</li>
                             <li>scrollbar, search setting scrollbar, search setting scrollbar, search scrollbar, search setting scrollbar, search</li>
@@ -149,8 +149,8 @@
             <ul>
                 <li>
                     <div class="lookup setting fO icon-flag" title="Note"></div>
-                    <ul class="hO">
-                        <li class="scrollbar" empty></li>
+                    <ul class="hO" style="display: none;">
+                        <li class="scrollbar" empty="true"></li>
                     </ul>
                 </li>
                 <li>
@@ -160,8 +160,8 @@
                 <li>
                     <div class="chapter list fO" fn="name current" title="Chapter">၁</div>
                     <!-- attr fn used to update text -->
-                    <ul class="hO">
-                        <li class="scrollbar" empty></li>
+                    <ul class="hO" style="display: none;">
+                        <li class="scrollbar" empty="true"></li>
                     </ul>
                 </li>
                 <li>
@@ -173,28 +173,19 @@
     </div>
 </header>
 <main>
-    <div class="container" fn="msg info" empty>What</div>
-    <div class="bible book bookmark note setting todo active" empty>
-      <div class="wrp wrp-bible">
-        <ol id="dragable" class="row row-bible ui-sortable">
-          <li id="tedim" class="active now">
-            <p>
-              <span class="icon-ok offline"></span>
-              <a href="#book?bible=tedim">Lai Siangtho</a>
-              <span class="icon-menu drag ui-sortable-handle"></span>
-            </p>
-          </li>
-          <li id="mcl" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=mcl">Myanmar Bible (ခေတ်သုံး)</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="judson" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=judson">Myanmar Bible (ယုဒသန်)</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="kjv" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=kjv">King James Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="bbe" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=bbe">Bible in Basic English</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="web" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=web">World English Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="hakha" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=hakha">Hakha Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="falam" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=falam">Falam Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="sizang" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=sizang">Sizang Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="paite" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=paite">Paite Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="mizo" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=mizo">Mizo Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="bokmal1906" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=bokmal1906">Det Norsk Bibelselskap</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="danish1933" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=danish1933">Danish Version</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="ostervald1877" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=ostervald1877">La Bible Ostervald 1877</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="luther1912" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=luther1912">German Bible</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="swedish1917" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=swedish1917">Svenska 1917</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="niv" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=niv">New International Version</a><span class="icon-menu drag ui-sortable-handle"></span></p></li><li id="finish1938" class=" later"><p><span class="icon-logout offline"></span><a href="#book?bible=finish1938">Finnish 1938</a><span class="icon-menu drag ui-sortable-handle"></span></p></li></ol></div>
+    <div class="container" fn="msg info" empty="true"></div>
+    <div class="bible book bookmark note setting todo active" empty="true">
+      <div class="wrp wrp-bible" empty="true"></div>
     </div>
-    <div class="lookup active">
-        <div class="wrp wrp-lookup d1" empty="true"></div>
+    <div class="lookup">
+        <div class="wrp wrp-lookup wrp-content d1" empty="true"></div>
     </div>
     <div class="reader">
-        <div class="wrp wrp-chapter d1" contenteditable="true" empty="true"></div>
+        <div class="wrp wrp-chapter wrp-content d1" contenteditable="false" empty="true"></div>
     </div>
 </main>
-<footer empty></footer>
-<div id="dialog" class="version" style="display:none;" remove>
+<footer empty="true"></footer>
+<div id="dialog" class="version" style="display:none;" remove="true">
     <div id="window">
         <h1 title="1.9.85">Lai Siangtho</h1>
         <h2>1.1.7</h2>

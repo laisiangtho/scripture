@@ -36,7 +36,8 @@
                 }
             }
         };
-        db = {}, fO = e.extend({
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        var s = e.extend({
             E: [ "Action" ],
             App: n,
             Click: "click",
@@ -68,40 +69,39 @@
             msg: {
                 info: e("li#msg")
             }
-        }, o);
-        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-        var s, a = this, r = function() {
+        }, o), a, l, r = {}, c = this, f = function() {
             this.arg = arguments;
             return this;
-        };
-        var l = window[fO.App] = function() {
+        }, u = function() {
             var e = arguments;
             function t() {
-                r.apply(this, e);
+                f.apply(this, e);
             }
-            t.prototype = Object.create(r.prototype);
-            t.prototype.constructor = r;
+            t.prototype = Object.create(f.prototype);
+            t.prototype.constructor = f;
             return new t();
         };
-        r.prototype.tmp = function() {
+        window[s.App] = f;
+        f.prototype.tmp = function() {
             console.log("tmp");
         };
-        r.prototype.ClickTest = function(e) {
+        f.prototype.ClickTest = function(e) {
             console.log("aaa");
         };
-        r.prototype.load = function() {
+        f.prototype.load = function() {
             h = this.HTML();
+            l = this;
             e("p").addClass(config.css.active).html(config.version);
             e("h1").attr({
                 title: config.build
             }).attr({
                 "class": "icon-fire"
             });
-            var t = this, n = [], i = {}, o = {
+            var t = [], n = {}, i = {
                 reading: function(e) {
                     if (config.bible.ready) {
-                        if (fO.query.bible && config.bible.ready == 1) {
-                            return fO.query.bible;
+                        if (s.query.bible && config.bible.ready == 1) {
+                            return s.query.bible;
                         } else if (config.bible.ready == 2) {
                             return e;
                         } else {
@@ -112,73 +112,73 @@
                     }
                 },
                 start: function() {
-                    var t = n.shift();
-                    fO[t] = {};
-                    if (fO.lang[t].info) {
-                        e("p").html(fO.lang[t].info.name).promise().done(function() {
-                            if (o.reading(t) == t) {
-                                new l({
-                                    bible: t,
-                                    reading: t,
-                                    downloading: t
+                    var n = t.shift();
+                    s[n] = {};
+                    if (s.lang[n].info) {
+                        e("p").html(s.lang[n].info.name).promise().done(function() {
+                            if (i.reading(n) == n) {
+                                new u({
+                                    bible: n,
+                                    reading: n,
+                                    downloading: n
                                 }).xml(function(e) {
-                                    o.next();
+                                    i.next();
                                 }).has();
                             } else {
-                                o.next();
+                                i.next();
                             }
                         });
                     } else {
-                        this.json(t, this.next);
+                        this.json(n, this.next);
                     }
                 },
-                json: function(s, a, r) {
-                    var f = t.url(config.id, [ s ], config.file.lang);
-                    var c = e.ajax({
-                        url: (r ? r : "") + f.fileUrl,
+                json: function(o, a, c) {
+                    var f = l.url(config.id, [ o ], config.file.lang);
+                    var p = e.ajax({
+                        url: (c ? c : "") + f.fileUrl,
                         dataType: f.fileExtension,
                         contentType: f.fileContentType,
                         cache: false
                     });
-                    c.done(function(n) {
-                        var r = n.info.lang = n.info.lang || config.language.info.lang;
-                        fO.msg.info.html(n.info.name);
-                        var f = function(n, i) {
-                            var f = {};
+                    p.done(function(t) {
+                        var r = t.info.lang = t.info.lang || config.language.info.lang;
+                        s.msg.info.html(t.info.name);
+                        var c = function(t, n) {
+                            var c = {};
                             return {
                                 is: {
                                     index: function(e) {
-                                        f[e] = fO.lang[s].index;
+                                        c[e] = s.lang[o].index;
                                     },
-                                    name: function(o) {
-                                        f[o] = {};
-                                        for (var s in n[o]) {
-                                            var a = typeof i.b === "undefined" || typeof i.b[s] === "undefined" ? [] : [ i.b[s] ];
-                                            var r = typeof i.name === "undefined" || typeof i.name[s] === "undefined" ? [] : i.name[s];
-                                            e.merge(a, r);
-                                            f[o][s] = e.unique(t.array(n[o][s]).merge(a).data);
+                                    name: function(i) {
+                                        c[i] = {};
+                                        for (var o in t[i]) {
+                                            var s = typeof n.b === "undefined" || typeof n.b[o] === "undefined" ? [] : [ n.b[o] ];
+                                            var a = typeof n.name === "undefined" || typeof n.name[o] === "undefined" ? [] : n.name[o];
+                                            e.merge(s, a);
+                                            c[i][o] = e.unique(l.array(t[i][o]).merge(s).data);
                                         }
                                     }
                                 },
                                 merge: function() {
-                                    for (var t in n) {
-                                        if (this.is[t]) {
-                                            this.is[t](t);
+                                    for (var i in t) {
+                                        if (this.is[i]) {
+                                            this.is[i](i);
                                         } else {
-                                            f[t] = i[t] ? e.extend({}, n[t], i[t]) : n[t];
+                                            c[i] = n[i] ? e.extend({}, t[i], n[i]) : t[i];
                                         }
                                     }
-                                    return f;
+                                    return c;
                                 },
                                 next: function() {
-                                    e.extend(fO.lang[s], this.merge());
+                                    e.extend(s.lang[o], this.merge());
                                     e("p").html(r).attr({
                                         "class": "icon-database"
                                     }).promise().done(function() {
-                                        new l({
-                                            bible: s,
-                                            reading: o.reading(s),
-                                            downloading: o.reading(s)
+                                        new u({
+                                            bible: o,
+                                            reading: i.reading(o),
+                                            downloading: i.reading(o)
                                         }).xml(function(e) {
                                             a();
                                         }).has();
@@ -186,107 +186,107 @@
                                 }
                             };
                         };
-                        if (i[r]) {
-                            f(i[r], n).next();
+                        if (n[r]) {
+                            c(n[r], t).next();
                         } else {
-                            var c = t.url("lang", [ r ], config.file.lang), u = e.ajax({
-                                url: c.fileUrl,
-                                dataType: c.fileExtension,
-                                contentType: c.fileContentType,
+                            var f = l.url("lang", [ r ], config.file.lang), p = e.ajax({
+                                url: f.fileUrl,
+                                dataType: f.fileExtension,
+                                contentType: f.fileContentType,
                                 cache: false
                             });
-                            u.done(function(e) {
-                                i[r] = f(config.language, e).merge();
-                                f(i[r], n).next();
+                            p.done(function(e) {
+                                n[r] = c(config.language, e).merge();
+                                c(n[r], t).next();
                             });
-                            u.fail(function(e, t) {
-                                f(config.language, n).next();
+                            p.fail(function(e, n) {
+                                c(config.language, t).next();
                             });
                         }
                     });
-                    c.fail(function(e, t) {
+                    p.fail(function(e, n) {
                         if (api.name) {
-                            if (r) {
-                                db.RemoveLang(s, function() {
-                                    n.splice(n.indexOf(s), 1);
+                            if (c) {
+                                r.RemoveLang(o, function() {
+                                    t.splice(t.indexOf(o), 1);
                                     a();
                                 });
                             } else {
-                                o.json(s, a, api.name);
+                                i.json(o, a, api.name);
                             }
                         } else {
-                            db.RemoveLang(s, function() {
-                                n.splice(n.indexOf(s), 1);
+                            r.RemoveLang(o, function() {
+                                t.splice(t.indexOf(o), 1);
                                 a();
                             });
                         }
                     });
                 },
                 next: function() {
-                    if (n.length) {
-                        o.start();
+                    if (t.length) {
+                        i.start();
                     } else {
-                        e(window).bind(fO.Hash, function() {
-                            l().init();
+                        e(window).bind(s.Hash, function() {
+                            u().init();
                         });
-                        function t() {
-                            db.get({
+                        function n() {
+                            r.get({
                                 table: config.store.note
                             }).then(function(e) {
                                 if (e) {
-                                    fO.note = e;
-                                    o.done();
+                                    s.note = e;
+                                    i.done();
                                 } else {
-                                    db.add({
+                                    r.add({
                                         table: config.store.note,
                                         data: config.store.noteData
                                     }).then(function(e) {
-                                        fO.note = e;
-                                        o.done();
+                                        s.note = e;
+                                        i.done();
                                     });
                                 }
                             });
                         }
-                        function i() {
-                            db.get({
+                        function o() {
+                            r.get({
                                 table: config.store.lookup
                             }).then(function(e) {
                                 if (e) {
-                                    fO.lookup = e;
-                                    t();
+                                    s.lookup = e;
+                                    n();
                                 } else {
-                                    db.add({
+                                    r.add({
                                         table: config.store.lookup,
                                         data: {
-                                            setting: fO.lookup.setting,
-                                            book: fO.lookup.book
+                                            setting: s.lookup.setting,
+                                            book: s.lookup.book
                                         }
                                     }).then(function(e) {
-                                        fO.lookup = e;
-                                        t();
+                                        s.lookup = e;
+                                        n();
                                     });
                                 }
                             });
                         }
-                        db.update.lang().then(i);
+                        r.update.lang().then(o);
                     }
                 },
-                available: function(n) {
-                    if (n) {
-                        fO.lang = t.array(config.bible.available, Object.keys(n)).merge().unique().reduce(function(t, i, o) {
-                            if (e.isPlainObject(n[i])) {
-                                t[i] = {
-                                    index: n[i].index || n[i].index == 0 || o
+                available: function(t) {
+                    if (t) {
+                        s.lang = l.array(config.bible.available, Object.keys(t)).merge().unique().reduce(function(n, i, o) {
+                            if (e.isPlainObject(t[i])) {
+                                n[i] = {
+                                    index: t[i].index || t[i].index == 0 || o
                                 };
                             } else {
-                                t[i] = {
+                                n[i] = {
                                     index: o
                                 };
                             }
-                            return t;
+                            return n;
                         }, {});
                     } else {
-                        fO.lang = config.bible.available.reduce(function(e, t, n) {
+                        s.lang = config.bible.available.reduce(function(e, t, n) {
                             e[t] = {
                                 index: n
                             };
@@ -295,101 +295,100 @@
                     }
                 },
                 done: function() {
-                    if (fO.todo.Template) {
-                        e(document.body).load(config.file.template.replace(/z/, fO.DeviceTemplate.join(".")), function() {
-                            t.init();
-                        }).promise().done(function() {
-                            this.attr("id", fO.App);
+                    if (s.todo.Template) {
+                        e(document.body).load(config.file.template.replace(/z/, s.DeviceTemplate.join(".")), function() {
+                            e(this).attr("id", s.App);
+                            l.init();
                         });
                     } else {
-                        if (fO.todo.RemoveID) {
-                            e(document.body).attr("id", fO.App).removeClass().promise().done(function() {
+                        if (s.todo.RemoveID) {
+                            e(document.body).attr("id", s.App).removeClass().promise().done(function() {
                                 this.children()[0].remove();
                                 this.children().last().remove();
-                                t.init();
+                                l.init();
                             });
                         }
                     }
                     e(document.body).keydown(function(e) {
                         if (e.which == 27) {
-                            fO.todo.pause = true;
+                            s.todo.pause = true;
                         } else if (e.which == 13) {
-                            fO.todo.enter = true;
+                            s.todo.enter = true;
                         }
                     });
                 }
             };
-            fO.msg.info.html("getting Database ready").attr({
+            s.msg.info.html("getting Database ready").attr({
                 "class": "icon-database"
             });
-            db = new this.Database(function() {
-                fO.msg.info.html("getting Configuration ready").attr({
+            r = new this.Database(function() {
+                s.msg.info.html("getting Configuration ready").attr({
                     "class": "icon-config"
                 });
-                db.get({
+                r.get({
                     table: config.store.info
-                }).then(function(i) {
-                    fO.msg.info.html("getting Language ready").attr({
+                }).then(function(n) {
+                    s.msg.info.html("getting Language ready").attr({
                         "class": "icon-language"
                     });
                     e("p").attr({
                         "class": "ClickTest fO icon-language"
                     }).html("One more moment please");
-                    db.get({
+                    r.get({
                         table: config.store.lang
                     }).then(function(e) {
-                        fO.msg.info.attr({
+                        s.msg.info.attr({
                             "class": "icon-flag"
                         });
                         if (e) {
-                            if (i && i.build == config.build) {
-                                fO.Ready = 3;
-                                fO.lang = e;
-                                a();
+                            if (n && n.build == config.build) {
+                                s.Ready = 3;
+                                s.lang = e;
+                                o();
                             } else {
-                                fO.Ready = 2;
-                                o.available(e);
-                                a();
+                                s.Ready = 2;
+                                i.available(e);
+                                o();
                             }
                         } else {
-                            fO.Ready = 1;
-                            o.available();
-                            a();
+                            s.Ready = 1;
+                            i.available();
+                            o();
                         }
                     });
-                    function a() {
-                        db.get({
+                    function o() {
+                        r.get({
                             table: config.store.query
                         }).then(function(e) {
                             if (e) {
-                                fO.query = e;
-                                r();
+                                s.query = e;
+                                c();
                             } else {
-                                r();
+                                c();
                             }
                         });
                     }
-                    function r() {
-                        t.index();
-                        n = config.bible.available.concat();
-                        s = new fileSystask({
-                            Base: "Other",
+                    function c() {
+                        l.index();
+                        t = config.bible.available.concat();
+                        a = new fileSystask({
+                            Base: "Chrome",
                             RequestQuota: 1073741824,
-                            Permission: 0
+                            Permission: 1
                         }, {
                             success: function(e) {},
                             fail: function(e) {},
                             done: function(e) {
-                                if (fO.Ready == 3) {
-                                    o.start();
+                                if (s.Ready == 3) {
+                                    i.start();
                                 } else {
-                                    db.add({
+                                    r.add({
                                         table: config.store.info,
                                         data: {
                                             build: config.build,
                                             version: config.version
                                         }
-                                    }).then(o.start());
+                                    }).then(i.start());
                                 }
                             }
                         });
@@ -397,7 +396,7 @@
                 });
             });
         };
-        r.prototype.Database = function(e) {
+        f.prototype.Database = function(e) {
             var t = this;
             this.deleteDatabase = function() {
                 return localforage.clear(function(e) {
@@ -418,58 +417,58 @@
             this.UpdateQuery = function() {
                 return this.put({
                     table: config.store.query,
-                    data: fO.query
+                    data: s.query
                 });
             };
             this.UpdateLang = function() {
                 return this.add({
                     table: config.store.lang,
-                    data: fO.lang
+                    data: s.lang
                 });
             };
             this.UpdateNote = function() {
                 return this.put({
                     table: config.store.note,
-                    data: fO.note
+                    data: s.note
                 });
             };
             this.UpdateLookUp = function() {
                 return this.put({
                     table: config.store.lookup,
-                    data: fO.lookup
+                    data: s.lookup
                 });
             };
             this.update = {
                 query: function() {
                     return t.add({
                         table: config.store.query,
-                        data: fO.query
+                        data: s.query
                     });
                 },
                 lang: function() {
                     return t.add({
                         table: config.store.lang,
-                        data: fO.lang
+                        data: s.lang
                     });
                 },
                 note: function() {
                     return t.add({
                         table: config.store.note,
-                        data: fO.note
+                        data: s.note
                     });
                 },
                 lookup: function() {
                     return t.add({
                         table: config.store.lookup,
-                        data: fO.lookup
+                        data: s.lookup
                     });
                 }
             };
             this.remove = {
                 query: function() {},
                 lang: function(e, n) {
-                    delete fO[e];
-                    delete fO.lang[e];
+                    delete s[e];
+                    delete s.lang[e];
                     config.bible.available.splice(config.bible.available.indexOf(e), 1);
                     t.update.lang().then(function() {
                         if (n) n();
@@ -480,8 +479,8 @@
                 lookup: function() {}
             };
             this.RemoveLang = function(e, t) {
-                delete fO[e];
-                delete fO.lang[e];
+                delete s[e];
+                delete s.lang[e];
                 config.bible.available.splice(config.bible.available.indexOf(e), 1);
                 this.UpdateLang().then(function() {
                     if (t) t();
@@ -500,20 +499,40 @@
             });
             return "!";
         };
-        r.prototype.chapter = {
+        f.prototype.chapter = {
+            note: {
+                active: function(e) {
+                    new d({
+                        bID: s.query.book,
+                        cID: s.query.chapter
+                    }).search(function(t) {
+                        if (t) {
+                            e.arg[0].addClass(config.css.active);
+                            s.todo.ChapterNoteActive = true;
+                        } else {
+                            s.todo.ChapterNoteActive = false;
+                        }
+                    });
+                }
+            },
             name: {
                 previous: function(e) {
                     e.arg[0].attr("title", this.text("next"));
                 },
                 current: function(e) {
-                    e.arg[0].html(e.num(fO.query.chapter));
+                    e.arg[0].html(e.num(s.query.chapter));
+                    if (s.todo.ActiveChapter) {
+                        s.todo.ActiveChapter.addClass(config.css.active).promise().done(function() {
+                            delete s.todo.ActiveChapter;
+                        });
+                    }
                 },
                 next: function(e) {
                     e.arg[0].attr("title", this.text("previous"));
                 },
                 has: {
                     next: function() {
-                        var e = parseInt(fO.query.book), t = parseInt(fO.query.chapter) + 1;
+                        var e = parseInt(s.query.book), t = parseInt(s.query.chapter) + 1;
                         if (bible.info[e].c < t) {
                             e++;
                             e = e > 66 ? 1 : e;
@@ -525,7 +544,7 @@
                         };
                     },
                     previous: function() {
-                        var e = parseInt(fO.query.book), t = parseInt(fO.query.chapter) - 1;
+                        var e = parseInt(s.query.book), t = parseInt(s.query.chapter) - 1;
                         if (t < 1) {
                             e--;
                             e = e < 1 ? 66 : e;
@@ -538,8 +557,8 @@
                     }
                 },
                 text: function(e) {
-                    var t = this.has[e](), n = fO.lang[fO.query.bible];
-                    return n.l.BFVBC.replace(/{b}/, n.b[t.book]).replace(/{c}/, l().num(t.chapter));
+                    var t = this.has[e](), n = s.lang[s.query.bible];
+                    return n.l.BFVBC.replace(/{b}/, n.b[t.book]).replace(/{c}/, u().num(t.chapter));
                 }
             },
             next: function(e) {
@@ -549,32 +568,33 @@
                 e.hash(2).hashChange(this.name.has.previous());
             },
             book: function(e) {},
-            list: function(t, n) {
-                var i = t.arg[0].parent().children().eq(1);
-                if (i.is(":hidden")) {
-                    new t.menu(fO.query.book).chapter().appendTo(i.fadeIn(200).children().empty()).promise().done(function() {
-                        this.children().on(fO.Click, function() {
-                            fO.todo.ActiveChapter = e(this);
+            list: function(t) {
+                var n = t.arg[0].next();
+                if (n.is(":hidden")) {
+                    new t.menu(s.query.book).chapter(e(h.ol, {
+                        "class": "list-chapter"
+                    })).appendTo(n.fadeToggle(100).children().empty()).promise().always(function() {
+                        this.children().on(s.Click, function() {
+                            s.todo.ActiveChapter = e(this);
                         });
-                        l(i).doClick(function(e) {
-                            if (t.container.closest(i, e, t.arg[0])) {
-                                t.container.fade(i, t.arg[0]);
+                        u(n).doClick(function(e) {
+                            if (t.container.closest(n, e, t.arg[0])) {
+                                t.container.fade(n, t.arg[0]);
                                 return true;
                             }
                         });
                     });
                 } else {
-                    t.container.fade(i, t.arg[0]);
+                    t.container.fade(n, t.arg[0]);
                 }
             }
         };
-        r.prototype.lookup = {
+        f.prototype.lookup = {
             setting: function(e) {
-                var t = e.arg[0].parent().children().eq(1);
+                var t = e.arg[0].next();
                 if (t.is(":hidden")) {
-                    e.arg[0].addClass(config.css.active);
-                    new e.menu().lookup(t.fadeIn(200).children().empty()).promise().done(function() {
-                        l(t).doClick(function(n) {
+                    new e.menu(s.query.book).lookup(t.fadeToggle(100).children().empty()).promise().always(function() {
+                        u(t).doClick(function(n) {
                             if (e.container.closest(t, n, e.arg[0])) {
                                 e.container.fade(t, e.arg[0]);
                                 return true;
@@ -585,50 +605,46 @@
                     e.container.fade(t, e.arg[0]);
                 }
             },
+            query: function(e) {
+                e.arg[0].val(s.query.q);
+            },
             msg: function(e) {
-                fO.msg.lookup = e.arg[0];
-                if (fO.query.result > 0) {
-                    e.arg[0].text(e.num(fO.query.result)).attr("title", fO.query.q);
+                s.msg.lookup = e.arg[0];
+                if (s.query.result > 0) {
+                    e.arg[0].text(e.num(s.query.result)).attr("title", s.query.q);
                 } else {
                     e.arg[0].empty();
                 }
             }
         };
-        r.prototype.menu = function(t) {
-            this.bible = function() {
-                var n = e(h.ol, {
-                    id: "dragable",
-                    "class": "row row-bible"
-                });
-                config.bible.available.forEach(function(e) {
+        f.prototype.menu = function(t) {
+            this.bible = function(e) {
+                config.bible.available.forEach(function(n) {
                     var i = {
-                        bID: e,
-                        lang: fO.lang[e].info,
-                        local: fO.lang[e].local,
+                        bID: n,
+                        lang: s.lang[n].info,
+                        local: s.lang[n].local,
                         classOffline: "icon-ok offline",
                         classOnline: "icon-logout offline"
                     };
                     i.classAvailable = i.local ? config.css.available : config.css.notAvailable;
                     i.isAvailable = i.local ? i.classOffline : i.classOnline;
-                    i.classActive = (fO.query.bible == e ? config.css.active : "") + " " + i.classAvailable;
-                    t(i).appendTo(n);
+                    i.classActive = (s.query.bible == n ? config.css.active : "") + " " + i.classAvailable;
+                    t(i).appendTo(e);
                 });
-                return n;
+                return e;
             };
-            this.chapter = function() {
-                var n = e(h.ol, {
-                    "class": "list-chapter"
-                });
+            this.chapter = function(n) {
                 e.each(bible.info[t].v, function(t, i) {
                     t++;
                     e(h.li, {
                         id: t,
-                        "class": fO.query.chapter == t ? config.css.active : ""
+                        "class": s.query.chapter == t ? config.css.active : ""
                     }).append(e(h.a, {
-                        href: l().hash(2) + e.param({
+                        href: u().hash(2) + e.param({
                             chapter: t
                         })
-                    }).html(l().num(t)).append(e(h.sup).html(l().num(i)))).appendTo(n);
+                    }).html(u().num(t)).append(e(h.sup).html(u().num(i)))).appendTo(n);
                 });
                 return n;
             };
@@ -638,10 +654,10 @@
                         t.each(function() {
                             var t = e(this);
                             t.children().each(function(t, i) {
-                                var i = e(i), o = l(i).get("id").element[0];
+                                var i = e(i), o = u(i).get("id").element[0];
                                 i.toggleClass(config.css.active);
                                 n.ID(o);
-                            }).promise().done(function() {
+                            }).promise().always(function() {
                                 n.Class(t);
                             });
                         });
@@ -651,20 +667,19 @@
                         if (i.get(0).tagName.toLowerCase() === "p") {
                             this.Query(n);
                         } else {
-                            var o = i.parents("li"), s = o.attr("id");
-                            n.fadeToggle(100);
+                            var o = i.parent().parent().toggleClass(config.css.active), a = o.attr("id");
                             i.toggleClass(config.css.active).promise().done(function() {
                                 if (this.hasClass(config.css.active)) {
-                                    fO.lookup.setting[s] = true;
+                                    s.lookup.setting[a] = true;
                                 } else {
-                                    delete fO.lookup.setting[s];
+                                    delete s.lookup.setting[a];
                                 }
                             });
                         }
-                        db.update.lookup();
+                        r.update.lookup();
                     },
                     Class: function(e) {
-                        var t = e.children().length, n = e.children(l(config.css.active).is("class").name).length, i = e.parent().children().eq(0);
+                        var t = e.children().length, n = e.children(u(config.css.active).is("class").name).length, i = e.parent().children().eq(0);
                         if (t === n) {
                             i.removeClass().addClass("yes");
                         } else if (n > 0) {
@@ -674,55 +689,55 @@
                         }
                     },
                     ID: function(e) {
-                        if (fO.lookup.book[e]) {
-                            delete fO.lookup.book[e];
+                        if (s.lookup.book[e]) {
+                            delete s.lookup.book[e];
                         } else {
-                            fO.lookup.book[e] = {};
+                            s.lookup.book[e] = {};
                         }
                     }
                 }, t = e(h.ol, {
                     "class": "list-lookup"
-                }).appendTo(t), i = fO.lang[fO.query.bible];
-                e.each(bible.catalog, function(o, s) {
-                    var a = Object.keys(config.language)[0] + o, r = fO.lookup.setting[a] ? config.css.active : "testament";
+                }).appendTo(t), i = s.lang[s.query.bible];
+                e.each(bible.catalog, function(o, a) {
+                    var l = Object.keys(config.language)[0] + o, c = s.lookup.setting[l] ? config.css.active : "testament";
                     e(h.li, {
-                        id: a,
-                        "class": r
+                        id: l,
+                        "class": c
                     }).html(e(h.p, {
                         text: i.t[o]
-                    }).on(fO.Click, function(t) {
+                    }).on(s.Click, function(t) {
                         n.Click(t, e(this).parent().children("ol").find("ol"));
-                    }).append(e(h.span).text("+").addClass(r))).appendTo(t).promise().done(function() {
+                    }).append(e(h.span).text("+").addClass(c))).appendTo(t).promise().always(function() {
                         e(h.ol, {
                             "class": "section"
-                        }).appendTo(this).promise().done(function() {
+                        }).appendTo(this).promise().always(function() {
                             var t = this;
-                            e.each(s, function(o, s) {
-                                var a = Object.keys(config.language)[1] + o, r = fO.lookup.setting[a] ? config.css.active : "";
+                            e.each(a, function(o, a) {
+                                var l = Object.keys(config.language)[1] + o, c = s.lookup.setting[l] ? config.css.active : "";
                                 e(h.li, {
-                                    id: a,
-                                    "class": r
+                                    id: l,
+                                    "class": c
                                 }).append(e(h.p, {
                                     text: i.s[o]
-                                }).on(fO.Click, function(t) {
+                                }).on(s.Click, function(t) {
                                     n.Click(t, e(this).parent().children("ol"));
                                 }).append(e(h.span, {
                                     text: "+"
-                                }).addClass(r))).appendTo(t).promise().done(function() {
+                                }).addClass(c))).appendTo(t).promise().always(function() {
                                     var t = e(h.ol, {
                                         "class": "book"
                                     }).appendTo(this);
-                                    s.forEach(function(o) {
+                                    a.forEach(function(o) {
                                         e(h.li, {
                                             id: o,
-                                            "class": fO.lookup.book[o] ? config.css.active : ""
-                                        }).text(i.b[o]).on(fO.Click, function() {
+                                            "class": s.lookup.book[o] ? config.css.active : ""
+                                        }).text(i.b[o]).on(s.Click, function() {
                                             e(this).toggleClass(config.css.active);
                                             n.ID(o);
-                                            db.update.lookup();
+                                            r.update.lookup();
                                         }).appendTo(t);
                                     });
-                                    t.promise().done(function() {
+                                    t.promise().always(function() {
                                         n.Class(t);
                                     });
                                 });
@@ -736,10 +751,10 @@
                 console.log("OK...");
             };
         };
-        r.prototype.container = {
+        f.prototype.container = {
             msg: {
                 info: function(e) {
-                    fO.msg.info = e.arg[0];
+                    s.msg.info = e.arg[0];
                     return true;
                 }
             },
@@ -747,13 +762,13 @@
                 if (t.is(":visible") && !e(n.target).closest("#dialog, .misc").length && !e(n.target).closest(t).length && !e(n.target).closest(i).length) return true;
             },
             fade: function(e, t, n) {
-                e.fadeOut(300).promise().done(function() {
+                e.fadeOut(100).promise().always(function() {
                     t.removeClass(config.css.active);
                     if (n) n.removeAttr("style");
                 });
             }
         };
-        r.prototype.info = {
+        f.prototype.info = {
             about: {
                 version: function() {
                     e(h.div, {
@@ -770,10 +785,10 @@
                         href: config.developerlink
                     }).text(config.developer)), e(h.div, {
                         id: "clickme"
-                    }).html("Ok").on(fO.Click, function(t) {
+                    }).html("Ok").on(s.Click, function(t) {
                         t.stopImmediatePropagation();
                         e(this).parents("div").remove();
-                    }))).appendTo("body").on(fO.Click, function(t) {
+                    }))).appendTo("body").on(s.Click, function(t) {
                         if (!e(t.target).closest("#window").length) {
                             e("#clickme").effect("highlight", {
                                 color: "#F30C10"
@@ -783,9 +798,9 @@
                 }
             }
         };
-        r.prototype.doClick = function(t) {
+        f.prototype.doClick = function(t) {
             var n = this.arg[0];
-            e(document).on(fO.Click, function(i) {
+            e(document.body).on(s.Click, function(i) {
                 if (n) {
                     if (n.is(":visible")) {
                         if (e.isFunction(t) && t(i)) {} else {}
@@ -795,7 +810,7 @@
                 }
             });
         };
-        r.prototype.url = function(e, t, n) {
+        f.prototype.url = function(e, t, n) {
             var i = this.string([ e, 47, t.join("/"), 46, n ]), o = i.substring(i.lastIndexOf("/") + 1), s = this.string([ "application", 47, n ]);
             return {
                 fileName: o,
@@ -805,21 +820,25 @@
                 fileContentType: s
             };
         };
-        r.prototype.hash = function(e) {
+        f.prototype.hash = function(e) {
             return this.string([ 35, config.page[e], 63 ]);
         };
-        r.prototype.dot = function(e) {};
-        r.prototype.num = function(e, t) {
-            if (!t) t = fO.query.bible;
-            if (fO.lang[t].hasOwnProperty("n")) {
-                return Object.getOwnPropertyNames(fO.lang[t].n).length === 0 ? e : e.toString().replace(/[0123456789]/g, function(e) {
-                    return fO.lang[t].n[e];
-                });
+        f.prototype.dot = function(e) {};
+        f.prototype.num = function(e, t) {
+            if (!t) t = s.query.bible;
+            if (s.lang.hasOwnProperty(t)) {
+                if (s.lang[t].hasOwnProperty("n")) {
+                    return Object.getOwnPropertyNames(s.lang[t].n).length === 0 ? e : e.toString().replace(/[0-9]/g, function(e) {
+                        return s.lang[t].n[e];
+                    });
+                } else {
+                    return e;
+                }
             } else {
                 return e;
             }
         };
-        r.prototype.hashURI = function(e) {
+        f.prototype.hashURI = function(e) {
             var t = location.hash, n = {
                 page: t.split("?")[0].replace("#", "")
             }, i, o = /([^\?#&=]+)=([^&]*)/g, s = function(e) {
@@ -828,14 +847,14 @@
             while (i = o.exec(t)) n[s(i[1])] = s(i[2]);
             e(n);
         };
-        r.prototype.string = function(t) {
+        f.prototype.string = function(t) {
             return e.map(t, function(t) {
                 return e.isNumeric(t) ? String.fromCharCode(t) : t;
             }).join("").toString();
         };
-        r.prototype.index = function() {
+        f.prototype.index = function() {
             config.bible.available = [];
-            e.map(fO.lang, function(e, t) {
+            e.map(s.lang, function(e, t) {
                 return {
                     id: t,
                     index: e.index
@@ -846,7 +865,7 @@
                 config.bible.available.push(e.id);
             });
         };
-        r.prototype.array = function(t, n) {
+        f.prototype.array = function(t, n) {
             return {
                 merge: function(i) {
                     if (e.type(i) === "array") n = i;
@@ -875,9 +894,9 @@
                 }
             };
         };
-        r.prototype.working = function(t) {
-            if (fO.msg.info.is(":hidden")) {
-                e("body").addClass(config.css.working).promise().done(fO.msg.info.slideDown(200));
+        f.prototype.working = function(t) {
+            if (s.msg.info.is(":hidden")) {
+                e("body").addClass(config.css.working).promise().done(s.msg.info.slideDown(200));
             }
             if (t.wait === true) {
                 e("body").addClass(config.css.wait);
@@ -888,73 +907,54 @@
             if (t.disable === true) {
                 e("body").addClass(config.css.disable);
             }
-            return t.msg ? fO.msg.info.html(t.msg) : fO.msg.info;
+            return t.msg ? s.msg.info.html(t.msg) : s.msg.info;
         };
-        r.prototype.done = function(t) {
-            fO.msg.info.slideUp(200).empty().promise().done(function() {
+        f.prototype.done = function(t) {
+            s.msg.info.slideUp(200).empty().promise().done(function() {
                 e("body").removeClass(config.css.working).removeClass(config.css.wait).removeClass(config.css.disable).promise().done(function() {
                     if (t) t();
                 });
             });
         };
-        r.prototype.template = function(t, n) {
-            var o = e(), s = this.obj;
-            var a = this;
-            e.each(this.arg[0], function(t, n) {
-                (function s(t, n, a, r) {
-                    var f = n.attr, c = n.text, u = false, p = e(l(t).is("tag").name, f);
-                    if (f && f.fn) {
-                        u = n.attr.fn.split(" ");
-                        delete f.fn;
-                    }
-                    if (e.type(c) === "string") {
-                        p.html(c);
-                    } else if (n.value) {
-                        p.val(n.value);
-                    } else if (!c) {} else {
-                        for (i in c) {
-                            if (e.isNumeric(i)) {
-                                var t = Object.keys(c[i]);
-                                s(t, c[i][t], p);
-                            } else {
-                                s(i, c[i], p);
-                            }
-                        }
-                    }
-                    if (r) {
-                        o = a.add(p);
-                    } else {
-                        a.append(p);
-                    }
-                })(t, n, o, true);
-            });
-            if (t) {
-                (e.type(t) !== "object" ? e(t) : t)[n || "append"](o);
-            }
-            return o;
+        f.prototype.activeClass = function(t) {
+            return t.find(u(config.css.active).is("class").name).removeClass(config.css.active).promise().done(e(config.css.currentPage).addClass(config.css.active));
         };
-        r.prototype.activeClass = function(t) {
-            return t.find(l(config.css.active).is("class").name).removeClass(config.css.active).promise().done(e(config.css.currentPage).addClass(config.css.active));
+        f.prototype.loop = function(e) {
+            var t = {
+                object: function(t) {
+                    for (var n in t) {
+                        e(n, t[n], t);
+                    }
+                },
+                array: function(t) {
+                    for (var n = 0, i = t.length; n < i; n++) {
+                        e(t, n, t[n]);
+                    }
+                }
+            };
+            var n = typeof this.arg[0];
+            return t[n](this.arg[0]);
         };
-        r.prototype.HTML = function() {
+        f.prototype.HTML = function() {
             return {
-                ol: l("ol").is("tag").name,
-                ul: l("ul").is("tag").name,
-                li: l("li").is("tag").name,
-                a: l("a").is("tag").name,
-                div: l("div").is("tag").name,
-                p: l("p").is("tag").name,
-                h1: l("h1").is("tag").name,
-                h2: l("h2").is("tag").name,
-                h3: l("h3").is("tag").name,
-                h4: l("h4").is("tag").name,
-                span: l("span").is("tag").name,
-                em: l("em").is("tag").name,
-                sup: l("sup").is("tag").name
+                ol: u("ol").is("tag").name,
+                ul: u("ul").is("tag").name,
+                li: u("li").is("tag").name,
+                a: u("a").is("tag").name,
+                div: u("div").is("tag").name,
+                p: u("p").is("tag").name,
+                h1: u("h1").is("tag").name,
+                h2: u("h2").is("tag").name,
+                h3: u("h3").is("tag").name,
+                h4: u("h4").is("tag").name,
+                h5: u("h5").is("tag").name,
+                span: u("span").is("tag").name,
+                em: u("em").is("tag").name,
+                sup: u("sup").is("tag").name
             };
         };
-        r.prototype.init = function() {
-            var t = this, n = {
+        f.prototype.init = function() {
+            var t = {
                 page: config.page[0],
                 bible: config.bible.available[0],
                 book: 1,
@@ -966,410 +966,403 @@
                 q: "",
                 result: ""
             };
-            this.hashURI(function(t) {
+            this.hashURI(function(n) {
                 var i = {
                     page: function(t, n, i) {
-                        fO.query[t] = e.inArray(n.toLowerCase(), config.page) >= 0 ? n : i;
-                        config.css.currentPage = l(fO.query[t]).is("class").name;
+                        s.query[t] = e.inArray(n.toLowerCase(), config.page) >= 0 ? n : i;
+                        config.css.currentPage = u(s.query[t]).is("class").name;
                     },
                     bible: function(t, n, i) {
-                        fO.query[t] = e.inArray(n.toLowerCase(), config.bible.available) >= 0 ? n : i;
+                        s.query[t] = e.inArray(n.toLowerCase(), config.bible.available) >= 0 ? n : i;
                     },
-                    book: function(n, i, o) {
+                    book: function(t, i, o) {
                         if (e.isNumeric(i)) {
-                            fO.query[n] = bible.book[i] ? i : o;
+                            s.query[t] = bible.book[i] ? i : o;
                         } else {
-                            fO.query[n] = o;
-                            var i = i.replace(new RegExp("-", "g"), " ").toLowerCase(), s = fO.lang[fO.query.bible].b;
-                            for (var a in s) {
-                                if (s[a].toLowerCase() == t || lang.b[a].toLowerCase() == i) {
-                                    fO.query[n] = a;
+                            s.query[t] = o;
+                            var i = i.replace(new RegExp("-", "g"), " ").toLowerCase(), a = s.lang[s.query.bible].b;
+                            for (var l in a) {
+                                if (a[l].toLowerCase() == n || lang.b[l].toLowerCase() == i) {
+                                    s.query[t] = l;
                                     break;
                                 }
                             }
                         }
                     },
                     testament: function(e, t, n) {
-                        fO.query[e] = bible.info[fO.query.book].t;
+                        s.query[e] = bible.info[s.query.book].t;
                     },
                     catalog: function(e, t, n) {
-                        fO.query[e] = bible.info[fO.query.book].s;
+                        s.query[e] = bible.info[s.query.book].s;
                     },
                     chapter: function(e, t, n) {
-                        fO.query[e] = bible.info[fO.query.book].c >= t && t > 0 ? t : n;
+                        s.query[e] = bible.info[s.query.book].c >= t && t > 0 ? t : n;
                     },
                     verse: function(e, t, n) {
-                        fO.query[e] = bible.info[fO.query.book].v[fO.query.chapter - 1] >= t ? t : n;
+                        s.query[e] = bible.info[s.query.book].v[s.query.chapter - 1] >= t ? t : n;
                     },
                     verses: function(e, t, n) {},
-                    q: function(e, n, i) {
-                        if (t.q) {
-                            fO.query.q = t.q;
+                    q: function(e, t, i) {
+                        if (n.q) {
+                            s.query.q = n.q;
                         }
                     },
                     bookmark: function() {}
                 };
-                if (e.isEmptyObject(fO.query)) {
-                    fO.query = e.extend({}, n, t);
+                if (e.isEmptyObject(s.query)) {
+                    s.query = e.extend({}, t, n);
                 } else {
-                    t.page = t.page ? t.page : fO.query.page;
-                    e.extend(fO.query, t);
+                    n.page = n.page ? n.page : s.query.page;
+                    e.extend(s.query, n);
                 }
-                fO.query.loop(function(t, o) {
-                    if (e.isFunction(i[t])) i[t](t, o, n[t]);
+                u(s.query).loop(function(n, o) {
+                    if (e.isFunction(i[n])) i[n](n, o, t[n]);
                 });
             });
             e(config.css.header).find("*").removeClass(config.css.active).siblings(config.css.currentPage).addClass(config.css.active);
-            var i = l("lookup").is("form").element;
-            if (i.length) {
-                i.off().on("submit", function() {
+            var n = u("lookup").is("form").element;
+            if (n.length) {
+                n.off().on("submit", function() {
                     var t = e(this);
-                    t.serializeObject(fO.query);
-                    if (fO.query.page == t.attr("name")) {
-                        t.find(l("q").is("input").name).attr("autocomplete", "off").focus().select().promise().done(function() {
-                            if (fO.todo.lookup) {
+                    t.serializeObject(s.query);
+                    if (s.query.page == t.attr("name")) {
+                        t.find(u("q").is("input").name).attr("autocomplete", "off").focus().select().promise().done(function() {
+                            if (s.todo.lookup) {
                                 console.log("already enter");
                             } else {
-                                l().pagelookup();
+                                u().page.lookup();
                             }
                         });
                     } else {
                         t.attr("action").hashChange({
-                            q: fO.query.q
+                            q: s.query.q
                         });
                     }
                     return false;
                 });
-                l("search").is("input").element.off().on(fO.Click, function() {
+                u("search").is("input").element.off().on(s.Click, function() {
                     e(this.form).submit();
                 }).promise().done(function() {
-                    l("q").is("input").element.attr("autocomplete", "off").focus().select();
+                    u("q").is("input").element.val(s.query.q).attr("autocomplete", "off").focus().select();
                 });
             }
-            fO.container.main = e(config.css.content).children(config.css.currentPage);
-            var o = "page" + fO.query.page, s = "page" + e(config.page).get(-1);
-            fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(function() {
-                t[e.isFunction(t[o]) ? o : s](t);
+            s.container.main = e(config.css.content).children(config.css.currentPage);
+            s.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().always(function() {
+                l.page[e.isFunction(l.page[s.query.page]) ? s.query.page : e(config.page).get(-1)]();
             });
-            l("fn").is("attr").element.each(function(n, i) {
-                var o = e(i), s = l(o).get("fn"), a = s.get("class").element, r = s.get("fn").split();
-                if (t[a[0]]) {
-                    r.unshift(a[0]);
-                    l(o).exe(r);
+            u("fn").is("attr").element.each(function(t, n) {
+                var i = e(n), o = u(i).get("fn"), s = o.get("class").element, a = o.get("fn").split();
+                if (l[s[0]]) {
+                    a.unshift(s[0]);
+                    u(i).exe(a);
                 }
             }).promise().done(function() {
-                db.update.query();
+                r.update.query();
             });
-            if (fO.todo.Orientation) {
-                a.Orientation();
-                delete fO.todo.Orientation;
+            if (s.todo.Orientation) {
+                c.Orientation();
+                delete s.todo.Orientation;
             }
         };
-        r.prototype.pagenote = function() {
-            console.log("no note?");
-        };
-        r.prototype.pagetodo = function() {
-            console.log("nothing todo?");
-        };
-        r.prototype.xml = function(t) {
+        f.prototype.xml = function(t) {
             var n = this, i = this.arg[0];
-            var o = fO.lang[i.bible], a = o.l, r = o.b;
-            var l = this.url(config.id, [ i.bible ], config.file.bible);
-            var f = [];
+            var o = s.lang[i.bible], l = o.l, c = o.b;
+            var f = this.url(config.id, [ i.bible ], config.file.bible);
+            var u = [];
             this.has = function() {
-                if (e.isEmptyObject(fO[i.bible].bible)) {
-                    if (s.support) {
-                        s.get({
+                if (e.isEmptyObject(s[i.bible].bible)) {
+                    if (a.support) {
+                        a.get({
                             fileOption: {},
-                            fileUrlLocal: l.fileUrl,
+                            fileUrlLocal: f.fileUrl,
                             fileReadAs: true,
                             before: function() {
-                                f.push(i.bible.toUpperCase());
+                                u.push(i.bible.toUpperCase());
                             },
                             success: function(e) {
-                                f.push("Found");
+                                u.push("Found");
                                 n.file.read(e.fileContent);
                             },
                             fail: function(e) {
-                                f.push("NotFound");
+                                u.push("NotFound");
                                 if (i.bible == i.downloading) {
-                                    f.push("SendTo");
+                                    u.push("SendTo");
                                     n.file.download(true);
                                 } else {
-                                    f.push("Sendback");
+                                    u.push("Sendback");
                                     n.ResponseGood(false);
                                 }
                             }
                         });
                     } else if (window.indexedDB) {
-                        f.push("Store");
-                        db.get({
+                        u.push("Store");
+                        r.get({
                             table: i.bible
                         }).then(function(t) {
                             if (t) {
                                 if (e.isEmptyObject(t)) {
-                                    f.push("Empty");
+                                    u.push("Empty");
                                     if (i.bible == i.downloading) {
-                                        f.push("SendTo");
+                                        u.push("SendTo");
                                         n.file.download(false);
                                     } else {
-                                        f.push("Sendback");
+                                        u.push("Sendback");
                                         n.ResponseGood(false);
                                     }
                                 } else {
-                                    f.push("Reading");
+                                    u.push("Reading");
                                     if (i.bible == i.reading) {
-                                        fO[i.bible].bible = t;
-                                        f.push("Success");
+                                        s[i.bible].bible = t;
+                                        u.push("Success");
                                         n.ResponseGood(true);
                                     } else {
-                                        f.push("Disabled");
+                                        u.push("Disabled");
                                         n.ResponseGood(true);
                                     }
                                 }
                             } else {
-                                f.push("NotFound");
+                                u.push("NotFound");
                                 if (i.bible == i.downloading) {
-                                    f.push("SendTo");
+                                    u.push("SendTo");
                                     n.file.download(false);
                                 } else {
-                                    f.push("Sendback");
+                                    u.push("Sendback");
                                     n.ResponseGood(false);
                                 }
                             }
                         });
                     } else {
-                        f.push("fileSystemNotOk", "indexedDBNotOK");
+                        u.push("fileSystemNotOk", "indexedDBNotOK");
                         if (i.bible == i.downloading) {
-                            f.push("CanNotSetDownloadingTRUE");
+                            u.push("CanNotSetDownloadingTRUE");
                         }
-                        f.push("Sendback");
+                        u.push("Sendback");
                         n.ResponseGood(false);
                     }
                 } else {
-                    f.push("AlreadyInObject");
+                    u.push("AlreadyInObject");
                     n.ResponseGood(true);
                 }
                 return this;
             };
             this.get = function() {
-                if (e.isEmptyObject(fO[i.bible].bible)) {
-                    if (s.support) {
-                        s.get({
+                if (e.isEmptyObject(s[i.bible].bible)) {
+                    if (a.support) {
+                        a.get({
                             fileOption: {},
-                            fileUrlLocal: l.fileUrl,
+                            fileUrlLocal: f.fileUrl,
                             fileReadAs: true,
                             before: function() {
-                                f.push(i.bible.toUpperCase());
+                                u.push(i.bible.toUpperCase());
                                 n.working({
-                                    msg: a.PleaseWait,
+                                    msg: l.PleaseWait,
                                     wait: true
                                 });
                             },
                             success: function(e) {
-                                f.push("Found");
+                                u.push("Found");
                                 n.file.read(e.fileContent);
                             },
                             fail: function(e) {
-                                f.push("NotFound", "SendTo");
+                                u.push("NotFound", "SendTo");
                                 n.file.download(true);
                             }
                         });
                     } else if (window.indexedDB) {
-                        f.push("Store");
-                        db.get({
+                        u.push("Store");
+                        r.get({
                             table: i.bible
                         }).then(function(t) {
                             if (t) {
                                 if (e.isEmptyObject(t)) {
-                                    f.push("Empty", "SendTo");
+                                    u.push("Empty", "SendTo");
                                     n.file.download(false);
                                 } else {
-                                    f.push("Reading");
+                                    u.push("Reading");
                                     if (i.bible == i.reading) {
-                                        fO[i.bible].bible = t;
-                                        f.push("Success");
+                                        s[i.bible].bible = t;
+                                        u.push("Success");
                                         n.ResponseGood(true);
                                     } else {
-                                        f.push("Disabled");
+                                        u.push("Disabled");
                                         n.ResponseGood(true);
                                     }
                                 }
                             } else {
-                                f.push("NotFound", "SendTo");
+                                u.push("NotFound", "SendTo");
                                 n.ResponseGood(false);
                             }
                         });
                     } else {
-                        f.push("fileSystemNotOk", "indexedDBNotOK");
-                        f.push("GettingReadyForWeb");
+                        u.push("fileSystemNotOk", "indexedDBNotOK");
+                        u.push("GettingReadyForWeb");
                         n.file.download(false);
                     }
                 } else {
-                    f.push("AlreadyInObject");
+                    u.push("AlreadyInObject");
                     n.ResponseCallbacks(true);
                 }
                 return this;
             };
             this.remove = function() {
-                f.push(i.bible.toUpperCase());
-                if (s.support) {
-                    s.remove({
+                u.push(i.bible.toUpperCase());
+                if (a.support) {
+                    a.remove({
                         fileOption: {},
-                        fileUrlLocal: l.fileUrl,
+                        fileUrlLocal: f.fileUrl,
                         fileNotFound: true,
                         success: function(e) {
-                            f.push("Removed");
+                            u.push("Removed");
                             n.ResponseBad(true);
                         },
                         fail: function(e) {
-                            f.push("Fail");
+                            u.push("Fail");
                             n.ResponseBad(false);
                         }
                     });
                 } else if (window.indexedDB) {
-                    f.push("Store");
-                    db.delete({
+                    u.push("Store");
+                    r.delete({
                         table: i.bible
                     }).then(function() {
-                        f.push("Removed");
+                        u.push("Removed");
                         n.ResponseBad(true);
                     });
                 } else {
-                    f.push("fileSystemNotOk", "indexedDBNotOK");
-                    f.push("NothingToRemove", "Sendback");
+                    u.push("fileSystemNotOk", "indexedDBNotOK");
+                    u.push("NothingToRemove", "Sendback");
                     n.ResponseBad(false);
                 }
             };
             this.file = {
                 download: function(e) {
-                    s.download({
+                    a.download({
                         fileOption: {
                             create: e
                         },
-                        fileUrl: l.fileUrl,
+                        fileUrl: f.fileUrl,
                         fileUrlLocal: true,
                         before: function(e) {
-                            f.push("Downloading");
+                            u.push("Downloading");
                             n.working({
-                                msg: a.Downloading,
+                                msg: l.Downloading,
                                 wait: true
                             });
                         },
                         progress: function(e) {
                             n.working({
-                                msg: a.PercentLoaded.replace(/{Percent}/, n.num(e, i.bible))
+                                msg: l.PercentLoaded.replace(/{Percent}/, n.num(e, i.bible))
                             });
                         },
                         fail: function(e) {
-                            f.push("Fail");
+                            u.push("Fail");
                             n.ResponseGood(false);
                         },
                         success: function(e) {
-                            f.push("Success");
+                            u.push("Success");
                             if (e.fileCreation === true) {
-                                f.push("AndSaved");
+                                u.push("AndSaved");
                             } else {
-                                f.push("NotSaved");
+                                u.push("NotSaved");
                             }
                             n.file.read(e.fileContent);
                         }
                     });
                 },
                 read: function(e) {
-                    f.push("Reading");
+                    u.push("Reading");
                     if (!i.downloading || i.bible == i.reading) {
                         this.content(e);
                     } else {
-                        f.push("Disabled");
+                        u.push("Disabled");
                         n.ResponseGood(true);
                     }
                 },
                 content: function(e) {
-                    f.push(l.fileExtension.toUpperCase());
-                    n.JobType(new DOMParser().parseFromString(e, l.fileContentType));
+                    u.push(f.fileExtension.toUpperCase());
+                    n.JobType(new DOMParser().parseFromString(e, f.fileContentType));
                 }
             };
             this.JobType = function(t) {
                 var n = e(t).children().get(0).tagName;
-                f.push(n);
+                u.push(n);
                 if (e.isFunction(this.Job[n])) {
-                    fO[i.bible].bible = {
+                    s[i.bible].bible = {
                         info: {},
                         book: {}
                     };
                     this.Job[n](t);
                 } else {
-                    f.push("NotFound");
+                    u.push("NotFound");
                     this.ResponseGood(false);
                 }
             };
             this.Job = {
                 bible: function(t) {
-                    var o = [], a = [], l = 0;
+                    var o = [], l = [], f = 0;
                     e(t).children().each(function(t, o) {
-                        var a = e(o), l = a.children(), c = a.attr("id");
-                        if (l.length) {
-                            l.each(function(t, o) {
-                                var a = e(o), c = a.children(), o = a.attr("id"), u = a.get(0).tagName.toLowerCase(), p = 0;
-                                if (e.type(fO[i.bible].bible[u]) === "undefined") fO[i.bible].bible[u] = {};
-                                if (c.length) {
-                                    fO[i.bible].bible[u][o] = {};
+                        var l = e(o), f = l.children(), p = l.attr("id");
+                        if (f.length) {
+                            f.each(function(t, o) {
+                                var l = e(o), p = l.children(), o = l.attr("id"), d = l.get(0).tagName.toLowerCase(), h = 0;
+                                if (e.type(s[i.bible].bible[d]) === "undefined") s[i.bible].bible[d] = {};
+                                if (p.length) {
+                                    s[i.bible].bible[d][o] = {};
                                     setTimeout(function() {
-                                        c.each(function(a, r) {
-                                            var d = e(r), h = d.children(), r = d.attr("id"), g = d.get(0).tagName.toLowerCase();
-                                            if (e.type(fO[i.bible].bible[u][o][g]) === "undefined") fO[i.bible].bible[u][o][g] = {};
-                                            if (h.length) {
-                                                fO[i.bible].bible[u][o][g][r] = {};
-                                                fO[i.bible].bible[u][o][g][r].verse = {};
+                                        p.each(function(l, c) {
+                                            var g = e(c), b = g.children(), c = g.attr("id"), m = g.get(0).tagName.toLowerCase();
+                                            if (e.type(s[i.bible].bible[d][o][m]) === "undefined") s[i.bible].bible[d][o][m] = {};
+                                            if (b.length) {
+                                                s[i.bible].bible[d][o][m][c] = {};
+                                                s[i.bible].bible[d][o][m][c].verse = {};
                                                 setTimeout(function() {
-                                                    h.each(function(p, d) {
-                                                        var b = e(d), m = b.children(), d = b.attr("id"), v = b.get(0).tagName.toLowerCase();
-                                                        d = "v" + d;
-                                                        fO[i.bible].bible[u][o][g][r].verse[d] = {};
-                                                        fO[i.bible].bible[u][o][g][r].verse[d].text = b.text();
-                                                        if (b.attr("ref")) fO[i.bible].bible[u][o][g][r].verse[d].ref = b.attr("ref").split(",");
-                                                        if (b.attr("title")) fO[i.bible].bible[u][o][g][r].verse[d].title = b.attr("title").split(",");
-                                                        if (l.length == t + 1) {
-                                                            if (c.length == a + 1) {
-                                                                if (h.length == p + 1) {
-                                                                    if (s.support) {
-                                                                        f.push("Success");
+                                                    b.each(function(h, g) {
+                                                        var v = e(g), y = v.children(), g = v.attr("id"), w = v.get(0).tagName.toLowerCase();
+                                                        g = "v" + g;
+                                                        s[i.bible].bible[d][o][m][c].verse[g] = {};
+                                                        s[i.bible].bible[d][o][m][c].verse[g].text = v.text();
+                                                        if (v.attr("ref")) s[i.bible].bible[d][o][m][c].verse[g].ref = v.attr("ref").split(",");
+                                                        if (v.attr("title")) s[i.bible].bible[d][o][m][c].verse[g].title = v.attr("title").split(",");
+                                                        if (f.length == t + 1) {
+                                                            if (p.length == l + 1) {
+                                                                if (b.length == h + 1) {
+                                                                    if (a.support) {
+                                                                        u.push("Success");
                                                                         n.ResponseGood(true);
                                                                     } else if (window.indexedDB) {
-                                                                        f.push("Stored");
-                                                                        db.add({
+                                                                        u.push("Stored");
+                                                                        r.add({
                                                                             table: i.bible,
-                                                                            data: fO[i.bible].bible
+                                                                            data: s[i.bible].bible
                                                                         }).then(n.ResponseGood(true));
                                                                     } else {
-                                                                        f.push("NotStored");
+                                                                        u.push("NotStored");
                                                                         n.ResponseGood(true);
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     });
-                                                }, 30 / t * a);
-                                            } else if (r) {
-                                                fO[i.bible].bible[u][o][g][r] = d.text();
+                                                }, 30 / t * l);
+                                            } else if (c) {
+                                                s[i.bible].bible[d][o][m][c] = g.text();
                                             } else {
-                                                p++;
-                                                fO[i.bible].bible[u][o][g][p] = {
-                                                    title: d.text()
+                                                h++;
+                                                s[i.bible].bible[d][o][m][h] = {
+                                                    title: g.text()
                                                 };
-                                                if (d.attr("ref")) fO[i.bible].bible[u][o][g][p].ref = d.attr("ref").split(",");
+                                                if (g.attr("ref")) s[i.bible].bible[d][o][m][h].ref = g.attr("ref").split(",");
                                             }
                                         }).promise().done(function() {
-                                            fO.msg.info.html(r[o]);
+                                            s.msg.info.html(c[o]);
                                         });
                                     }, 90 * t);
                                 } else {
-                                    fO[i.bible].bible[u][o] = a.text();
+                                    s[i.bible].bible[d][o] = l.text();
                                 }
                             });
                         } else {
-                            var u = a.attr("id"), p = a.text();
+                            var d = l.attr("id"), h = l.text();
                         }
                     });
                 }
@@ -1377,14 +1370,14 @@
             this.ResponseGood = function(e) {
                 o.local = e;
                 var t = o.local.toString().toUpperCase();
-                f.push("LangVariableUpdatedAs", t);
-                f.push("LangDB");
+                u.push("LangVariableUpdatedAs", t);
+                u.push("LangDB");
                 if (i.reading) {
-                    f.push("NotUpdatedDueToReadingIsTrue");
+                    u.push("NotUpdatedDueToReadingIsTrue");
                     n.ResponseCallbacks(e);
                 } else {
-                    db.update.lang().then(function() {
-                        f.push("UpdatedAs", t);
+                    r.update.lang().then(function() {
+                        u.push("UpdatedAs", t);
                         n.done();
                         n.ResponseCallbacks(e);
                     });
@@ -1392,25 +1385,25 @@
                 return this;
             };
             this.ResponseBad = function(e) {
-                delete fO[i.bible].bible;
-                f.push("Lang");
+                delete s[i.bible].bible;
+                u.push("Lang");
                 if (e) o.local = false;
                 var t = o.local.toString().toUpperCase();
                 if (e) {
-                    f.push("Removed");
-                    db.update.lang().then(function() {
-                        f.push("AndVariableUpdatedAs", t);
+                    u.push("Removed");
+                    r.update.lang().then(function() {
+                        u.push("AndVariableUpdatedAs", t);
                         n.done();
                         n.ResponseCallbacks(true);
                     });
                 } else {
-                    f.push("ButVariableUpdatedAs", t);
+                    u.push("ButVariableUpdatedAs", t);
                     n.ResponseCallbacks(true);
                 }
                 return this;
             };
             this.ResponseCallbacks = function(e) {
-                this.msg = f.join(" ");
+                this.msg = u.join(" ");
                 t({
                     msg: this.msg,
                     status: e
@@ -1418,168 +1411,179 @@
             };
             return this;
         };
-        r.prototype.pagebible = function(t) {
-            var n = this.hash(1);
-            fO.container.main.html(e(h.div, {
-                "class": "wrp wrp-bible"
-            })).children().html(new this.menu(function(i) {
-                return e(h.li, {
-                    id: i.bID,
-                    "class": i.classActive
-                }).html(e(h.p).append(e(h.span, {
-                    "class": i.isAvailable
-                }).on(fO.Click, function(n) {
-                    n.preventDefault();
-                    var o = e(this), s = o.parents("li");
-                    if (fO.msg.info.is(":hidden")) fO.todo.bibleOption = false;
-                    if (fO.todo.bibleOption === i.bID) {
-                        t.done(function() {
-                            delete fO.todo.bibleOption;
-                        });
-                    } else if (s.hasClass(config.css.notAvailable)) {
-                        t.working({
-                            msg: e(h.ul, {
-                                "class": "data-dialog"
-                            }).append(e(h.li).append(e(h.p).html(fO.lang[i.bID].l.WouldYouLikeToAdd.replace(/{is}/, o.parent().children("a").text()))), e(h.li).append(e(h.span, {
-                                "class": "yes icon-thumbs-up-alt"
-                            }).on(fO.Click, function(e) {
-                                e.preventDefault();
-                                new l({
-                                    bible: i.bID
-                                }).xml(function(e) {
-                                    if (e.status) {
-                                        s.removeClass(config.css.notAvailable).addClass(config.css.available);
-                                        o.removeClass(i.classOnline).addClass(i.classOffline);
-                                    }
-                                }).get();
-                            }), e(h.span, {
-                                "class": "no icon-thumbs-down-alt"
-                            }).on(fO.Click, function(e) {
-                                e.preventDefault();
-                                t.done(function() {
-                                    delete fO.todo.bibleOption;
-                                });
-                            }))),
-                            wait: true
-                        });
-                    } else {
-                        fO.todo.bibleOption = i.bID;
-                        t.working({
-                            msg: e(h.ul, {
-                                "class": "data-dialog"
-                            }).append(e(h.li).append(e(h.p).html(fO.lang[i.bID].l.WouldYouLikeToRemove.replace(/{is}/, o.parent().children("a").text()))), e(h.li).append(e(h.span, {
-                                "class": "yes icon-thumbs-up-alt"
-                            }).on(fO.Click, function(e) {
-                                e.preventDefault();
-                                s.removeClass(config.css.available).addClass(config.css.notAvailable);
-                                o.removeClass(i.classOffline).addClass(i.classOnline);
-                                t.working({
-                                    msg: fO.lang[i.bID].l.PleaseWait,
-                                    wait: true
-                                }).promise().done(function() {
-                                    s.removeClass(config.css.available).addClass(config.css.notAvailable);
-                                    o.removeClass(i.classOffline).addClass(i.classOnline);
-                                    new l({
-                                        bible: i.bID
+        f.prototype.page = {
+            bible: function() {
+                var t = l.hash(1);
+                s.container.main.html(e(h.div, {
+                    "class": "wrp wrp-bible"
+                })).children().html(new l.menu(function(n) {
+                    return e(h.li, {
+                        id: n.bID,
+                        "class": n.classActive
+                    }).html(e(h.p).append(e(h.span, {
+                        "class": n.isAvailable
+                    }).on(s.Click, function(t) {
+                        t.preventDefault();
+                        var i = e(this), o = i.parents("li");
+                        if (s.msg.info.is(":hidden")) s.todo.bibleOption = false;
+                        if (s.todo.bibleOption === n.bID) {
+                            l.done(function() {
+                                delete s.todo.bibleOption;
+                            });
+                        } else if (o.hasClass(config.css.notAvailable)) {
+                            l.working({
+                                msg: e(h.ul, {
+                                    "class": "data-dialog"
+                                }).append(e(h.li).append(e(h.p).html(s.lang[n.bID].l.WouldYouLikeToAdd.replace(/{is}/, i.parent().children("a").text()))), e(h.li).append(e(h.span, {
+                                    "class": "yes icon-thumbs-up-alt"
+                                }).on(s.Click, function(e) {
+                                    e.preventDefault();
+                                    new u({
+                                        bible: n.bID
                                     }).xml(function(e) {
-                                        t.done(function() {
-                                            delete fO.todo.bibleOption;
-                                        });
-                                    }).remove();
-                                });
-                            }), e(h.span, {
-                                "class": "no icon-thumbs-down-alt"
-                            }).on(fO.Click, function(e) {
-                                e.preventDefault();
-                                t.done(function() {
-                                    delete fO.todo.bibleOption;
-                                });
-                            }))),
-                            wait: true
-                        });
-                    }
-                }), e(h.a, {
-                    href: n + e.param({
-                        bible: i.bID
-                    })
-                }).html(i.lang.name), e(h.span, {
-                    "class": "icon-menu drag"
-                })));
-            }).bible()).promise().done(function(n) {
-                this.children().sortable({
-                    handle: ".drag",
-                    containment: "parent",
-                    helper: ".dsdfd",
-                    placeholder: "ghost",
-                    forcePlaceholderSize: true,
-                    opacity: .7,
-                    update: function(n, i) {
-                        e(this).children().each(function(t, n) {
-                            fO.lang[e(n).get(0).id].index = e(n).index();
-                        }).promise().done(function() {
-                            db.update.lang().then(t.index);
-                        });
-                    }
+                                        if (e.status) {
+                                            o.removeClass(config.css.notAvailable).addClass(config.css.available);
+                                            i.removeClass(n.classOnline).addClass(n.classOffline);
+                                        }
+                                    }).get();
+                                }), e(h.span, {
+                                    "class": "no icon-thumbs-down-alt"
+                                }).on(s.Click, function(e) {
+                                    e.preventDefault();
+                                    l.done(function() {
+                                        delete s.todo.bibleOption;
+                                    });
+                                }))),
+                                wait: true
+                            });
+                        } else {
+                            s.todo.bibleOption = n.bID;
+                            l.working({
+                                msg: e(h.ul, {
+                                    "class": "data-dialog"
+                                }).append(e(h.li).append(e(h.p).html(s.lang[n.bID].l.WouldYouLikeToRemove.replace(/{is}/, i.parent().children("a").text()))), e(h.li).append(e(h.span, {
+                                    "class": "yes icon-thumbs-up-alt"
+                                }).on(s.Click, function(e) {
+                                    e.preventDefault();
+                                    o.removeClass(config.css.available).addClass(config.css.notAvailable);
+                                    i.removeClass(n.classOffline).addClass(n.classOnline);
+                                    l.working({
+                                        msg: s.lang[n.bID].l.PleaseWait,
+                                        wait: true
+                                    }).promise().done(function() {
+                                        o.removeClass(config.css.available).addClass(config.css.notAvailable);
+                                        i.removeClass(n.classOffline).addClass(n.classOnline);
+                                        new u({
+                                            bible: n.bID
+                                        }).xml(function(e) {
+                                            l.done(function() {
+                                                delete s.todo.bibleOption;
+                                            });
+                                        }).remove();
+                                    });
+                                }), e(h.span, {
+                                    "class": "no icon-thumbs-down-alt"
+                                }).on(s.Click, function(e) {
+                                    e.preventDefault();
+                                    l.done(function() {
+                                        delete s.todo.bibleOption;
+                                    });
+                                }))),
+                                wait: true
+                            });
+                        }
+                    }), e(h.a, {
+                        href: t + e.param({
+                            bible: n.bID
+                        })
+                    }).html(n.lang.name), e(h.span, {
+                        "class": "icon-menu drag"
+                    })));
+                }).bible(e(h.ol, {
+                    id: "dragable",
+                    "class": "row row-bible"
+                }))).promise().done(function(t) {
+                    this.children().sortable({
+                        handle: ".drag",
+                        containment: "parent",
+                        helper: ".dsdfd",
+                        placeholder: "ghost",
+                        forcePlaceholderSize: true,
+                        opacity: .7,
+                        update: function(t, n) {
+                            e(this).children().each(function(t, n) {
+                                s.lang[e(n).get(0).id].index = e(n).index();
+                            }).promise().done(function() {
+                                r.update.lang().then(l.index);
+                            });
+                        }
+                    });
                 });
-            });
-        };
-        r.prototype.pagebook = function(t) {
-            var n = this.hash(2), i = fO.lang[fO.query.bible];
-            fO.container.main.html(e(h.div, {
-                "class": "wrp wrp-book"
-            }));
-            e.each(bible.catalog, function(t, o) {
-                var s = i.t[t];
-                e(h.ol, {
-                    "class": "testament",
-                    id: t
-                }).append(e(h.li, {
-                    id: "t-" + t
-                }).html(e(h.h1, {
-                    text: s
-                }))).appendTo(fO.container.main.children()).promise().done(function() {
+            },
+            book: function() {
+                var t = l.hash(2), n = s.lang[s.query.bible];
+                s.container.main.html(e(h.div, {
+                    "class": "wrp wrp-book"
+                }));
+                e.each(bible.catalog, function(i, o) {
+                    var a = n.t[i];
                     e(h.ol, {
-                        "class": "catalog"
-                    }).appendTo(this.children()).promise().done(function(t) {
-                        e.each(o, function(o, s) {
-                            var a = i.s[o];
-                            e(h.li, {
-                                id: "c-" + o
-                            }).append(e(h.h2, {
-                                text: a
-                            })).appendTo(t).promise().done(function(t) {
-                                e(h.ol, {
-                                    "class": "book"
-                                }).appendTo(this);
-                                s.forEach(function(o) {
-                                    var s = i.b[o];
-                                    e(h.li, {
-                                        id: "b-" + o,
-                                        "class": fO.query.book == o ? config.css.active : ""
-                                    }).append(e(h.p).append(e(h.a, {
-                                        href: n + e.param({
-                                            book: o
-                                        })
-                                    }).html(s))).appendTo(t.children()[1]);
+                        "class": "testament",
+                        id: i
+                    }).append(e(h.li, {
+                        id: "t-" + i
+                    }).html(e(h.h1, {
+                        text: a
+                    }))).appendTo(s.container.main.children()).promise().done(function() {
+                        e(h.ol, {
+                            "class": "catalog"
+                        }).appendTo(this.children()).promise().done(function(i) {
+                            e.each(o, function(o, a) {
+                                var l = n.s[o];
+                                e(h.li, {
+                                    id: "c-" + o
+                                }).append(e(h.h2, {
+                                    text: l
+                                })).appendTo(i).promise().done(function(i) {
+                                    e(h.ol, {
+                                        "class": "book"
+                                    }).appendTo(this);
+                                    a.forEach(function(o) {
+                                        var a = n.b[o];
+                                        e(h.li, {
+                                            id: "b-" + o,
+                                            "class": s.query.book == o ? config.css.active : ""
+                                        }).append(e(h.p).append(e(h.a, {
+                                            href: t + e.param({
+                                                book: o
+                                            })
+                                        }).html(a))).appendTo(i.children()[1]);
+                                    });
                                 });
                             });
                         });
                     });
                 });
-            });
+            },
+            reader: function() {
+                new p(s.query).chapter(s.container.main.children());
+            },
+            lookup: function() {
+                new p(s.query).lookup(s.container.main.children());
+            },
+            note: function() {
+                new d(s.query).page(s.container.main.children());
+            },
+            todo: function() {
+                console.log("nothing todo?");
+            }
         };
-        r.prototype.pagereader = function() {
-            new this.content(fO.query).chapter(fO.container.main.children());
-        };
-        r.prototype.pagelookup = function() {
-            new this.content(fO.query).lookup(fO.container.main.children());
-        };
-        r.prototype.content = function(t, n) {
-            var i = this, o = fO.lang[t.bible], s = o.l, a = o.b;
+        function p(t, n) {
+            var i = this, o = s.lang[t.bible], a = o.l, c = o.b;
             this.Num = function(e) {
-                return l().num(e, t.bible);
+                return u().num(e, t.bible);
             };
-            function r(n) {
+            function f(n) {
                 var o = this;
                 this.Result = {
                     Book: 0,
@@ -1592,20 +1596,10 @@
                     return e(this);
                 };
                 this.xml = function(e) {
-                    new l({
+                    new u({
                         bible: t.bible
                     }).xml(function(t) {
                         e(t);
-                    }).get();
-                };
-                this.verseMerge = function(t, n) {
-                    return e(t).map(function(e, t) {
-                        var i = n, o = i.split("-");
-                        if (i == t) {
-                            return t;
-                        } else if (o.length > 1 && o[0] <= t && o[1] >= t) {
-                            return t;
-                        }
                     }).get();
                 };
                 this.verseRegex = function(t, n) {
@@ -1631,22 +1625,29 @@
                         return true;
                     }
                 };
-                this.query = {
-                    chapter: function() {
-                        o.Result.Booklist[t.book] = {};
-                        o.Result.Booklist[t.book][t.chapter] = [];
-                        this.is = function() {
-                            return fO.previous.bible !== t.bible || fO.previous.chapter !== t.chapter;
-                        };
-                        return o.Result.Booklist;
-                    },
+                this.verseMerge = function(t, n) {
+                    return e(t).map(function(e, t) {
+                        var i = n, o = i.split("-");
+                        if (i == t) {
+                            return t;
+                        } else if (o.length > 1 && o[0] <= t && o[1] >= t) {
+                            return t;
+                        }
+                    }).get();
+                };
+                this.verseReference = function() {
+                    if ((this.LIST.length ? this.verseMerge(this.LIST, this.VID) : [ this.VID ]).length) {
+                        return true;
+                    }
+                };
+                this.Query = {
                     list: function() {
                         return o.Result.BooklistName = Object.keys(o.Result.Booklist).join();
                     },
                     book: function() {
                         o.Result.Booklist = {};
-                        if (Object.getOwnPropertyNames(fO.lookup.book).length > 0) {
-                            e.each(fO.lookup.book, function(t, n) {
+                        if (Object.getOwnPropertyNames(s.lookup.book).length > 0) {
+                            e.each(s.lookup.book, function(t, n) {
                                 o.Result.Booklist[t] = {};
                                 if (e.isEmptyObject(n)) {
                                     e.each(bible.info[t].v, function(e, n) {
@@ -1661,7 +1662,7 @@
                         }
                     },
                     regex: function() {
-                        return o.Result.Booklist = new f(t).is(t.q);
+                        return o.Result.Booklist = new g(t).is(t.q);
                     },
                     prev: function() {
                         if (t.booklist) {
@@ -1669,37 +1670,53 @@
                             return o.Result.Booklist;
                         }
                     },
+                    chapter: function() {
+                        o.Result.Booklist[t.book] = {};
+                        o.Result.Booklist[t.book][t.chapter] = [];
+                        this.is = function() {
+                            return s.previous.bible !== t.bible || s.previous.chapter !== t.chapter;
+                        };
+                        return o.Result.Booklist;
+                    },
                     lookup: function(e) {
                         this.callbackBibleBefore = e;
                         this.is = function() {
-                            var e = fO.previous.booklist != this.list() || fO.previous.q != t.q;
-                            this.callbackBibleBeforeHas = new f(t).is(t.q) ? "" : t.q;
+                            var e = s.previous.booklist != this.list() || s.previous.q != t.q;
+                            this.callbackBibleBeforeHas = new g(t).is(t.q) ? "" : t.q;
                             if (e) {}
                             return e;
                         };
                         return this.prev() || this.regex() || this.book();
+                    },
+                    reference: function(e) {
+                        this.callbackBibleBefore = e;
+                        return o.Result.Booklist = new g(t).is(t.ref);
+                    },
+                    note: function(e) {
+                        this.callbackBibleBefore = e;
+                        return o.Result.Booklist = t.ref;
                     }
                 };
-                this.book = function(s) {
-                    var r = new e.Deferred(), l = {
+                this.book = function(a) {
+                    var l = new e.Deferred(), r = {
                         task: {
-                            bible: Object.keys(s),
+                            bible: Object.keys(a),
                             chapter: [],
                             verse: []
                         },
                         BookID: function() {
-                            o.BID = l.task.bible.shift();
-                            o.BNA = a[o.BID];
-                            l.task.chapter = Object.keys(s[o.BID]);
+                            o.BID = r.task.bible.shift();
+                            o.BNA = c[o.BID];
+                            r.task.chapter = Object.keys(a[o.BID]);
                         },
                         ChapterID: function() {
-                            o.CID = l.task.chapter.shift();
+                            o.CID = r.task.chapter.shift();
                             o.CNA = i.Num(o.CID);
-                            o.LIST = s[o.BID][o.CID];
-                            l.task.verse = Object.keys(o.LIST);
+                            o.LIST = a[o.BID][o.CID];
+                            r.task.verse = Object.keys(o.LIST);
                         },
                         VerseID: function() {
-                            o.VID = l.task.verse.shift();
+                            o.VID = r.task.verse.shift();
                         },
                         isNew: function() {
                             o.Result.Verse++;
@@ -1719,65 +1736,65 @@
                             }
                         },
                         start: function() {
-                            fO.todo.lookup = true;
-                            delete fO.todo.pause;
-                            l.BookID();
-                            l.next();
+                            s.todo.lookup = true;
+                            delete s.todo.pause;
+                            r.BookID();
+                            r.next();
                         },
                         next: function() {
-                            l.ChapterID();
-                            l.done().progress(function() {
-                                r.notify();
+                            r.ChapterID();
+                            r.done().progress(function() {
+                                l.notify();
                             }).fail(function() {
-                                r.reject();
-                                delete fO.todo.lookup;
+                                l.reject();
+                                delete s.todo.lookup;
                             }).done(function() {
-                                if (l.task.chapter.length) {
-                                    l.next();
-                                } else if (l.task.bible.length) {
-                                    l.start();
+                                if (r.task.chapter.length) {
+                                    r.next();
+                                } else if (r.task.bible.length) {
+                                    r.start();
                                 } else {
-                                    r.resolve();
-                                    delete fO.todo.lookup;
+                                    l.resolve();
+                                    delete s.todo.lookup;
                                 }
                             });
                         },
                         done: function() {
-                            var s = fO[t.bible].bible.book[o.BID], a = s.chapter[o.CID], r = a.verse;
+                            var a = s[t.bible].bible.book[o.BID], l = a.chapter[o.CID], c = l.verse;
                             var f = new e.Deferred();
-                            (function c(e) {
+                            (function u(e) {
                                 setTimeout(function() {
                                     if (e.length) {
                                         var t = e.shift();
                                         o.VID = t.slice(1);
                                         o.VNA = i.Num(o.VID);
-                                        o.VERSE = r[t];
-                                        if (fO.todo.pause) {
+                                        o.VERSE = c[t];
+                                        if (s.todo.pause) {
                                             f.reject();
-                                            delete fO.todo.pause;
+                                            delete s.todo.pause;
                                         } else {
-                                            if (o.query.callbackBibleBefore) {
-                                                if (o[o.query.callbackBibleBefore](o.query.callbackBibleBeforeHas)) {
-                                                    l.isNew();
+                                            if (o.Query.callbackBibleBefore) {
+                                                if (o[o.Query.callbackBibleBefore](o.Query.callbackBibleBeforeHas)) {
+                                                    r.isNew();
                                                     n(o).progress(function() {
                                                         f.notify();
                                                     }).fail(function() {
                                                         f.reject();
                                                     }).done(function() {
-                                                        c(e);
+                                                        u(e);
                                                     });
                                                 } else {
                                                     f.notify();
-                                                    c(e);
+                                                    u(e);
                                                 }
                                             } else {
-                                                l.isNew();
+                                                r.isNew();
                                                 n(o).progress(function() {
                                                     f.notify();
                                                 }).fail(function() {
                                                     f.reject();
                                                 }).done(function() {
-                                                    c(e);
+                                                    u(e);
                                                 });
                                             }
                                         }
@@ -1785,111 +1802,82 @@
                                         f.resolve();
                                     }
                                 });
-                            })(Object.keys(r));
+                            })(Object.keys(c));
                             return f.promise();
                         }
                     };
-                    return r.promise(l.start());
+                    return l.promise(r.start());
                 };
             }
-            this.Example = function(n) {
-                var i, o, a, f;
-                new r(function(t) {
-                    var n = new e.Deferred();
-                    var i = s.BFVBC.replace(/{b}/, t.BNA).replace(/{c}/, t.CNA);
-                    if (t.Result.NewBook) {
-                        console.log("yes new book", t.BNA);
-                    } else {
-                        console.log("no old book", t.BNA);
-                    }
-                    n.notify();
-                    n.resolve();
-                    return n.promise();
-                }).get(function(i) {
-                    i.xml(function(o) {
-                        if (o.status) {
-                            if (i.query.lookup("verseSearch")) {
-                                if (i.query.is()) {
-                                    f = e(h.ol, {
-                                        "class": t.bible
-                                    }).appendTo(n);
-                                    i.book(i.Result.Booklist).progress(function(e) {
-                                        var t = s.BFVBC.replace(/{b}/, i.BNA).replace(/{c}/, i.CNA);
-                                        l().working({
-                                            msg: t
-                                        });
-                                    }).done(function() {
-                                        console.log("Example.done");
-                                    }).fail(function() {}).always(function() {
-                                        l().done();
-                                    });
-                                } else {
-                                    console.log("Ob.query.is empty");
-                                }
-                            } else {
-                                console.log("Ob.query.lookup empty");
-                            }
-                        } else {
-                            console.log("download fail");
-                        }
-                    });
-                });
-            };
+            this.example = function(e) {};
             this.chapter = function(n) {
-                var i, o, s, a;
-                new r(function(n) {
-                    var s = new e.Deferred();
-                    if (n.Result.NewBook) {
-                        i = e(h.ol).appendTo(e(h.li, {
-                            id: n.BID,
-                            "class": "bID"
-                        }).append(e(h.div).append(e(h.h2).text(n.BNA))).appendTo(a));
-                    }
-                    if (n.Result.NewChapter) {
+                var o, a, l, r;
+                new f(function(l) {
+                    var c = new e.Deferred();
+                    if (l.Result.NewBook) {
                         o = e(h.ol, {
-                            "class": "verse"
+                            "class": "Oc"
                         }).appendTo(e(h.li, {
-                            id: n.CID,
+                            id: l.BID,
+                            "class": "bID"
+                        }).append(e(h.div).append(e(h.h2).text(l.BNA))).appendTo(r));
+                    }
+                    if (l.Result.NewChapter) {
+                        a = e(h.ol, {
+                            "class": "Ov"
+                        }).appendTo(e(h.li, {
+                            id: l.CID,
                             "class": "cID"
                         }).append(e(h.div).append(e(h.h3, {
                             "class": "no"
-                        }).text(n.CNA).on(fO.Click, function() {
+                        }).text(l.CNA).on(s.Click, function() {
                             e(this).parents("li").children("ol").children().each(function() {
                                 if (e(this).attr("id")) e(this).toggleClass(config.css.active);
                             });
-                        }))).appendTo(i));
+                        }), typeof i[s.Deploy].Menu.Chapter === "function" && i[s.Deploy].Menu.Chapter(n))).appendTo(o));
                     }
-                    if (n.VERSE.title) {
+                    if (l.VERSE.title) {
                         e(h.li, {
                             "class": "title"
-                        }).html(n.VERSE.title.join(", ")).appendTo(o);
+                        }).html(l.VERSE.title.join(", ")).appendTo(a);
                     }
                     e(h.li, {
-                        id: n.VID,
-                        "data-verse": n.VNA
-                    }).html(n.verseReplace(n.VERSE.text, t.q)).appendTo(o).on(fO.Click, function() {
+                        id: l.VID,
+                        "data-verse": l.VNA
+                    }).html(l.verseReplace(l.VERSE.text, t.q)).appendTo(a).on(s.Click, function() {
                         e(this).toggleClass(config.css.active);
                     }).promise().always(function() {
-                        s.resolve();
+                        if (l.VERSE.ref) {
+                            new d(a).Reference(l.VERSE.ref).promise().always(function() {
+                                c.resolve();
+                            });
+                        } else {
+                            c.resolve();
+                        }
                     });
-                    return s.promise();
+                    return c.promise();
                 }).get(function(i) {
                     i.xml(function(o) {
                         if (o.status) {
-                            if (i.query.chapter()) {
-                                if (i.query.is()) {
-                                    if (fO.todo.containerEmpty) {
-                                        delete fO.todo.containerEmpty;
+                            if (i.Query.chapter()) {
+                                if (i.Query.is()) {
+                                    if (s.todo.containerEmpty) {
+                                        delete s.todo.containerEmpty;
                                     } else {
                                         n.empty();
                                     }
-                                    a = e(h.ol, {
+                                    r = e(h.ol, {
                                         "class": t.bible
-                                    }).appendTo(n);
+                                    }).addClass("Ob").appendTo(n);
                                     i.book(i.Result.Booklist).progress(function() {}).done(function() {}).always(function() {
-                                        fO.previous.bible = t.bible;
-                                        fO.previous.book = t.book;
-                                        fO.previous.chapter = t.chapter;
+                                        s.previous.bible = t.bible;
+                                        s.previous.book = t.book;
+                                        s.previous.chapter = t.chapter;
+                                        n.promise().done(function() {
+                                            var t = this.children().length, n = u(this).get("class").element[3];
+                                            e(this).removeClass(n);
+                                            e(this).addClass(n.charAt(0) + t);
+                                        });
                                     });
                                 } else {
                                     console.log("same chapter");
@@ -1904,29 +1892,106 @@
                 });
             };
             this.lookup = function(n) {
-                var o, a, f, c;
-                new r(function(n) {
+                var o, l, r, c;
+                new f(function(a) {
+                    var r = new e.Deferred();
+                    r.notify();
+                    if (a.Result.NewBook) {
+                        o = e(h.ol, {
+                            "class": "Oc"
+                        }).appendTo(e(h.li, {
+                            id: a.BID,
+                            "class": "bID"
+                        }).append(e(h.div).append(e(h.h2).text(a.BNA))).appendTo(c));
+                    }
+                    if (a.Result.NewChapter) {
+                        l = e(h.ol, {
+                            "class": "Ov"
+                        }).appendTo(e(h.li, {
+                            id: a.CID,
+                            "class": "cID"
+                        }).append(e(h.div).append(e(h.h3, {
+                            "class": "no"
+                        }).text(a.CNA).on(s.Click, function() {
+                            e(this).parents("li").children("ol").children().each(function() {
+                                if (e(this).attr("id")) e(this).toggleClass(config.css.active);
+                            });
+                        }), typeof i[s.Deploy].Menu.Lookup === "function" && i[s.Deploy].Menu.Lookup(n))).appendTo(o));
+                    }
+                    if (a.VERSE.title) {
+                        e(h.li, {
+                            "class": "title"
+                        }).html(a.VERSE.title.join(", ")).appendTo(l);
+                    }
+                    e(h.li, {
+                        id: a.VID,
+                        "data-verse": a.VNA
+                    }).html(a.verseReplace(a.VERSE.text, t.q)).appendTo(l).on(s.Click, function() {
+                        e(this).toggleClass(config.css.active);
+                    }).promise().always(function() {
+                        r.resolve();
+                    });
+                    return r.promise();
+                }).get(function(o) {
+                    o.xml(function(l) {
+                        if (l.status) {
+                            if (o.Query.lookup("verseSearch")) {
+                                if (o.Query.is()) {
+                                    if (s.todo.containerEmpty) {
+                                        delete s.todo.containerEmpty;
+                                    } else {
+                                        n.empty();
+                                    }
+                                    c = e(h.ol, {
+                                        "class": t.bible
+                                    }).addClass("Ob").appendTo(n);
+                                    o.book(o.Result.Booklist).progress(function(e) {
+                                        var t = a.BFVBC.replace(/{b}/, o.BNA).replace(/{c}/, o.CNA);
+                                        s.msg.lookup.html(i.Num(o.Result.Verse));
+                                        u().working({
+                                            msg: t
+                                        });
+                                    }).done(function() {}).fail(function() {}).always(function() {
+                                        s.previous.booklist = o.Result.BooklistName;
+                                        s.previous.q = t.q;
+                                        t.result = o.Result.Verse;
+                                        s.msg.lookup.attr("title", t.q);
+                                        u().done();
+                                    });
+                                } else {
+                                    console.log("Ob.Query.is same");
+                                }
+                            } else {
+                                console.log("Ob.Query.lookup empty");
+                            }
+                        } else {
+                            console.log("download fail");
+                        }
+                    });
+                });
+            };
+            this.note = function(n) {
+                var o, a, l, r;
+                new f(function(n) {
                     var i = new e.Deferred();
                     i.notify();
                     if (n.Result.NewBook) {
-                        o = e(h.ol).appendTo(e(h.li, {
+                        o = e(h.ol, {
+                            "class": "Oc"
+                        }).appendTo(e(h.li, {
                             id: n.BID,
                             "class": "bID"
-                        }).append(e(h.div).append(e(h.h2).text(n.BNA))).appendTo(c));
+                        }).append(e(h.div).append(e(h.h2).text(n.BNA))).appendTo(r));
                     }
                     if (n.Result.NewChapter) {
                         a = e(h.ol, {
-                            "class": "verse"
+                            "class": "Ov"
                         }).appendTo(e(h.li, {
                             id: n.CID,
                             "class": "cID"
                         }).append(e(h.div).append(e(h.h3, {
                             "class": "no"
-                        }).text(n.CNA).on(fO.Click, function() {
-                            e(this).parents("li").children("ol").children().each(function() {
-                                if (e(this).attr("id")) e(this).toggleClass(config.css.active);
-                            });
-                        }))).appendTo(o));
+                        }).text(n.CNA))).appendTo(o));
                     }
                     if (n.VERSE.title) {
                         e(h.li, {
@@ -1936,53 +2001,409 @@
                     e(h.li, {
                         id: n.VID,
                         "data-verse": n.VNA
-                    }).html(n.verseReplace(n.VERSE.text, t.q)).appendTo(a).on(fO.Click, function() {
-                        e(this).toggleClass(config.css.active);
-                    }).promise().always(function() {
+                    }).html(n.verseReplace(n.VERSE.text, t.q)).appendTo(a).promise().always(function() {
                         i.resolve();
                     });
                     return i.promise();
                 }).get(function(o) {
                     o.xml(function(a) {
                         if (a.status) {
-                            if (o.query.lookup("verseSearch")) {
-                                if (o.query.is()) {
-                                    if (fO.todo.containerEmpty) {
-                                        delete fO.todo.containerEmpty;
-                                    } else {
-                                        n.empty();
-                                    }
-                                    c = e(h.ol, {
+                            if (t.ref) {
+                                if (o.Query.note("verseReference")) {
+                                    r = e(h.ol, {
                                         "class": t.bible
-                                    }).appendTo(n);
-                                    o.book(o.Result.Booklist).progress(function(e) {
-                                        var t = s.BFVBC.replace(/{b}/, o.BNA).replace(/{c}/, o.CNA);
-                                        fO.msg.lookup.html(i.Num(o.Result.Verse));
-                                        l().working({
-                                            msg: t
-                                        });
-                                    }).done(function() {}).fail(function() {}).always(function() {
-                                        fO.previous.booklist = o.Result.BooklistName;
-                                        fO.previous.q = t.q;
-                                        t.result = o.Result.Verse;
-                                        fO.msg.lookup.attr("title", t.q);
-                                        l().done();
+                                    }).addClass("Ob").appendTo(n);
+                                    o.book(o.Result.Booklist).progress(function() {
+                                        s.msg.lookup.html(i.Num(o.Result.Verse));
+                                    }).done(function() {
+                                        n.addClass(config.css.active);
+                                    }).always(function() {
+                                        delete t.ref;
                                     });
                                 } else {
-                                    console.log("Ob.query.is same");
+                                    delete t.ref;
                                 }
-                            } else {
-                                console.log("Ob.query.lookup empty");
                             }
                         } else {
-                            console.log("download fail");
+                            delete t.ref;
                         }
                     });
                 });
             };
-        };
-        function f(e) {
-            var t = fO.lang[e.bible].name, n = bible.info, o, s, a, r, l = {
+            this.reference = function(n) {
+                var o, a, l, r;
+                new f(function(n) {
+                    var i = new e.Deferred();
+                    i.notify();
+                    if (n.Result.NewBook) {
+                        o = e(h.ol, {
+                            "class": "Oc"
+                        }).appendTo(e(h.li, {
+                            id: n.BID,
+                            "class": "bID"
+                        }).append(e(h.div).append(e(h.h4).text(n.BNA))).appendTo(r));
+                    }
+                    if (n.Result.NewChapter) {
+                        a = e(h.ol, {
+                            "class": "Ov"
+                        }).appendTo(e(h.li, {
+                            id: n.CID,
+                            "class": "cID"
+                        }).append(e(h.div).append(e(h.h5, {
+                            "class": "no"
+                        }).text(n.CNA))).appendTo(o));
+                    }
+                    if (n.VERSE.title) {
+                        e(h.li, {
+                            "class": "title"
+                        }).html(n.VERSE.title.join(", ")).appendTo(a);
+                    }
+                    e(h.li, {
+                        id: n.VID,
+                        "data-verse": n.VNA
+                    }).html(n.verseReplace(n.VERSE.text, t.q)).appendTo(a).promise().always(function() {
+                        i.resolve();
+                    });
+                    return i.promise();
+                }).get(function(o) {
+                    o.xml(function(a) {
+                        if (a.status) {
+                            if (o.Query.reference("verseReference")) {
+                                if (s.todo.containerEmpty) {
+                                    delete s.todo.containerEmpty;
+                                } else {
+                                    n.empty();
+                                }
+                                r = e(h.ol, {
+                                    "class": t.bible
+                                }).addClass("Ob").appendTo(n);
+                                o.book(o.Result.Booklist).progress(function() {
+                                    s.msg.lookup.html(i.Num(o.Result.Verse));
+                                }).done(function() {
+                                    n.addClass(config.css.active);
+                                }).always(function() {
+                                    delete t.ref;
+                                });
+                            } else {
+                                delete t.ref;
+                            }
+                        } else {
+                            delete t.ref;
+                        }
+                    });
+                });
+            };
+            this.desktop = {
+                Menu: {
+                    Chapter: function(n) {
+                        return e(h.ul).append(e(h.li).addClass(s.query.bible).append(new d(n).Parallel(function(i, o, a, l) {
+                            var r = n.children(a), c = n.children().length;
+                            if (r.length) {
+                                if (c > 1) {
+                                    var f = u(n).get("class").element[3];
+                                    n.removeClass(f).addClass(f.charAt(0) + (c - 1));
+                                    r.remove();
+                                    i.removeClass("has");
+                                    if (s.previous.bible === o) s.previous.bible = n.children().eq(0).attr("class");
+                                }
+                            } else {
+                                s.todo.containerEmpty = true;
+                                i.addClass("has");
+                                new p(e.extend({}, t, {
+                                    bible: l
+                                })).chapter(n);
+                            }
+                        })), e(h.li).append(new d(n).Note()));
+                    },
+                    Lookup: function(e) {},
+                    Note: function(e) {}
+                }
+            };
+            this.tablet = {
+                Menu: {}
+            };
+            this.mobile = {
+                Menu: {}
+            };
+            function d(n) {
+                this.Parallel = function(t) {
+                    return e(h.span, {
+                        "class": "icon-language"
+                    }).on(s.Click, function(i) {
+                        var o = e(i.target), a = o.parent(), r = a.children().eq(1), c = a.attr("class");
+                        if (r.length) {
+                            r.fadeOut(200).remove();
+                        } else {
+                            r = e(h.ul, {
+                                "class": "mO parallel"
+                            }).appendTo(a);
+                            new l.menu(function(i) {
+                                var o = u(i.bID).is("class").name;
+                                return e(h.li, {
+                                    "class": c === i.bID ? config.css.active : n.children(o).length ? "has" : i.bID
+                                }).html(i.lang.name).on(s.Click, function() {
+                                    t(e(this), i.lang.name, o, i.bID);
+                                });
+                            }).bible(r);
+                            u().doClick(function(t) {
+                                if (!e(t.target).closest(a).length) r.remove();
+                            });
+                        }
+                    });
+                };
+                this.Note = function(t) {
+                    return e(h.span, {
+                        "class": s.todo.ChapterNoteActive ? "icon-pin " + config.css.active : "icon-pin"
+                    }).on(s.Click, function(t) {
+                        var n = e(t.target), i = n.parent(), o = i.children().eq(1);
+                        if (o.length) {
+                            o.fadeOut(200).remove();
+                        } else {
+                            var a = n.parents(u("cID").is("class").name), l = u(a.parents(u("bID").is("class").name)).get("id").element[0], c = u(a).get("id").element[0];
+                            o = e(h.ul, {
+                                "class": "mO note"
+                            }).appendTo(i);
+                            if (s.note) {
+                                function f() {
+                                    e.each(s.note, function(t, n) {
+                                        if (n.name) {
+                                            e(h.li, {
+                                                id: t
+                                            }).append(e(h.p, {
+                                                "class": "add icon-right"
+                                            }).on(s.Click, function() {
+                                                var t = [], i = e(this);
+                                                a.children("ol").children().each(function() {
+                                                    if (e(this).attr("id") && e(this).hasClass(config.css.active)) {
+                                                        t.push(e(this).attr("id"));
+                                                    }
+                                                }).promise().done(function() {
+                                                    if (t.length) {
+                                                        if (e.isEmptyObject(n.data)) n.data = {};
+                                                        if (e.isEmptyObject(n.data[l])) n.data[l] = {};
+                                                        n.data[l][c] = t;
+                                                    } else if (n.data) {
+                                                        if (n.data[l] && n.data[l][c]) delete n.data[l][c];
+                                                        if (e.isEmptyObject(n.data[l])) delete n.data[l];
+                                                        if (e.isEmptyObject(n.data)) delete n.data;
+                                                    }
+                                                    r.update.note().then(function() {
+                                                        o.empty();
+                                                        f();
+                                                    });
+                                                });
+                                            }), e(h.p, {
+                                                "class": "name"
+                                            }).html(n.name).on(s.Click, function() {
+                                                a.children("ol").children().each(function(t, i) {
+                                                    var o = e(this).attr("id");
+                                                    if (o) {
+                                                        if (n.data && n.data[l] && e.inArray(o, n.data[l][c]) >= 0) {
+                                                            e(this).addClass(config.css.active);
+                                                        } else {
+                                                            e(this).removeClass(config.css.active);
+                                                        }
+                                                    }
+                                                });
+                                            })).appendTo(o).promise().done(function(e) {
+                                                if (n.data) {
+                                                    if (n.data[l]) {
+                                                        if (n.data[l][c]) {
+                                                            this.addClass(config.css.active);
+                                                        } else {
+                                                            delete n.data[l];
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                                f();
+                            } else {
+                                e(h.li).append(e(h.p, {
+                                    "class": "indexedb"
+                                }).html("Your browser does not support Indexedb!")).appendTo(o);
+                            }
+                            u().doClick(function(t) {
+                                if (!e(t.target).closest(i).length) o.remove();
+                            });
+                        }
+                    });
+                };
+                this.Reference = function(o) {
+                    var l = e(h.li, {
+                        "class": "ref"
+                    }).appendTo(n), r = new g(t).ref(o).result;
+                    e.each(r, function(n, r) {
+                        e.each(r, function(r, f) {
+                            if (f.length) e(h.a).html(a.BFBCV.replace(/{b}/, c[n]).replace(/{c}/, i.Num(r)).replace(/{v}/, i.Num(new g(t).nameVerse(f)))).on(s.Click, function() {
+                                e.extend(t, {
+                                    ref: o
+                                });
+                                i.reference(l);
+                            }).appendTo(l);
+                        });
+                    });
+                    return l;
+                };
+            }
+        }
+        function d(t) {
+            this.page = function(n) {
+                var i = s.lang[t.bible], o;
+                (function a() {
+                    o = e(h.ol, {
+                        "class": "nobg"
+                    }).appendTo(n.attr({
+                        "class": "wrp wrp-content wrp-note d1"
+                    }).empty());
+                    if (s.note) {
+                        var i = Object.keys(s.note).length;
+                        e.each(s.note, function(n, i) {
+                            if (i.name) {
+                                var l = e.isNumeric(n) ? true : false;
+                                var c = l ? "icon-list" : "icon-" + n;
+                                var f = i.data ? Object.keys(i.data).length : 0;
+                                e(h.li, {
+                                    id: n,
+                                    "class": l ? "yes" : "no",
+                                    "data-title": f
+                                }).append(e(h.ul).append(e(h.li, {
+                                    "class": c
+                                }), e(h.li, {
+                                    text: i.name,
+                                    "class": f > 0 ? "yes" : "no",
+                                    "data-count": f
+                                }).on(s.Click, function(n) {
+                                    var o = e(this), s = o.parent(), a = s.parent().children().eq(1);
+                                    if (!o.attr("contenteditable")) {
+                                        if (a.length) {
+                                            a.remove();
+                                            s.removeClass(config.css.active);
+                                        } else {
+                                            s.addClass(config.css.active);
+                                            a = s.parent();
+                                            if (i.data) {
+                                                new p(e.extend({}, t, {
+                                                    ref: i.data
+                                                })).note(a);
+                                            } else {
+                                                e(h.ol, {
+                                                    "class": "norecord"
+                                                }).append(e(h.li).html("No record found!")).appendTo(a);
+                                            }
+                                        }
+                                    }
+                                }))).appendTo(o).promise().done(function(t) {
+                                    t.children().append(e(h.li).append(e(h.span, {
+                                        "class": "icon-dot3",
+                                        title: "Option"
+                                    }).on(s.Click, function(i) {
+                                        var o = e(this).parent();
+                                        if (o.children().eq(1).length) {
+                                            o.children().eq(1).remove();
+                                        } else {
+                                            e(h.ul, {
+                                                "class": "mO other"
+                                            }).append(e(h.li, {
+                                                "class": "delete icon-trash",
+                                                title: "Empty"
+                                            }).on(s.Click, function() {
+                                                delete s.note[n].data;
+                                                r.update.note().then(a);
+                                            }), e(h.li, {
+                                                "class": "delete icon-edit",
+                                                title: "Rename"
+                                            }).on(s.Click, function() {
+                                                var t = e(this), i = t.parent().parent().parent(), o = i.children().eq(1), a = o.text();
+                                                if (o.attr("contenteditable")) {
+                                                    l().html(a);
+                                                } else {
+                                                    l(a).focus().on("keydown", function(e) {
+                                                        if (e.keyCode === 27) {
+                                                            l().html(a);
+                                                        } else if (e.keyCode === 13) {
+                                                            s.note[n].name = l().text();
+                                                            r.update.note();
+                                                        }
+                                                    });
+                                                }
+                                                function l(e) {
+                                                    if (e) {
+                                                        i.addClass("editing");
+                                                        return o.attr({
+                                                            "data-title": e,
+                                                            contenteditable: true
+                                                        });
+                                                    } else {
+                                                        i.removeClass("editing");
+                                                        return o.removeAttr("contenteditable", "autocomplete");
+                                                    }
+                                                }
+                                            })).appendTo(o).promise().done(function(i) {
+                                                if (l) {
+                                                    e(h.li, {
+                                                        "class": "delete icon-wrong",
+                                                        title: "Delete"
+                                                    }).on(s.Click, function() {
+                                                        delete s.note[n];
+                                                        r.update.note().then(t.remove());
+                                                    }).appendTo(i);
+                                                }
+                                            });
+                                            u().doClick(function(t) {
+                                                if (!e(t.target).closest(o).length) o.children().eq(1).remove();
+                                            });
+                                        }
+                                    })));
+                                });
+                            }
+                        });
+                    } else {
+                        e(h.li).html("No records were found!").appendTo(o);
+                    }
+                    e(h.li).append(e(h.ul).append(e(h.li, {
+                        "class": "icon-tag"
+                    }), e(h.li, {
+                        contenteditable: true,
+                        "data-title": "Add"
+                    }).on("keydown", function(t) {
+                        if (t.keyCode === 13) {
+                            var n = e(this).text(), i = Math.random().toString().substr(2, 9);
+                            if (n && !s.note[i]) {
+                                s.note[i] = {
+                                    name: n
+                                };
+                                r.update.note().then(a);
+                            }
+                        } else if (t.keyCode === 27) {
+                            e(this).empty();
+                        }
+                    }))).appendTo(o);
+                })();
+            };
+            this.search = function(n) {
+                if (s.note) {
+                    e.each(s.note, function(e, i) {
+                        if (i.data) {
+                            if (i.data[t.bID]) {
+                                if (i.data[t.bID][t.cID]) {
+                                    n(true);
+                                } else {
+                                    n(false);
+                                }
+                                return;
+                            }
+                        }
+                    });
+                } else {
+                    n(false);
+                }
+            };
+        }
+        function g(e) {
+            var t = s.lang[e.bible].name, n = bible.info, o, a, l, r, c = {
                 book: ";",
                 chapter: ",",
                 verse: "-"
@@ -2003,16 +2424,16 @@
             };
             this.options = function() {
                 if (!this.result[o]) this.result[o] = {};
-                if (s <= n[o].c) {
-                    var e = n[o].v[s - 1];
-                    if (!this.result[o][s]) this.result[o][s] = [];
-                    if (a && r) {
-                        var t = a <= e ? a : e, l = r <= e ? r : e;
-                        for (i = t; i < l + 1; i++) {
-                            this.push(this.result[o][s], i);
+                if (a <= n[o].c) {
+                    var e = n[o].v[a - 1];
+                    if (!this.result[o][a]) this.result[o][a] = [];
+                    if (l && r) {
+                        var t = l <= e ? l : e, s = r <= e ? r : e;
+                        for (i = t; i < s + 1; i++) {
+                            this.push(this.result[o][a], i);
                         }
-                    } else if (a) {
-                        this.push(this.result[o][s], a <= e ? a : e);
+                    } else if (l) {
+                        this.push(this.result[o][a], l <= e ? l : e);
                     }
                 } else if (Object.getOwnPropertyNames(this.result[o]).length === 0) {
                     delete this.result[o];
@@ -2029,17 +2450,17 @@
             this.nameVerse = function(e) {
                 var t;
                 function n(e, t) {
-                    var n = e.toString().slice(-1) != l.verse ? l.verse : "";
+                    var n = e.toString().slice(-1) != c.verse ? c.verse : "";
                     return e + n + t;
                 }
                 e.filter(function(e, i, o) {
-                    var s = parseInt(e), a = parseInt(o[i - 1]), r = parseInt(o[i + 1]);
+                    var s = parseInt(e), a = parseInt(o[i - 1]), l = parseInt(o[i + 1]);
                     if (i == 0) {
                         t = s;
                     } else if (s >= a + 1) {
                         if (s > a + 1) {
-                            t = t + l.chapter + s;
-                        } else if (s + 1 < r) {
+                            t = t + c.chapter + s;
+                        } else if (s + 1 < l) {
                             t = n(t, s);
                         } else {
                             if (i == o.length - 1) {
@@ -2058,10 +2479,10 @@
                 for (var t in e) {
                     o = t;
                     for (var n in e[t]) {
-                        s = n;
+                        a = n;
                         for (var i in e[t][n]) {
-                            var f = e[t][n][i].split(l.verse);
-                            a = parseInt(f[0]), r = f.length > 1 ? parseInt(f[1]) : false;
+                            var s = e[t][n][i].split(c.verse);
+                            l = parseInt(s[0]), r = s.length > 1 ? parseInt(s[1]) : false;
                             this.options();
                         }
                     }
@@ -2069,13 +2490,13 @@
                 return this;
             };
             this.ref = function(e) {
-                if (!Array.isArray(e)) e = e.split(l.book);
+                if (!Array.isArray(e)) e = e.split(c.book);
                 for (var t in e) {
                     var n = /(((\w+)\.(\d+)\.(\d+))([\-–]?)?((\w+)\.(\d+)\.(\d+))?)/.exec(e[t]);
                     if (Array.isArray(n)) {
                         o = this.search(n[3]);
                         if (o) {
-                            s = parseInt(n[4]), a = parseInt(n[5]), r = parseInt(n[10]);
+                            a = parseInt(n[4]), l = parseInt(n[5]), r = parseInt(n[10]);
                             this.options();
                         }
                     }
@@ -2083,17 +2504,17 @@
                 return this;
             };
             this.str = function(e) {
-                if (!Array.isArray(e)) e = e.split(l.book);
+                if (!Array.isArray(e)) e = e.split(c.book);
                 for (var t in e) {
                     if (e[t]) {
-                        var n = e[t].trim().split(l.chapter);
+                        var n = e[t].trim().split(c.chapter);
                         for (var i in n) {
                             if (i == 0) {
-                                var f = /(\d?(\w+?)?(\s?)\w+(\s+?)?(\s?)\w+(\s+?))?((\d+)((\s+)?\:?(\s+)?)?)((\d+)([\-–])?(\d+)?)?/.exec(n[i]);
-                                if (f && f[1]) {
-                                    o = this.search(f[1]);
+                                var s = /(\d?(\w+?)?(\s?)\w+(\s+?)?(\s?)\w+(\s+?))?((\d+)((\s+)?\:?(\s+)?)?)((\d+)([\-–])?(\d+)?)?/.exec(n[i]);
+                                if (s && s[1]) {
+                                    o = this.search(s[1]);
                                     if (o) {
-                                        s = parseInt(f[8]), a = parseInt(f[13]), r = parseInt(f[15]);
+                                        a = parseInt(s[8]), l = parseInt(s[13]), r = parseInt(s[15]);
                                         this.options();
                                     } else {
                                         break;
@@ -2102,9 +2523,9 @@
                                     break;
                                 }
                             } else if (o) {
-                                var f = /(\s?(\d+?)(\s+)?\:(\s+)?)?(\s?\d+)?(\s?(\d+?)?([\-–])?(\s?\d+)?)/.exec(n[i]);
-                                if (f) {
-                                    s = parseInt(f[2]) || s, a = parseInt(f[5]), r = parseInt(f[9]);
+                                var s = /(\s?(\d+?)(\s+)?\:(\s+)?)?(\s?\d+)?(\s?(\d+?)?([\-–])?(\s?\d+)?)/.exec(n[i]);
+                                if (s) {
+                                    a = parseInt(s[2]) || a, l = parseInt(s[5]), r = parseInt(s[9]);
                                     this.options();
                                 } else {
                                     break;
@@ -2123,36 +2544,36 @@
                 }
             };
         }
-        r.prototype.watch = function() {
-            a.on(fO.Click, l(fO.On).is("class").name, function() {
-                l(e(this)).exe(l(e(this)).get("class").element);
+        f.prototype.watch = function() {
+            e(document).on(s.Click, u(s.On).is("class").name, function(t) {
+                u(e(this)).exe(u(e(this)).get("class").element);
             });
         };
-        r.prototype.metalink = function() {
-            this.arg[0].loop(function(e, t) {
-                window[t] = l(t).is("link").get("href");
+        f.prototype.metalink = function() {
+            u(this.arg[0]).loop(function(e, t) {
+                window[t] = u(t).is("link").get("href").name;
             });
         };
-        r.prototype.metacontent = function() {
-            this.arg[0].loop(function(e, t) {
-                window[t] = l(t).is("meta").get("content");
+        f.prototype.metacontent = function() {
+            u(this.arg[0]).loop(function(e, t) {
+                window[t] = u(t).is("meta").get("content");
             });
         };
-        r.prototype.exe = function(t) {
+        f.prototype.exe = function(t) {
             var n = this.arg[0], i = this[t[0]];
             if (i) {
                 if (e.isFunction(i)) {
-                    return l(n)[t[0]](t);
+                    return u(n)[t[0]](this);
                 } else {
                     i = i[t[1]];
                     if (i) {
                         if (e.isFunction(i)) {
-                            return l(n)[t[0]][t[1]](this, t);
+                            return u(n)[t[0]][t[1]](this);
                         } else {
                             i = i[t[2]];
                             if (i) {
                                 if (e.isFunction(i)) {
-                                    return l()[t[0]][t[1]][t[2]](this, t);
+                                    return u(n)[t[0]][t[1]][t[2]](this);
                                 }
                             }
                         }
@@ -2161,7 +2582,7 @@
             }
             return false;
         };
-        r.prototype.is = function(t) {
+        f.prototype.is = function(t) {
             var n = this.arg[0], i = "*";
             this.class = function() {
                 return this.name = ".*".replace(i, n);
@@ -2201,7 +2622,7 @@
                 return this;
             }
         };
-        r.prototype.get = function(t) {
+        f.prototype.get = function(t) {
             var n = this.arg[0], i = {
                 id: "-",
                 "class": " "
@@ -2248,7 +2669,7 @@
             }
         };
         this.Agent = function(t) {
-            fO.Orientation.evt = Object.prototype.hasOwnProperty.call(window, "onorientationchange") ? "orientationchange" : "resize";
+            s.Orientation.evt = Object.prototype.hasOwnProperty.call(window, "onorientationchange") ? "orientationchange" : "resize";
             var n = {
                 meta: [ {
                     type: "script",
@@ -2279,22 +2700,22 @@
                 },
                 m: this,
                 go: function(e) {
-                    var t = e.shift(), i = t.type, o = (t.dir || n.type[i].dir) + t.name + n.type[i].extension, s = document.createElement(i);
-                    n.type[i].attr.loop(function(e, t) {
-                        s[e] = t || o;
+                    var t = e.shift(), i = t.type, o = (t.dir || n.type[i].dir) + t.name + n.type[i].extension, a = document.createElement(i);
+                    u(n.type[i].attr).loop(function(e, t) {
+                        a[e] = t || o;
                     });
-                    s.onload = function() {
-                        fO.msg.info.html(t.name);
+                    a.onload = function() {
+                        s.msg.info.html(t.name);
                         if (e.length) {
                             n.go(e);
                         } else {
                             n.m.Listen();
                         }
                     };
-                    document.head.appendChild(s);
+                    document.head.appendChild(a);
                 }
             };
-            n.go(e.merge(n.meta, this.Device.f1()));
+            n.go(e.merge(n.meta, new b(this).get()));
             this.createProperty("Orientation", function() {
                 e(config.css.content).css({
                     top: e(config.css.header).outerHeight(),
@@ -2303,26 +2724,26 @@
             });
         };
         this.Listen = function() {
-            if (fO.isCordova) {
-                fO.msg.info.html("getting Device ready").attr({
+            if (s.isCordova) {
+                s.msg.info.html("getting Device ready").attr({
                     "class": "icon-database"
                 });
                 document.addEventListener("deviceready", this.Initiate, false);
             } else {
-                fO.msg.info.attr({
+                s.msg.info.attr({
                     "class": "icon-database"
                 });
                 this.Initiate();
             }
         };
         this.Initiate = function() {
-            fO.E.loop(function(t, n) {
+            u(s.E).loop(function(t, n) {
                 t = e.type(n) === "object" ? Object.keys(n)[0] : n;
-                l(n[t]).exe(t.split(" "));
+                u(n[t]).exe(t.split(" "));
             });
         };
-        this.Device = {
-            name: {
+        function b(n) {
+            this.name = {
                 is: function(e) {
                     return t.toLowerCase().indexOf(e) !== -1;
                 },
@@ -2381,7 +2802,7 @@
                     return window.cordova && location.protocol === "file:";
                 },
                 chrome: function() {
-                    return fO.Platform === "chrome";
+                    return s.Platform === "chrome";
                 },
                 nodeWebkit: function() {
                     return typeof window.process === "object";
@@ -2392,65 +2813,63 @@
                 tablet: function() {
                     return this.ipad() || this.androidTablet() || this.blackberryTablet() || this.windowsTablet() || this.fxosTablet();
                 }
-            },
-            f3: function() {
+            };
+            this.listen = function() {
                 if (window.addEventListener) {
-                    window.addEventListener(fO.Orientation.evt, this.f2, false);
+                    window.addEventListener(s.Orientation.evt, this.f2, false);
                 } else if (window.attachEvent) {
-                    window.attachEvent(fO.Orientation.evt, this.f2);
+                    window.attachEvent(s.Orientation.evt, this.f2);
                 } else {
-                    window[fO.Orientation.evt] = this.f2;
+                    window[s.Orientation.evt] = this.f2;
                 }
                 this.f2();
-            },
-            f2: function() {
+            }, this.f2 = function() {
                 e(window.document.documentElement).attr({
-                    "class": window.innerHeight / window.innerWidth < 1 ? fO.Orientation.landscape : fO.Orientation.portrait
+                    "class": window.innerHeight < window.innerWidth ? s.Orientation.landscape : s.Orientation.portrait
                 });
-                if (Object.prototype.hasOwnProperty.call(this, "Orientation")) this.Orientation();
-            },
-            f1: function() {
-                this.f3();
-                var t = [], n = [], i = "mobile", o = "tablet", s = "ios", a = "android";
-                fO.isCordova = this.name.cordova();
-                fO.isChrome = this.name.chrome();
-                if (!fO.Platform) fO.Platform = "web";
-                if (!fO.Deploy) fO.Deploy = "desktop";
+                if (Object.prototype.hasOwnProperty.call(n, "Orientation")) n.Orientation();
+            }, this.get = function() {
+                this.listen();
+                var t = [], n = [], i = "mobile", o = "tablet", a = "ios", l = "android";
+                s.isCordova = this.name.cordova();
+                s.isChrome = this.name.chrome();
+                if (!s.Platform) s.Platform = "web";
+                if (!s.Deploy) s.Deploy = "desktop";
                 if (this.name.mobile()) {
-                    fO.Deploy = "mobile";
+                    s.Deploy = "mobile";
                 } else if (this.name.tablet()) {
-                    fO.Deploy = "tablet";
+                    s.Deploy = "tablet";
                 } else {
-                    if (e.isFunction(this.name[fO.Device])) {}
+                    if (e.isFunction(this.name[s.Device])) {}
                 }
-                t.push(fO.Deploy, fO.Platform);
+                t.push(s.Deploy, s.Platform);
                 if (this.name.ios()) {
-                    fO.Device = "ios";
+                    s.Device = "ios";
                 } else if (this.name.android()) {
-                    fO.Device = "android";
-                } else if (e.isFunction(this.name[fO.Device])) {} else {
-                    if (fO.Deploy != "desktop") {
-                        fO.Deploy = "desktop";
+                    s.Device = "android";
+                } else if (e.isFunction(this.name[s.Device])) {} else {
+                    if (s.Deploy != "desktop") {
+                        s.Deploy = "desktop";
                     }
-                    fO.Device = "default";
+                    s.Device = "default";
                 }
-                t.push(fO.Device);
-                fO.DeviceTemplate = [ fO.Device, fO.Platform, fO.Deploy ];
-                var r = [], l = [];
+                t.push(s.Device);
+                s.DeviceTemplate = [ s.Device, s.Platform, s.Deploy ];
+                var r = [], c = [];
                 for (var f in t) {
-                    l.push(t[f]);
-                    var c = l.join(".");
+                    c.push(t[f]);
+                    var u = c.join(".");
                     r.push({
                         type: "link",
-                        name: c
+                        name: u
                     }, {
                         type: "script",
-                        name: c
+                        name: u
                     });
                 }
                 return r;
-            }
-        };
+            };
+        }
         return this;
     };
 })(jQuery, navigator.userAgent);
@@ -2458,64 +2877,9 @@
 (function() {
     "use strict";
     Object.defineProperties(Object.prototype, {
-        loop: {
-            value: function(e) {
-                var t = {
-                    object: function(t) {
-                        for (var n in t) {
-                            e(n, t[n], t);
-                        }
-                    },
-                    array: function(t) {
-                        for (var n = 0, i = t.length; n < i; n++) {
-                            e(t, n, t[n]);
-                        }
-                    }
-                };
-                return t[typeof this](this);
-            }
-        },
-        XMLHttp: {
-            value: function(e, t) {
-                var n = new XMLHttpRequest();
-                n.open("GET", this, false);
-                n.send();
-                return n.responseText;
-            }
-        },
         hashChange: {
             value: function(e) {
                 window.location.hash = this.toString() + jQuery.param(e);
-            }
-        },
-        tagID: {
-            value: function() {
-                return document.getElementById(this);
-            }
-        },
-        tagClass: {
-            value: function() {
-                return document.getElementsByClassName(this);
-            }
-        },
-        tagName: {
-            value: function() {
-                return document.getElementsByTagName(this);
-            }
-        },
-        attrNameAll: {
-            value: function() {
-                return document.querySelectorAll(this);
-            }
-        },
-        attrName: {
-            value: function() {
-                return document.querySelector(this);
-            }
-        },
-        createElement: {
-            value: function() {
-                return document.createElement(this);
             }
         },
         serializeObject: {
@@ -2691,7 +3055,6 @@
                         } else if (e.message) {
                             i.message = e.message;
                             if (e.name) i.name = e.name;
-                            if (e.code) i.code = e.code;
                         } else {
                             i.status = e;
                             i.message = o.message.PleaseSeeStatus;
@@ -2874,11 +3237,11 @@
         function a(e, t, n) {
             e.getFile(t.fileUrlLocal, t.fileOption, function(e) {
                 if (t.fileContent && t.fileContentType) {
-                    f(e, t, function(e, t) {
+                    c(e, t, function(e, t) {
                         n(e, t);
                     });
                 } else {
-                    r(e, t, function(e, t) {
+                    l(e, t, function(e, t) {
                         n(e, t);
                     });
                 }
@@ -2886,7 +3249,7 @@
                 n(false, e);
             });
         }
-        function r(e, t, n) {
+        function l(e, t, n) {
             e.file(function(i) {
                 if (t.fileReadAs) {
                     var s = new FileReader();
@@ -2918,14 +3281,14 @@
                 n(false, e);
             });
         }
-        function l(e, t, n) {
+        function r(e, t, n) {
             e.remove(function(e) {
                 n(true, e);
             }, function(e) {
                 n(false, e);
             });
         }
-        function f(e, t, n) {
+        function c(e, t, n) {
             e.createWriter(function(e) {
                 e.onwriteend = function(e) {
                     this.onwriteend = null;
@@ -2952,7 +3315,7 @@
                 n(false, e);
             });
         }
-        function c(e, t, n) {
+        function f(e, t, n) {
             if (t[0] == "." || t[0] == "") {
                 t = t.slice(1);
             }
@@ -2960,7 +3323,7 @@
                 create: true
             }, function(e) {
                 if (t.length) {
-                    c(e, t.slice(1), n);
+                    f(e, t.slice(1), n);
                 } else {
                     n(true);
                 }
@@ -3023,7 +3386,7 @@
                 s(e, function(i, o) {
                     if (i == 1) {
                         if (e.fileOption.create === true && e.fileContent && e.fileContentType) {
-                            f(o, e, function(i, o) {
+                            c(o, e, function(i, o) {
                                 if (i) {
                                     t(e);
                                 } else {
@@ -3031,7 +3394,7 @@
                                 }
                             });
                         } else {
-                            r(o, e, function(i, o) {
+                            l(o, e, function(i, o) {
                                 e.fileContent = o;
                                 if (i) {
                                     t(e);
@@ -3043,7 +3406,7 @@
                     } else if (i == 2) {
                         var s = u(e.fileUrlLocal);
                         if (s && e.fileOption.create === true && e.fileContent && e.fileContentType) {
-                            c(o, s, function(i, s) {
+                            f(o, s, function(i, s) {
                                 if (i) {
                                     a(o, e, function(i, o) {
                                         if (i) {
@@ -3079,7 +3442,7 @@
             return new Promise(function(t, n) {
                 s(e, function(i, o) {
                     if (i == 1) {
-                        l(o, e, function(e, i) {
+                        r(o, e, function(e, i) {
                             if (e) {
                                 t(o);
                             } else {
@@ -3110,22 +3473,22 @@
         this.download = function(e) {
             e = o.Arguments(e, arguments);
             return new Promise(function(t, n) {
-                var r = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-                var l = 0;
-                r.addEventListener("progress", function(t) {
-                    l++;
+                var l = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+                var r = 0;
+                l.addEventListener("progress", function(t) {
+                    r++;
                     if (t.lengthComputable) {
-                        l = Math.floor(t.loaded / t.total * 100);
-                        e.progress(l);
-                    } else if (r.readyState == XMLHttpRequest.DONE) {
+                        r = Math.floor(t.loaded / t.total * 100);
+                        e.progress(r);
+                    } else if (l.readyState == XMLHttpRequest.DONE) {
                         e.progress(100);
-                    } else if (r.status != 200) {
-                        e.progress(Math.floor(l / 7 * 100));
-                        l++;
+                    } else if (l.status != 200) {
+                        e.progress(Math.floor(r / 7 * 100));
+                        r++;
                     }
                 }, false);
-                r.addEventListener("load", function(l) {
-                    e.fileUrlResponse = l.target.responseURL;
+                l.addEventListener("load", function(r) {
+                    e.fileUrlResponse = r.target.responseURL;
                     e.fileName = e.fileUrl.replace(/[\#\?].*$/, "").substring(e.fileUrl.lastIndexOf("/") + 1);
                     e.fileExtension = e.fileName.split(".").pop();
                     if (e.fileUrlLocal) {
@@ -3142,24 +3505,24 @@
                     } else {
                         e.fileUrlLocal = e.fileName;
                     }
-                    if (l.target.responseXML) {
-                        e.fileCharset = l.target.responseXML.charset;
-                        e.fileContentType = l.target.responseXML.contentType;
+                    if (r.target.responseXML) {
+                        e.fileCharset = r.target.responseXML.charset;
+                        e.fileContentType = r.target.responseXML.contentType;
                     } else {
                         e.fileCharset = "UTF-8";
                         if (o.extension[e.fileExtension]) {
                             e.fileContentType = o.extension[e.fileExtension].ContentType;
                         }
                     }
-                    e.responseXML = l.target.responseXML;
-                    e.responseURL = l.target.responseURL;
-                    if (r.status == 200) {
-                        e.fileSize = l.total;
-                        e.fileContent = l.target.responseText;
+                    e.responseXML = r.target.responseXML;
+                    e.responseURL = r.target.responseURL;
+                    if (l.status == 200) {
+                        e.fileSize = r.total;
+                        e.fileContent = r.target.responseText;
                         if (typeof e.fileOption == "object" && e.fileOption.create === true && e.fileUrlLocal && i.Ok === true) {
                             s(e, function(i, o) {
                                 if (i == 1) {
-                                    f(o, e, function(i, o) {
+                                    c(o, e, function(i, o) {
                                         if (i) {
                                             e.fileCreation = true;
                                             t(e);
@@ -3171,7 +3534,7 @@
                                 } else if (i == 2) {
                                     var s = u(e.fileUrlLocal);
                                     if (s) {
-                                        c(o, s, function(i, s) {
+                                        f(o, s, function(i, s) {
                                             if (i) {
                                                 a(o, e, function(i, o) {
                                                     if (i) {
@@ -3200,15 +3563,15 @@
                             e.fileCreation = false;
                             t(e);
                         }
-                    } else if (r.statusText) {
+                    } else if (l.statusText) {
                         n({
-                            message: r.statusText + ": " + e.fileUrl,
-                            code: r.status
+                            message: l.statusText + ": " + e.fileUrl,
+                            code: l.status
                         });
-                    } else if (r.status) {
+                    } else if (l.status) {
                         n({
                             message: "Error",
-                            code: r.status
+                            code: l.status
                         });
                     } else {
                         n({
@@ -3217,10 +3580,10 @@
                         });
                     }
                 }, false);
-                r.addEventListener("error", function(e) {
+                l.addEventListener("error", function(e) {
                     n(e);
                 }, false);
-                r.addEventListener("abort", function(e) {
+                l.addEventListener("abort", function(e) {
                     n(e);
                 }, false);
                 if (e.fileCache) {
@@ -3229,9 +3592,9 @@
                     e.fileUrlRequest = e.fileUrl;
                 }
                 if (e.fileUrl) {
-                    r.open(e.requestMethod ? e.requestMethod : "GET", e.fileUrlRequest, true);
-                    e.before(r);
-                    r.send();
+                    l.open(e.requestMethod ? e.requestMethod : "GET", e.fileUrlRequest, true);
+                    e.before(l);
+                    l.send();
                 } else {
                     n({
                         message: "fileUrl not provided",
@@ -3254,7 +3617,7 @@
             return new Promise(function(t, n) {
                 s(e, function(i, o) {
                     if (i == 1) {
-                        f(o, e, function(i, o) {
+                        c(o, e, function(i, o) {
                             if (i) {
                                 t(e);
                             } else {
@@ -3264,7 +3627,7 @@
                     } else if (i == 2) {
                         var s = u(e.fileUrlLocal);
                         if (s) {
-                            c(o, s, function(i, s) {
+                            f(o, s, function(i, s) {
                                 if (i) {
                                     a(o, e, function(i, o) {
                                         if (i) {

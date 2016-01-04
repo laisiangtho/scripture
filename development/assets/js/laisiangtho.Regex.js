@@ -1,4 +1,4 @@
-function regex(q){
+function Regex(q){
     // NOTE: fO.lang, bible
     var name=fO.lang[q.bible].name,info=bible.info,book,chapter,Start,End, setting={book:";",chapter:",",verse:"-"};
     this.result={};

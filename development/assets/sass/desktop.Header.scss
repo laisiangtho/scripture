@@ -1,10 +1,13 @@
 @import 'Config';
 ul{
     &.hO{
-        position:absolute;box-shadow:inset 0 0px 1px 1px #ccc;background-color:#FFF;border-radius:2px;z-index:600;
+        position:absolute;box-shadow:inset 0 0px 1px 1px #ccc;background-color:#FFF;border-radius:2px;z-index:90;
         width:90%;max-width:290px;top:40px;min-height:40px;padding:3px;
         //todo?
-        display: none;
+        // display: none;
+        &:empty {
+            // display: none;
+        }
         &:before, &:after{
             position:absolute;display:block;width:0px;height:0px;vertical-align:middle;border:solid transparent;
         }
@@ -27,7 +30,6 @@ ul{
     &.hW{
         position:absolute;border-radius:2px;z-index:9999;width:100%; top:30px; left: 0px; padding:0;
         background-color:#FFF;box-shadow:inset 0px -1px 1px 0px darken($ColorBackground,22%);
-        //todo?
         display: none;
         &:empty{
             display: none;
@@ -41,6 +43,9 @@ ul{
     }
 }
 ol{
+    li{
+        list-style:none;
+    }
     //LIST-LOOKUP
     &.list-lookup{
         cursor:default;padding:1% 0;margin:0px;
@@ -58,38 +63,41 @@ ol{
             overflow:hidden;text-overflow:ellipsis;
         }
         li{
-            padding:1% 1%;margin:0px;list-style:none;color:#3B3A3A;
+            padding:1% 1%;margin:0px;color:#3B3A3A;
             p{
-                padding:1% 0 1% 20px;color:#949292;font-size:15px;line-height:20px;
+                padding:1% 0 1% 27px;color:#949292;font-size:15px;line-height:20px;
                 &:hover{
                     color:#464444;
                 }
                 span{
-                    position:absolute;top:20%;left:2px;display:inline-block;width:8px;height:8px;padding:3px;text-indent:-999px; border-radius:2px;box-shadow:0px 1px 1px 1px rgba(153,150,153,0.60);
+                    position:absolute;top:15%;left:2px;display:inline-block;width:7px;height:7px;padding:5px;text-indent:-999px; border-radius:2px;box-shadow:0px 1px 1px 1px rgba(153,150,153,0.60);
                     &:before{
-                        border-top-color:#ccc;border-width:5px;left:2px;top:6px;
+                        border-top-color:#ccc;border-width:5px;left:3px;top:7px;
                     }
                     &:after{
-                        border-top-color:#fff;border-width:4px;left:3px;top:5px;
+                        border-top-color:#fff;border-width:4px;left:4px;top:6px;
                     }
                     &:hover{
                         &:before{
                             border-top-color:#F80206;
                         }
                         &:after{
-                            top:6px;
+                            top:7px;
                         }
                     }
                     &.active{
                         &:before{
-                            border:solid transparent;border-left-color:#ccc;border-width:4px;left:6px;top:3px;
+                            border:solid transparent;border-left-color:#ccc;border-width:5px;left:7px;top:3px;
                         }
                         &:after{
-                            border:solid transparent;border-left-color:#fff;border-width:4px;left:5px;top:3px;
+                            border:solid transparent;border-left-color:#fff;border-width:4px;left:6px;top:4px;
                         }
                         &:hover{
                             &:before{
                                 border-left-color:#F80206;
+                            }
+                            &:after{
+                                left:7px;
                             }
                         }
                     }
@@ -109,18 +117,59 @@ ol{
                             border-bottom-color:#fff;border-width:4px;left:5px;top:-8px;
                         }
                         li{
-                            padding:2% 5%;margin-top:1px;font-size:13px;
+                            padding:2% 4%;margin-top:1px;font-size:13px;
                             &:hover{
                                 background-color:#F5F5F5;
+                                // color:#7F090B;
+                            }
+                            &:before{
+                                position:relative;left:-1%;top:-1px; line-height: 15px;font-size:5px;font-family:arial,sans-serif;border-radius:7px;
+                                display:inline-block; margin-right: 5px;
+                                background-color:#fff;
+                                box-shadow:0px 0px 1px 1px rgba(153,150,153,0.40);
                             }
                             &.active{
-                                padding:2% 7px;background-color:#F7F7F7;color:#7F090B;
+                                // background-color:#F7F7F7;
+                                color:#7F090B;
+                                // padding:2% 7px;
                                 &:before{
-                                    position:relative;left:-1%;top:-1px; line-height: 15px;font-size:5px;font-family:arial,sans-serif;border-radius:7px;display:inline-block;background-color:#968E8E;
+                                    box-shadow:0px 0px 1px 1px #F80206;
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+    // LIST CHAPTER
+    &.list-chapter{
+        display:block;box-sizing: content-box;
+        // display:table;width:100%;padding:0;margin:0;
+        li{
+            float:left;min-width:40px;max-width:50px;margin:4px 0px 4px 7px;text-align:center;padding:2px 0px;border-radius:1px;
+            box-shadow:inset  0px 1px 1px 0px rgba(209,209,209,1); background-color:#fafafa;
+            &:hover{
+                background-color:#e8e8e8;
+                a{
+                    sup{
+                        color:#D50C10;
+                    }
+                }
+            }
+            &.active{
+                background-color:#c4c2c2;box-shadow:inset 0px 1px 1px 0px rgba(153,150,153,1);
+                a{
+                    color:#E80D11;
+                    sup{
+                        color:#5A5354;
+                    }
+                }
+            }
+            a{
+                display:block;color:#5A5354;font-size:14px;padding:4px 0px;cursor:default;
+                sup{
+                    font-size:9px;top:0;right:0;font-style:normal;color:#CBC7C7;
                 }
             }
         }
@@ -198,7 +247,7 @@ div{
     }
     &.misc{
         width:100px; min-width: 96px;
-        z-index:4;//required for working.wait!
+        z-index:9999;//required for working.wait!
         ul{
             margin:0 1% 0 0;padding:0;width:99%;//border-collapse: separate;border-spacing:0px 0px;//font-size:12pt;
             &:before{
@@ -339,7 +388,7 @@ div{
         padding:0 1px;z-index:3;
         &.active{
             form{
-                border: 1px solid blue;
+                // border: 1px solid blue;
                 &:before{
                     // position: absolute; width: 100%; height: 100%;padding:0px;z-index: -1;left:0px;top:0px;border-radius:2px;
                 }
@@ -380,12 +429,12 @@ div{
                     //if this parent should have hO
                     ul{
                         &.hO{
-                            //width:290px;left:-37px;
+                            width:290px;left:-37px;
                             &:before{
-                                //left:43px;
+                                left:43px;
                             }
                             &:after{
-                                //left:44px;
+                                left:44px;
                             }
                         }
                     }
@@ -422,6 +471,7 @@ div{
                         font-family:laisiangtho;color:#666;
                         width:30px;height: inherit;margin-right:0px;margin-left: 0px;
                         font-variant: normal;text-transform: none;text-align:center;
+                        pointer-events:auto; @include user-select();
                     }
                     &:focus{
                         outline:none;

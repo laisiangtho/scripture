@@ -20,6 +20,11 @@ var Message = {
 // NOTE: REQUIRE DATA
 var Package = JSON.parse(fs.readFileSync('package.json'));
 // NOTE: SETTING, TASK
+/*
+"laisiangtho": {
+    "^[a-z\\d]+.json$": true
+},
+*/
 var Setting = {},
     Task = {
         todo: [],

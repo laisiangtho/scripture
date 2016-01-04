@@ -182,7 +182,7 @@
                             } else if (e.message) {
                                 OS.message = e.message;
                                 if(e.name)OS.name = e.name;
-                                if(e.code)OS.code = e.code;
+                                // if(e.code)OS.code = e.code;
                             } else {
                                 OS.status = e;
                                 OS.message = Task.message.PleaseSeeStatus;

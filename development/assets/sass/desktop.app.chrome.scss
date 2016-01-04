@@ -14,7 +14,7 @@
 html{
 	body{
 		//font-family: Arial, 'Myanmar3', Helvetica, sans-serif;
-	    a, form, .zO, .hO, .control * {
+	    a, form, .fO {
 	        -webkit-app-region: no-drag;
 	    }
 	    footer{
@@ -22,7 +22,7 @@ html{
 	    }
 	    header{
 	        div{
-	            &.main{
+	            &.bar{
 	                @extend footer;
 	            }
 	        }
@@ -30,9 +30,15 @@ html{
 		&.working{
 	        &.wait{
 	            header{
-	                .status{
-	                    @extend footer;
-	                }
+					&:after{
+						// @extend footer;
+						// disabled due to misc function
+					}
+					>div {
+						&.nav *{
+							@extend footer;
+						}
+					}
 	            }
 	        }
 	    }

@@ -1,103 +1,739 @@
 @import 'Config';
-div{
-  // common container
-  &.wrp {
-    display:table; width: 100%;color: #ccc;
-    ol{
-      list-style: none;
-      li{}
-    }
-    &.wrp-bible{
-      ol{
-        display:table; width: 100%;vertical-align: middle;
-        li{
-          display:inline-block; padding: 1%;width: 300px;
-          border:0px solid #ccc;
-          p{
-            display:table; width: 98%;height: 35px; box-shadow: 0px 0px 0px 0px darken($ColorBackground,15%);
-            *{display: table-cell;padding:0;vertical-align: middle;}
-            span{
-              width:35px; border-radius:50px;padding:0;text-align: center;
-              &:first-child{
-                box-shadow: -1px 0px 1px 1px darken($ColorBackground,15%);
-                &:hover{
-                  &::before{
-                    color:#666;
-                  }
-                }
-              }
-              &:last-child{
-                &:hover{
-                  &::before{
-                    color:red;
-                  }
-                }
-              }
-            }
-            a{
-              padding-left:5px;line-height: 20px;overflow: hidden; white-space: nowrap;color:darken($ColorBackground,30%);
-              &:hover{
-                color:darken($ColorBackground,40%);
-              }
-            }
+div {
+    // common container
+    &.wrp {
+        display: table;
+        width: 100%;
+        ol {
+            list-style: none;
+            li {
 
-          }
-          &.active{
-            p{
-              a{
-                color:darken($ColorBackground,50%);
-              }
             }
-            &.now{}
-          }
         }
-      }
-    }
-    &.wrp-book{
-      >ol{
-        display:inline-table; width: 30%; margin:0px; padding:1%;
-        >li{
-          // testament
-
-          h1{
-            border: 1px solid #ccc;
-          }
-          >ol{
-            padding:1% 2%;
-            display:block;border: 1px solid #ccc;
-            li{
-              // catalog
-              border: 0px solid #ccc;
-              h2{}
-              ol{
-                padding:1% 2%;
-                li{
-                  // book
-                  border: 0px solid #ccc;
-                  p{
-                    a{
-                      color: #ccc;
+        &.wrp-bible {
+            ol {
+                display: table;
+                width: 100%;
+                vertical-align: middle;
+                li {
+                    display: inline-table;
+                    padding: 1%;
+                    width: 20%;
+                    @media (max-width:$WidthTablet) {
+                        width: 48%;
                     }
-                  }
+                    @media (max-width:$WidthMobile) {
+                        width: 98%;
+                    }
+                    p {
+                        display: table;
+                        width: 100%;
+                        height: 35px;
+                        box-shadow: 0 0 0 0 darken($ColorBackground,15%);
+                        white-space: nowrap;
+                        * {
+                            display: table-cell;
+                            padding: 0;
+                            vertical-align: middle;
+                        }
+                        span {
+                            width: 35px;
+                            min-width: 35px;
+                            border-radius: 50px;
+                            padding: 0;
+                            text-align: center;
+                            &:first-child {
+                                box-shadow: -1px 0 1px 1px darken($ColorBackground,15%);
+                                &:hover {
+                                    &::before {
+                                        color: #666;
+                                    }
+                                }
+                            }
+                            &:last-child {
+                                &:hover {
+                                    &::before {
+                                        color: red;
+                                    }
+                                }
+                            }
+                        }
+                        a {
+                            padding-left: 5px;
+                            line-height: 20px;
+                            max-width: 300px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            color: darken($ColorBackground,30%);
+                            &:hover {
+                                color: darken($ColorBackground,40%);
+                            }
+                        }
+                    }
+                    &.active {
+                        p {
+                            a {
+                                color: darken($ColorBackground,50%);
+                            }
+                        }
+                        &.now {
+
+                        }
+                    }
                 }
-              }
             }
-          }
         }
-      }
+        &.wrp-book {
+            >ol {
+                display: inline-block;
+                width: 48%;
+                max-width: 450px;
+                vertical-align: top;
+            }
+            ol {
+                margin: 1%;
+                cursor: default;
+                @media (max-width:$WidthMobile) {
+                    display: block;
+                    width: 98%;
+                }
+                li {
+                    // testament
+                    h1 {
+                        padding: 1%;
+                        font-size: 140%;
+                        color: #C3C3C3;
+                        text-shadow: 1px 1px 1px #666;
+                    }
+                    >ol {
+                        li {
+                            // catalog
+                            h2 {
+                                padding: 1% 2%;
+                                color: #797B7C;
+                                font-size: 115%;
+                                text-shadow: 1px 1px 1px #fff;
+                            }
+                            ol {
+                                margin: 1% 4%;
+                                li {
+                                    // book
+                                    p {
+                                        a {
+                                            display: inline-block;
+                                            color: #052B58;
+                                            font-size: 105%;
+                                            &:hover {
+                                                color: #BF0914;
+                                            }
+                                        }
+                                        span {
+                                            display: inline-block;
+                                            min-width: 25px;
+                                            background-color: #ccdae9;
+                                            text-align: center;
+                                            border-radius: 2px;
+                                            &.active{
+                                                background-color: #cc0a22;
+                                            }
+                                        }
+                                    }
+                                    &.active {
+                                        p {
+                                            a {
+                                                color: #BF0914;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // NOTE: reader, lookup, note
+        &.wrp-content {
+            table-layout: fixed;width: 100%;height: 100%;
+            >ol {
+                display: table-cell;
+                width: 100%;
+                background-color: rgba(255,255,255,1.00);
+                // NOTE: NO RESULT, NO BOOK SELECTED
+                &.deactivate {
+                    display: table;
+                    height: 40vh;
+                    margin-top: 7vh;
+                    width: 100%;
+                    >li {
+                        font-size: 160%;
+                        text-shadow: 0 0 1px 1px #ccc;
+                        color: #D3D3D3;
+                    }
+                }
+                // NOTE: CONDITIONAL
+                &:empty {
+                    display: none;
+                }
+                &:first-child:not(.deactivate):not(.nobg) {
+                    box-shadow: -2px 0 2px 0 rgba(213,213,213,0.70);
+                }
+                &:last-child:not(.deactivate):not(.nobg) {
+                    box-shadow: 2px 0 2px 0 rgba(213,213,213,0.70);
+                }
+                >li {
+                    >div {
+                        border-bottom: 1px solid #ECECEC;
+                    }
+                    div {
+                        h2, h3, h4 {
+                            line-height: 20px; font-weight: normal; cursor: default;
+                        }
+                        h3, h4, h5 {
+                            display: inline-block; text-align: center; padding: 4px 5px;
+                        }
+                    }
+                }
+            }
+            // NOTE: wrp.content
+            ol {
+                &.Ob {
+                    >li.bID {
+                        >div {
+                            // NOTE: reader->Book
+                            h2 {
+                                padding: 10px 2%;
+                                color: #7F7E7E;
+                                font-size: 110%;
+                            }
+                            // NOTE: reference->Book
+                            h4 {
+                                min-width: 20px;
+                                margin-right: 7px;
+                                border-radius: 2px;
+                                color: #7F7E7E;
+                                font-size: 14px;
+                                line-height: 18px;
+                            }
+                        }
+                        ol {
+                            &.Oc {
+                                padding:5px;
+                                // margin: 7px 1%;
+                                >li.cID {
+                                    >div {
+                                        // NOTE: reader->Chapter
+                                        h3 {
+                                            margin: 0 1%;
+                                            right: 5px;
+                                            min-width: 30px;
+                                            color: #9D9D9D;
+                                            font-size: 100%;
+                                            box-shadow: 0 0 1px 1px rgba(200,200,200,1.00);
+                                            &:before,
+                                            &:after {
+                                                position: absolute; display: block; pointer-events: none;
+                                                width: 0; height: 0;
+                                                vertical-align: middle; border: solid transparent;
+                                            }
+                                            &:before {
+                                                border-top-color: #ccc; border-width: 5px; left: 15px; bottom: -11px;
+                                            }
+                                            &:after {
+                                                border-top-color: #fff; border-width: 4px; left: 15px; bottom: -8px;
+                                            }
+                                        }
+                                        // NOTE: reference->Chapter
+                                        h5 {
+                                            min-width: 20px;
+                                            color: #7F7E7E;
+                                            font-size: 13px;
+                                            line-height: 18px;
+                                            box-shadow: 2px 0 1px 0 rgba(200,200,200,1.00);
+                                        }
+                                        // NOTE: Option
+                                        >ul {
+                                            display: inline-table;
+                                            list-style: none;
+                                            position: absolute;
+                                            top: 2px;
+                                            right: 0;
+                                            >li {
+                                                display: table-cell;
+                                                margin-right: 2px;
+                                                >span {
+                                                    display: block;
+                                                    padding: 4px 2px;
+                                                    box-shadow: inset 0 0 0 0 rgba(200,200,200,1.00);
+                                                    text-transform: uppercase;
+                                                    z-index: 1;
+                                                    &:after {
+                                                        background-color: rgba(255,255,255,1);
+                                                        border-radius: 2px;
+                                                    }
+                                                    &.active {
+                                                        &:before {
+                                                            color: #D40609;
+                                                        }
+                                                    }
+                                                }
+                                                // OPTION COMMON
+                                                >ul.mO {
+                                                    width: 150px;
+                                                    >li {
+                                                        &:nth-child(even) {
+                                                            background-color: #F5F5F5;
+                                                        }
+                                                    }
+                                                    // mO PARALLEL
+                                                    &.parallel {
+                                                        >li {
+                                                            padding: 3px;
+                                                            &:hover {
+                                                                color: #F70303;
+                                                            }
+                                                            &:before {
+                                                                display: inline-block;
+                                                                content: "+";
+                                                                color: #808080;
+                                                                padding: 3px 1px;
+                                                                width: 10px;
+                                                                font-weight: bold;
+                                                            }
+                                                            &.has {
+                                                                color: #BC080E;
+                                                                &:before {
+                                                                    content: "-";
+                                                                    color: #8B0608;
+                                                                }
+                                                            }
+                                                            &.active {
+                                                                color: #F70303;
+                                                                &:before {
+                                                                    content: "~";
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    // mO NOTE
+                                                    &.note {
+                                                        >li {
+                                                            display: block;
+                                                            padding: 3px;
+                                                            // &:last-child{border:0;}
+                                                            >p {
+                                                                // display: table-cell;
+                                                                // vertical-align: middle;
+                                                                &.add {
+                                                                    width: 20px;
+                                                                    &:before {
+                                                                        display: inline-block;
+                                                                        width: 15px;
+                                                                        height: 15px;
+                                                                        color: #F0F0F0;
+                                                                        margin: 1px;
+                                                                        padding: 1px;
+                                                                        text-align: center;
+                                                                        font-size: 130%;
+                                                                        background-color: #FFFFFF;
+                                                                        border-radius: 2px;
+                                                                        box-shadow: inset 0 0 1px 1px rgba(200,200,200,1.00);
+                                                                    }
+                                                                    &:hover {
+                                                                        &:before {
+                                                                            box-shadow: inset 0 0 1px 1px rgba(170,141,141,1.00);
+                                                                        }
+                                                                    }
+                                                                }
+                                                                &.name {
+                                                                    max-width: 100px;
+                                                                    // font-size: 11px;
+                                                                    color: #A7A7A7;
+                                                                }
+                                                            }
+                                                            &.active {
+                                                                >p {
+                                                                    &.add {
+                                                                        &:before {
+                                                                            color: #DB041F;
+                                                                        }
+                                                                    }
+                                                                    &.name {
+                                                                        color: #5B5959;
+                                                                        &:hover {
+                                                                            color: #AC0306;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    ol {
+                                        &.Ov {
+                                            padding: 1%;
+                                            // margin: 0;
+                                            >li {
+                                                // NOTE: Title
+                                                &.title {
+                                                    font-size: 110%;color: #9D9D9D;padding: 5px 2%;
+                                                    &:before, &:after {
+                                                        font-size: 110%;color: #3E3B3B;text-shadow: 0 0 1px rgba(193,190,191,0.30);
+                                                    }
+                                                    &:before {
+                                                        left: 0;top: 0;content: '“';
+                                                    }
+                                                    &:after {
+                                                        right: 0;border: 0;content: '”';
+                                                    }
+                                                }
+
+                                                // NOTE: Verse data-verse=vID
+                                                &[data-verse] {
+                                                    font-size: 90%;
+                                                    &:before {
+                                                        // NOTE: VERSE NUMBER
+                                                        display: inline-block;
+                                                        content: attr(data-verse);
+                                                        text-align: center;
+                                                        font-size: 75%;
+                                                        line-height: inherit;
+                                                        padding: 3px 1px;
+                                                        margin-right: 3px;
+                                                        min-width: 30px;
+                                                        height: 15px;
+                                                        color: #9D9D9D;
+                                                    }
+                                                    &:after {
+                                                        // NOTE: BOOKMARK SELECTION
+                                                    }
+                                                    &:hover {
+                                                        &:before {
+                                                            color: #FB0105;
+                                                        }
+                                                    }
+                                                    &.active {
+                                                        color: #780406;
+                                                        &:before {
+                                                            color: #780406;
+                                                        }
+                                                        &:after {
+                                                            display: inline-block;
+                                                            width: 5px;
+                                                            height: 5px;
+                                                            color: #780406;
+                                                            content: "*";
+                                                            border-radius: 7px;
+                                                            margin-bottom: 0;
+                                                        }
+                                                    }
+
+                                                    // NOTE: search highlight
+                                                    b {
+                                                        color: #9C0508;
+                                                    }
+                                                }
+
+                                                // NOTE: Reference
+                                                &.ref {
+                                                    font-size: 80%;
+                                                    padding: 5px;
+                                                    &.active {
+                                                        padding: 0;
+                                                    }
+                                                    a {
+                                                        display: inline-block;
+                                                        padding: 1px 3px;
+                                                        color: #193BAA;
+                                                        cursor: default;
+                                                    }
+                                                    >ol {
+                                                        font-size: 120%;
+                                                        margin: 2px 0;
+                                                        padding: 5px;
+                                                        color: #686868;
+                                                        @include box-shadow(inset, 0px, 0px, 1px, 1px, rgba(216,216,216,1.00));
+                                                        background-color: #FDFDFD;
+                                                        >li {
+                                                            div {
+                                                                color: #909090;
+                                                                h4 {
+                                                                    font-weight: bold;
+                                                                }
+                                                            }
+                                                            >ol {
+                                                                padding: 0; margin: 0;
+                                                                li {
+                                                                    div {
+                                                                        h5 {
+                                                                            left: -7px;
+                                                                            background-color: #fff;
+                                                                        }
+                                                                    }
+                                                                    >ol {
+                                                                        padding: 0;
+                                                                        margin: 0;
+                                                                        li {
+                                                                            &[data-verse] {
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // NOTE: parallel layout
+            &.d1 {
+                >ol {
+                    &:not(.deactivate):not(.nobg) {
+                        box-shadow: 0 0 1px 1px rgba(213,213,213,0.70);
+                    }
+                }
+            }
+            &.d2 {
+            }
+            // NOTE: PAGE-CHAPTER
+            &.wrp-chapter {
+            }
+            // NOTE: PAGE-NOTE
+            &.wrp-note {
+                >ol {
+                    padding: 5px;
+                    >li {
+                        // padding: 5px 0;
+                        margin: 2px 0;
+                        font-size: 100%;
+                        vertical-align: middle;
+                        // NOTE: option:delete,edit?
+                        >ul {
+                            display: table;
+                            width: 100%;
+                            // border-bottom: 1px solid #ECECEC;
+                            vertical-align: middle;border-collapse:separate;border-spacing:4px 10px;
+                            >li {
+                                display: table-cell;vertical-align: inherit;
+                                &:first-child {
+
+                                    &:before {
+                                        display: block;
+                                        height: inherit;
+                                        vertical-align: inherit;
+                                        font-size: 150%;
+                                        height:25px;
+                                    }
+                                }
+                                &:nth-child(2) {
+                                    width: 100%; cursor: default;font-size:100%;outline:0;
+                                    &:focus {
+                                        cursor: text;
+                                    }
+                                    &:empty{
+                                        &:before{
+                                            content: attr(data-title); color: #ccc;
+                                        }
+                                    }
+                                }
+                                &:nth-child(3) {
+                                    &:before {
+                                        // display: block;
+                                        // height: inherit;
+                                        // vertical-align: inherit;
+                                        font-size: 100%;
+                                    }
+                                }
+                                &:nth-child(4) {
+                                    &:before {
+                                        // display: block;
+                                        // height: inherit;
+                                        // vertical-align: inherit;
+                                        font-size: 100%;
+                                    }
+                                }
+                                &:last-child {}
+                                &[data-count]{
+                                    &:before{
+                                        // font-size: 90%; padding:2px 5px; border-radius:2px;margin-right: 7px;
+                                        // content: attr(data-count);color:#ccc;
+                                        // @include box-shadow(inset, 1px, 0px, 1px, 1px, rgba(216,216,216,0.80)); background-color: #FDFDFD;
+                                    }
+                                    &.yes{
+                                        &:before{
+                                            font-size: 90%; padding:2px 5px; border-radius:2px;margin-right: 7px;
+                                            content: attr(data-count);color:#fff;
+                                            @include box-shadow(0px, 0px, 1px, 1px, rgba(216,216,216,1.00)); background-color: #D40609;
+                                        }
+                                    }
+                                }
+                                >span{
+                                    display: block;
+                                    padding: 4px 2px;
+                                    box-shadow: inset 0 0 0 0 rgba(200,200,200,1.00);
+                                    text-transform: uppercase;
+                                    z-index: 1;
+                                    &:after {
+                                        background-color: rgba(255,255,255,1);
+                                        border-radius: 2px;
+                                    }
+                                    &.active {
+                                        &:before {
+                                            color: #D40609;
+                                        }
+                                    }
+                                }
+                                >ul.mO {
+                                    // width:70px;
+                                    >li{
+                                        // &:nth-child(even) {background-color: #F5F5F5;}
+                                        // &:nth-child(odd){background-color:#F5F5F5;}
+                                        // font-size: 90%;
+                                    }
+                                }
+                            }
+                            &.active{
+                                @include box-shadow(inset, 0px, 1px, 1px, 0px, rgba(216,216,216,0.80));
+                            }
+                            &.editing{
+                                @include box-shadow(inset, 0px, 0px, 1px, 1px, rgba(216,216,216,0.80)); background-color: #FDFDFD;
+                                >li {
+                                    &:nth-child(2) {
+                                        color: red;
+                                        // border-bottom: 1px solid #ccc;
+                                    }
+                                }
+                                &.active{
+                                    @include box-shadow(inset, 0px, 1px, 1px, 1px, rgba(216,216,216,0.80));
+                                }
+
+                            }
+                        }
+                        >ol{
+                            font-size: 90%;
+                            color: #686868;
+                            @include box-shadow(inset, 0px, -1px, 1px, 0px, rgba(216,216,216,1.00)); //background-color: #FDFDFD;
+                            &.Ob{
+                                // margin:0; padding:0;
+                                >li{
+                                    ol{
+                                        &.Oc{
+                                            // margin:0; padding:0;
+                                        }
+                                    }
+                                }
+                            }
+                            &.norecord{
+                                li{
+                                    padding:1% 2%; color: #ccc;
+                                }
+                            }
+                        }
+                        &:last-child {
+                            >ul{
+                                @include box-shadow(inset 0px, 0px, 1px, 1px, rgba(216,216,216,0.80)); background-color: #FDFDFD;
+                                >li{
+                                    &:nth-child(2) {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // NOTE: PAGE-tmp
+            &.wrp-tmp {}
+        }
+        &.wrp-tmp {}
     }
-    &.wrp-tmp{}
-  }
 }
 // NOTE: ol should be used only data-container
-ol{
-  li{
-
-  }
+ol {
+    li {}
 }
 // NOTE: ul should be used only data-structure
-ul{
-  li{
-
-  }
+ul {
+    &.mO{
+        position: absolute;
+        right: 2px;
+        width: 150px;
+        box-shadow: inset 0 0 1px 1px rgba(200,200,200,1.00);
+        padding: 1px;
+        z-index: 9999;
+        font-size:70%;
+        background-color: rgba(255,255,255,1);
+        border-radius: 2px;
+        vertical-align: middle;
+        display:table;
+        &:before, &:after {
+            position: absolute;
+            display: block;
+            pointer-events: none;
+            width: 0; height: 0;
+            vertical-align: inherit;
+            border: solid transparent;
+        }
+        &:before {
+            border-bottom-color: #ccc; border-width: 4px; right: 9px; top: -7px;
+        }
+        &:after {
+            border-bottom-color: #fff; border-width: 3px; right: 10px; top: -4px;
+        }
+        >li{
+            display:block;
+            font-size:100%;
+            height:18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: default;
+            color: #5B5B5B;
+            vertical-align: inherit;
+            &:before, &:after {
+                vertical-align: inherit;
+            }
+            // &:nth-child(even) {background-color: #F5F5F5;}
+            // &:nth-child(odd){background-color:#F5F5F5;}
+            >p {
+                display: table-cell;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+        &.other{
+            width:auto; border-collapse: separate; border-spacing:1px 2px;
+            >li{
+                display:table-cell; padding:2px;table-layout: fixed;width: 100%;height: 100%;
+                &:before, &:after {
+                }
+            }
+        }
+    }
+    &.data-dialog{
+    }
+}
+// .data-com{display:table;width:100%;height:100%;max-width:100%;max-height:100%;border-collapse:separate;border-spacing:7px 7px;}
+// .data-com.d1{max-width:800px;margin-left:2%;}
+// .data-com.d2{max-width:1200px;margin-left:2%;}
+@media screen and (max-width:$WidthMobile) {
+    // .row-bible li{display:block;}
+    // .row-bible li a{max-width:50px;}
+}
+@media screen and (max-width:$WidthTablet) {
+    // .data-com.d1{margin-left:0;}
+}
+@media screen and (max-width:$WidthDesktop) {
+    // .data-com.d2{margin-left:0;}
 }

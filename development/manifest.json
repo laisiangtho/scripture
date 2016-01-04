@@ -12,7 +12,7 @@
   },
   "app": {
     "background": {
-      "scripts": ["js/chrome.js"]
+      "scripts": ["js/manifest.chrome.Tmp.js"]
     }
   },
   "permissions": [

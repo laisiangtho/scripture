@@ -135,6 +135,14 @@ body main > div:not(.active) {
   display: none;
 }
 
+body main > div.container > ul {
+  list-style: none;
+}
+
+body main > div > div > ol, body main > div > div > ul {
+  list-style: none;
+}
+
 body footer {
   z-index: 2;
   bottom: 0px;

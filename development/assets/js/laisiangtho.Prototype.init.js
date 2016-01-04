@@ -1,6 +1,5 @@
 Core.prototype.init = function() {
-    var fn = this,
-        s0 = {
+    var s0 = {
             page: config.page[0],
             bible: config.bible.available[0],
             book: 1,
@@ -63,7 +62,7 @@ Core.prototype.init = function() {
             q.page = (q.page) ? q.page : fO.query.page;
             $.extend(fO.query, q);
         }
-        fO.query.loop(function(i,v){
+        f(fO.query).loop(function(i,v){
             if ($.isFunction(f0[i])) f0[i](i, v, s0[i]);
         })
     });
@@ -84,7 +83,7 @@ Core.prototype.init = function() {
                     if(fO.todo.lookup){
                         console.log('already enter');
                     } else {
-                        f().pagelookup();
+                        f().page.lookup();
                     }
                 });
             }else{
@@ -95,18 +94,18 @@ Core.prototype.init = function() {
         f('search').is('input').element.off().on(fO.Click,function(){
             $(this.form).submit();
         }).promise().done(function(){
-            f('q').is('input').element.attr('autocomplete', 'off').focus().select();
+            f('q').is('input').element.val(fO.query.q).attr('autocomplete', 'off').focus().select();
         });
     }
+    //fOLookUpClickTmp
+    // $('.fOLookUpClickTmp').on(fO.Click, function(e) {
+    //     f({}).fOLookUpClickTmp($(this));
+    //     // console.log('fOLookUpClickTmp');
+    // });
     fO.container.main=$(config.css.content).children(config.css.currentPage);
     // NOTE: check the page
-    var pageQuery='page'+fO.query.page, pageConfig='page'+$(config.page).get(-1);
-    // NOTE: load the page
-    // fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(function(){
-    //     fn[$.isFunction(fn[pageQuery])?pageQuery:pageConfig](fn);
-    // });
-    fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(function(){
-        fn[$.isFunction(fn[pageQuery])?pageQuery:pageConfig](fn);
+    fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().always(function(){
+        fn.page[$.isFunction(fn.page[fO.query.page])?fO.query.page:$(config.page).get(-1)]();
     });
     f('fn').is('attr').element.each(function(i, e){
         // TODO: call Method dynamically
@@ -119,10 +118,6 @@ Core.prototype.init = function() {
         // NOTE: update query(fO.query)
         db.update.query();
     });
-    // var pageQuery='page'+fO.query.page, pageConfig='page'+$(config.page).get(-1);
-    // fO.container.main.addClass(config.css.active).siblings().removeClass(config.css.active).promise().done(
-    //     this[$.isFunction(this[pageQuery])?pageQuery:pageConfig](this)
-    // );
     // $(f('fO').is('class').name).each(function(){
     //     var y=$(this), d=f(y).get('data-fa').split('-'), i=f(y).get('class').element;
     //     if(fA[i[0]]){
@@ -160,10 +155,4 @@ Core.prototype.init = function() {
         application.Orientation();
         delete fO.todo.Orientation;
     }
-};
-Core.prototype.pagenote = function() {
-    console.log('no note?');
-};
-Core.prototype.pagetodo = function() {
-    console.log('nothing todo?');
 };
