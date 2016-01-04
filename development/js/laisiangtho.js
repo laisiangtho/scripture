@@ -1575,7 +1575,19 @@
                 new d(s.query).page(s.container.main.children());
             },
             todo: function() {
-                console.log("nothing todo?");
+                var t = s.lang[s.query.bible].l;
+                var n = e(h.ol).appendTo(s.container.main.children().empty().attr({
+                    "class": "wrp wrp-todo"
+                }));
+                e(config.page).each(function(i, o) {
+                    var s = e.isFunction(l.page[o]), a = s ? "icon-right" : "icon-wrong";
+                    e(h.li, {
+                        "class": s ? o : "notready"
+                    }).append(e(h.p).append(e(h.a, {
+                        href: l.string([ 35, o, 63 ]),
+                        "class": a
+                    }).html(t[o] ? t[o] : o))).appendTo(n);
+                });
             }
         };
         function p(t, n) {

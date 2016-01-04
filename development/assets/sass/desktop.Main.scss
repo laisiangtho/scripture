@@ -101,9 +101,9 @@ div {
                     // testament
                     h1 {
                         padding: 1%;
-                        font-size: 140%;
+                        font-size: 120%;
                         color: #C3C3C3;
-                        text-shadow: 1px 1px 1px #666;
+                        text-shadow:1px 1px 2px #fff;
                     }
                     >ol {
                         li {
@@ -111,7 +111,7 @@ div {
                             h2 {
                                 padding: 1% 2%;
                                 color: #797B7C;
-                                font-size: 115%;
+                                font-size: 100%;
                                 text-shadow: 1px 1px 1px #fff;
                             }
                             ol {
@@ -122,7 +122,7 @@ div {
                                         a {
                                             display: inline-block;
                                             color: #052B58;
-                                            font-size: 105%;
+                                            font-size: 90%;
                                             &:hover {
                                                 color: #BF0914;
                                             }
@@ -654,6 +654,52 @@ div {
             }
             // NOTE: PAGE-tmp
             &.wrp-tmp {}
+        }
+        &.wrp-todo {
+            ol{
+                li{
+                    padding:1% 3px;
+                    &:nth-child(even){
+                        background-color:#fff;
+                    }
+                    p{
+                        display:block;padding:2px 5px;margin:1px 7px;
+                        a{
+                            display:block; padding: 1px; font-size: 100%;color:#666;
+                            text-shadow:0px 1px 1px #c7c3c3;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+                            &:before{
+                                display: inline-block;padding:2px; border-radius: 2px;color:#BFBFBF; text-shadow:0px 1px 1px #fff;
+                                background-color: #fff; margin-right:2%;
+                                @include box-shadow(0px, 0px, 1px, 1px, rgba(216,216,216,1.00));
+                            }
+                        }
+                    }
+                    &.notready{
+                        p{
+                            a{
+                                color:#BFBFBF; text-shadow:0px 1px 1px #fff;
+                                &:before{
+                                    color:#900;
+                                }
+                            }
+                        }
+                    }
+                }
+                /*
+                ol.row-todo{display:table;margin:7px 0;}
+                ol.row-todo li{display:table-row;}
+                ol.row-todo li p{display:block;padding:2px 5px;margin:1px 7px;}
+                ol.row-todo li p a,
+                ol.row-todo li p span{display:table-cell;width:100%;font-size:13pt;padding:0 3px;text-shadow:0px 1px 1px #c7c3c3;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+
+                ol.row-todo li p a{max-width:50px;color:#666;}
+                ol.row-todo li p span:before{}
+
+                ol.row-todo li.notready p{}
+                ol.row-todo li.notready p a{color:#BFBFBF;}
+                ol.row-todo li.notready p span:before{color:#900;}
+                */
+            }
         }
         &.wrp-tmp {}
     }

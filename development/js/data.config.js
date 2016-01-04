@@ -30,7 +30,7 @@ var config = {
     },
     header: {},
     footer: {},
-    page: [ "bible", "book", "reader", "lookup", "bookmark", "note", "setting", "more", "parallel", "about", "verse", "todo" ],
+    page: [ "bible", "book", "reader", "lookup", "note", "setting", "more", "parallel", "about", "verse", "todo" ],
     google: {
         analytics: {
             permission: true,

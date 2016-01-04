@@ -645,6 +645,10 @@ div.set > ul > li ul.hO:after {
   left: 18px;
 }
 
+div.set > ul > li.active > a:before {
+  color: red;
+}
+
 div.dig {
   padding: 0 1px;
   z-index: 3;
@@ -954,15 +958,15 @@ div.wrp.wrp-book ol {
 
 div.wrp.wrp-book ol li h1 {
   padding: 1%;
-  font-size: 140%;
+  font-size: 120%;
   color: #C3C3C3;
-  text-shadow: 1px 1px 1px #666;
+  text-shadow: 1px 1px 2px #fff;
 }
 
 div.wrp.wrp-book ol li > ol li h2 {
   padding: 1% 2%;
   color: #797B7C;
-  font-size: 115%;
+  font-size: 100%;
   text-shadow: 1px 1px 1px #fff;
 }
 
@@ -973,7 +977,7 @@ div.wrp.wrp-book ol li > ol li ol {
 div.wrp.wrp-book ol li > ol li ol li p a {
   display: inline-block;
   color: #052B58;
-  font-size: 105%;
+  font-size: 90%;
 }
 
 div.wrp.wrp-book ol li > ol li ol li p a:hover {
@@ -1462,6 +1466,68 @@ div.wrp.wrp-content.wrp-note > ol > li > ol.norecord li {
 div.wrp.wrp-content.wrp-note > ol > li:last-child > ul {
   box-shadow: inset 0px 0px 1px 1px rgba(216, 216, 216, 0.8) ;
   background-color: #FDFDFD;
+}
+
+div.wrp.wrp-todo ol {
+  /*
+                ol.row-todo{display:table;margin:7px 0;}
+                ol.row-todo li{display:table-row;}
+                ol.row-todo li p{display:block;padding:2px 5px;margin:1px 7px;}
+                ol.row-todo li p a,
+                ol.row-todo li p span{display:table-cell;width:100%;font-size:13pt;padding:0 3px;text-shadow:0px 1px 1px #c7c3c3;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+
+                ol.row-todo li p a{max-width:50px;color:#666;}
+                ol.row-todo li p span:before{}
+
+                ol.row-todo li.notready p{}
+                ol.row-todo li.notready p a{color:#BFBFBF;}
+                ol.row-todo li.notready p span:before{color:#900;}
+                */
+}
+
+div.wrp.wrp-todo ol li {
+  padding: 1% 3px;
+}
+
+div.wrp.wrp-todo ol li:nth-child(even) {
+  background-color: #fff;
+}
+
+div.wrp.wrp-todo ol li p {
+  display: block;
+  padding: 2px 5px;
+  margin: 1px 7px;
+}
+
+div.wrp.wrp-todo ol li p a {
+  display: block;
+  padding: 1px;
+  font-size: 100%;
+  color: #666;
+  text-shadow: 0px 1px 1px #c7c3c3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+div.wrp.wrp-todo ol li p a:before {
+  display: inline-block;
+  padding: 2px;
+  border-radius: 2px;
+  color: #BFBFBF;
+  text-shadow: 0px 1px 1px #fff;
+  background-color: #fff;
+  margin-right: 2%;
+  box-shadow: 0px 0px 1px 1px #d8d8d8 ;
+}
+
+div.wrp.wrp-todo ol li.notready p a {
+  color: #BFBFBF;
+  text-shadow: 0px 1px 1px #fff;
+}
+
+div.wrp.wrp-todo ol li.notready p a:before {
+  color: #900;
 }
 
 ul.mO {

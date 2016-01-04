@@ -3,7 +3,7 @@
   "short_name": "Lai Siangtho",
   "description": "the Holy Bible in languages! Available in Tedim, Hakha, Falam, Sizang, Paite, Mizo included KJV, BBE, WEB, JUDSON and +8.",
   "manifest_version": 2,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "icons": {
     "16": "img/icon.16.png",
 	"32": "img/icon.32.png",

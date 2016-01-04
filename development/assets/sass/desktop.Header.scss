@@ -381,6 +381,13 @@ div{
                         }
                     }
                 }
+                &.active{
+                    >a{
+                        &:before{
+                            color:red;
+                        }
+                    }
+                }
             }
         }
     }

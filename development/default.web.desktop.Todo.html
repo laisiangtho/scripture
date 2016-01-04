@@ -6,30 +6,8 @@
     <title>Desktop script & style testing...</title>
     <link rel="apis" href="http://api.laisiangtho.com/"/>
     <link rel="icon" href="img/icon.16.png" type="image/png"/>
-    <!-- start for script testing -->
-    <!-- <script src="js/jquery.js"></script>
-    <script src="js/jquery.ui.js"></script>
-    <script src="js/jquery.ui.touchpunch.min.js"></script>
-    <script src="js/laisiangtho.js"></script> -->
-    <script>
-    // $(function(){
-    //     $(document).laisiangtho({
-    //         E:[{'metalink':['api']},'load','watch'],
-    //         Device:'desktop',Platform:'web',
-    //         App:'laisiangtho',Click:'click',On:'fO',
-    //         // NOTE: only for testing purpose
-    //         todo: {
-    //             Template:false,
-    //             RemoveID:true
-    //         }
-    //     }).Agent();
-    // });
-    </script>
     <link rel="stylesheet" href="fontello/laisiangtho.css">
     <link rel="stylesheet" href="css/laisiangtho.css">
-    <!-- end for script testing -->
-    <!-- start for style testing -->
-    <!-- <script src="assets/tagtemptask/tagTemptask.js" charset="utf-8"></script> -->
     <link rel="stylesheet" href="css/desktop.css">
     <link rel="stylesheet" href="css/desktop.web.css">
     <link rel="stylesheet" href="css/desktop.web.default.css">
@@ -106,10 +84,10 @@
     <div class="nav">
         <div class="set">
             <ul>
-                <li class="todo active">
+                <li>
                     <a href="#todo?" class="icon-panel" title="Panel"></a>
                 </li>
-                <li style="display: none;">
+                <li>
                     <div class="chapter icon-bookmarks" fn="note active" title="Note"></div>
                     <ul class="hO" style="display: none;">
                         <li class="scrollbar" empty="true"></li>
@@ -174,8 +152,49 @@
 </header>
 <main>
     <div class="container" fn="msg info" empty="true"></div>
-    <div class="bible book bookmark note setting todo active" empty="true">
-      <div class="wrp wrp-bible" empty="true"></div>
+    <div class="bible book bookmark note setting todo active">
+      <div class="wrp wrp-todo" empty="true">
+          <ol>
+              <li class="bible">
+                  <p>
+                      <a href="#bible?" class="icon-right">Lai Siangtho</a>
+                  </p>
+              </li>
+              <li class="book">
+                  <p><a href="#book?">Laibu</a><span class="icon-right"></span></p>
+              </li>
+              <li class="reader">
+                  <p><a href="#reader?">Reader</a><span class="icon-right"></span></p>
+              </li>
+              <li class="lookup">
+                  <p>
+                      <a href="#lookup?">Zong</a>
+                      <span class="icon-right"></span>
+                  </p>
+              </li>
+              <li class="note">
+                  <p><a href="#note?">Ciptehna</a><span class="icon-right"></span></p>
+              </li>
+              <li class="notready">
+                  <p><a href="#setting?">Dan</a><span class="icon-wrong"></span></p>
+              </li>
+              <li class="notready">
+                  <p><a href="#more?">Adang</a><span class="icon-wrong"></span></p>
+              </li>
+              <li class="notready">
+                  <p><a href="#parallel?">Etkakna</a><span class="icon-wrong"></span></p>
+              </li>
+              <li class="notready">
+                  <p><a href="#about?">Athu</a><span class="icon-wrong"></span></p>
+              </li>
+              <li class="notready">
+                  <p><a href="#verse?">Aneu</a><span class="icon-wrong"></span></p>
+              </li>
+              <li class="todo">
+                  <p><a href="#todo?">Hihding</a><span class="icon-right"></span></p>
+              </li>
+          </ol>
+      </div>
     </div>
     <div class="lookup">
         <div class="wrp wrp-lookup wrp-content d1" empty="true"></div>
