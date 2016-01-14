@@ -1,11 +1,11 @@
 /*!
     laisiangtho -- the Holy Bible in languages
-    Version 1.1.9
+    Version 1.2.0
     https://khensolomonlethil.github.io/laisiangtho
-    (c) 2013-2015
+    (c) 2013-2016
 */
 (function(e, t) {
-    var n = "laisiangtho", o = "1.9.86.2015.8.28";
+    var n = "laisiangtho", o = "2.1.23.2016.1.5";
     e.fn[n] = function(o) {
         help = {
             Agent: {
@@ -67,7 +67,7 @@
             },
             container: {},
             msg: {
-                info: e("li#msg")
+                info: e("li:first-child")
             }
         }, o), a, l, r = {}, c = this, f = function() {
             this.arg = arguments;
@@ -611,7 +611,7 @@
             msg: function(e) {
                 s.msg.lookup = e.arg[0];
                 if (s.query.result > 0) {
-                    e.arg[0].text(e.num(s.query.result)).attr("title", s.query.q);
+                    e.arg[0].html(e.num(s.query.result)).attr("title", s.query.q);
                 } else {
                     e.arg[0].empty();
                 }
@@ -629,7 +629,7 @@
                     };
                     i.classAvailable = i.local ? config.css.available : config.css.notAvailable;
                     i.isAvailable = i.local ? i.classOffline : i.classOnline;
-                    i.classActive = (s.query.bible == n ? config.css.active : "") + " " + i.classAvailable;
+                    i.classActive = (s.query.bible == n ? config.css.active + " " : "") + i.classAvailable;
                     t(i).appendTo(e);
                 });
                 return e;
@@ -896,7 +896,7 @@
         };
         f.prototype.working = function(t) {
             if (s.msg.info.is(":hidden")) {
-                e("body").addClass(config.css.working).promise().done(s.msg.info.slideDown(200));
+                e("body").addClass(config.css.working).promise().done(s.msg.info.fadeIn(100));
             }
             if (t.wait === true) {
                 e("body").addClass(config.css.wait);
@@ -910,7 +910,8 @@
             return t.msg ? s.msg.info.html(t.msg) : s.msg.info;
         };
         f.prototype.done = function(t) {
-            s.msg.info.slideUp(200).empty().promise().done(function() {
+            s.msg.info.fadeOut(300).promise().always(function() {
+                this.empty();
                 e("body").removeClass(config.css.working).removeClass(config.css.wait).removeClass(config.css.disable).promise().done(function() {
                     if (t) t();
                 });

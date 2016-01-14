@@ -32,3 +32,7 @@ html body a, html body form, html body .fO {
 html body footer, html body header div.bar, html body.working.wait header > div.nav * {
   -webkit-app-region: drag;
 }
+
+html body ol.Ov li {
+  -webkit-user-select: text;
+}

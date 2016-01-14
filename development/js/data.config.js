@@ -1,8 +1,8 @@
 var config = {
     name: "Lai Siangtho beta",
     description: "the Holy Bible",
-    version: "1.1.9",
-    build: "1.9.86",
+    version: "1.2.0",
+    build: "2.1.23",
     id: "laisiangtho",
     developer: "Khen Solomon Lethil",
     file: {

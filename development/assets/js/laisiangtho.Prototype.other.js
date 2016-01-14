@@ -108,7 +108,7 @@ Core.prototype.lookup={
     msg:function(e){
         fO.msg.lookup=e.arg[0];
         if (fO.query.result > 0) {
-            e.arg[0].text(e.num(fO.query.result)).attr('title',fO.query.q);
+            e.arg[0].html(e.num(fO.query.result)).attr('title',fO.query.q);
         } else {
             e.arg[0].empty();
         }
@@ -121,7 +121,7 @@ Core.prototype.menu=function(o){
             var Om={bID:id,lang:fO.lang[id].info,local:fO.lang[id].local,classOffline:'icon-ok offline',classOnline:'icon-logout offline'};
             Om.classAvailable=Om.local?config.css.available:config.css.notAvailable;
             Om.isAvailable=(Om.local?Om.classOffline:Om.classOnline);
-            Om.classActive=(fO.query.bible==id?config.css.active:'')+' '+Om.classAvailable;
+            Om.classActive=(fO.query.bible==id?config.css.active+' ':'')+Om.classAvailable;
             o(Om).appendTo(ol);
         });
         return ol;
@@ -381,7 +381,7 @@ Core.prototype.working = function(q) {
     // this.args[0].msg, this.args[0].wait
     // f({wait:'',disable:'',msg:''}).working();
     if (fO.msg.info.is(":hidden")) {
-        $('body').addClass(config.css.working).promise().done(fO.msg.info.slideDown(200));
+        $('body').addClass(config.css.working).promise().done(fO.msg.info.fadeIn(100));
     }
     if (q.wait === true) {
         $('body').addClass(config.css.wait);
@@ -395,7 +395,8 @@ Core.prototype.working = function(q) {
     return (q.msg) ? fO.msg.info.html(q.msg) : fO.msg.info;
 };
 Core.prototype.done = function(callback) {
-    fO.msg.info.slideUp(200).empty().promise().done(function() {
+    fO.msg.info.fadeOut(300).promise().always(function() {
+        this.empty();
         $('body').removeClass(config.css.working).removeClass(config.css.wait).removeClass(config.css.disable).promise().done(function() {
             if(callback)callback();
         });

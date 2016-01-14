@@ -1,11 +1,11 @@
 /*!
     laisiangtho -- the Holy Bible in languages
-    Version 1.1.9
+    Version 1.2.0
     https://khensolomonlethil.github.io/laisiangtho
-    (c) 2013-2015
+    (c) 2013-2016
 */
 (function($, uA) {
-    var laisiangtho = 'laisiangtho',version = '1.9.86.2015.8.28';
+    var laisiangtho = 'laisiangtho',version = '2.1.23.2016.1.5';
     $.fn[laisiangtho] = function(options) {
         help={
             Agent:{
@@ -66,7 +66,7 @@
             },
             container: {},
             msg: {
-                info: $('li#msg')//li:first-child
+                info: $('li:first-child')//li:first-child,li#msg
                 // REVIEW: lookup
             }
         }, options),

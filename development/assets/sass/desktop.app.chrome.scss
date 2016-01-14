@@ -27,6 +27,13 @@ html{
 	            }
 	        }
 	    }
+		ol{
+			&.Ov{
+				li{
+					-webkit-user-select: text;
+				}
+			}
+		}
 		&.working{
 	        &.wait{
 	            header{
