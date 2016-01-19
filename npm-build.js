@@ -34,7 +34,8 @@ var Setting = {},
                     Setting = extend(true, Package.config.common, Package.config.individual[Argv.os]);
                     if (!Setting.development.main) Setting.development.main = Argv.os;
                     Setting.os = Argv.os;
-                    Setting.unique = Setting.unique.replace('.n', process.env.npm_package_name).replace('.o', Argv.os).replace('.v', Setting.version).replace('.b', Setting.build);
+                    //Package.name,process.env.npm_package_name
+                    Setting.unique = Setting.unique.replace('.n', Package.name).replace('.o', Argv.os).replace('.v', Setting.version).replace('.b', Setting.build);
                     Setting.development.dir = path.join(Setting.development.root);
                     Setting.production.dir = path.join(Setting.production.root, Setting.unique);
                     Task.create.production(Setting.production.dir, function(msg) {

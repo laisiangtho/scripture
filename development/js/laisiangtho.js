@@ -517,7 +517,7 @@
             },
             name: {
                 previous: function(e) {
-                    e.arg[0].attr("title", this.text("next"));
+                    e.arg[0].attr("title", this.text("previous"));
                 },
                 current: function(e) {
                     e.arg[0].html(e.num(s.query.chapter));
@@ -528,7 +528,7 @@
                     }
                 },
                 next: function(e) {
-                    e.arg[0].attr("title", this.text("previous"));
+                    e.arg[0].attr("title", this.text("next"));
                 },
                 has: {
                     next: function() {

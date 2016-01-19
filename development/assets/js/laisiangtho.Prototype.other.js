@@ -14,7 +14,7 @@ Core.prototype.chapter={
     },
     name:{
         previous:function(e){
-            e.arg[0].attr('title',this.text('next'));
+            e.arg[0].attr('title',this.text('previous'));
         },
         current:function(e){
             e.arg[0].html(e.num(fO.query.chapter));
@@ -27,7 +27,7 @@ Core.prototype.chapter={
             }
         },
         next:function(e){
-            e.arg[0].attr('title',this.text('previous'));
+            e.arg[0].attr('title',this.text('next'));
         },
         has:{
             next:function(){

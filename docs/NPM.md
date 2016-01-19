@@ -30,3 +30,4 @@ devDependencies
 - npm uninstall --save-dev merge
 - npm install --save-dev node.extend
 - npm install --save-dev xmldom
+- npm install --save-dev uglify-js

@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\Khen Solomon Lethil\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'build-test' ]
+2 info using npm@3.5.3
+3 info using node@v4.1.1
+4 verbose run-script [ 'prebuild-test', 'build-test', 'postbuild-test' ]
+5 info lifecycle laisiangtho@1.2.0~prebuild-test: laisiangtho@1.2.0
+6 silly lifecycle laisiangtho@1.2.0~prebuild-test: no script for prebuild-test, continuing
+7 info lifecycle laisiangtho@1.2.0~build-test: laisiangtho@1.2.0
+8 verbose lifecycle laisiangtho@1.2.0~build-test: unsafe-perm in lifecycle true
+9 verbose lifecycle laisiangtho@1.2.0~build-test: PATH: C:\Users\Khen Solomon Lethil\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;F:\SERVER\laisiangtho\node_modules\.bin;C:\Program Files (x86)\PHP\v5.5;C:\windows\system32\inetsrv;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\PHP\v5.4;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Condusiv Technologies\ExpressCache\;C:\Program Files (x86)\WinSCP\;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\MySQL\MySQL Utilities 1.4.3\;C:\Program Files (x86)\MySQL\MySQL Utilities 1.4.3\Doctrine extensions for PHP\;C:\Program Files (x86)\MySQL\MySQL Ut;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Brackets\command;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\ProgramData\ComposerSetup\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 & MySQL Utilities 1.5\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 & MySQL Utilities 1.5\Doctrine extensions for PHP\;C:\Python27;C:\Python27\Scripts;C:\Program Files (x86)\PHP\v5.4;C:\windows\system32\inetsrv;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Condusiv Technologies\ExpressCache\;C:\Program Files (x86)\MySQL\MySQL Utilities 1.4.3\;C:\Program Files (x86)\MySQL\MySQL Utilities 1.4.3\Doctrine extensions for PHP\;C:\Program Files\nodejs\;C:\Python27;C:\Users\Khen Solomon Lethil\AppData\Roaming\npm;C:\Users\Khen Solomon Lethil\AppData\Local\atom\bin;C:\Users\Khen Solomon Lethil\AppData\Local\GitHub\PortableGit_c7e0cbde92ba565cb218a521411d0e854079a28c\cmd;C:\Users\Khen Solomon Lethil\AppData\Local\GitHub\PortableGit_c7e0cbde92ba565cb218a521411d0e854079a28c\bin;C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin;C:\Program Files (x86)\Google\google_appengine\
+10 verbose lifecycle laisiangtho@1.2.0~build-test: CWD: F:\SERVER\laisiangtho
+11 silly lifecycle laisiangtho@1.2.0~build-test: Args: [ '/d /s /c', 'node ./npm-build-test.js --os=chrome' ]
+12 silly lifecycle laisiangtho@1.2.0~build-test: Returned: code: 1  signal: null
+13 info lifecycle laisiangtho@1.2.0~build-test: Failed to exec build-test script
+14 verbose stack Error: laisiangtho@1.2.0 build-test: `node ./npm-build-test.js --os=chrome`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (C:\Users\Khen Solomon Lethil\AppData\Roaming\npm\node_modules\npm\lib\utils\lifecycle.js:232:16)
+14 verbose stack     at emitTwo (events.js:87:13)
+14 verbose stack     at EventEmitter.emit (events.js:172:7)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Users\Khen Solomon Lethil\AppData\Roaming\npm\node_modules\npm\lib\utils\spawn.js:24:14)
+14 verbose stack     at emitTwo (events.js:87:13)
+14 verbose stack     at ChildProcess.emit (events.js:172:7)
+14 verbose stack     at maybeClose (internal/child_process.js:817:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+15 verbose pkgid laisiangtho@1.2.0
+16 verbose cwd F:\SERVER\laisiangtho
+17 error Windows_NT 10.0.10586
+18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\Khen Solomon Lethil\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "build-test"
+19 error node v4.1.1
+20 error npm  v3.5.3
+21 error code ELIFECYCLE
+22 error laisiangtho@1.2.0 build-test: `node ./npm-build-test.js --os=chrome`
+22 error Exit status 1
+23 error Failed at the laisiangtho@1.2.0 build-test script 'node ./npm-build-test.js --os=chrome'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the laisiangtho package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     node ./npm-build-test.js --os=chrome
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs laisiangtho
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls laisiangtho
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]
