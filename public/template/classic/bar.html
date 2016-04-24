@@ -1,0 +1,88 @@
+    <div id="bar" class="portal">
+        <div class="resize">
+            <div class="wrapper">
+            	<a href="{@www}" class="logo"><img src="{@template.directory}images/laisiangtho.png" alt="Laisiangtho" /></a>
+                <form method="get" action="{@www}" name="keysearch">
+                    <div class="main">
+                        <input type="text" name="search" value="{@query}" class="bs10 ifie" />      
+                        <input type="submit" value="Search" class="bs10 ifie" />
+                    </div>
+                    <div class="options">
+                        <div class="ver bs10 ifie" id="version">Select Bible</div>
+                        <div class="ver bs10 ifie" id="advanced">Advanced Search</div>
+                        <div class="ver bs10 ifie" id="passagelookup">Passage Lookup</div>
+                    </div>    
+                    <div class="version rc2 bs ifie">
+                        {@BibleList}              
+                    </div>
+                    
+                    <div class="advanced rc2 bs ifie">
+                        <div class="share type">
+                            <input id="casesensitive" type="checkbox" name="case" value="sensitive" /> 
+                            <label for="casesensitive">CaseSensitive</label> 
+                            <select name="type" >
+                                <option value="all" selected="selected" >Match ALL words</option>
+                                <option value="any">Match ANY word</option>
+                                <option value="phrase">Match EXACT phrase</option>
+                                <option value="allInFile">Match ALL words in a chapter</option>
+                            </select>                       
+                        </div>
+                    </div>
+                
+                    <div class="advanced rc2 bs ifie">
+                        <div class="share unlimit">
+                            <input type="radio" name="limit" value="entire" id="limit-none" {@LimitActiveentire} />
+                            <label for="limit-none">Search entire Bible </label>
+                        </div>
+                    </div>   
+                
+                    <div class="advanced rc2 bs ifie">
+                        <div class="share bookset">
+                            <input type="radio" name="limit" value="bookset" id="limit-bookset" {@LimitActivebookset} />
+                            <label for="limit-bookset">Limit search to</label>
+                            <select name="bookset" id="limit-bookset-dropdown"  >
+                            	{@BookCategoryForm}
+                            </select>            
+                        </div>
+                    </div>        
+                
+                    <div class="advanced rc2 bs ifie">     
+                
+                        <div class="share limited">
+                            <input type="radio" name="limit" value="span" id="limit-span" {@LimitActivespan} />
+                            <label for="limit-span">Search from</label>
+                            <select name="spanbegin" id="limit-span-begin" >
+                                {@BookListForm_from}
+                            </select>  
+                            <span>to</span>
+                            <select name="spanend" id="limit-span-end" >
+                                {@BookListForm_to}
+                            </select>                        
+                        </div>                         
+                    </div>
+                    <div class="passagelookup rc2 bs ifie">     
+                
+                        <div class="share">
+                            <p>
+                            	<span>Single Passage Lookup:</span> 
+                                <a href="{@www}?q=1 4:6&bible=ylt">1 4:6</a>, 
+                                <a href="{@www}?q=genesis 7:6&bible=kjv">genesis 7:6, 
+                                <a href="{@www}?q=piancilna 1:3&bible=tedim">piancilna 1:3</a>, 
+                                <a href="{@www}?q=proverbs 21:1-5&bible=kjv">proverbs 21:1-5</a></p>
+                            <p>
+                            	<span>Multi Passage Lookup:</span> 
+                                <a href="{@www}?q=genesis 7:6;proverbs 21:1&bible=kjv,judson">genesis 7:6;proverbs 21:1</a></p>
+                            <p>
+                            	<span>Multi Passage Lookup with Book name:</span> 
+                                <a href="{@www}?q=proverbs 3:1-5&bible=kjv,judson,norsk,ylt,tedim">Proverbs 3:1-5</a></p>                                
+                        </div>                         
+                    </div>                       
+                    
+                 </form>                
+                <!--<div class="deploy"></div> -->
+                <div class="menu">
+                    {@MainMenu}                               
+                </div>                 
+          </div>
+        </div>
+    </div>

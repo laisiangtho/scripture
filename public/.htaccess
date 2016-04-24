@@ -1,0 +1,9 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase / 
+
+RewriteRule ^([^\.]+)$ index.php [L]
+
+#ErrorDocument 404 http://zotune.com/zomi/laisiangtho/
+#ErrorDocument 404 http://localhost/bible/laisiangtho/
+ErrorDocument 404 http://www.laisiangtho.com/
