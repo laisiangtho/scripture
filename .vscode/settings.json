@@ -1,0 +1,20 @@
+{
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "editor.renderLineHighlight": "none",
+    "editor.detectIndentation": false,
+    "editor.fontSize": 13,
+    "files.exclude": {
+        "src/**/*.js": true,
+        "src/**/*.css": true
+    },
+    "editor.tabSize": 2,
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#dfdddd",
+      "activityBar.foreground":"#585858",
+      "textLink.foreground":"#ff0000",
+      "activityBar.inactiveForeground":"#aaaaac",
+      "statusBar.background" : "#b6b7b8"
+    },
+    "workbench.colorTheme": "Default Light+"
+}
