@@ -1,64 +1,81 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+*.v[0-9].*
+tmp*
+#*-v.*.*
+lib/*.md
+assets/backup/
+assets/psd/
 
-# Folder config file
-Desktop.ini
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
 
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
+# Miscellaneous
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
 .DS_Store
-.AppleDouble
-.LSOverride
+.atom/
+.buildlog/
+.history
+.svn/
 
-# Thumbnails
-._*
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
 
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+# Visual Studio Code related
+.vscode/
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-# =========================
-#CUSTOM
-# =========================
-production/*/*
-node_modules/
-backup
-nbproject
-delete
-output
-*tmp*/
-*delete.*
-*tmp.*
-*Copy.*
-development/assets/*/*[0-9].*
-development/assets/*/*Delete*.*
-development/assets/*/*Working*.*
-development/assets/*/*Tmp*.*
-development/assets/*/job*
-#development/assets/*/*[job,Working,Tmp,Delete]*.*
-#development/*/*/[0-9]+.*
-#development/assets/js/[0-9]+.*
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# iOS/XCode related
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Exceptions to above rules.
+!**/ios/**/default.mode1v3
+!**/ios/**/default.mode2v3
+!**/ios/**/default.pbxuser
+!**/ios/**/default.perspectivev3
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

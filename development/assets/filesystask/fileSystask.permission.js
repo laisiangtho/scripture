@@ -1,2 +1,0 @@
-this.permission = function() {
-};

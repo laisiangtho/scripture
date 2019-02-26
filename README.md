@@ -1,16 +1,12 @@
-Lai Siangtho
-==============
+# laisiangtho
 
-the Holy Bible in languages!
---------------
+The holy Bible in languages
+-----------------
 
-*Moved to NodeJs based project*
+com.laisiangtho.scriptive
 
-- Backend requirement
-    - NodeJs
-        - gulp(*)
+```
+flutter clean
 
-- Frontend requirement!
-    - jQuery
-    - fileSystask
-    - localforage
+flutter build apk
+```
