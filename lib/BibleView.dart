@@ -15,6 +15,7 @@ class BibleView extends BibleState {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: scaffoldKey,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: FutureBuilder(
         future: store.titleName,
         builder: (BuildContext context, AsyncSnapshot<ModelChapter> e) {
@@ -33,6 +34,9 @@ class BibleView extends BibleState {
 
   Widget _buildBody() {
     return new SafeArea(
+      // top: false,
+      // bottom: false,
+      // minimum: const EdgeInsets.symmetric(vertical:50),
       child: Container(
         color: Theme.of(context).backgroundColor,
         child: new Column(
@@ -182,8 +186,11 @@ class BibleView extends BibleState {
             child: ListView.builder(
               padding: EdgeInsets.only(top: 0),
               scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
+              // shrinkWrap: true,
+              // key: scaffoldKey,
+              // controller: scrollController,
+              // physics: ClampingScrollPhysics(),
+              physics: ScrollPhysics(),
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) => _verses(snapshot.data[index])
             )
@@ -211,9 +218,9 @@ class BibleView extends BibleState {
       margin: EdgeInsets.symmetric(horizontal:0.0, vertical: 4.0),
       child: RichText(
         text:TextSpan(
-          text:  verse.verseTitle!=null?'\t\r\r${verse.verseTitle}\n\n'.toUpperCase():'',
+          text:  verse.verseTitle!=null?'\n   ${verse.verseTitle}\n\n'.toUpperCase():'',
           style: TextStyle(
-            color: Colors.black45,fontWeight: FontWeight.w300,fontSize: 12,
+            color: Colors.black45,fontWeight: FontWeight.w300,fontSize: 15,
             // decoration: TextDecoration.underline,
             // decorationColor: Colors.grey,
             // decorationStyle: TextDecorationStyle.dotted,
@@ -235,7 +242,7 @@ class BibleView extends BibleState {
                 // ]
               )
             ),
-            TextSpan(text: '\r'),
+            TextSpan(text: ' '),
             TextSpan(
               text: verse.verseText,
               style: TextStyle(

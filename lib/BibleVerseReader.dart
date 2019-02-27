@@ -39,8 +39,10 @@ class BibleVerseReader extends StatelessWidget {
         scrollDirection: Axis.vertical,
         // shrinkWrap: true,
         // physics: ScrollPhysics(),
+        key: GlobalKey<ScaffoldState>(),
+        // controller: scrollController,
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        //physics: ClampingScrollPhysics(),
         // itemCount: 10,
         itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int index) {
