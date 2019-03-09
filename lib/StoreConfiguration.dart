@@ -25,8 +25,20 @@ abstract class StoreConfiguration {
 
   int testCounter = 1;
   String appMessage = 'Hello World';
+  // int loop(int val) {
+  //   int count = 0;
+  //   for (int i = 1; i <= val; i++) {
+  //     count += i;
+  //   }
+  //   return count;
+  // }
+  // Future<void> _onPressed() async {
+  //   int result = await compute(loop, 1000000000000000000);
+  // }
 
   Future get appDirectory async {
+
+
     return await getApplicationDocumentsDirectory();
     // final directory = await getApplicationDocumentsDirectory();
     // return directory.path;

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:flutter/foundation.dart';
 
+import 'package:sqflite/sqflite.dart';
 import 'package:laisiangtho/StoreModel.dart';
 import 'package:laisiangtho/StoreConfiguration.dart';
 
@@ -10,7 +11,7 @@ mixin StoreBook on StoreConfiguration {
   // factory StoreBook() => _instance;
   // StoreBook.internal();
 
-  static Database _db;
+  Database _db;
   List<ModelBible> _bookCollection;
 
   get _url => 'nosj.*/retsam/elbib/ohtgnaisial/moc.tnetnocresubuhtig.war//:sptth'.split('').reversed.join().replaceAll('*', 'book');
@@ -18,15 +19,18 @@ mixin StoreBook on StoreConfiguration {
 
 
   Future<Database> get db async {
-    if (_db == null) await _initDatabase();
+    if (_db == null) _db = await _initDatabase();
+    // if (_db == null) _db = await compute(_initDatabase;
     return _db;
   }
+
+
 
   _initDatabase() async {
     String databasesPath = await getDatabasesPath();
     String bookPath = join(databasesPath, 'book.db');
     // await deleteDatabase(bookPath);
-    _db = await openDatabase(bookPath, version: 1, onCreate: (Database db, int version) async {
+    return await openDatabase(bookPath, version: 1, onCreate: (Database db, int version) async {
       await db.execute('CREATE TABLE IF NOT EXISTS book (identify TEXT PRIMARY KEY, name TEXT, shortname TEXT, year INTEGER, lang TEXT, desc TEXT, version INTEGER, available INTEGER)');
       await observeBooks(db, await readBookJSON());
       await db.execute('CREATE TABLE IF NOT EXISTS bookmark (lid INTEGER, book INTEGER, chapter INTEGER, verse TEXT)');
@@ -76,10 +80,12 @@ mixin StoreBook on StoreConfiguration {
   Future requestBookJSON() async {
     // final response = await this.requestHTTP(this._url);
     // return json.decode(response.body);
+    // return await this.requestHTTP(this._url).then((response){
+    //   return json.decode(response.body);
+    // });
     return await this.requestHTTP(this._url).then((response){
       return json.decode(response.body);
     });
     // return json.decode( await this.requestHTTP(this._url)..body);
-
   }
 }

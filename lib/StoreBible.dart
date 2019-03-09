@@ -58,22 +58,32 @@ mixin StoreBible on StoreConfiguration {
   Future get initiateBible async {
     print('initiateBible');
     _bibleIdentify = this.identify;
-    if (await this.existsBibleJSON()) {
-      try {
-        _bibleCollection = await this.readBibleJSON;
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      // _bibleCollection = await this.requestBibleJSON;
-      // await this.writeBibleJSON;
+    // if (await this.existsBibleJSON()) {
+    //   try {
+    //     _bibleCollection = await this.readBibleJSON;
+    //   } catch (e) {
+    //     print(e);
+    //   }
+    // } else {
+    //   // _bibleCollection = await this.requestBibleJSON;
+    //   // await this.writeBibleJSON;
+    //   await this.requestBibleJSON.then((response) async {
+    //     // await this.bookAvailability(book.available.toString()).then((int count) => count>0);
+    //     _bibleCollection = response;
+    //     return await this.writeBibleJSON(response);
+    //   });
+    // }
+    await this.existsBibleJSON().then((e) async{
+      _bibleCollection = await this.readBibleJSON;
+      _bibleDigit  = _bibleCollection['digit'];
+    }).catchError((_) async{
       await this.requestBibleJSON.then((response) async {
-        // await this.bookAvailability(book.available.toString()).then((int count) => count>0);
         _bibleCollection = response;
-        return await this.writeBibleJSON(response);
+        _bibleDigit  = _bibleCollection['digit'];
+        await this.writeBibleJSON(response);
       });
-    }
-    _bibleDigit  = _bibleCollection['digit'];
+    });
+    // _bibleDigit  = _bibleCollection['digit'];
   }
   Future<Map> get bible async {
     // if (_bibleCollection == null) await initiateBible;
@@ -84,6 +94,7 @@ mixin StoreBible on StoreConfiguration {
   }
 
   digit(dynamic e) => e.toString().replaceAllMapped(new RegExp(r'[0-9]'), (i) => _bibleDigit[int.parse(i.group(0))]);
+  // digit(dynamic e) => e.toString().replaceAllMapped(new RegExp(r'[0-9]'), (i) => 'es');
 
 
   Future<ModelChapter> get titleName async{
@@ -93,8 +104,10 @@ mixin StoreBible on StoreConfiguration {
     this.chapterCount = _book['chapter'].keys.length;
     this.testamentId = this.bookId > 39?2:1;
     Map _testament = _bible['testament'][this.testamentId.toString()];
-    // String chapterName = await this.digit(this.chapterId).then((e) => e);
-    String chapterName = this.digit(this.chapterId);
+    String chapterName = digit(this.chapterId);
+    // String chapterName = this.digit(this.chapterId);
+    // String chapterName = 'a3';
+    // print(this.chapterId);
     return ModelChapter(
       testament:_testament['info']['name'],
       book:_book['info']['name'],

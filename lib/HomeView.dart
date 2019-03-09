@@ -66,6 +66,22 @@ class HomeView extends HomeState {
             FlatButton(
               child: Text('Note'),
               onPressed: ()=> Navigator.pushNamed(context, 'note')
+            ),
+            FlatButton(
+              child: Text('Tab'),
+              onPressed: ()=> Navigator.pushNamed(context, 'tab')
+            ),
+            FlatButton(
+              child: Text('CustomScrollOne'),
+              onPressed: ()=> Navigator.pushNamed(context, 'CustomScrollOne')
+            ),
+            FlatButton(
+              child: Text('ScrollsAnimation'),
+              onPressed: ()=> Navigator.pushNamed(context, 'ScrollsAnimation')
+            ),
+            FlatButton(
+              child: Text('Testing'),
+              onPressed: ()=> Navigator.pushNamed(context, 'Testing')
             )
           ],
         )

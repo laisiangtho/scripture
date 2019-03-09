@@ -5,6 +5,10 @@ import 'package:laisiangtho/Home.dart';
 import 'package:laisiangtho/Note.dart';
 import 'package:laisiangtho/Book.dart';
 import 'package:laisiangtho/Bible.dart';
+import 'package:laisiangtho/ScrollsAnimation.dart';
+import 'package:laisiangtho/ScrollsOne.dart';
+import 'package:laisiangtho/Tab.dart';
+import 'package:laisiangtho/Testing.dart';
 
 void main() => runApp(LaiSiangtho());
 
@@ -22,7 +26,7 @@ class LaiSiangtho extends StatelessWidget {
     ));
     return MaterialApp(
       // title: Store.appName,
-      color: Colors.red,
+      color: Colors.blue,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
 
@@ -43,7 +47,7 @@ class LaiSiangtho extends StatelessWidget {
         // canvasColor: Colors.blueGrey,
         canvasColor: Colors.transparent,
         iconTheme: new IconThemeData(
-          color: Colors.grey,
+          color: Colors.black54,
           opacity: 1.0,
           size: 25.0
         ),
@@ -60,7 +64,11 @@ class LaiSiangtho extends StatelessWidget {
         // 'launcher': (context) => Launcher(),
         'note': (context) => new Note(),
         'book': (context) => new Book(),
-        'bible': (context) => new Bible()
+        'bible': (context) => new Bible(),
+        'tab': (context) => new Tabs(),
+        'CustomScrollOne': (context) => new CustomScrollOne(),
+        'ScrollsAnimation': (context) => new ScrollsAnimation(),
+        'Testing': (context) => new Testing()
       }
     );
   }

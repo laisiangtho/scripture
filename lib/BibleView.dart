@@ -4,10 +4,141 @@ import 'package:laisiangtho/StoreModel.dart';
 import 'package:laisiangtho/Bible.dart';
 import 'package:laisiangtho/WidgetShaped.dart';
 import 'package:laisiangtho/WidgetCommon.dart';
-import 'package:laisiangtho/BibleSearch.dart';
+// import 'package:laisiangtho/BibleSearch.dart';
 // import 'package:laisiangtho/BibleBarTitle.dart';
 // import 'package:laisiangtho/BibleBarBackground.dart';
 // import 'package:laisiangtho/BibleVerseReader.dart';
+
+// RoundedRectangleBorder
+// class _names extends CircleBorder {}
+class _TestdWidgetBorder extends RoundedRectangleBorder {
+  _TestdWidgetBorder({
+    @required this.padding,
+    side = BorderSide.none,
+    borderRadius = BorderRadius.zero,
+  }) : super(side: side);
+  final double padding;
+
+  @override
+  // Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  //   return Path()
+  //     ..moveTo(rect.width - 20.0 , rect.top)
+  //     ..lineTo(rect.width - 30.0, rect.top - 10.0)
+  //     ..lineTo(rect.width - 40.0, rect.top)
+  //     ..addRRect(borderRadius
+  //         .resolve(textDirection)
+  //         .toRRect(Rect.fromLTWH(rect.left, rect.top, rect.width, rect.height - padding)));
+  // }
+
+  // Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  //     // var secondControlPoint = Offset(rect.width - (rect.width / 3.25), rect.height - 65);
+  //     // var secondEndPoint = Offset(rect.width, rect.height - 40);
+  //     var secondControlPoint = Offset(rect.width,50.0);
+  //     var secondEndPoint = Offset(rect.width, 40);
+  //   return Path()
+  //     // ..moveTo(rect.width - 20.0 , rect.top)
+  //     // ..lineTo(rect.width - 30.0, rect.top - 10.0)
+  //     // ..lineTo(rect.width - 40.0, rect.top)
+  //     // ..moveTo(rect.width + 15 - 20.0,rect.top)
+  //     // ..lineTo(rect.width + 15, rect.top + 20.0)
+  //     // ..lineTo(rect.width + 15, rect.top)
+  //     // ..lineTo(rect.width- 50, rect.top)
+  //     // ..lineTo(rect.width, rect.top)
+  //     // ..quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy)
+  //     // ..close()
+  //     ..addRRect(borderRadius .resolve(textDirection).toRRect(Rect.fromLTWH(rect.left, rect.top, rect.width, rect.height - padding)))
+  //     ..close();
+  // }
+  // NOTE circle curve with fixed margin 10 for left and right
+  /*
+  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+      double wPa = 15.0;
+      double wH = rect.width + wPa;
+      var secondControlPoint = Offset(wH - 14,rect.top + 16);
+      var secondEndPoint = Offset(wH, rect.top + 18);
+    return Path()
+      ..moveTo(wH, rect.top)
+      ..lineTo(wH - 13, rect.top)
+      ..quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy)
+      ..addRRect(borderRadius .resolve(textDirection).toRRect(Rect.fromLTWH(rect.left, rect.top, rect.width, rect.height)))
+      ..close();
+  }
+  */
+  // NOTE arrow up
+  /*
+  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+    return Path()
+      ..moveTo(rect.width - 20.0 , rect.top)
+      ..lineTo(rect.width - 30.0, rect.top - 10.0)
+      ..lineTo(rect.width - 40.0, rect.top)
+
+      ..addRRect(borderRadius .resolve(textDirection).toRRect(Rect.fromLTWH(rect.left, rect.top, rect.width, rect.height)))
+      ..close();
+  }
+  */
+  // NOTE fold left
+  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+      double wPa = 30.0;
+    return Path()
+      ..moveTo(0, rect.top + wPa)
+      ..lineTo(wPa, rect.top)
+      ..lineTo(0, rect.top)
+
+      ..addRRect(borderRadius .resolve(textDirection).toRRect(Rect.fromLTWH(rect.left, rect.top, rect.width, rect.height)))
+      ..close();
+  }
+  /*
+  Path getOuterPath(Rect size, {TextDirection textDirection}) {
+    var path = new Path();
+    path.lineTo(0.0, size.height - 20);
+
+    var firstControlPoint = Offset(size.width / 4, size.height);
+    var firstEndPoint = Offset(size.width / 2.25, size.height - 30.0);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
+
+    var secondControlPoint =
+        Offset(size.width - (size.width / 3.25), size.height - 65);
+    var secondEndPoint = Offset(size.width, size.height - 40);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
+
+    path.lineTo(size.width, size.height - 40);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+  */
+}
+
+// class _BottomWaveClipper extends CustomClipper<Path> {
+//   @override
+//   Path getClip(Size size) {
+//     var path = new Path();
+//     path.lineTo(0.0, size.height - 20);
+
+//     var firstControlPoint = Offset(size.width / 4, size.height);
+//     var firstEndPoint = Offset(size.width / 2.25, size.height - 30.0);
+//     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+//         firstEndPoint.dx, firstEndPoint.dy);
+
+//     var secondControlPoint =
+//         Offset(size.width - (size.width / 3.25), size.height - 65);
+//     var secondEndPoint = Offset(size.width, size.height - 40);
+//     path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+//         secondEndPoint.dx, secondEndPoint.dy);
+
+//     path.lineTo(size.width, size.height - 40);
+//     path.lineTo(size.width, 0.0);
+
+//     path.close();
+
+//     return path;
+//   }
+
+//   @override
+//   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+// }
 
 class BibleView extends BibleState {
 
@@ -15,13 +146,15 @@ class BibleView extends BibleState {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
+      // backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Colors.white,
+      // backgroundColor: Colors.grey[50],
       body: FutureBuilder(
         future: store.titleName,
         builder: (BuildContext context, AsyncSnapshot<ModelChapter> e) {
           if (e.hasData){
             infoGenerate(e);
-            return _buildBody();
+            return _body();
           } else if (e.hasError) {
             return WidgetError(message: e.error);
           } else {
@@ -32,34 +165,164 @@ class BibleView extends BibleState {
     );
   }
 
-  Widget _buildBody() {
+  Widget _body() {
     return new SafeArea(
       // top: false,
       // bottom: false,
       // minimum: const EdgeInsets.symmetric(vertical:50),
       child: Container(
-        color: Theme.of(context).backgroundColor,
-        child: new Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
+        // color: Theme.of(context).backgroundColor,
+        // child: new Column(
+        //   mainAxisSize: MainAxisSize.max,
+        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: <Widget>[
+        //     _header(), _stack()
+        //   ]
+        // ),
+        child: new Stack(
+          overflow: Overflow.visible,
           children: <Widget>[
-            _buildHeader(), _buildStack()
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                // padding: EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black,width: 0.1)),
+                color: Colors.grey[50],
+                  // boxShadow: [
+                  //   new BoxShadow(color: Colors.grey[300], offset: Offset(0, -1),spreadRadius: 1,blurRadius: 2)
+                  // ],
+
+                ),
+                child:  _header()
+              ),
+            ),
+            Positioned(
+              top: 40,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              // child:Center(
+              //   child: ClipPath(
+              //     child: Image.network('https://fd204d43461da5218393-0b3ca8ff9ad90f3780bc876f4d2d02ae.ssl.cf1.rackcdn.com/uploads/2018/07/AV_Landscape-Hero-Contour-2993-1276x800.jpg'),
+              //     clipper: _BottomWaveClipper(),
+              //   ),
+              // ),
+
+              child: Container(
+                // alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 0, left: 27, right: 27,bottom:2),
+                // padding: EdgeInsets.all(2),
+                padding: EdgeInsets.only(left: 0, right: 0),
+                decoration:  ShapeDecoration(
+                  //  radius: BorderRadius.all(Radius.circular(2)),
+                  // borderRadius: new BorderRadius.vertical(top: Radius.circular(2.0)),
+                  color: Colors.white,
+                  shape: _TestdWidgetBorder(
+                    padding:0.0,
+                    borderRadius: BorderRadius.all(Radius.circular(6))
+                  ),
+                  // clipper: BottomWaveClipper(),
+                  // shadows: [
+                  //   new BoxShadow(color: Colors.grey[200], offset: Offset(0, -1),spreadRadius: 5,blurRadius: 10)
+                  // ]
+                ),
+
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: <Widget>[
+                    _stackVerses(), _stackChapters(), _stackBooks(), _stackStories(), _stackTmp()
+                  ]
+                )
+              )
+            ),
+
+            // Positioned(
+            //   top: 17,
+            //   left:-13,
+            //   child: new RawMaterialButton(
+            //     constraints: BoxConstraints(maxHeight: 20, maxWidth: 20),
+            //     onPressed: () {},
+            //     child: Center(
+            //       child: new Icon(
+            //         Icons.arrow_drop_down,
+            //         color: Colors.blue,
+            //         size: 12.0,
+            //       ),
+            //     ),
+            //     shape: new CircleBorder(),
+            //     elevation: 0.2,
+            //     fillColor: Colors.transparent,
+            //     padding: const EdgeInsets.all(0.0),
+
+            //   ),
+            // ),
+            Positioned(
+              top: 20,
+              right: - 10,
+              child: new RawMaterialButton(
+                constraints: BoxConstraints(maxHeight: 20, maxWidth: 20),
+                onPressed: () {},
+                child: Center(
+                  child: new Icon(
+                    Icons.bookmark,
+                    color: Colors.blue,
+                    size: 12.0,
+                  ),
+                ),
+                // shape: new BeveledRectangleBorder(),
+                shape: new RoundedRectangleBorder(),
+                elevation: 0.2,
+                fillColor: Colors.transparent,
+                padding: const EdgeInsets.all(0.0),
+              ),
+            )
+          //  Container(
+          //    child: Text('content'),
+          //  )
           ]
         ),
       )
     );
   }
-
-  Widget _buildHeader() {
+/*
+return new Expanded(
+      child: Container(
+        alignment: Alignment.topLeft,
+        margin: EdgeInsets.only(top: 0, left: 7, right: 20,bottom:0),
+        padding: EdgeInsets.all(3),
+        decoration: new BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(2)),
+          // borderRadius: new BorderRadius.vertical(top: Radius.circular(2.0)),
+          color: Colors.white,
+          boxShadow: [
+            new BoxShadow(color: Colors.grey[200], offset: Offset(0, 0),spreadRadius: 1,blurRadius: 2)
+          ]
+        ),
+        child: Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            _stackVerses(), _stackChapters(), _stackBooks(), _stackStories(), _stackTmp()
+          ]
+        )
+      )
+    );
+*/
+  Widget _header() {
     return new Row(
+      mainAxisSize: MainAxisSize.max,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         new InkWell(
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 7),
+            padding: EdgeInsets.symmetric(vertical: 7, horizontal: 5),
             // color: Colors.red,
             // decoration: new BoxDecoration(
-            //   // border: new Border.all(width: 1.0, color: Colors.black),
+            //   border: new Border.all(width: 1.0, color: Colors.black),
             //   shape: BoxShape.rectangle,
             //   boxShadow: <BoxShadow>[
             //     BoxShadow(
@@ -70,8 +333,8 @@ class BibleView extends BibleState {
             //   ],
             // ),
             // width: 40,
-            height:50,
-            child: Icon(Icons.arrow_back_ios, size: 23)
+            // height:30,
+            child: Icon(Icons.arrow_back_ios)
           ),
           onTap:(){
             Navigator.of(context).pop();
@@ -85,8 +348,10 @@ class BibleView extends BibleState {
           )
         ),
         new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-
             InkWell(
               child: Container(
                 child: Icon(Icons.keyboard_arrow_left),
@@ -124,14 +389,28 @@ class BibleView extends BibleState {
             //   color: Colors.grey,
             //   onPressed: null
             // ),
-            new IconButton(
-              padding: EdgeInsets.all(0),
-              icon: new Icon(Icons.search),
-              color: Colors.grey,
-              onPressed: (){
-                showSearch(context: context, delegate: new BibleSearch());
-              }
-            )
+            // InkWell(
+            //   child: Container(
+            //     padding: EdgeInsets.symmetric( horizontal: 7),
+            //     child: Icon(Icons.search,size: 17),
+            //   ),
+            //   onTap:()=>showSearch(context: context, delegate: new BibleSearch())
+            // ),
+            // InkWell(
+            //   child: Container(
+            //     padding: EdgeInsets.symmetric( horizontal: 7),
+            //     child: Icon(Icons.more_horiz,size: 15),
+            //   ),
+            //   onTap:(){}
+            // ),
+            // new IconButton(
+            //   padding: EdgeInsets.all(0),
+            //   icon: new Icon(Icons.search),
+            //   // color: Colors.grey,
+            //   onPressed: (){
+            //     showSearch(context: context, delegate: new BibleSearch());
+            //   }
+            // )
           ]
         ),
 
@@ -139,29 +418,29 @@ class BibleView extends BibleState {
     );
   }
 
-  Widget _buildStack(){
-    return new Expanded(
-      child: Container(
-        alignment: Alignment.topLeft,
-        margin: EdgeInsets.only(top: 10, left: 15, right: 15,bottom:0),
-        padding: EdgeInsets.all(3),
-        decoration: new BoxDecoration(
-          // borderRadius: BorderRadius.all(Radius.circular(2)),
-          borderRadius: new BorderRadius.vertical(top: Radius.circular(2.0)),
-          color: Colors.white,
-          boxShadow: [
-            new BoxShadow(color: Colors.grey[200], offset: Offset(0, 0),spreadRadius: 10,blurRadius: 10)
-          ]
-        ),
-        child: Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            _stackVerses(), _stackChapters(), _stackBooks(), _stackStories(), _stackTmp()
-          ]
-        )
-      )
-    );
-  }
+  // Widget _stack(){
+  //   return new Expanded(
+  //     child: Container(
+  //       alignment: Alignment.topLeft,
+  //       margin: EdgeInsets.only(top: 0, left: 7, right: 20,bottom:0),
+  //       padding: EdgeInsets.all(3),
+  //       decoration: new BoxDecoration(
+  //         borderRadius: BorderRadius.all(Radius.circular(2)),
+  //         // borderRadius: new BorderRadius.vertical(top: Radius.circular(2.0)),
+  //         color: Colors.white,
+  //         boxShadow: [
+  //           new BoxShadow(color: Colors.grey[200], offset: Offset(0, 0),spreadRadius: 1,blurRadius: 2)
+  //         ]
+  //       ),
+  //       child: Stack(
+  //         overflow: Overflow.visible,
+  //         children: <Widget>[
+  //           _stackVerses(), _stackChapters(), _stackBooks(), _stackStories(), _stackTmp()
+  //         ]
+  //       )
+  //     )
+  //   );
+  // }
 
   Widget _stackVerses(){
     // return GestureDetector(
@@ -275,8 +554,8 @@ class BibleView extends BibleState {
       double _rowHeight = _rowItems/_rowPerItem*36;
 
       return new Positioned(
-        right: 38,
-        top: -10,
+        right: 10,
+        top: 5,
         child: Container(
           child: ShapedChapterList(
             height: _rowHeight,
