@@ -1,3 +1,7 @@
+# Custom
+/assets/screenshot
+/assets/psd/*.png
+
 # Miscellaneous
 *.class
 *.log
