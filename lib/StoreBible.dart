@@ -1,159 +1,124 @@
-import 'dart:io';
-import 'dart:convert';
+// import 'dart:io';
+// import 'dart:convert';
 // import 'dart:math';
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 
-import 'package:laisiangtho/StoreModel.dart';
-import 'package:laisiangtho/StoreConfiguration.dart';
+import 'StoreModel.dart';
+import 'StoreConfiguration.dart';
+
 
 mixin StoreBible on StoreConfiguration {
 
-  String _bibleIdentify;
-  Map _bibleCollection;
-  List _bibleDigit;
+  BIBLE _bible;
+  List<BIBLE> _bibleCollection = new List();
 
-  get _url => 'nosj.*/nosj/retsam/elbib/ohtgnaisial/moc.tnetnocresubuhtig.war//:sptth'.split('').reversed.join().replaceAll('*', this.identify);
-  get _filename => basename(this._url);
 
-  Future<Map> get requestBibleJSON async {
-    // final response = await this.requestHTTP(this._url);
-    // return json.decode(response.body);
-    // return json.decode(response.body).cast<Map<String, dynamic>>();
-    // return json.decode(await this.requestHTTP(this._url)..body);
+  String get _url => 'nosj.*/nosj/retsam/elbib/ohtgnaisial/moc.tnetnocresubuhtig.war//:sptth'.split('').reversed.join().replaceAll('*', this.identify);
 
-    return await this.requestHTTP(this._url).then((response) =>json.decode(response.body));
+
+  Future<BIBLE> _parseBible(String response) async{
+    return _bible = await compute(computeParseBible,response);
   }
 
-  Future<File> get localBibleJSON async {
-    // final directory = await appDirectory;
-    // String filename = basename(this._url);
-    // return new File('${directory.path}/$filename');
-    return await appFile(_filename);
-  }
-
-  Future<File> writeBibleJSON(Map data) async {
-    final file = await localBibleJSON;
-    // return file.writeAsString(json.encode(_bibleCollection));
-    return file.writeAsString(json.encode(data));
-  }
-  Future<Map> get readBibleJSON async {
-    final file = await localBibleJSON;
-    return json.decode(await file.readAsString());
-  }
-  Future<FileSystemEntity> deleteBibleJSON() async {
-    // final file = await localBibleJSON;
-    // return file.delete();
-    return await localBibleJSON..delete();
-  }
-
-  Future<bool> existsBibleJSON() async {
-    // File bookFile = await localBibleJSON;
-    // return await bookFile.exists()?true:false;
-    // return await localBibleJSON.then((File file) async{
-    //   return await file.exists()?true:false;
-    // });
-    return await localBibleJSON.then((File file) async => await file.exists());
-  }
-
-  Future get initiateBible async {
-    print('initiateBible');
-    _bibleIdentify = this.identify;
-    // if (await this.existsBibleJSON()) {
-    //   try {
-    //     _bibleCollection = await this.readBibleJSON;
-    //   } catch (e) {
-    //     print(e);
-    //   }
-    // } else {
-    //   // _bibleCollection = await this.requestBibleJSON;
-    //   // await this.writeBibleJSON;
-    //   await this.requestBibleJSON.then((response) async {
-    //     // await this.bookAvailability(book.available.toString()).then((int count) => count>0);
-    //     _bibleCollection = response;
-    //     return await this.writeBibleJSON(response);
-    //   });
-    // }
-    await this.existsBibleJSON().then((e) async{
-      _bibleCollection = await this.readBibleJSON;
-      _bibleDigit  = _bibleCollection['digit'];
-    }).catchError((_) async{
-      await this.requestBibleJSON.then((response) async {
-        _bibleCollection = response;
-        _bibleDigit  = _bibleCollection['digit'];
-        await this.writeBibleJSON(response);
-      });
+  Future _requestBible() async {
+    return await requestHTTP(this._url).then((response) async {
+      await _parseBible(response.body);
+      return await docsWrite(basename(this._url),encodeJSON(_bible.toJSON()).toString());
     });
-    // _bibleDigit  = _bibleCollection['digit'];
-  }
-  Future<Map> get bible async {
-    // if (_bibleCollection == null) await initiateBible;
-    // return _bibleCollection;
-    // _bibleIdentify = this.identify
-    if (_bibleCollection == null || _bibleIdentify != this.identify) await initiateBible;
-    return _bibleCollection;
   }
 
-  digit(dynamic e) => e.toString().replaceAllMapped(new RegExp(r'[0-9]'), (i) => _bibleDigit[int.parse(i.group(0))]);
-  // digit(dynamic e) => e.toString().replaceAllMapped(new RegExp(r'[0-9]'), (i) => 'es');
-
-
-  Future<ModelChapter> get titleName async{
-    print('titleName');
-    Map _bible = await this.bible;
-    Map _book = _bible['book'][this.bookId.toString()];
-    this.chapterCount = _book['chapter'].keys.length;
-    this.testamentId = this.bookId > 39?2:1;
-    Map _testament = _bible['testament'][this.testamentId.toString()];
-    String chapterName = digit(this.chapterId);
-    // String chapterName = this.digit(this.chapterId);
-    // String chapterName = 'a3';
-    // print(this.chapterId);
-    return ModelChapter(
-      testament:_testament['info']['name'],
-      book:_book['info']['name'],
-      chapter:chapterName,
-      chapterCount:this.chapterCount
-    );
-  }
-  Future<List<ModelBook>> get nameList async{
-    List<ModelBook> list = [];
-    final tmp = await this.bible;
-    tmp['book'].forEach((id, v) {
-      if (id == '1'){
-        list.add(ModelBook(
-          id: 1,
-          type:true,
-          name: tmp['testament']['1']['info']['name'],
-          itemCount: 39,
-          shortname: tmp['testament']['1']['info']['shortname']
-        ));
-      } else if (id == '40') {
-        list.add(ModelBook(
-          id: 2,
-          type:true,
-          name: tmp['testament']['2']['info']['name'],
-          itemCount: 26,
-          shortname: tmp['testament']['2']['info']['shortname']
-        ));
+  Future<int> updateBible(bool toDelete) async {
+    String fileName = basename(this._url);
+    return await docsExists(fileName).then((bool yes) async{
+      if (yes) {
+        // NOTE bible Available, therefore delete it
+        return toDelete?await docsDelete(fileName).then((e) => 0):1;
+      } else {
+        // NOTE bible not Available, therefore download it
+        return toDelete?0:await this._requestBible().then((e) => 1);
       }
-      int chapters = v['chapter'].keys.length;
-      list.add(ModelBook(
-        id: int.parse(id),
-        type:false,
-        name: v['info']['name'],
-        itemCount: chapters,
-        shortname: v['info']['shortname']
+    });
+  }
+
+  Future<BIBLE> _getBible() async{
+    String fileName = basename(this._url);
+    await docsExists(fileName).then((bool yes) async{
+      if (yes) {
+        await docsRead(fileName).then((response) => _parseBible(response));
+      } else {
+        await _requestBible();
+      }
+      _bibleCollection.add(_bible);
+    });
+    return _bible;
+  }
+
+  Future<BIBLE> get bible async{
+    if (_bibleCollection.isEmpty) await this._getBible();
+    if (_bible.info.identify != this.identify){
+      _bible = _bibleCollection.singleWhere((e) => e.info.identify == this.identify,orElse: ()=>null);
+      if (_bible == null) await this._getBible();
+    }
+    return _bible;
+  }
+
+  // new RegExp(k, "gi").test(s)
+  // String verse = "Thah dinga a kikaikhia mipa honkhia in la, sihna ding mun a zuan mipa lehkaih kik in.";
+  // String keyword = "honkhia";
+  // RegExp exp = new RegExp(keyword,caseSensitive: false);
+  // bool matches = exp.hasMatch(verse);
+  // print(matches);
+  String digit(dynamic e) => e.toString().replaceAllMapped(new RegExp(r'[0-9]'), (i) => _bible.digit[int.parse(i.group(0))]);
+
+  // Future<BIBLE> activeName() async{
+  //   await this.bible;
+  //   Map book = _bible.book[this.bookId.toString()];
+  //   // this.bookName = book['info']['name'];
+  //   this.chapterCount = book['chapter'].keys.length;
+
+  //   this.testamentId = this.bookId > 39?2:1;
+  //   // this.testamentName = _bible.testament[this.testamentId.toString()]['info']['name'];
+
+  //   return _bible;
+  // }
+  Future<NAME> activeName() async{
+    await this.bible;
+    this.testamentId = this.bookId > 39?2:1;
+    return await this.getNames.then((e){
+      return e.singleWhere((i)=>i.book == this.bookId,orElse: ()=>null);
+    });
+  }
+
+  Future<List<NAME>> get getNames async{
+    await this.bible;
+    List<NAME> list = [];
+    _bible.book.forEach((id, v) {
+      int bookId = int.parse(id);
+      String testament = (bookId >= 40)?'2':'1';
+
+      String testamentName = _bible.testament[testament]['info']['name'];
+      String testamentShortname = _bible.testament[testament]['info']['shortname'];
+      list.add(NAME(
+        testament: int.parse(testament),
+        testamentName: testamentName,
+        testamentShortname:testamentShortname,
+        book: bookId,
+        bookName: v['info']['name'],
+        bookShortname: v['info']['shortname'],
+        chapterCount: v['chapter'].keys.length
       ));
     });
     return list;
   }
-  // verseChapter, verseSearch, verseBookmark
-  Future<List<ModelVerse>> get verseChapter async{
-    final tmp = await this.bible;
-    List<ModelVerse> list = [];
-    Map o = tmp['book'][this.bookId.toString()]['chapter'][this.chapterId.toString()]['verse'];
+    // verseChapter, verseSearch, verseBookmark
+  Future<List<VERSE>> get verseChapter async{
+    await this.bible;
+    List<VERSE> list = [];
+    Map o = _bible.book[this.bookId.toString()]['chapter'][this.chapterId.toString()]['verse'];
     o.forEach((vId, v) {
-      list.add(ModelVerse(
+      list.add(VERSE(
         testament: this.testamentId.toString(),
         book: this.bookId.toString(),
         chapter: this.chapterId.toString(),
@@ -164,9 +129,85 @@ mixin StoreBible on StoreConfiguration {
     });
     return list;
   }
+
+  Future<List> verseSearchTesting(String query) async{
+    await this.bible;
+    List list = [];
+    if (query.isEmpty) return list;
+    _bible.book.forEach((bId, bO) {
+      // 'id':this.digit(bId),
+      Map bookBlock={'name':bO['info']['name'],'child':[]};
+      bO['chapter'].forEach((cId, cO) {
+        Map chapterBlock={'id':cId,'child':[]};
+        cO['verse'].forEach((vId, v) {
+          if (new RegExp(query,caseSensitive: false).hasMatch(v['text'])){
+            // list.add(VERSE(
+            //   testament: '0',
+            //   book: bId,
+            //   chapter: cId,
+            //   verse: vId,
+            //   verseText: v['text'],
+            //   verseTitle: v['title']
+            // ));
+            Map verseBlock={'bid':bId,'cid':cId,'id':vId,'text': v['text']};
+            chapterBlock['child'].add(verseBlock);
+          }
+        });
+        if (chapterBlock['child'].length > 0) bookBlock['child'].add(chapterBlock);
+      });
+      if (bookBlock['child'].length > 0) list.add(bookBlock);
+    });
+    return list;
+  }
+
+  // getbookName, getTestamentName
+
+  // Future<BOOK> getBookName(int bookId) async {
+  //   return await bookTitle.then((e){
+  //     return e.singleWhere((i)=>i.id == bookId && i.type == false,orElse: ()=>null);
+  //   });
+  // }
+  // Future<BOOK> getTestamentName(int testamentId) async {
+  //   return await bookTitle.then((e){
+  //     return e.singleWhere((i)=>i.id == testamentId && i.type == true,orElse: ()=>null);
+  //   });
+  // }
+
+  Future<List<BOOK>> get bookTitle async{
+    await this.bible;
+    List<BOOK> list = [];
+    _bible.book.forEach((id, v) {
+      if (id == '1'){
+        list.add(BOOK(
+          id: 1,
+          type:true,
+          name: _bible.testament['1']['info']['name'],
+          itemCount: 39,
+          shortname: _bible.testament['1']['info']['shortname']
+        ));
+      } else if (id == '40') {
+        list.add(BOOK(
+          id: 2,
+          type:true,
+          name: _bible.testament['2']['info']['name'],
+          itemCount: 26,
+          shortname: _bible.testament['2']['info']['shortname']
+        ));
+      }
+
+      list.add(BOOK(
+        id: int.parse(id),
+        type:false,
+        name: v['info']['name'],
+        itemCount: v['chapter'].keys.length,
+        shortname: v['info']['shortname']
+      ));
+    });
+    return list;
+  }
   Future get chapterPrevious async {
-    final src = await this.bible;
-    int totalBook = src['book'].keys.length;
+    await this.bible;
+    int totalBook = _bible.book.keys.length;
     int cId = this.chapterId - 1;
     if (cId > 0) {
       this.chapterId = cId;
@@ -177,17 +218,14 @@ mixin StoreBible on StoreConfiguration {
       } else {
         this.bookId = totalBook;
       }
-      int totalChapter = src['book'][this.bookId.toString()]['chapter'].keys.length;
+      int totalChapter = _bible.book[this.bookId.toString()]['chapter'].keys.length;
       this.chapterId = totalChapter;
     }
-    // return [this.bookId,this.chapterId];
-    // print('book: $bookId, chapter: $chapterId');
   }
-  // chapterNext,chapterPrevious, chapterBook
   Future get chapterNext async {
-    final src = await this.bible;
-    int totalBook = src['book'].keys.length;
-    int totalChapter = src['book'][this.bookId.toString()]['chapter'].keys.length;
+    await this.bible;
+    int totalBook = _bible.book.keys.length;
+    int totalChapter = _bible.book[this.bookId.toString()]['chapter'].keys.length;
     int cId = this.chapterId + 1;
     if (totalChapter >= cId) {
       this.chapterId = cId;
@@ -200,12 +238,10 @@ mixin StoreBible on StoreConfiguration {
       }
       this.chapterId = 1;
     }
-    // <List<String>>
-    // return [this.bookId,this.chapterId];
   }
   Future chapterBook(int bId) async {
-    final src = await this.bible;
-    int totalChapter = src['book'][bId.toString()]['chapter'].keys.length;
+    await this.bible;
+    int totalChapter = _bible.book[bId.toString()]['chapter'].keys.length;
     if (totalChapter < this.chapterId) {
       if (this.bookId < bId) {
         this.chapterId = totalChapter;
@@ -214,6 +250,5 @@ mixin StoreBible on StoreConfiguration {
       }
     }
     this.bookId = bId;
-    // return [bId,this.chapterId];
   }
 }

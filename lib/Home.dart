@@ -1,88 +1,129 @@
 import 'package:flutter/material.dart';
-import 'package:laisiangtho/StoreModel.dart';
-import 'package:laisiangtho/Store.dart';
-import 'package:laisiangtho/HomeView.dart';
-// import 'package:laisiangtho/HomeBookDetail.dart';
-// import 'package:laisiangtho/Book.dart';
-// import 'package:laisiangtho/StoreBook.dart';
 
+// import 'Common.dart';
+import 'StoreModel.dart';
+import 'Store.dart';
+import 'HomeView.dart';
 
 class Home extends StatefulWidget {
+  Home({
+    Key key,
 
-  static HomeView of(BuildContext context) => context.ancestorStateOfType(const TypeMatcher<HomeView>());
-  // static HomeView of(BuildContext context) => context.rootAncestorStateOfType(const TypeMatcher<HomeView>());
+    this.scrollController,
+    this.pageController,
+    this.offset,
+  }) : super(key: key);
+
+  final ScrollController scrollController;
+  final PageController pageController;
+  final double offset;
+
   @override
   HomeView createState() => new HomeView();
 }
 
 abstract class HomeState extends State<Home> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-  ScrollController scrollController;
-  VoidCallback updateButtonCallBack;
-  bool isLoading = false;
+  GlobalKey<RefreshIndicatorState> refreshIndicatorState = new GlobalKey<RefreshIndicatorState>();
 
-  List<ModelBible> books;
+  PersistentBottomSheetController<void> bottomSheet;
+  // ScaffoldFeatureController  bottomSheet;
+  VoidCallback updateCollectionCallBack;
+  // VoidCallback updateAvailableCallBack;
+  bool isUpdating = false;
+  // bool isDownloading = false;
+  bool isSorting = false;
+
+  Collection collection;
+  // List<CollectionBook> books;
 
   @protected
-  Store store;
+  Store store = new Store();
 
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController()..addListener(() => setState(() {}));
-    store = new Store();
-    updateButtonCallBack = _updateButtonAction;
+    widget.scrollController?.addListener(() => setState(() {}));
+    updateCollectionCallBack = updateCollectionAction;
+    // updateAvailableCallBack = updateAvailableAction;
   }
 
-  void booksGenerate (e){
-    books = e.data;
-    // await bookList.then((books) => books.where((e)=>e.identify == id).toList());
-    // List<ModelBible> booksAvailable = books.where((e)=> e.lang == 'en').toList();
-    // print(booksAvailable.length);
-    // booksAvailable.forEach((e){
-    //   print(e.name);
-    // });
+  @override
+  void dispose() {
+    super.dispose();
   }
 
-  // List<ModelBible> get booksOffline => books.where((e)=> e.lang == 'en' || e.lang == 'my').toList();
-  List<ModelBible> get booksOffline => books.where((e)=> e.available > 0).toList();
-  List<ModelBible> get booksAvailable => books.where((e)=> e.available >= 0).toList();
+  @override
+   void setState(fn) {
+    if(mounted) super.setState(fn);
+  }
 
+  void collectionGenerate (e){
+    collection = e.data;
+    // books = e.data;
+  }
 
-  void _updateButtonAction() {
+  List<CollectionBook> get collectionOffline => collection.book.where((e)=> e.available > 0).toList();
+  List<CollectionBook> get collectionAvailable => collection.book.where((e)=> e.available >= 0).toList();
+
+  // void toBook(CollectionBook book){
+  //   store.identify = book.identify;
+  //   Navigator.pushNamed(context, 'book');
+  // }
+  void toBible(CollectionBook book) async{
+    // store.identify = book.identify;
+    // Navigator.pushNamed(context, 'bible');
+    store.identify = book.identify;
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context)  => WidgetLoad()
+    // );
+    // await store.activeName();
+    // // Navigator.of(context)..pop()..pushNamed('bible');
+    // Navigator.of(context)..pop();
+
+    // if (widget.pageController == null) {
+    //   // Navigator.pushNamed(context, 'bible');
+
+    // } else {
+    //   // widget.navigator(1);
+    //   widget.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
+    // }
+    widget.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
+  }
+
+  void updateCollectionAction() {
     setState(() {
-      isLoading = true;
-      updateButtonCallBack = null;
+      isUpdating = true;
+      updateCollectionCallBack = null;
     });
-    store.updateBook().then((_isUpdated){
-      // print('updated?');
-    }).catchError((isError){
-      // print('error?');
+    store.updateCollection().catchError((_e){
+      print(_e);
     }).whenComplete((){
-      print('updated');
       setState(() {
-        isLoading = false;
-        updateButtonCallBack = _updateButtonAction;
+        isUpdating = false;
+        updateCollectionCallBack = updateCollectionAction;
       });
     });
   }
-
-  void toBible(book){
-    // print('toBible');
-    store.identify = book.identify;
-    // print(store.identify);
-    Navigator.pushNamed(context, 'bible');
-  }
-
-  void toBook(ModelBible book){
-    // print('toBook');
-    // setState(() {
-    //   book.available = book.available >0?0:1;
-    // });
-    store.identify = book.identify;
-    Navigator.pushNamed(context, 'book');
-  }
-
+  // void updateAvailableAction() {
+  //   // _bottomSheet?
+  //   setState(() {
+  //     isDownloading = true;
+  //     updateAvailableCallBack = null;
+  //   });
+  //   bottomSheet?.setState(() { });
+  //   store.updateCollectionAvailable().catchError((_e){
+  //     print(_e);
+  //   }).then((_isAvailable){
+  //     setState(() {
+  //       isDownloading = false;
+  //       updateAvailableCallBack = updateAvailableAction;
+  //     });
+  //     bottomSheet?.setState(() { });
+  //     bottomSheet?.close();
+  //   });
+  //   // bottomSheet.setState(() { });
+  // }
 }

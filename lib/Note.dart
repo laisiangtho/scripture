@@ -1,40 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:laisiangtho/Store.dart';
-import 'package:laisiangtho/NoteView.dart';
+
+export 'StoreModel.dart';
+export 'Common.dart';
+
+// import 'StoreModel.dart';
+import 'Store.dart';
+
+import 'NoteView.dart';
 
 class Note extends StatefulWidget {
-  // Note({Key key, @required this.title}) : super(key: key);
-  // final String title;
+  Note({
+    Key key,
+    this.scrollController,
+    this.pageController,
+    this.offset,
+  }) : super(key: key);
+
+  final ScrollController scrollController;
+  final PageController pageController;
+  final double offset;
 
   @override
   NoteView createState() => new NoteView();
 }
 
-abstract class NoteState extends State<Note> {
+abstract class NoteState extends State<Note> with TickerProviderStateMixin{
 
-  @protected
-  Store store;
+  Store store = new Store();
+
+  double shrinkOffsetPercentage=1.0;
 
   @override
   void initState() {
     super.initState();
-    store = new Store();
+    widget.scrollController?.addListener(() => setState(() {}));
   }
 
-  @protected
-  List<String> todos = new List<String>();
-
-  @protected
-  TextEditingController textcontroller = new TextEditingController();
-
-  @protected
-  void addTodo(text) {
-    setState(() => todos.add(text));
-    textcontroller.clear();
+  @override
+  dispose() {
+    super.dispose();
   }
 
-  @protected
-  void removeTodo(index) {
-    setState(() => todos.removeAt(index));
+  @override
+  void setState(fn) {
+    if(mounted) super.setState(fn);
+  }
+
+  void toBible (){
+    widget.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+    // widget.pageController.jumpToPage(1);
   }
 }

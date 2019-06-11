@@ -1,238 +1,275 @@
-// import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
 
-import 'package:laisiangtho/StoreModel.dart';
-import 'package:laisiangtho/Home.dart';
-import 'package:laisiangtho/WidgetCommon.dart';
+// import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+// import '_DemoMenu.dart';
+
+import 'SheetInfo.dart';
+import 'Common.dart';
+import 'StoreModel.dart';
+import 'Home.dart';
 
 class HomeView extends HomeState {
+
+  // Returns index of item with given key
+  int _indexOfKey(Key key) {
+    return collection.book.indexWhere((CollectionBook d) => d.key == key);
+  }
+
+  bool _reorderCallback(Key item, Key newPosition) {
+    int draggingIndex = _indexOfKey(item);
+    int newPositionIndex = _indexOfKey(newPosition);
+
+    // Uncomment to allow only even target reorder possition
+    // if (newPositionIndex % 2 == 1)
+    //   return false;
+
+    final draggedItem = collection.book[draggingIndex];
+    setState(() {
+      // debugPrint("Reordering $item -> $newPosition");
+      collection.book.removeAt(draggingIndex);
+      collection.book.insert(newPositionIndex, draggedItem);
+    });
+    return true;
+  }
+
+  void _reorderDone(Key item) {
+    final draggedItem = collection.book[_indexOfKey(item)];
+    debugPrint("Reordering finished for ${draggedItem.name}}");
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: FutureBuilder(
-        future: store.bookList,
-        builder: (BuildContext context, AsyncSnapshot<List<ModelBible>> e){
+      // key: widget.scaffoldKey,
+      key: scaffoldKey,
+      body: ReorderableList(
+        onReorder: _reorderCallback,
+        onReorderDone: _reorderDone,
+        child: FutureBuilder(
+        future: store.getCollection(),
+        builder: (BuildContext context, AsyncSnapshot<Collection> e){
           if (e.hasData){
-            booksGenerate(e);
-            return _buildBody();
+            collectionGenerate(e);
+            return _body();
           } else if (e.hasError) {
             return WidgetError(message: e.error);
           } else {
             return WidgetLoad();
           }
-        }
+        })
       )
     );
   }
 
-  Widget _buildBody() {
+  Widget _body() {
     return CustomScrollView(
-      key: scaffoldKey,
-      controller: scrollController,
+      controller: widget.scrollController,
       slivers: <Widget>[
-        SliverAppBar(
-          // backgroundColor: Theme.of(context).backgroundColor,
-          // pinned: true,
-          elevation: 0,
-          expandedHeight: 150.0,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(
+        new SliverPersistentHeader(
+          pinned: true,
+          floating: true,
+          delegate: WidgetHeaderSliver(bar,maxHeight: 140,minHeight: 35,statusBar:MediaQuery.of(context).padding.top)
+        ),
+        new SliverPadding(
+          padding: EdgeInsets.only(bottom: 40),
+          sliver: new SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) => BookItem(
+                book: collection.book[index],
+                isFirst: index == 0,
+                isLast: index == collection.book.length - 1,
+                isSorting: isSorting,
+                showSheetInfo: showSheetInfo,
+                showBibleView:toBible
+              ),
+              childCount: collection.book.length
+            )
+          )
+        )
+      ]
+    );
+  }
+  Widget bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink){
+
+    return Stack(
+      children: <Widget>[
+        Align(
+          alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,0), stretch),
+          child: Container(
+            child: Text(
               store.appTitle,
               style: TextStyle(
-                color: Colors.grey,
+                fontFamily: "sans-serif",
+                color: Color.lerp(Colors.white, Colors.white24, stretch),
+                fontWeight: FontWeight.lerp(FontWeight.w100, FontWeight.w200, stretch),
+                fontSize:35 - (18*stretch),
                 shadows: <Shadow>[
-                  Shadow(offset: Offset(0, 1),blurRadius:15,color: Colors.white)
-                ],
-              ),
-            ),
-          ),
+                  Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
+                ]
+              )
+            )
+          )
         ),
-        SliverList(
-          delegate: SliverChildListDelegate([_testingView(),_offlineView(),_availableView()]),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              child: isUpdating?SizedBox(width:20, height:20,
+                child:CircularProgressIndicator(strokeWidth: 1)
+              ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey),
+              onPressed: updateCollectionCallBack
+            ),
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              child: new Icon(Icons.sort,color: isSorting?Colors.red:Colors.grey),
+              onPressed: (){
+                if (isSorting) store.writeCollection();
+                setState(() {
+                isSorting = !isSorting;
+                });
+              }
+            ),
+            // DemoMenu()
+          ]
         )
       ]
     );
   }
 
-  Widget _testingView() {
-    return Container(
-      // color: Theme.of(context).backgroundColor,
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            FlatButton(
-              child: Text('Note'),
-              onPressed: ()=> Navigator.pushNamed(context, 'note')
-            ),
-            FlatButton(
-              child: Text('Tab'),
-              onPressed: ()=> Navigator.pushNamed(context, 'tab')
-            ),
-            FlatButton(
-              child: Text('CustomScrollOne'),
-              onPressed: ()=> Navigator.pushNamed(context, 'CustomScrollOne')
-            ),
-            FlatButton(
-              child: Text('ScrollsAnimation'),
-              onPressed: ()=> Navigator.pushNamed(context, 'ScrollsAnimation')
-            ),
-            FlatButton(
-              child: Text('Testing'),
-              onPressed: ()=> Navigator.pushNamed(context, 'Testing')
-            )
-          ],
-        )
-      ),
-    );
+  void showSheetInfo(CollectionBook book) {
+    // widget.scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() {});
+    scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() => setState(() {}));
+    // Scaffold.of(context).showBottomSheet((BuildContext context) => SheetInfo(book)).closed.whenComplete(() => setState(() {}));
   }
+}
 
-  Widget _offlineView() {
-    return Container(
-      // color: Theme.of(context).backgroundColor,
-      child: Container(
-        margin: new EdgeInsets.all(15),
-        // padding: new EdgeInsets.all(5),
-        // alignment: Alignment.topCenter,
-        decoration: new BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(2)),
-          color: Colors.white,
-          boxShadow: [
-            new BoxShadow(color: Colors.grey[500], offset: Offset(0, -1),spreadRadius: 0.1,blurRadius: 1)
-          ]
-        ),
-        child: _offlineList(booksOffline)
-      ),
-    );
-  }
+class BookItem extends StatelessWidget {
+  BookItem({
+    this.book,
+    this.isFirst,
+    this.isLast,
+    this.isSorting,
+    this.showSheetInfo,
+    this.showBibleView
+  });
 
-  Widget _offlineList(List<ModelBible> e) {
-    return Container(
-      child: ListView.separated(
-        padding: EdgeInsets.only(top: 0),
-        separatorBuilder: (context, index) => Divider(
-          color: Colors.grey[100], height: 1, indent: 0,
-        ),
-        itemCount:e.length,
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) => _offlineItem(e[index])
-      )
-    );
-  }
+  final CollectionBook book;
+  final bool isFirst;
+  final bool isLast;
+  final bool isSorting;
+  final showSheetInfo;
+  final showBibleView;
 
-  Widget _offlineItem(ModelBible book) {
-    return new ListTile(
-      // contentPadding: EdgeInsets.symmetric(horizontal: 10),
-      dense: true,
-      // leading: new Text(book.lang.toUpperCase(),style: TextStyle(color: Colors.grey, fontSize: 10)),
-      title: Text(
-        book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontWeight: FontWeight.w300)
-      ),
-      // isThreeLine: true,
-      // subtitle: Text(
-      //   ${book.year}, maxLines: 1, overflow: TextOverflow.ellipsis,
-      //   style: TextStyle(fontWeight: FontWeight.w300, fontSize: 9)
-      // ),
-      // trailing: Icon(Icons.keyboard_arrow_right, color: Colors.indigo, size: 20.0),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(book.shortname,style: TextStyle(fontWeight: FontWeight.w300, color: Colors.blueAccent, fontSize: 9)),
-          // Text('${book.year}',style: TextStyle(fontWeight: FontWeight.w300, color: Colors.blueAccent, fontSize: 9)),
-          Icon(Icons.keyboard_arrow_right, color: Colors.blueAccent, size: 20.0)
-        ],
-      ),
-      onTap:()=>toBible(book)
-    );
-  }
+  bool get isAvailable => book.available > 0;
 
-  Widget _availableView() {
-    return Container(
-      // color: Theme.of(context).backgroundColor,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(''),
-              ),
-              new IconButton(
-                icon: isLoading?SizedBox(width:12, height:12,
-                  child:CircularProgressIndicator(strokeWidth: 1)
-                ):new Icon(Icons.refresh),
-                color: Colors.blue,
-                iconSize: 20,
-                onPressed: updateButtonCallBack
-              ),
-              new IconButton(
-                icon: new Icon(Icons.sort),
-                color: Colors.grey,
-                iconSize: 18,
-                onPressed: null,
-              )
-            ]
-          ),
-          Container(
-            margin: new EdgeInsets.all(15),
+  Widget _buildChild(BuildContext context, ReorderableItemState state) {
+    BoxDecoration decoration;
+
+    // if (state == ReorderableItemState.dragProxy ||
+    //     state == ReorderableItemState.dragProxyFinished) {
+    //   // slightly transparent background white dragging (just like on iOS)
+    //   decoration = BoxDecoration(color: Color(0xD0FFFFFF));
+    // } else {
+    //   bool placeholder = state == ReorderableItemState.placeholder;
+    //   decoration = BoxDecoration(
+    //       border: Border(
+    //         top: isFirst && !placeholder
+    //             ? Divider.createBorderSide(context) //
+    //             : BorderSide.none,
+    //         bottom: isLast && placeholder
+    //             ? BorderSide.none //
+    //             : Divider.createBorderSide(context)
+    //       ),
+    //       // color: null
+    //       // color: placeholder ? null : Colors.white
+    //     );
+    // }
+
+    // For iOS dragging mdoe, there will be drag handle on the right that triggers
+    // reordering; For android mode it will be just an empty container
+    Widget dragHandle = isSorting
+        ? ReorderableListener(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
             decoration: new BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(2)),
-              color: Colors.white,
-              boxShadow: [
-                new BoxShadow(color: Colors.grey, offset: Offset(0, 1),spreadRadius: 0.2,blurRadius: 0.7)
+              color: Color(0x08000000)
+            ),
+            child: Icon(Icons.reorder, color: Colors.red, size: 20)
+          )
+        ):Container();
+    Widget _item = Container(
+      decoration: decoration,
+      // decoration: BoxDecoration(
+      //   borderRadius: new BorderRadius.all(Radius.circular(7))
+      // ),
+      child: Opacity(
+        // hide content for placeholder
+        opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+        child: IntrinsicHeight(
+          child: new ListTile(
+            dense: true,
+            // contentPadding: EdgeInsets.symmetric(horizontal: 25),
+            title: Text(
+              book.name, maxLines: 1, overflow: TextOverflow.ellipsis,textScaleFactor:0.9,
+              style: Theme.of(context).textTheme.title.copyWith(height: 0.8)
+            ),
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Icon(Icons.check, color: isAvailable?Colors.blue:Colors.grey[200], size: 10),
+                Text(' '),
+                Text(book.shortname,style: Theme.of(context).textTheme.subtitle.copyWith(height: 0.2,color: isAvailable?Colors.blue:Colors.grey, fontSize: 9)),
               ]
             ),
-            child: _availableList(booksAvailable),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10)),
+                Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey[500]:Colors.grey[200], size: 17),
+                dragHandle
+              ]
+            ),
+            onTap:()=>isAvailable?showBibleView(book):showSheetInfo(book)
           )
-        ]
+        )
       )
     );
-  }
-
-  Widget _availableList(List<ModelBible> e) {
-    return ListView.separated(
-      padding: EdgeInsets.only(top: 0),
-      separatorBuilder: (context, index) => Divider(
-        color: Colors.grey[100], height: 1, indent: 0,
-      ),
-      itemCount:e.length,
-      shrinkWrap: true,
-      physics: ClampingScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) => _availableItem(e[index])
+    // Slidable();
+    return new Slidable(
+      // delegate: new SlidableDrawerDelegate(),
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: _item,
+      secondaryActions: <Widget>[
+        new IconSlideAction(
+          caption: 'Info',
+          // color: Colors.grey,
+          // color: Colors.transparent,
+          icon: Icons.info,
+          foregroundColor: Colors.grey,
+          onTap: ()=>showSheetInfo(book)
+        )
+      ]
     );
   }
-
-  Widget _availableItem(ModelBible book) {
-    return ListTile(
-      // contentPadding: EdgeInsets.symmetric(horizontal: 10),
-      dense: true,
-      // leading: Container(
-      //   child: new Text(book.year.toString(),style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w300, fontSize: 13,height: 1))
-      // ),
-      title: Text(
-        book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12, height: 1)
-      ),
-      subtitle: Text(book.shortname,style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w300, fontSize: 9, height: 1)),
-      trailing: _availableIcon(book.available > 0),
-      onTap:()=>toBook(book)
-    );
+  @override
+  Widget build(BuildContext context) {
+    return ReorderableItem( key: book.key, childBuilder: _buildChild);
   }
-
-  Widget _availableIcon(bool isAvailable){
-    return InkWell(
-      child: Icon(
-        Icons.cloud_done,
-        color: isAvailable?Colors.grey[500]:Colors.grey[200],
-        size: 20.0
-      ),
-      // onTap: (){
-      //   print('_availableIcon');
-      // }
-    );
-  }
-
 }

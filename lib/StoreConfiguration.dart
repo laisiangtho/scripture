@@ -1,13 +1,56 @@
 // import 'dart:async';
-// import 'dart:convert';
+import 'dart:convert';
 import 'dart:io';
-// import 'package:path/path.dart';
+import 'package:path/path.dart';
 // import 'package:flutter/foundation.dart';
 // import 'package:path_provider/path_provider.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+
+import 'StoreModel.dart';
+
+
+
+BIBLE computeParseBible(String response){
+  Map<String, dynamic> parsed = decodeJSON(response);
+  return BIBLE.fromJSON(parsed);
+}
+
+Future<Response> requestHTTP(String url) async {
+  return await Client().get(url);
+}
+Map<String, dynamic> decodeJSON(String response) {
+  return json.decode(response);
+}
+String encodeJSON(Map response) {
+  return json.encode(response);
+}
+
+Future<String> loadBundleAsString(String fileName) async {
+  return await rootBundle.loadString(fileName);
+}
+Future<FileSystemEntity> get appDirectory async {
+  return await getApplicationDocumentsDirectory();
+}
+Future<File> documents(String fileName) async {
+  FileSystemEntity directory = await appDirectory;
+  return new File(join(directory.path, fileName));
+}
+Future<File> docsWrite(String fileName,String fileContext) async {
+  return await documents(fileName).then((File e) async => await e.writeAsString(fileContext));
+  // return await this.docs(fileName).then((File e) async => await e.writeAsString(json.encode(fileContext)));
+}
+Future<String> docsRead(String fileName) async {
+  return await documents(fileName).then((File e) async => await e.readAsString());
+  // return await this.docs(fileName).then((File e) async => json.decode(await e.readAsString()));
+}
+Future<FileSystemEntity> docsDelete(String fileName) async {
+  return await documents(fileName).then((File e) async => await e.delete());
+}
+Future<bool> docsExists(String fileName) async {
+  return await documents(fileName).then((File e) async => await e.exists());
+}
 
 abstract class StoreConfiguration {
   final String appName = 'laisiangtho';
@@ -15,45 +58,16 @@ abstract class StoreConfiguration {
   final String appDescription = 'the Holy Bible in languages';
 
   String identify;
+  String searchQuery ='';
 
   int testamentId = 1;
+  // String testamentName;
   int bookId = 1;
+  // String bookName;
   int chapterId = 1;
   int chapterCount;
   int verseId = 1;
   int verseCount;
+  double offset=0.0;
 
-  int testCounter = 1;
-  String appMessage = 'Hello World';
-  // int loop(int val) {
-  //   int count = 0;
-  //   for (int i = 1; i <= val; i++) {
-  //     count += i;
-  //   }
-  //   return count;
-  // }
-  // Future<void> _onPressed() async {
-  //   int result = await compute(loop, 1000000000000000000);
-  // }
-
-  Future get appDirectory async {
-
-
-    return await getApplicationDocumentsDirectory();
-    // final directory = await getApplicationDocumentsDirectory();
-    // return directory.path;
-  }
-  Future<File> appFile(String filename) async {
-    final directory = await appDirectory;
-    // String filename = basename(this._url);
-    return new File('${directory.path}/$filename');
-  }
-  Future<String> appBundle(String filename) async {
-    return await rootBundle.loadString(filename);
-  }
-  Future requestHTTP(String url) async {
-    // final response = await http.Client().get(this._url);
-    // return json.decode(response.body);
-    return await http.Client().get(url);
-  }
 }

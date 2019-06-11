@@ -1,134 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:laisiangtho/StoreModel.dart';
-import 'package:laisiangtho/Store.dart';
-import 'package:laisiangtho/BibleView.dart';
-// import 'package:laisiangtho/BibleBookList.dart';
-// import 'package:laisiangtho/BibleChapterList.dart';
-// import 'package:laisiangtho/BibleSearch.dart';
 
-// export 'package:laisiangtho/Store.dart';
+// import 'dart:math' as math;
+// import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
+// import 'dart:ui';
+// import 'package:meta/meta.dart';
 
-// BibleSheetBooks
+import 'StoreModel.dart';
+import 'Store.dart';
+import 'BibleView.dart';
+
+
 class Bible extends StatefulWidget {
+  Bible({
+    Key key,
+    this.scrollController,
+    this.offset,
+  }) : super(key: key);
 
-  static BibleView of(BuildContext context) => context.ancestorStateOfType(const TypeMatcher<BibleView>());
+  final ScrollController scrollController;
+  final double offset;
 
   @override
   BibleView createState() => new BibleView();
 }
 
-abstract class BibleState extends State<Bible> with SingleTickerProviderStateMixin{
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-  ScrollController scrollController;
-  final String tmpText = "Lorem Ipsum is simply dummy text of the printing\n and typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy \ntext ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, \nremaining essentially unchanged. \n\nIt was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with \ndesktop publishing \nsoftware like Aldus PageMaker including versions of Lorem Ipsum.";
+abstract class BibleState extends State<Bible> with TickerProviderStateMixin{
+  PersistentBottomSheetController<void> bottomSheetOption;
+  NAME activeName;
+  List<String> selectedVerse=[];
+  double shrinkOffsetPercentage=1.0;
 
-  double kExpandedHeight = 150.0;
-  ModelChapter info;
+  bool isChapterBookmarked=false;
 
-  bool sheetBooksVisibility = true;
-  Store store;
-
-  AnimationController animationController;
-  bool chapterListContainer = false;
+  Store store = new Store();
 
   @override
   void initState() {
-    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    // selectedVerse.clear();
+    widget.scrollController?.addListener(() => setState(() {}));
     super.initState();
-
-    store = new Store();
-    // sheetBooksVisibility = false;
-    // scrollController = ScrollController()..addListener(() => setState(() {
-    //   // chapterListContainer = false;
-    // }));
-  }
-  //
-
-  void infoGenerate (e){
-    info = e.data;
   }
 
-  bool get showTitleTemp {
-    return scrollController.hasClients && scrollController.offset > kExpandedHeight - kToolbarHeight;
+  @override
+  dispose() {
+    super.dispose();
+    // widget.scrollController?.removeListener(updateState);
+    // scrollController?.dispose();
   }
 
-  double get screenHeight {
-    return MediaQuery.of(context).size.height;
+  @override
+  void setState(fn) {
+    if(mounted) super.setState(fn);
   }
-  double get screenWidth {
-    return MediaQuery.of(context).size.width;
+
+  void updateState() => setState((){});
+
+  void collectionGenerate (e) => activeName = e.data;
+
+  void isCollectionBookmark () {
+    // print('what?');
+    store.hasCollectionBookmark().then((yes){
+      setState(() {
+        isChapterBookmarked = yes;
+      });
+    });
   }
 
   void setPreviousChapter() {
     store.chapterPrevious.then((_){
-      setState(() {});
+      updateState();
     });
+    setScroll();
   }
   void setNextChapter() {
     store.chapterNext.then((_){
-      setState(() {});
+      updateState();
     });
+    setScroll();
   }
-  // void setBookChapter(int id) {
-  //     // Navigator.pop(context);
-  //   store.chapterBook(id).then((_){
-  //     setState(() {
-  //       print('setState $id --${store.bookId}');
-  //     });
-  //   });
-  // }
+  void setBookChapter(int id) {
+    if (id == null) return;
+    store.chapterBook(id).then((_){
+      updateState();
+    });
+    setScroll();
+  }
   void setChapter(int id) {
+    if (id == null) return;
+    // store.chapterId = id;
+    // Navigator.of(context).pushNamed('bible');
+    // Navigator.of(context).pushReplacementNamed('bible');
+    // Navigator.of(context).popAndPushNamed('bible');
+    // Navigator.of(context).pop('Accept');
     setState(() {
       store.chapterId = id;
     });
+    selectedVerse.clear();
+    setScroll();
   }
-
-
-
-  // void sheetBookList() {
-  //   // setState((){});
-  //   if (sheetBooksVisibility) {
-  //     sheetBooksVisibility = !sheetBooksVisibility;
-  //     scaffoldKey.currentState.showBottomSheet<void>((BuildContext context)=> new BibleBookList()).closed.whenComplete(() {
-  //         sheetBooksVisibility = true;
-  //       // setState(() {
-  //       // });
-  //     });
-  //   } else {
-  //     Navigator.pop(context);
-  //   }
-
-  //   // sheetBooksVisibility = !sheetBooksVisibility;
-  //   // print(sheetBooksVisibility);
-  //   // setState(() {
-  //   //   sheetBooksVisibility = false;
-  //   // });
-  //   // scaffoldKey.currentState.showBottomSheet<Null>((BuildContext context)=> new BibleBookList()).closed.whenComplete(() {
-  //   //   if (mounted) {
-  //   //     setState(() {
-  //   //       sheetBooksVisibility = true;
-  //   //     });
-  //   //   }
-  //   // });
-  // }
-  void sheetChapterList(){
-    // showModalBottomSheet<Null>(context: context, builder: (BuildContext context) {
-    //   return StatefulBuilder(builder: (context,state)=>new BibleChapterList());
-    // }).then((void value) {
-    //   setState(() {
-    //     print('closed ${store.chapterId}');
-    //     // Store.chapterId = id;
-    //   });
-    // });
-    // showModalBottomSheet(context: context, builder: (BuildContext context) => new BibleChapterList()).then((void value) {
-    //   setState(() {
-    //     print('closed ${Store.chapterId}');
-    //     // Store.chapterId = id;
-    //   });
-    // });
+  void setScroll() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      widget.scrollController.animateTo(
+        widget.scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+      );
+    });
   }
-  // void sheetSearch(){
-  //   showSearch(context: context, delegate: new BibleSearch());
-  // }
+  get getSelectedVerse {
+    List<String> list = [];
+    return store.verseChapter.then((List<VERSE> e){
+      this.selectedVerse..sort((a, b) => a.compareTo(b))..forEach((id) {
+        var o = e.where((i)=> i.verse == id).single;
+        list.add(o.verse+': '+o.verseText);
+      });
+      return list.join("\n");
+    });
+  }
 }

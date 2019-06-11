@@ -1,81 +1,118 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:laisiangtho/Store.dart';
-import 'package:laisiangtho/Home.dart';
-import 'package:laisiangtho/Note.dart';
-import 'package:laisiangtho/Book.dart';
-import 'package:laisiangtho/Bible.dart';
-import 'package:laisiangtho/ScrollsAnimation.dart';
-import 'package:laisiangtho/ScrollsOne.dart';
-import 'package:laisiangtho/Tab.dart';
-import 'package:laisiangtho/Testing.dart';
+
+import 'MainBottomNavigationBar.dart';
+// import 'package:bible/Home.dart';
+// import 'package:bible/Bible.dart';
+
 
 void main() => runApp(LaiSiangtho());
 
 class LaiSiangtho extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    MaterialColor colorPrimarySwatch = MaterialColor(
+      // 0xFFF5F5F5,
+      0xFFFFFFFF,
+      <int, Color>{
+        10: Color(0xFFFFFFFF),
+        50: Color(0xFFFAFAFA),
+        100: Color(0xFFF5F5F5),
+        200: Color(0xFFEEEEEE),
+        300: Color(0xFFE0E0E0),
+        400: Color(0xFFD6D6D6), // only for raised button while pressed in light theme
+        500: Color(0xFFBDBDBD),
+        600: Color(0xFF757575),
+        700: Color(0xFF616161),
+        800: Color(0xFF424242),
+        850: Color(0xFF303030), // only for background color in dark theme
+        900: Color(0xFF212121)
+      },
+    );
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.grey[500],
-      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Color(0x00000000),
+      systemNavigationBarIconBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark,
       // systemNavigationBarDividerColor: Colors.red,
-      statusBarColor: Colors.grey[300],
+      // statusBarColor: Colors.grey[100],
+      statusBarColor: Color(0x00000000)
     ));
+    // CupertinoApp();
     return MaterialApp(
-      // title: Store.appName,
-      color: Colors.blue,
       debugShowCheckedModeBanner: false,
+      showPerformanceOverlay: false,
+      showSemanticsDebugger: false,
+      debugShowMaterialGrid: false,
       theme: ThemeData(
+        // fontFamily: "Caveat, OpenSans,Paduak, sans-serif",
+        fontFamily: "Paduak",
+        // platform: TargetPlatform.iOS,
+        // platform: TargetPlatform.android,
+        // scaffoldBackgroundColor: const Color(0xFFEFEFEF),
+        // scaffoldBackgroundColor:Colors.white,
+        scaffoldBackgroundColor:colorPrimarySwatch[10],
+        // scaffoldBackgroundColor:colorPrimarySwatch[50].withOpacity(0.99),
+        // primarySwatch: colorPrimarySwatch,
+        primarySwatch: colorPrimarySwatch,
+        primaryColor: colorPrimarySwatch[10],
+        backgroundColor: colorPrimarySwatch[300],
+        // backgroundColor: Color(0xFFadb2ba),
+        // backgroundColor: Color(0xFFeff1f4),
+        // canvasColor: Colors.transparent,
+        // canvasColor: Colors.white.withOpacity(0.96),
+        canvasColor: Color(0x00000000),
+        // canvasColor: Colors.white,
 
-        // primaryColor: Color.fromRGBO(255, 255, 255, 1.0),
-        primaryColor: Colors.grey[50],
-        // primaryColorDark: Colors.red,
-        // primaryColorBrightness: Brightness.dark,
-        // primarySwatch: Colors.grey,
-        // primaryColorLight: Colors.orange,
-        // primarySwatch: AppColor.appColor,
-
-        backgroundColor: Colors.grey[50],
-        // backgroundColor: Colors.transparent,
-        // primaryColor: Color.fromRGBO(237, 237, 237, 1.0),
-        // brightness: Brightness.light,
-        // accentColor: Colors.grey,
-        // indicatorColor:Colors.blue,
-        // canvasColor: Colors.blueGrey,
-        canvasColor: Colors.transparent,
-        iconTheme: new IconThemeData(
-          color: Colors.black54,
-          opacity: 1.0,
-          size: 25.0
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0
         ),
+        iconTheme: new IconThemeData(
+          color: Colors.grey,
+        ),
+        primaryIconTheme:new IconThemeData(
+          color: Colors.grey,
+        ),
+        accentIconTheme:new IconThemeData(
+          color: Colors.green,
+        ),
+        buttonTheme: new ButtonThemeData(
+          splashColor: Colors.transparent
+        ),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        cupertinoOverrideTheme: CupertinoThemeData(
+        ),
+        appBarTheme: AppBarTheme(
+          elevation: 0
+        ),
+
         textTheme: TextTheme(
-          title: TextStyle(fontWeight: FontWeight.w300, fontSize: 13.0),
-          subtitle: TextStyle(fontWeight: FontWeight.w300, fontSize: 11.0, color:Colors.brown),
+          title: TextStyle(fontWeight: FontWeight.w200),
+          subtitle: TextStyle(fontWeight: FontWeight.w300, color:Colors.grey),
+          headline: TextStyle(fontWeight: FontWeight.w300,color:Colors.grey),
+          subhead: TextStyle(fontWeight: FontWeight.w300),
+          caption: TextStyle(fontWeight: FontWeight.w300),
+          overline: TextStyle(fontWeight: FontWeight.w300),
+          button: TextStyle(fontWeight: FontWeight.w300),
+          body1: TextStyle(fontWeight: FontWeight.w300),
+          body2: TextStyle(fontWeight: FontWeight.w300)
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          border: InputBorder.none
         )
       ),
-      // home: new Home(),
-      initialRoute: '/',
-      // onGenerateRoute: getGenerateRoute,
-      routes: <String, WidgetBuilder>{
-        '/': (context) => new Home(),
-        // 'launcher': (context) => Launcher(),
-        'note': (context) => new Note(),
-        'book': (context) => new Book(),
-        'bible': (context) => new Bible(),
-        'tab': (context) => new Tabs(),
-        'CustomScrollOne': (context) => new CustomScrollOne(),
-        'ScrollsAnimation': (context) => new ScrollsAnimation(),
-        'Testing': (context) => new Testing()
-      }
+      title: 'Lai Siangtho',
+      home: MainBottomNavigationBar(),
+      // initialRoute: 'Home',
+      // routes: <String, WidgetBuilder>{
+      //   'Home': (context) => new Home(),
+      //   'bible': (context) => new Bible()
+      // }
     );
   }
 }
-// Route<Null> getGenerateRoute(RouteSettings settings) {
-//   // final List<String> path = settings.name.split('/');
-//   print(settings);
-//   // The other paths we support are in the routes table.
-//   return null;
-// }
