@@ -30,3 +30,7 @@ flutter build apk --split-per-abi
 
 
 flutter build apk --release --target-platform=android-arm64,android-arm
+
+# Android
+  versionCode android-arm
+  versionCode++ android-arm64

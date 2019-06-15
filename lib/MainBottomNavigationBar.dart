@@ -46,7 +46,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
     super.initState();
     focusNode.addListener(() => setState(() {}));
 
-    _pageButton.add(BottomBarItem(icon:Icons.home, label:"Home"));
+    _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Book"));
     _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Read"));
     _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"));
     _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));

@@ -70,6 +70,4 @@ abstract class StoreConfiguration {
   int verseCount;
   double offset=0.0;
 
-  bool showSheet = false;
-
 }

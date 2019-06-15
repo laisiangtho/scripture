@@ -221,6 +221,14 @@ class BookItem extends StatelessWidget {
           child: new ListTile(
             dense: true,
             // contentPadding: EdgeInsets.symmetric(horizontal: 25),
+            // leading: CircleAvatar(
+            //   child: Text(
+            //     book.language.name.toUpperCase(),
+            //     style: Theme.of(context).textTheme.subhead.copyWith(fontSize:14,color: Colors.white)
+            //   ),
+            //   backgroundColor: isAvailable?Colors.black26:Colors.grey[200],
+            //   // foregroundColor: Colors.white,
+            // ),
             title: Text(
               book.name, maxLines: 1, overflow: TextOverflow.ellipsis,textScaleFactor:0.7,
               style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,color: isAvailable?Colors.black:Colors.grey)
@@ -230,9 +238,34 @@ class BookItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.check_circle, color:isAvailable?Colors.green:Colors.grey[200], size: 15),
+                // Icon(Icons.check_circle, color:isAvailable?Colors.green:Colors.grey[200], size: 15),
+                // CircleAvatar(
+                //   child: Text(
+                //     book.language.name.toUpperCase(),
+                //     style: Theme.of(context).textTheme.subhead.copyWith(fontSize:10,color: Colors.white)
+                //   ),
+                //   backgroundColor: isAvailable?Colors.black26:Colors.grey[200],
+                //   foregroundColor: Colors.white,
+                // ),
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isAvailable?Colors.green:Colors.grey[200]
+                  ),
+                  child: Text(
+                    book.language.name.toUpperCase(),
+                    style: Theme.of(context).textTheme.subhead.copyWith(
+                      color:isAvailable?Colors.white:Colors.black,
+                      fontSize: 10
+                    )
+                  )
+                ),
                 Text(' '),
+                // Icon(Icons.arrow_forward, color:Colors.grey[200], size: 15),
                 Text(book.shortname,style: Theme.of(context).textTheme.subhead.copyWith(color:Colors.black,fontSize: 11)),
+                // Text(' '),
+                // Text(book.language.name.toUpperCase(),style: Theme.of(context).textTheme.subhead.copyWith(color:Colors.black,fontSize: 11)),
               ]
             ),
             trailing: Row(

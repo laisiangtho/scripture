@@ -16,6 +16,20 @@ class Store extends StoreConfiguration with StoreCollection, StoreBible {
       });
     });
   }
+  Future<NAME> activeName() async{
+    await this.bible.then((bible) async{
+      await getCollectionBookIdentify().then((CollectionBook book) async{
+        if (book.available < 1) {
+          book.available++;
+          await writeCollection();
+        }
+      });
+    });
+    this.testamentId = this.bookId > 39?2:1;
+    return await this.getNames.then((e){
+      return e.singleWhere((i)=>i.book == this.bookId,orElse: ()=>null);
+    });
+  }
 
   Future<List<Map<String, dynamic>>>  testingBookmark() async {
 

@@ -19,7 +19,7 @@ class NoteView extends NoteState {
             return buildScrollView();
           } else if (e.hasError) {
             if (store.identify.isEmpty){
-              return WidgetEmptyIdentify(task: 'to view',message: 'bookmarks');
+              return WidgetEmptyIdentify(task: ' to\nview ',message: 'bookmarks');
             } else {
               return WidgetError(message: e.error.toString());
             }
@@ -83,23 +83,7 @@ class NoteView extends NoteState {
       } else {
         return new SliverFillRemaining(
           child: Center(
-            // child: Text('$query ...no verse found!')
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: '"',
-                style: Theme.of(context).textTheme.subhead,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Bookmarks',
-                    style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 19),
-                  ),
-                  TextSpan(
-                    text: '"\n...',
-                  ),
-                ],
-              ),
-            ),
+            child: WidgetEmptyIdentify(atLeast:'collection of\n',enable:'Bookmarks',task: ' &\nother ',message: 'library')
           )
         );
       }

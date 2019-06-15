@@ -111,40 +111,48 @@ class WidgetError extends StatelessWidget {
   }
 }
 class WidgetEmptyIdentify extends StatelessWidget {
-  WidgetEmptyIdentify({this.atleast:'',this.enable:'Bible',this.task:'to',this.message:'read'});
-  final String atleast;
+  WidgetEmptyIdentify({
+    this.startWith:'...',
+    this.atLeast:'enable at least\na ',
+    this.enable:'Bible',
+    this.task:'\nto ',
+    this.message:'read',
+    this.endWith:'...'
+  });
+  final String startWith;
+  final String endWith;
+  final String atLeast;
   final String enable;
   final String task;
   final String message;
   @override
-  // ...enable at least\na Bible to read
-  // ...enable at least\na Bible to view bookmarks
-  // ...search\na Word or two in verses!
+  // enable at least\na Bible to read
+  // enable at least\na Bible to search
+  // enable at least\na Bible to view bookmarks
+  // search\na Word or two in verses
   Widget build(BuildContext context) {
     return Center(
       child: RichText(
         textAlign: TextAlign.center,
+        // strutStyle: StrutStyle(fontSize: 30.0, height: 0.7),
         text: TextSpan(
-          text: '...',
-          style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 25,color: Colors.grey),
+          text: this.startWith,
+          style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 18,color: Colors.grey,height: 0.9),
           children: <TextSpan>[
-            TextSpan(text:this.atleast),
-            TextSpan(text: ' '),
+            TextSpan(text:this.atLeast),
             TextSpan(
               text: this.enable,
-              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 17),
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 30),
             ),
-            TextSpan(text: ' '),
             TextSpan(
               text: this.task,
             ),
-            TextSpan(text: '\n'),
             TextSpan(
               text: this.message,
-              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.blue,fontSize: 30),
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.brown,fontSize: 20),
             ),
             TextSpan(
-              text: '...',
+              text: this.endWith,
             )
           ]
         )
@@ -275,19 +283,6 @@ class WidgetBottomNavigation extends StatelessWidget {
     );
   }
 }
-
-// class WidgetLauncher extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: Center(
-//         child: CircularProgressIndicator(
-//           strokeWidth: 1,
-//         )
-//       )
-//     );
-//   }
-// }
 
 /*
 return Material(

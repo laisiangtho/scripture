@@ -173,35 +173,7 @@ class SearchView extends SearchState {
   }
   Widget page(){
     return new SliverFillRemaining(
-      child: Center(
-        // ...search\na Word or two in verses!
-        // child: Text('search a word or two')
-        // this.atleast:'',this.enable:'Bible',this.task:'to',this.message:'read'
-        child: WidgetEmptyIdentify(atleast: 'search\na',enable:'Word',task: 'or two\nin',message:'verses'),
-        // child: RichText(
-        //   textAlign: TextAlign.center,
-        //   text: TextSpan(
-        //     text: '...search \na ',
-        //     style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 30,height: 0.7),
-        //     children: <TextSpan>[
-        //       TextSpan(
-        //         text: 'word',
-        //         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 40),
-        //       ),
-        //       TextSpan(
-        //         text: ' or ',
-        //       ),
-        //       TextSpan(
-        //         text: 'two',
-        //         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 20),
-        //       ),
-        //       TextSpan(
-        //         text: '\n in verses!',
-        //       )
-        //     ]
-        //   )
-        // )
-      )
+      child: WidgetEmptyIdentify(atLeast: 'search\na',enable:' Word ',task: 'or two\nin ',message:'verses')
     );
   }
 
@@ -309,11 +281,11 @@ class SearchView extends SearchState {
         filled: true,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey[300].withOpacity(shrink), width: 0.1),
-          borderRadius: BorderRadius.all(Radius.circular(3)),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey[200].withOpacity(shrink), width: 0.1),
-          borderRadius: BorderRadius.all(Radius.circular(3)),
+          borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
         // border: OutlineInputBorder(
         //   borderSide: BorderSide(color: Colors.grey, width: 0.1),
@@ -339,7 +311,7 @@ class _SearchResult extends StatelessWidget {
 
     if (result.hasData) {
       if (result.data.length > 0) {
-        // Store().getCollectionKeyword(query,add: true);
+        Store().getCollectionKeyword(query,add: true);
         return new SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) => _books(context, result.data[index]),
@@ -348,25 +320,8 @@ class _SearchResult extends StatelessWidget {
         );
       } else {
         return new SliverFillRemaining(
-          child: Center(
-            // child: Text('$query ...no verse found!')
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: '"',
-                style: Theme.of(context).textTheme.subhead,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: query,
-                    style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 19),
-                  ),
-                  TextSpan(
-                    text: '"\n...found no verse!',
-                  ),
-                ],
-              ),
-            ),
-          )
+          // found no match of ABC in verses
+          child: WidgetEmptyIdentify(atLeast: 'found no match\nof ',enable:query,task: '\nin ',message:'verses')
         );
       }
     }

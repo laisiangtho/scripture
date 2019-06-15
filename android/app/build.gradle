@@ -24,6 +24,9 @@ if (flutterVersionName == null) {
 def platformName
   if (project.hasProperty("target-platform")) {
       platformName = project.getProperty("target-platform")
+      if (platformName == 'android-arm64') {
+        flutterVersionCode = flutterVersionCode.toInteger() + 1
+      }
   } else {
       platformName = 'what'
   }
@@ -51,7 +54,7 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        // setProperty("archivesBaseName", "$platformName.$versionName-$versionCode")
+        setProperty("archivesBaseName", "$versionCode.$platformName")
         // ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         ndk {
           abiFilters 'armeabi-v7a' ,'arm64-v8a','x86','x86_64'

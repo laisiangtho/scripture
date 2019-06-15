@@ -1,6 +1,6 @@
 name: bible
 description: The Holy Bible in languages
-version: 1.0.0+7
+version: 1.0.0+14
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -35,4 +35,3 @@ flutter:
     - family: Caveat
       fonts:
         - asset: assets/fonts/Caveat-Regular.ttf
-        - asset: assets/fonts/Caveat-Bold.ttf
