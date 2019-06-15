@@ -1,18 +1,22 @@
 # Todo
-  - Scroll to top
-  - highlight verse
-  - bookmark
-  - share
-  - flexible appbar Bible
-  - search result header sticky
-  - search keyword highlight
-  - search result count
-  - search suggestion result count
+  - [x] Scroll to top
+  - [x] bookmarks
+  - [ ] share
+  - [x] flexible appbar
+  - [x] flexible bottom nav
 
-  - bible chapter list
-  - bible option
-    - sheet show/hide toggle
-    - auto close sheet if selectedVerse.isEmpty
+  - search
+    - [ ] result header sticky
+    - [x] keyword highlight
+    - [ ] result count
+    - [ ] suggestion result count
 
+  - bible
+    - [x] chapter list
+    - [x] bookmark chapter
+    - option
+      - [x] sheet show/hide toggle
+      - [x] auto close sheet if selectedVerse.isEmpty
 
-  - default bibleIdentify
+  - initial
+    - [x] default bibleIdentify

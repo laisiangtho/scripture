@@ -29,11 +29,13 @@ class _Chapter extends State<PopupBook> with TickerProviderStateMixin {
   }
   @override
   Widget build(BuildContext context) {
+    double paddingTop = MediaQuery.of(context).padding.top;
     double halfWidth = (MediaQuery.of(context).size.width/2) - 20;
     return Popup(
       offsetPersentage: widget.shrinkOffset,
       right:halfWidth,
-      top:  20*widget.shrinkOffset+43,
+      // top:  20*widget.shrinkOffset+43,
+      top:  (10*widget.shrinkOffset)+paddingTop+40,
       arrow:  140,
       height: 500,
       child: FutureBuilder<List<BOOK>>(

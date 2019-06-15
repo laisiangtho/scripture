@@ -29,12 +29,13 @@ class _Option extends State<PopupOption> {
 
   @override
   Widget build(BuildContext context) {
+    double paddingTop = MediaQuery.of(context).padding.top;
     return Popup(
       offsetPersentage: widget.shrinkOffset,
       height: 150,
       right: 2,
       // right: null,
-      top:  20*widget.shrinkOffset+43,
+      top:  (10*widget.shrinkOffset)+paddingTop+40,
       arrow: 7*widget.shrinkOffset+155,
       child: view()
     );

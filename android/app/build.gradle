@@ -21,6 +21,13 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def platformName
+  if (project.hasProperty("target-platform")) {
+      platformName = project.getProperty("target-platform")
+  } else {
+      platformName = 'what'
+  }
+
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -44,16 +51,14 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // setProperty("archivesBaseName", "$platformName.$versionName-$versionCode")
         // ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+        ndk {
+          abiFilters 'armeabi-v7a' ,'arm64-v8a','x86','x86_64'
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
-    // buildTypes {
-    //     release {
-    //         // Signing with the debug keys for now, so `flutter run --release` works.
-    //         signingConfig signingConfigs.debug
-    //     }
-    // }
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
@@ -63,20 +68,29 @@ android {
         }
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
         release {
+            shrinkResources true
             signingConfig signingConfigs.release
-
             minifyEnabled true
             useProguard true
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // debuggable false
-            // jniDebuggable false
-            // renderscriptDebuggable false
-            // zipAlignEnabled true
             dependencies {
                 implementation 'com.android.support:support-fragment:28.0.0'
             }
+
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+            zipAlignEnabled true
+            // android.applicationVariants.all { variant ->
+            //     variant.outputs.all {
+            //         outputFileName = "${applicationId}_${versionCode}_${variant.flavorName}_${variant.buildType.name}.apk"
+            //     }
+            // }
         }
     }
 }
@@ -89,4 +103,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // androidTestImplementation 'androidx.test:runner:1.1.1'
+    // androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }

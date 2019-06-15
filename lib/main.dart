@@ -7,7 +7,21 @@ import 'MainBottomNavigationBar.dart';
 // import 'package:bible/Bible.dart';
 
 
-void main() => runApp(LaiSiangtho());
+void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.white, //top bar color
+      statusBarIconBrightness: Brightness.dark, //top bar icons
+      systemNavigationBarColor: Colors.white, //bottom bar color
+      systemNavigationBarIconBrightness: Brightness.dark, //bottom bar icons
+    )
+  );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) => runApp(LaiSiangtho()));
+}
+
+
+
 
 class LaiSiangtho extends StatelessWidget {
   @override
@@ -30,16 +44,6 @@ class LaiSiangtho extends StatelessWidget {
         900: Color(0xFF212121)
       },
     );
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Color(0x00000000),
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-      // systemNavigationBarDividerColor: Colors.red,
-      // statusBarColor: Colors.grey[100],
-      statusBarColor: Color(0x00000000)
-    ));
-    // CupertinoApp();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
@@ -89,9 +93,9 @@ class LaiSiangtho extends StatelessWidget {
         ),
 
         textTheme: TextTheme(
-          title: TextStyle(fontWeight: FontWeight.w200),
-          subtitle: TextStyle(fontWeight: FontWeight.w300, color:Colors.grey),
-          headline: TextStyle(fontWeight: FontWeight.w300,color:Colors.grey),
+          title: TextStyle(fontWeight: FontWeight.w300),
+          subtitle: TextStyle(fontWeight: FontWeight.w300),
+          headline: TextStyle(fontWeight: FontWeight.w300),
           subhead: TextStyle(fontWeight: FontWeight.w300),
           caption: TextStyle(fontWeight: FontWeight.w300),
           overline: TextStyle(fontWeight: FontWeight.w300),

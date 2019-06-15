@@ -116,7 +116,11 @@ class SearchView extends SearchState {
             // collectionGenerate(e);
             return body();
           } else if (e.hasError) {
-            return WidgetError(message: e.error.toString());
+            if (store.identify.isEmpty){
+              return WidgetEmptyIdentify(message: 'search',);
+            } else {
+              return WidgetError(message: e.error.toString());
+            }
           } else {
             return WidgetLoad();
           }
@@ -170,30 +174,33 @@ class SearchView extends SearchState {
   Widget page(){
     return new SliverFillRemaining(
       child: Center(
+        // ...search\na Word or two in verses!
         // child: Text('search a word or two')
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: '...search \na ',
-            style: Theme.of(context).textTheme.subhead,
-            children: <TextSpan>[
-              TextSpan(
-                text: 'word',
-                style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 23),
-              ),
-              TextSpan(
-                text: ' or ',
-              ),
-              TextSpan(
-                text: 'two',
-                style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 17),
-              ),
-              TextSpan(
-                text: '\n in verses!',
-              )
-            ]
-          )
-        )
+        // this.atleast:'',this.enable:'Bible',this.task:'to',this.message:'read'
+        child: WidgetEmptyIdentify(atleast: 'search\na',enable:'Word',task: 'or two\nin',message:'verses'),
+        // child: RichText(
+        //   textAlign: TextAlign.center,
+        //   text: TextSpan(
+        //     text: '...search \na ',
+        //     style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 30,height: 0.7),
+        //     children: <TextSpan>[
+        //       TextSpan(
+        //         text: 'word',
+        //         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 40),
+        //       ),
+        //       TextSpan(
+        //         text: ' or ',
+        //       ),
+        //       TextSpan(
+        //         text: 'two',
+        //         style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 20),
+        //       ),
+        //       TextSpan(
+        //         text: '\n in verses!',
+        //       )
+        //     ]
+        //   )
+        // )
       )
     );
   }

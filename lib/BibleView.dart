@@ -37,7 +37,11 @@ class BibleView extends BibleState{
             isCollectionBookmark();
             return body();
           } else if (e.hasError) {
-            return WidgetError(message: e.error.toString());
+            if (store.identify.isEmpty){
+              return WidgetEmptyIdentify();
+            } else {
+              return WidgetError(message: e.error.toString());
+            }
           } else {
             return WidgetLoad();
           }
@@ -46,6 +50,7 @@ class BibleView extends BibleState{
       extendBody: true,
       bottomNavigationBar: bottomStack(),
       // bottomSheet: bottomStack(),
+
     );
 
   }
@@ -365,9 +370,30 @@ class BibleView extends BibleState{
   }
 
   Widget bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink){
-    // shrinkOffsetPercentage = stretch;
     double width = MediaQuery.of(context).size.width/2;
     // double commaWidth=1.0, chapterWidth=50.0, taskWidth=width - (commaWidth + chapterWidth);
+    Widget titleContainer({Alignment alignment,double width,String title,Function onPress, BorderRadius borderRadius}){
+      return Container(
+        alignment: alignment,
+        constraints: BoxConstraints(maxWidth: width),
+        child: CupertinoButton(
+          color: Colors.grey[200].withOpacity(shrink),
+          minSize: 28,
+          padding: EdgeInsets.symmetric(vertical:0, horizontal:10*shrink),
+          borderRadius: borderRadius,
+          child: Text(
+            title,maxLines: 1,overflow: TextOverflow.clip, textScaleFactor: max(0.7, shrink),
+            // textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 16
+            )
+          ),
+          onPressed: onPress
+        ),
+      );
+    }
+
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -380,7 +406,7 @@ class BibleView extends BibleState{
             child: CupertinoButton(
               padding: EdgeInsets.zero,
               minSize: 30,
-              child:Icon(isChapterBookmarked?Icons.bookmark:Icons.bookmark_border,color:isChapterBookmarked?Colors.red:Colors.grey[300],size: (8*shrink)+15),
+              child:Icon(isChapterBookmarked?Icons.bookmark:Icons.bookmark_border,color:isChapterBookmarked?Colors.red:Colors.grey[300],size: (10*shrink)+20),
               onPressed: () {
                 // print('bookmark');
                 // store.getCollectionBookmark().then((e){
@@ -395,77 +421,31 @@ class BibleView extends BibleState{
             )
           )
         ),
-        Container(
+        titleContainer(
           alignment: Alignment.centerRight,
-          constraints: BoxConstraints(
-            maxWidth: (width-30)
-          ),
-          child: new RawMaterialButton(
-            elevation: 0,
-            constraints: BoxConstraints(maxWidth: width),
-            padding: EdgeInsets.symmetric(vertical: 1, horizontal:3*shrink),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.all(Radius.circular(2))
-            ),
-            // fillColor: Theme.of(context).backgroundColor.withOpacity(shrink),
-            fillColor: Colors.grey[200].withOpacity(shrink),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            child: Text(
-              activeName.bookName,maxLines: 1,overflow: TextOverflow.ellipsis,
-              // textScaleFactor: math.max(0.7, shrink),
-              textScaleFactor: max(0.7, shrink),
-              style: TextStyle(
-                // fontFamily: "OpenSans",
-                color: Color.lerp(Colors.black87, Colors.black54, shrink),
-                height: 0.85,
-                fontSize: 15
-              )
-            ),
-            onPressed: ()=> booksPopup(shrink)
-          )
+          width: (width-30),
+          title: activeName.bookName,
+          onPress: ()=>booksPopup(shrink),
+          borderRadius: new BorderRadius.horizontal(left:Radius.circular(30))
         ),
         Container(
           alignment: Alignment.center,
-          constraints: BoxConstraints(
-            maxWidth:1,
-          ),
+          constraints: BoxConstraints(maxWidth:shrink),
           child:Opacity(
             opacity: stretch,
-            child:  Text(',',style: TextStyle(color: Colors.grey),),
-          ),
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          constraints: BoxConstraints(
-            maxWidth:50
-          ),
-          child: new RawMaterialButton(
-            constraints: BoxConstraints(maxWidth: 50),
-            elevation:0,
-            fillColor: Colors.grey[200].withOpacity(shrink),
-            padding: EdgeInsets.symmetric(vertical:1, horizontal:10*shrink),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.all(Radius.circular(2))
-              // borderRadius: new BorderRadius.all(Radius.elliptical(3, 7))
-            ),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            child: Text(
-              store.digit(store.chapterId),maxLines: 1,overflow: TextOverflow.ellipsis,
-              textScaleFactor: max(0.7, shrink),
-              style: TextStyle(
-                color: Color.lerp(Colors.black87, Colors.black54, shrink),
-                height: 0.85,
-                fontSize: 15
-              )
-            ),
-            onPressed: ()=> chapterPopup(shrink)
+            child:  Text(',',style: TextStyle(color: Colors.grey))
           )
         ),
+        titleContainer(
+          alignment: Alignment.centerLeft,
+          width: 59,
+          title: store.digit(store.chapterId),
+          onPress: ()=>chapterPopup(shrink),
+          borderRadius: new BorderRadius.horizontal(right:Radius.circular(30))
+        ),
         Container(
           constraints: BoxConstraints(
-            minWidth: width-51,
+            minWidth: width-60,
           ),
           child: new ButtonTheme(
             padding: EdgeInsets.zero,
@@ -519,5 +499,4 @@ class BibleView extends BibleState{
       ]
     );
   }
-
 }

@@ -47,7 +47,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
     focusNode.addListener(() => setState(() {}));
 
     _pageButton.add(BottomBarItem(icon:Icons.home, label:"Home"));
-    _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Bible"));
+    _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Read"));
     _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"));
     _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
     // _pageButton.add(BottomBarItem(icon:Icons.more_horiz, label:"More"));
@@ -113,10 +113,9 @@ class StateExtended extends State<MainBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
       child: new Scaffold(
         key: scaffoldKey,
-        // resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: true,
         body: new PageView(
           controller: pageController,onPageChanged: navPageChanged,
           physics:new NeverScrollableScrollPhysics(),
@@ -125,7 +124,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
         ),
         extendBody: true,
         bottomNavigationBar: viewNavigation()
-      ),
+      )
     );
   }
   /*
@@ -224,15 +223,6 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
     for (int i = 0; i < widget.items.length; i++) {
       BottomBarItem item = widget.items[i];
       bool isSelectedButton = widget.index == i;
-      // CupertinoButton();
-      // ButtonTheme(
-      //   minWidth: 200.0,
-      //   height: 100.0,
-      //   child: RaisedButton(
-      //     onPressed: () {},
-      //     child: Text("test"),
-      //   ),
-      // );
       // button.add(
       //   new InkWell(
       //     splashColor: Colors.transparent,
@@ -276,7 +266,7 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(item.icon, size: isSelectedButton?18:20,color: isSelectedButton? Colors.white:Colors.grey),
+                Icon(item.icon, size:20,color: isSelectedButton? Colors.white:Colors.grey[500]),
 
                 SizedBox(width:2),
                 AnimatedSize(

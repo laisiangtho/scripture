@@ -1,6 +1,8 @@
 # Custom
+/dist/
 /assets/screenshot
 /assets/psd/*.png
+/assets/psd/*.jpg
 
 # Miscellaneous
 *.class

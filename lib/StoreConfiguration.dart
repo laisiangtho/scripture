@@ -57,7 +57,7 @@ abstract class StoreConfiguration {
   final String appTitle = 'Lai Siangtho';
   final String appDescription = 'the Holy Bible in languages';
 
-  String identify;
+  String identify ='';
   String searchQuery ='';
 
   int testamentId = 1;
@@ -69,5 +69,7 @@ abstract class StoreConfiguration {
   int verseId = 1;
   int verseCount;
   double offset=0.0;
+
+  bool showSheet = false;
 
 }

@@ -21,8 +21,9 @@ class WidgetSheet extends StatelessWidget {
       data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
       child: Material(
         elevation:  0.3,
-        color: Theme.of(context).backgroundColor.withOpacity(0.95),
-        // shadowColor: Colors.white,
+        // color: Theme.of(context).backgroundColor,
+        color: Colors.grey,
+        shadowColor: Colors.white,
         // borderOnForeground: true,
         clipBehavior: Clip.hardEdge,
         // clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -71,7 +72,7 @@ class WidgetLoad extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
-        strokeWidth: 1,
+        strokeWidth: 1
       )
     );
   }
@@ -98,7 +99,7 @@ class WidgetError extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('$message', textAlign: TextAlign.center,),
+            Text(this.message, textAlign: TextAlign.center,),
             Padding(
               padding: EdgeInsets.only(bottom: 20,top: 20),
               child: Icon(CupertinoIcons.ellipsis),
@@ -106,6 +107,48 @@ class WidgetError extends StatelessWidget {
           ],
         )
       ),
+    );
+  }
+}
+class WidgetEmptyIdentify extends StatelessWidget {
+  WidgetEmptyIdentify({this.atleast:'',this.enable:'Bible',this.task:'to',this.message:'read'});
+  final String atleast;
+  final String enable;
+  final String task;
+  final String message;
+  @override
+  // ...enable at least\na Bible to read
+  // ...enable at least\na Bible to view bookmarks
+  // ...search\na Word or two in verses!
+  Widget build(BuildContext context) {
+    return Center(
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: '...',
+          style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 25,color: Colors.grey),
+          children: <TextSpan>[
+            TextSpan(text:this.atleast),
+            TextSpan(text: ' '),
+            TextSpan(
+              text: this.enable,
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 17),
+            ),
+            TextSpan(text: ' '),
+            TextSpan(
+              text: this.task,
+            ),
+            TextSpan(text: '\n'),
+            TextSpan(
+              text: this.message,
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.blue,fontSize: 30),
+            ),
+            TextSpan(
+              text: '...',
+            )
+          ]
+        )
+      )
     );
   }
 }
@@ -138,16 +181,16 @@ class WidgetHeaderSliver extends SliverPersistentHeaderDelegate {
   WidgetHeaderSliver(
     this.builder,
     {
-      this.minHeight:20.0,
-      this.maxHeight:60.0,
+      this.minHeight:35.0,
+      this.maxHeight:50.0,
       this.color,
       this.elevation:0.35,
-      this.statusBar:20
+      this.statusBar:0
     }
   );
   final double minHeight;
   final double maxHeight;
-  final double statusBar;
+  double statusBar;
   final Color color;
   final double elevation;
 
@@ -157,7 +200,8 @@ class WidgetHeaderSliver extends SliverPersistentHeaderDelegate {
   Function builder;
 
   @override
-  double get minExtent => (minHeight + statusBar);
+  // double get minExtent => (minHeight + statusBar);
+  double get minExtent => minHeight;
 
   @override
   double get maxExtent => maxHeight;

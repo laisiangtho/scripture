@@ -59,7 +59,7 @@ mixin StoreCollection on StoreConfiguration {
         }
       });
     }
-    if (this.identify == null){
+    if (this.identify.isEmpty){
      _collection.book.firstWhere((e){
        if (e.available > 0) this.identify = e.identify;
        return true;

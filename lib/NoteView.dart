@@ -17,11 +17,12 @@ class NoteView extends NoteState {
         builder: (BuildContext context, AsyncSnapshot e){
           if (e.hasData){
             return buildScrollView();
-            // return Container(
-            //   child: Text('hello note'),
-            // );
           } else if (e.hasError) {
-            return WidgetError(message: e.error.toString());
+            if (store.identify.isEmpty){
+              return WidgetEmptyIdentify(task: 'to view',message: 'bookmarks');
+            } else {
+              return WidgetError(message: e.error.toString());
+            }
           } else {
             return WidgetLoad();
           }
@@ -80,24 +81,21 @@ class NoteView extends NoteState {
           )
         );
       } else {
-        // return new SliverFillRemaining(
-        //   child: WidgetError(message: 'Bookmark',),
-        // );
         return new SliverFillRemaining(
           child: Center(
             // child: Text('$query ...no verse found!')
             child: RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                text: '...\n"',
+                text: '"',
                 style: Theme.of(context).textTheme.subhead,
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'bookmark',
+                    text: 'Bookmarks',
                     style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 19),
                   ),
                   TextSpan(
-                    text: '"\n is empty...',
+                    text: '"\n...',
                   ),
                 ],
               ),
@@ -110,36 +108,6 @@ class NoteView extends NoteState {
   }
   Widget bookmarksItems(BuildContext context, o,index){
     Map<String,dynamic> bookmark = o[index];
-    /*
-    return new SlideMenu(
-      child: new ListTile(
-        title: new Container(child: new Text('${bookmark["bookName"]}')),
-      ),
-      menuItems: <Widget>[
-        new Center(
-          child: new Icon(Icons.delete)
-        ),
-      ]
-    );
-    */
-    // return Row(
-    //   mainAxisSize: MainAxisSize.max,
-    //   children: <Widget>[
-    //     Expanded(
-    //       child: Padding(
-    //         padding: EdgeInsets.only(left: 30,top: 10, bottom: 10),
-    //         child: Text(bookmark["bookName"],
-    //           maxLines: 1,overflow: TextOverflow.ellipsis,
-    //           style: Theme.of(context).textTheme.subhead
-    //         )
-    //       )
-    //     ),
-    //     Padding(
-    //       padding: EdgeInsets.only(right: 30),
-    //       child: Text(bookmark["chapter"].toString())
-    //     )
-    //   ]
-    // );
     return new SlideMenu(
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -148,7 +116,7 @@ class NoteView extends NoteState {
             child: Container(
               padding: EdgeInsets.only(left: 30,top: 7, bottom: 7),
               // color: Colors.red,
-              child: Text(bookmark["bookName"],
+              child: Text(bookmark['bookName'],
                 maxLines: 1,overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.subhead
               )
@@ -156,7 +124,7 @@ class NoteView extends NoteState {
           ),
           Padding(
             padding: EdgeInsets.only(right: 30),
-            child: Text(bookmark["chapter"].toString())
+            child: Text(store.digit(bookmark['chapter']))
           )
         ]
       ),
@@ -172,97 +140,13 @@ class NoteView extends NoteState {
             setState((){
               store.removeCollectionBookmark(index);
             });
-            // store.removeCollectionBookmark(index);
           }
         ),
       ]
     );
-    // return Container(
-    //   // color: Colors.red,
-    //   child: new SlideMenu(
-    //     child: new ListTile(
-    //       dense: true,
-    //       // contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal:50),
-    //       // title: new Container(child: new Text('${bookmark["bookName"]}')),
-    //       leading: new Icon(Icons.bookmark_border),
-    //       trailing: new Text('${bookmark["chapter"]}'),
-    //       title: new Text(bookmark["bookName"], style: Theme.of(context).textTheme.subhead,),
-    //       // title: RichText(
-    //       //     // textAlign: TextAlign.center,
-    //       //     text: TextSpan(
-    //       //       text: bookmark['bookName'],
-    //       //       style: Theme.of(context).textTheme.subhead,
-    //       //       children: <TextSpan>[
-    //       //         TextSpan(
-    //       //           text: bookmark['chapter'].toString(),
-    //       //           style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red),
-    //       //         )
-    //       //       ],
-    //       //     )
-    //       // )
-    //     ),
-    //     menuItems: <Widget>[
-    //       new Center(
-    //         child: new Icon(Icons.delete)
-    //       ),
-    //     ]
-    //   )
-    // );
-    /*
-    return ListTile(
-      title:new SlideMenu(
-          child: new ListTile(
-            title: new Container(child: new Text('${bookmark["bookName"]}')),
-          ),
-          menuItems: <Widget>[
-            new Container(
-              child: new IconButton(
-                icon: new Icon(Icons.delete),
-                onPressed: (){},
-              ),
-            ),
-          ]
-        )
-    );
-    */
-    // return Row(
-    //   mainAxisSize: MainAxisSize.max,
-    //   children: <Widget>[
-    //     // Text('${o.bookId} ${o.chapterId}'),
-    //     // Expanded(
-    //     //   child: InkWell(
-    //     //     child: Text('.... ${bookmark["bookName"]} ${bookmark["chapter"]}'),
+  }
+}
 
-    //     //     onTap: (){
-    //     //       store.bookId = bookmark['book'];
-    //     //       store.chapterId = bookmark['chapter'];
-    //     //       this.toBible();
-    //     //       // print(bookmark);
-    //     //     },
-    //     //   )
-    //     // ),
-    //     // InkWell(
-    //     //   child: Text('Delete'),
-    //     //   onTap: (){
-    //     //     print('to delete bookmark');
-    //     //     setState((){
-    //     //       store.removeCollectionBookmark(index);
-    //     //     });
-    //     //   },
-    //     // )
-    //   ]
-    // );
-  }
-}
-/*
-note: {
-  bookmark: {
-    [
-      {1:{}}
-    ]
-  }
-}
-*/
 
 class SlideMenu extends StatefulWidget {
   final Widget child;
@@ -316,10 +200,8 @@ class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMix
       onLongPress: (){
         if (_controller.isCompleted) {
           _controller.reverse();
-          print('reverse');
         } else if (_controller.isDismissed) {
           _controller.forward();
-          print('forward');
         }
       },
       onTap: widget.onTap,
@@ -346,19 +228,19 @@ class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMix
                                 return new Expanded(
                                   child: child,
                                 );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ],
+                              }).toList()
+                            )
+                          )
+                        )
+                      ]
                     );
-                  },
+                  }
                 );
-              },
-            ),
+              }
+            )
           )
-        ],
-      ),
+        ]
+      )
     );
   }
 }

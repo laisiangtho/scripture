@@ -78,7 +78,7 @@ class HomeView extends HomeState {
         new SliverPersistentHeader(
           pinned: true,
           floating: true,
-          delegate: WidgetHeaderSliver(bar,maxHeight: 140,minHeight: 35,statusBar:MediaQuery.of(context).padding.top)
+          delegate: WidgetHeaderSliver(bar,maxHeight: 140,statusBar: MediaQuery.of(context).padding.top)
         ),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: 40),
@@ -110,12 +110,13 @@ class HomeView extends HomeState {
               store.appTitle,
               style: TextStyle(
                 fontFamily: "sans-serif",
-                color: Color.lerp(Colors.white, Colors.white24, stretch),
-                fontWeight: FontWeight.lerp(FontWeight.w100, FontWeight.w200, stretch),
+                // color: Color.lerp(Colors.white, Colors.white24, stretch),
+                color: Colors.black,
+                fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
                 fontSize:35 - (18*stretch),
-                shadows: <Shadow>[
-                  Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
-                ]
+                // shadows: <Shadow>[
+                //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
+                // ]
               )
             )
           )
@@ -150,8 +151,7 @@ class HomeView extends HomeState {
 
   void showSheetInfo(CollectionBook book) {
     // widget.scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() {});
-    scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() => setState(() {}));
-    // Scaffold.of(context).showBottomSheet((BuildContext context) => SheetInfo(book)).closed.whenComplete(() => setState(() {}));
+    scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() => setState(() { }));
   }
 }
 
@@ -222,17 +222,17 @@ class BookItem extends StatelessWidget {
             dense: true,
             // contentPadding: EdgeInsets.symmetric(horizontal: 25),
             title: Text(
-              book.name, maxLines: 1, overflow: TextOverflow.ellipsis,textScaleFactor:0.9,
-              style: Theme.of(context).textTheme.title.copyWith(height: 0.8)
+              book.name, maxLines: 1, overflow: TextOverflow.ellipsis,textScaleFactor:0.7,
+              style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,color: isAvailable?Colors.black:Colors.grey)
             ),
             subtitle: Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(Icons.check, color: isAvailable?Colors.blue:Colors.grey[200], size: 10),
+                Icon(Icons.check_circle, color:isAvailable?Colors.green:Colors.grey[200], size: 15),
                 Text(' '),
-                Text(book.shortname,style: Theme.of(context).textTheme.subtitle.copyWith(height: 0.2,color: isAvailable?Colors.blue:Colors.grey, fontSize: 9)),
+                Text(book.shortname,style: Theme.of(context).textTheme.subhead.copyWith(color:Colors.black,fontSize: 11)),
               ]
             ),
             trailing: Row(
@@ -240,8 +240,8 @@ class BookItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10)),
-                Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey[500]:Colors.grey[200], size: 17),
+                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 13,color: Colors.black)),
+                Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.black:Colors.grey[200], size: 20),
                 dragHandle
               ]
             ),
