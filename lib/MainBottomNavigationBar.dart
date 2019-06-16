@@ -75,18 +75,17 @@ class StateExtended extends State<MainBottomNavigationBar> {
         }
         _scrollOldOffset = offset;
 
-        // double max = scrollController.position.maxScrollExtent, limit = max - navMaxheight;
-        // if (offset >= limit){
-        //   _scrollDelta = math.max(-(offset - max),-_scrollDelta);
-        // }
-        double max = scrollController.position.maxScrollExtent, limit = max - navMaxheight;
-        if (offset >= limit){
-          _scrollDelta = math.max(-(offset - max),-_scrollDelta);
+        double maxExtent = scrollController.position.maxScrollExtent, limit = maxExtent - navMaxheight;
+        double minExtent = scrollController.position.minScrollExtent;
+        if (offset >= limit ){
+          _scrollDelta = math.max(-(offset - maxExtent),-_scrollDelta);
+          _scrollOffset = -_scrollDelta;
+        } else if (offset <= minExtent ) {
+          _scrollOffset = navMaxheight;
+        } else {
+          _scrollOffset = -_scrollDelta;
         }
-        if (scrollController.position.outOfRange){
-          print('outOfRange');
-        }
-        _scrollOffset = -_scrollDelta;
+
         scrollOffsetCalc = ((_scrollOffset.abs() - navMinheight) * 100) / (navMaxheight - navMinheight) / 100;
         store.offset=scrollOffsetCalc;
       });
@@ -150,6 +149,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
         Positioned(
           bottom: (_scrollOffset > 0)?0:_scrollOffset,
           width: MediaQuery.of(context).size.width,
+          // height: store.bottomBarHeightMax,
           child: viewBottomNavigationCustom()
           // child: Container(
           //   width: double.infinity,

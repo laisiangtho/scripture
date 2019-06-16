@@ -114,7 +114,7 @@ class HomeView extends HomeState {
                 // color: Color.lerp(Colors.white, Colors.white24, stretch),
                 color: Colors.black,
                 fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
-                fontSize:35 - (18*stretch),
+                fontSize:35 - (13*stretch),
                 // shadows: <Shadow>[
                 //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
                 // ]
@@ -231,7 +231,7 @@ class BookItem extends StatelessWidget {
             //   // foregroundColor: Colors.white,
             // ),
             title: Text(
-              book.name, maxLines: 1, overflow: TextOverflow.ellipsis,textScaleFactor:0.7,
+              book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,color: isAvailable?Colors.black:Colors.grey)
             ),
             subtitle: Row(
@@ -274,7 +274,7 @@ class BookItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 13,color: Colors.black)),
+                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 17,color: Colors.black)),
                 Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.black:Colors.grey[200], size: 20),
                 dragHandle
               ]
