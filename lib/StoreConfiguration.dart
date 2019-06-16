@@ -61,13 +61,15 @@ abstract class StoreConfiguration {
   String searchQuery ='';
 
   int testamentId = 1;
-  // String testamentName;
   int bookId = 1;
-  // String bookName;
   int chapterId = 1;
   int chapterCount;
   int verseId = 1;
   int verseCount;
   double offset=0.0;
+  double bottomBarHeight=50.0;
+  var contextMedia;
 
+  // double get contentBottomPadding => this.bottomBarHeight + this.contextMedia.padding.bottom;
+  double get bottomBarHeightMax => this.bottomBarHeight + this.contextMedia.padding.bottom;
 }

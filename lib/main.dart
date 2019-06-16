@@ -10,10 +10,10 @@ import 'MainBottomNavigationBar.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Colors.white, //top bar color
+      statusBarColor: Color(0xFFFFFFFF), //top bar color
       statusBarBrightness: Brightness.light, // iOS
       statusBarIconBrightness: Brightness.dark, //top bar icons
-      systemNavigationBarColor: Colors.white, //bottom bar color
+      systemNavigationBarColor: Color(0xFFFFFFFF),
       systemNavigationBarIconBrightness: Brightness.dark, //bottom bar icons
     )
   );
@@ -56,24 +56,17 @@ class LaiSiangtho extends StatelessWidget {
       showSemanticsDebugger: false,
       debugShowMaterialGrid: false,
       theme: ThemeData(
-        // fontFamily: "Caveat, OpenSans,Paduak, sans-serif",
+        // fontFamily: "Caveat, Paduak, sans-serif",
         fontFamily: "Paduak",
+
         // platform: TargetPlatform.iOS,
         // platform: TargetPlatform.android,
-        // scaffoldBackgroundColor: const Color(0xFFEFEFEF),
-        // scaffoldBackgroundColor:Colors.white,
+
         scaffoldBackgroundColor:colorPrimarySwatch[10],
-        // scaffoldBackgroundColor:colorPrimarySwatch[50].withOpacity(0.99),
-        // primarySwatch: colorPrimarySwatch,
         primarySwatch: colorPrimarySwatch,
         primaryColor: colorPrimarySwatch[10],
-        backgroundColor: colorPrimarySwatch[300],
-        // backgroundColor: Color(0xFFadb2ba),
-        // backgroundColor: Color(0xFFeff1f4),
-        // canvasColor: Colors.transparent,
-        // canvasColor: Colors.white.withOpacity(0.96),
+        backgroundColor: colorPrimarySwatch[400],
         canvasColor: Color(0x00000000),
-        // canvasColor: Colors.white,
 
         dialogTheme: DialogTheme(
           backgroundColor: Colors.transparent,
@@ -94,20 +87,18 @@ class LaiSiangtho extends StatelessWidget {
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         cupertinoOverrideTheme: CupertinoThemeData(
         ),
-        appBarTheme: AppBarTheme(
-          elevation: 0
-        ),
 
         textTheme: TextTheme(
-          title: TextStyle(fontWeight: FontWeight.w300),
-          subtitle: TextStyle(fontWeight: FontWeight.w300),
+          title: TextStyle(fontWeight: FontWeight.w200),
+          subtitle: TextStyle(fontWeight: FontWeight.w400),
           headline: TextStyle(fontWeight: FontWeight.w300),
-          subhead: TextStyle(fontWeight: FontWeight.w300),
+          subhead: TextStyle(fontWeight: FontWeight.w400),
           caption: TextStyle(fontWeight: FontWeight.w300),
           overline: TextStyle(fontWeight: FontWeight.w300),
           button: TextStyle(fontWeight: FontWeight.w300),
           body1: TextStyle(fontWeight: FontWeight.w300),
-          body2: TextStyle(fontWeight: FontWeight.w300)
+          body2: TextStyle(fontWeight: FontWeight.w300),
+          display4: TextStyle(fontWeight: FontWeight.w300,height: 0.90,color: Colors.black) // bible verse
         ),
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: InputBorder.none,

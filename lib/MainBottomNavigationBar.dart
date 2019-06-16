@@ -38,18 +38,24 @@ class StateExtended extends State<MainBottomNavigationBar> {
   int _pageIndex = 0;
 
 
-  double navMaxheight = 50.0, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
+  // double navMaxheight = 50.0, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
+  double navMaxheight, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
   double scrollOffsetCalc = 0.0;
 
   @override
   void initState() {
+    navMaxheight = store.bottomBarHeight;
     super.initState();
     focusNode.addListener(() => setState(() {}));
 
-    _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Book"));
-    _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Read"));
-    _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmarkinsas dfasf asdf"));
+    _pageButton.add(BottomBarItem(icon:Icons.flag, label:"Book"));
+    _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Read"));
+    _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"));
     _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
+    // _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Book"));
+    // _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Read"));
+    // _pageButton.add(BottomBarItem(icon:Icons.flag, label:"Bookmarkinsas dfasf asdf"));
+    // _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
     // _pageButton.add(BottomBarItem(icon:Icons.more_horiz, label:"More"));
 
     _page.add(Home(scrollController: scrollController,offset:scrollOffsetCalc,pageController:pageController));
@@ -76,6 +82,9 @@ class StateExtended extends State<MainBottomNavigationBar> {
         double max = scrollController.position.maxScrollExtent, limit = max - navMaxheight;
         if (offset >= limit){
           _scrollDelta = math.max(-(offset - max),-_scrollDelta);
+        }
+        if (scrollController.position.outOfRange){
+          print('outOfRange');
         }
         _scrollOffset = -_scrollDelta;
         scrollOffsetCalc = ((_scrollOffset.abs() - navMinheight) * 100) / (navMaxheight - navMinheight) / 100;
@@ -112,12 +121,12 @@ class StateExtended extends State<MainBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    // navMaxheight = 40 + MediaQuery.of(context).padding.bottom;
+    store.contextMedia = MediaQuery.of(context);
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
-        // top: false,
-        // bottom: false,
+        top: false,
+        bottom: false,
         child: new Scaffold(
           key: scaffoldKey,
           resizeToAvoidBottomInset: true,
@@ -133,27 +142,6 @@ class StateExtended extends State<MainBottomNavigationBar> {
       ),
     );
   }
-  /*
-  LayoutBuilder body() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            // _page[_pageIndex];
-            new PageView(
-              controller: pageController,onPageChanged: navPageChanged,
-              physics:new NeverScrollableScrollPhysics(),
-              // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
-              children:_page
-            ),
-            viewNavigation()
-          ]
-        );
-      }
-    );
-  }
-  */
   Widget viewNavigation() {
     if (isNodeFocus) return null;
     return Stack(
@@ -162,14 +150,15 @@ class StateExtended extends State<MainBottomNavigationBar> {
         Positioned(
           bottom: (_scrollOffset > 0)?0:_scrollOffset,
           width: MediaQuery.of(context).size.width,
-          child: Container(
-            width: double.infinity,
-            height: navMaxheight,
-            // padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-            child: SizedBox.shrink(
-              child: viewBottomNavigationCustom()
-            )
-          )
+          child: viewBottomNavigationCustom()
+          // child: Container(
+          //   width: double.infinity,
+          //   height: store.bottomBarHeightMax,
+          //   height: navMaxheight,
+          //   child: SizedBox.shrink(
+          //     child: viewBottomNavigationCustom()
+          //   )
+          // )
         )
       ]
     );
@@ -230,32 +219,7 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
     for (int i = 0; i < widget.items.length; i++) {
       BottomBarItem item = widget.items[i];
       bool isSelectedButton = widget.index == i;
-      // button.add(
-      //   new InkWell(
-      //     splashColor: Colors.transparent,
-      //     highlightColor: Colors.transparent,
-      //     child: AnimatedContainer(
-      //       constraints: BoxConstraints(
-      //         maxWidth: width,
-      //         minWidth: width-7,
-      //         minHeight: double.infinity
-      //       ),
-      //       margin: EdgeInsets.symmetric(vertical: 7,horizontal: 2),
-      //       decoration: BoxDecoration(
-      //       ),
-      //       duration: widget.animationDuration,
-      //       child: Column(
-      //         mainAxisSize: MainAxisSize.max,
-      //         crossAxisAlignment: CrossAxisAlignment.center,
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: <Widget>[
-      //           Icon(item.icon,color: isSelectedButton? Colors.black:Colors.black38,size: 20,),
-      //         ]
-      //       )
-      //     ),
-      //     onTap: ()=>widget.tap(i)
-      //   )
-      // );
+
       button.add(
         CupertinoButton(
           pressedOpacity: 0.5,
@@ -287,17 +251,15 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
                       maxHeight: double.infinity
                     ),
                     child: Text(
-                      isSelectedButton?item.label:'',
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
+                      isSelectedButton?item.label:'', overflow: TextOverflow.clip, maxLines: 1,
                       style: TextStyle(color: Colors.white,fontSize: 15)
                     )
                   )
                 )
               ]
-            ),
+            )
           ),
-          onPressed: ()=>widget.tap(i),
+          onPressed: ()=>widget.tap(i)
         )
       );
     }

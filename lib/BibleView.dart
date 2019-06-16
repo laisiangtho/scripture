@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 // import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -115,13 +116,12 @@ class BibleView extends BibleState{
       controller: widget.scrollController,
       slivers: <Widget>[
         new SliverPersistentHeader(
-          pinned: true,
-          floating: true,
-          delegate: WidgetHeaderSliver(bar)
+          pinned: true, floating: true,
+          delegate: WidgetHeaderSliver(bar,minHeight: 20)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: 45),
-          sliver: futureBuilderSliver(),
+          padding: EdgeInsets.only(bottom: store.bottomBarHeightMax),
+          sliver: futureBuilderSliver()
         )
       ]
     );
@@ -211,26 +211,23 @@ class BibleView extends BibleState{
         vsync: this,
         curve: Curves.easeOut,
         child: RichText(
+          textScaleFactor: 0.20,
           text:TextSpan(
             text:  verse.verseTitle!=null?'\n   ${verse.verseTitle}\n\n'.toUpperCase():'',
-            style: TextStyle(
-              color: Colors.black,fontWeight: FontWeight.w300,fontSize: 15, height: 0.90
-            ),
+            style: Theme.of(context).textTheme.display4,
             children: <TextSpan>[
               TextSpan(text: '   '),
               TextSpan(
                 text: store.digit(verse.verse),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.black45
-                )
+                style: TextStyle(color: Colors.black45)
               ),
               TextSpan(text: ' '),
               TextSpan(
                 text: verse.verseText,
                 style: TextStyle(
                   color: isSelected?Colors.white:null,
-                  backgroundColor: isSelected?Colors.grey:null,
+                  // backgroundColor: isSelected?Colors.grey:null,
+                  backgroundColor: isSelected?Theme.of(context).backgroundColor:null,
                   // background: Paint(),
                   // decoration: isSelected?TextDecoration.underline:TextDecoration.none,
                   // decorationColor: Colors.red,
@@ -375,7 +372,7 @@ class BibleView extends BibleState{
     Widget titleContainer({Alignment alignment,double width,String title,Function onPress, BorderRadius borderRadius}){
       return Container(
         alignment: alignment,
-        constraints: BoxConstraints(maxWidth: width),
+        constraints: BoxConstraints(maxWidth: width,minWidth: 60.0),
         child: CupertinoButton(
           color: Colors.grey[200].withOpacity(shrink),
           minSize: 28,
@@ -408,15 +405,9 @@ class BibleView extends BibleState{
               minSize: 30,
               child:Icon(isChapterBookmarked?Icons.bookmark:Icons.bookmark_border,color:isChapterBookmarked?Colors.red:Colors.grey[300],size: (10*shrink)+20),
               onPressed: () {
-                // print('bookmark');
-                // store.getCollectionBookmark().then((e){
-                //   print(e);
-                // });
                 store.addCollectionBookmark().then((e){
-                  // print(e);
                   setState((){});
                 });
-
               }
             )
           )
@@ -438,14 +429,14 @@ class BibleView extends BibleState{
         ),
         titleContainer(
           alignment: Alignment.centerLeft,
-          width: 59,
+          width: 69,
           title: store.digit(store.chapterId),
           onPress: ()=>chapterPopup(shrink),
           borderRadius: new BorderRadius.horizontal(right:Radius.circular(30))
         ),
         Container(
           constraints: BoxConstraints(
-            minWidth: width-60,
+            minWidth: width-70,
           ),
           child: new ButtonTheme(
             padding: EdgeInsets.zero,

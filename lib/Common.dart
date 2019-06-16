@@ -1,3 +1,4 @@
+import 'package:bible/Store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,7 +15,6 @@ class WidgetSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Theme(
       key: key,
       // isMaterialAppTheme: true,
@@ -190,55 +190,52 @@ class WidgetHeaderSliver extends SliverPersistentHeaderDelegate {
   WidgetHeaderSliver(
     this.builder,
     {
-      this.minHeight:35.0,
-      this.maxHeight:50.0,
-      this.color,
-      this.elevation:0.35,
-      this.statusBar:0
+      this.minHeight:45.0,
+      this.maxHeight:45.0,
+      // this.statusBarHeight:0
     }
   );
   final double minHeight;
   final double maxHeight;
-  double statusBar;
-  final Color color;
-  final double elevation;
-
+  // double statusBarHeight;
 
   double stretch = 0.0;
   double shrink = 1.0;
   Function builder;
 
-  @override
-  // double get minExtent => (minHeight + statusBar);
-  double get minExtent => minHeight;
+
 
   @override
-  double get maxExtent => maxHeight;
+  double get minExtent => (minHeight + paddingTop);
 
+  @override
+  double get maxExtent => maxHeight + paddingTop;
+
+
+  double get paddingTop => Store().contextMedia.padding.top;
 
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
 
-
   @override
   Widget build(BuildContext context,double offset,bool overlaps) {
-    // statusBar = MediaQuery.of(context).padding.top;
     double limitOffset = (maxExtent - minExtent);
-    stretch= min(1,offset /limitOffset);
-    shrink = max(0.0,(limitOffset - offset) / (limitOffset * 1.0));
-
-    return Material(
-      elevation: this.elevation,
-      color: Theme.of(context).primaryColor,
-      clipBehavior: Clip.hardEdge,
-      // shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(5,3))),
-      // shape: BeveledRectangleBorder(
-      //   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(46.0)),
-      // ),
-      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(3, 3))),
-      // shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(5, 3))),
-      child: new SizedBox.expand(
-        child: Container(
-          padding: new EdgeInsets.only(top: statusBar),
+    if (limitOffset > 0){
+      stretch= min(1,offset /limitOffset);
+      shrink = max(0.0,(limitOffset - offset) / (limitOffset * 1.0));
+    }
+    return Container(
+      decoration: new BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(3, 2))
+      ),
+      padding: EdgeInsets.only(bottom: 0.5),
+      child: Container(
+        padding: EdgeInsets.only(top: paddingTop),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(5, 2))
+        ),
+        child: new SizedBox.expand(
           child: builder(context,offset,overlaps,stretch,shrink)
         )
       )
@@ -246,115 +243,31 @@ class WidgetHeaderSliver extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRebuild(WidgetHeaderSliver oldDelegate) {
-    return true;
-  }
+  bool shouldRebuild(WidgetHeaderSliver oldDelegate) => true;
 }
 
 class WidgetBottomNavigation extends StatelessWidget {
-  WidgetBottomNavigation(
-    {
-      this.child,
-      this.color,
-      this.elevation:2.30,
-    }
-  );
-  final Color color;
-  final double elevation;
+  WidgetBottomNavigation({this.child});
   final Widget child;
+
+  double get paddingBottom => Store().contextMedia.padding.bottom;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: new BoxDecoration(
-        // color: Colors.grey,
-        // color: Theme.of(context).primaryColor,
         color: Theme.of(context).backgroundColor,
         borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
       ),
-
+      padding: EdgeInsets.only(top: 0.5),
       child: Container(
-        margin: EdgeInsets.only(top: 0.5),
-        padding: EdgeInsets.only(top: 5),
+        padding: EdgeInsets.only(top:5,bottom: paddingBottom),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
-          borderRadius: new BorderRadius.vertical(top: Radius.elliptical(4, 4))
+          borderRadius: new BorderRadius.vertical(top: Radius.elliptical(5, 2))
         ),
         child: this.child
       )
     );
-    // return Material(
-    //   elevation:  this.elevation,
-    //   // color: this.color,
-    //   // color: Theme.of(context).backgroundColor,
-    //   color: Theme.of(context).primaryColor,
-    //   shadowColor: Colors.black,
-    //   // color: Colors.white,
-    //   // clipBehavior: Clip.hardEdge,
-    //   clipBehavior: Clip.antiAliasWithSaveLayer,
-    //   shape: new RoundedRectangleBorder(
-    //     // side: BorderSide( color: Colors.grey, width:0.2),
-    //     // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(10, 10))
-    //     // borderRadius: BorderRadius.vertical(top: Radius.circular(7))
-    //     borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
-    //   ),
-    //   child: this.child
-    // );
   }
 }
-
-/*
-return Material(
-      elevation: widget.elevation,
-      color: Colors.white,
-      shadowColor: Colors.white,
-
-      borderOnForeground: true,
-      // clipBehavior: Clip.hardEdge,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      // shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.vertical(top: Radius.elliptical(10, 5))),
-      shape: new RoundedRectangleBorder(
-        // side: BorderSide( color: Colors.grey, width:0.2),
-        // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(10, 10))
-        borderRadius: BorderRadius.vertical(top: Radius.circular(7))
-      ),
-      // shape: new RoundedRectangleBorder(side: BorderSide(color: Colors.black, width: 2.0)),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: children()
-      )
-    );
-
-Container(
-  color: Theme.of(context).backgroundColor,
-  child:  Center(
-    child: CircularProgressIndicator(strokeWidth: 1,valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue))
-  )
-)
-
-ClipRRect(
-  // borderRadius: BorderRadius.circular(40.0),
-  // borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
-  borderRadius: new BorderRadius.vertical(top: Radius.elliptical(5, 5)),
-
-  child: Container(
-    // height: 800.0,
-    width: double.infinity,
-    // margin: EdgeInsets.only(top: 1),
-    // margin: EdgeInsets.symmetric(horizontal: 4,vertical: 4),
-    // padding: EdgeInsets.only(top: 1),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
-      // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(5, 50)),
-      // border: Border.all(color: Colors.blue),
-      boxShadow: [
-        new BoxShadow(color: Colors.grey, offset: Offset(0, -1),spreadRadius: 1,blurRadius:5)
-      ]
-    ),
-    child:
-  ),
-);
-*/

@@ -5,11 +5,17 @@
   - [x] flexible appbar
   - [x] flexible bottom nav
 
+  - about
+    - [ ] detail (count langs, count books)
+    - [ ] update notes
+    - [ ] version
+
   - search
     - [ ] result header sticky
     - [x] keyword highlight
     - [ ] result count
     - [ ] suggestion result count
+    - [ ] delete suggestion
 
   - bible
     - [x] chapter list

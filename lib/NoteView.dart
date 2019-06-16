@@ -42,7 +42,7 @@ class NoteView extends NoteState {
           delegate: WidgetHeaderSliver(bar)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: 54),
+          padding: EdgeInsets.only(bottom: store.bottomBarHeightMax),
           sliver: bookmarks()
         )
       ]

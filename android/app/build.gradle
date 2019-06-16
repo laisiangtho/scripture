@@ -54,7 +54,7 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        setProperty("archivesBaseName", "$versionCode.$platformName")
+        // setProperty("archivesBaseName", "$versionCode.$platformName")
         // ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         ndk {
           abiFilters 'armeabi-v7a' ,'arm64-v8a','x86','x86_64'

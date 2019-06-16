@@ -43,8 +43,9 @@ class HomeView extends HomeState {
   }
 
   void _reorderDone(Key item) {
-    final draggedItem = collection.book[_indexOfKey(item)];
-    debugPrint("Reordering finished for ${draggedItem.name}}");
+    store.writeCollection();
+    // final draggedItem = collection.book[_indexOfKey(item)];
+    // debugPrint("Reordering finished for ${draggedItem.name}}");
   }
 
   @override
@@ -78,10 +79,10 @@ class HomeView extends HomeState {
         new SliverPersistentHeader(
           pinned: true,
           floating: true,
-          delegate: WidgetHeaderSliver(bar,maxHeight: 140,statusBar: MediaQuery.of(context).padding.top)
+          delegate: new WidgetHeaderSliver(bar,maxHeight: 140)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: 40),
+          padding: EdgeInsets.only(bottom: store.bottomBarHeightMax),
           sliver: new SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) => BookItem(
@@ -138,7 +139,7 @@ class HomeView extends HomeState {
               onPressed: (){
                 if (isSorting) store.writeCollection();
                 setState(() {
-                isSorting = !isSorting;
+                  isSorting = !isSorting;
                 });
               }
             ),
@@ -219,7 +220,7 @@ class BookItem extends StatelessWidget {
         opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
         child: IntrinsicHeight(
           child: new ListTile(
-            dense: true,
+            // dense: true,
             // contentPadding: EdgeInsets.symmetric(horizontal: 25),
             // leading: CircleAvatar(
             //   child: Text(
@@ -251,7 +252,7 @@ class BookItem extends StatelessWidget {
                   padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isAvailable?Colors.green:Colors.grey[200]
+                    color: isAvailable?Colors.grey:Colors.grey[200]
                   ),
                   child: Text(
                     book.language.name.toUpperCase(),

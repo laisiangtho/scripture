@@ -141,8 +141,7 @@ class SearchView extends SearchState {
           delegate: WidgetHeaderSliver(bar)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: widget.focusNode.hasFocus?0:54),
-          // padding: EdgeInsets.only(bottom: 54),
+          padding: EdgeInsets.only(bottom: widget.focusNode.hasFocus?0:store.bottomBarHeightMax),
           sliver: widget.focusNode.hasFocus?suggest():result(),
         )
       ]

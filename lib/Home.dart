@@ -47,6 +47,9 @@ abstract class HomeState extends State<Home> {
     widget.scrollController?.addListener(() => setState(() {}));
     updateCollectionCallBack = updateCollectionAction;
     // updateAvailableCallBack = updateAvailableAction;
+    // double abc = MediaQuery.of(context).padding.top;
+    // EdgeInsets contextPadding = MediaQuery.of(context).padding;
+
   }
 
   @override
