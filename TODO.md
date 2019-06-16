@@ -2,8 +2,22 @@
   - [x] Scroll to top
   - [x] bookmarks
   - [ ] share
-  - [x] flexible appbar
-  - [x] flexible bottom nav
+
+  - bottomSheet
+     - [ ] Offset/visibility(iOS)
+
+  - appbar
+    - [x] flexible
+    - [ ] bookName & Chapter alignment Center??
+
+  - bottomBar/navBar/menuBar/tabBar
+    - [x] flexible
+    - [ ] fully hide on scale
+    - [ ] button paddding (iOS-8)
+
+  - [ ] Popup Offset/width
+  - [ ] Offset & Width chapter navigator
+  - [x] iOS Launch icon & screen
 
   - about
     - [ ] detail (count langs, count books)

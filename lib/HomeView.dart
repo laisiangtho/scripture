@@ -232,7 +232,7 @@ class BookItem extends StatelessWidget {
             // ),
             title: Text(
               book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,color: isAvailable?Colors.black:Colors.grey)
+              style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,fontSize: 20,color: isAvailable?Colors.black:Colors.grey)
             ),
             subtitle: Row(
               mainAxisSize: MainAxisSize.min,
@@ -274,7 +274,7 @@ class BookItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 17,color: Colors.black)),
+                Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 15,color: Colors.black)),
                 Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.black:Colors.grey[200], size: 20),
                 dragHandle
               ]
