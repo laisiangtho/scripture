@@ -38,7 +38,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
   int _pageIndex = 0;
 
 
-  double navMaxheight = 40.0, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
+  double navMaxheight = 50.0, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
   double scrollOffsetCalc = 0.0;
 
   @override
@@ -48,7 +48,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
 
     _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Book"));
     _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Read"));
-    _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"));
+    _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmarkinsas dfasf asdf"));
     _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
     // _pageButton.add(BottomBarItem(icon:Icons.more_horiz, label:"More"));
 
@@ -112,19 +112,25 @@ class StateExtended extends State<MainBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: new Scaffold(
-        key: scaffoldKey,
-        resizeToAvoidBottomInset: true,
-        body: new PageView(
-          controller: pageController,onPageChanged: navPageChanged,
-          physics:new NeverScrollableScrollPhysics(),
-          // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
-          children:_page
-        ),
-        extendBody: true,
-        bottomNavigationBar: viewNavigation()
-      )
+    // navMaxheight = 40 + MediaQuery.of(context).padding.bottom;
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SafeArea(
+        // top: false,
+        // bottom: false,
+        child: new Scaffold(
+          key: scaffoldKey,
+          resizeToAvoidBottomInset: true,
+          body: new PageView(
+            controller: pageController,onPageChanged: navPageChanged,
+            physics:new NeverScrollableScrollPhysics(),
+            // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
+            children:_page
+          ),
+          extendBody: true,
+          bottomNavigationBar: viewNavigation()
+        )
+      ),
     );
   }
   /*
@@ -154,11 +160,12 @@ class StateExtended extends State<MainBottomNavigationBar> {
       alignment: Alignment.bottomCenter,
       children: <Widget>[
         Positioned(
-          bottom: _scrollOffset,
+          bottom: (_scrollOffset > 0)?0:_scrollOffset,
           width: MediaQuery.of(context).size.width,
           child: Container(
             width: double.infinity,
             height: navMaxheight,
+            // padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
             child: SizedBox.shrink(
               child: viewBottomNavigationCustom()
             )
@@ -219,7 +226,7 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
 
   List<Widget> children() {
     List<Widget> button = List();
-    // double width = MediaQuery.of(context).size.width/widget.items.length;
+    double width = MediaQuery.of(context).size.width/widget.items.length;
     for (int i = 0; i < widget.items.length; i++) {
       BottomBarItem item = widget.items[i];
       bool isSelectedButton = widget.index == i;
@@ -252,10 +259,11 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
       button.add(
         CupertinoButton(
           pressedOpacity: 0.5,
-          padding: EdgeInsets.all(6),
+          // minSize: width-7,
+          padding: EdgeInsets.all(0.5),
           child: AnimatedContainer(
             // margin: EdgeInsets.symmetric(vertical: 7,horizontal: 2),
-            padding: EdgeInsets.symmetric(vertical: 3,horizontal: 12),
+            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 12),
             decoration: BoxDecoration(
               color: isSelectedButton?Colors.grey.withOpacity(1):null,
               borderRadius: BorderRadius.all(Radius.circular(30))
@@ -266,14 +274,25 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(item.icon, size:20,color: isSelectedButton? Colors.white:Colors.grey[500]),
+                Icon(item.icon, size:25,color: isSelectedButton? Colors.white:Colors.grey[500]),
 
                 SizedBox(width:2),
                 AnimatedSize(
                   vsync: this,
                   duration: widget.animationDuration,
                   curve: Curves.easeInOut,
-                  child: Text(isSelectedButton?item.label:'',style: TextStyle(color: Colors.white,fontSize: 10),),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: width-10,
+                      maxHeight: double.infinity
+                    ),
+                    child: Text(
+                      isSelectedButton?item.label:'',
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                      style: TextStyle(color: Colors.white,fontSize: 15)
+                    )
+                  )
                 )
               ]
             ),

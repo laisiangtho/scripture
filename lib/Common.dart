@@ -110,6 +110,7 @@ class WidgetError extends StatelessWidget {
     );
   }
 }
+
 class WidgetEmptyIdentify extends StatelessWidget {
   WidgetEmptyIdentify({
     this.startWith:'...',
@@ -137,19 +138,19 @@ class WidgetEmptyIdentify extends StatelessWidget {
         // strutStyle: StrutStyle(fontSize: 30.0, height: 0.7),
         text: TextSpan(
           text: this.startWith,
-          style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 18,color: Colors.grey,height: 0.9),
+          style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 28,color: Colors.grey,height: 0.9),
           children: <TextSpan>[
             TextSpan(text:this.atLeast),
             TextSpan(
               text: this.enable,
-              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 30),
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 42),
             ),
             TextSpan(
               text: this.task,
             ),
             TextSpan(
               text: this.message,
-              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.brown,fontSize: 20),
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.brown,fontSize: 35),
             ),
             TextSpan(
               text: this.endWith,
@@ -264,23 +265,41 @@ class WidgetBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation:  this.elevation,
-      // color: this.color,
-      // color: Theme.of(context).backgroundColor,
-      color: Theme.of(context).primaryColor,
-      shadowColor: Colors.black,
-      // color: Colors.white,
-      // clipBehavior: Clip.hardEdge,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: new RoundedRectangleBorder(
-        // side: BorderSide( color: Colors.grey, width:0.2),
-        // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(10, 10))
-        // borderRadius: BorderRadius.vertical(top: Radius.circular(7))
+    return Container(
+      decoration: new BoxDecoration(
+        // color: Colors.grey,
+        // color: Theme.of(context).primaryColor,
+        color: Theme.of(context).backgroundColor,
         borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
       ),
-      child: this.child
+
+      child: Container(
+        margin: EdgeInsets.only(top: 0.5),
+        padding: EdgeInsets.only(top: 5),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: new BorderRadius.vertical(top: Radius.elliptical(4, 4))
+        ),
+        child: this.child
+      )
     );
+    // return Material(
+    //   elevation:  this.elevation,
+    //   // color: this.color,
+    //   // color: Theme.of(context).backgroundColor,
+    //   color: Theme.of(context).primaryColor,
+    //   shadowColor: Colors.black,
+    //   // color: Colors.white,
+    //   // clipBehavior: Clip.hardEdge,
+    //   clipBehavior: Clip.antiAliasWithSaveLayer,
+    //   shape: new RoundedRectangleBorder(
+    //     // side: BorderSide( color: Colors.grey, width:0.2),
+    //     // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(10, 10))
+    //     // borderRadius: BorderRadius.vertical(top: Radius.circular(7))
+    //     borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
+    //   ),
+    //   child: this.child
+    // );
   }
 }
 

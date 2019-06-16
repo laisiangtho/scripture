@@ -11,11 +11,17 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.white, //top bar color
+      statusBarBrightness: Brightness.light, // iOS
       statusBarIconBrightness: Brightness.dark, //top bar icons
       systemNavigationBarColor: Colors.white, //bottom bar color
       systemNavigationBarIconBrightness: Brightness.dark, //bottom bar icons
     )
   );
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+  //   statusBarColor: Colors.white, // Color for Android
+  //   statusBarBrightness: Brightness.light, // Dark == white status bar -- for IOS.
+  //   statusBarIconBrightness: Brightness.dark,
+  // ));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) => runApp(LaiSiangtho()));
 }
