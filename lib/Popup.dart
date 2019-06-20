@@ -84,11 +84,16 @@ class _PopupState extends State<Popup> with SingleTickerProviderStateMixin {
           bottom: widget.bottom,
           left: widget.left,
           child: Material(
-            shape: _ShapedArrow(arrow:widget.arrow, borderRadius: BorderRadius.all( Radius.circular(3)), padding: widget.padding),
+            // shape: _ShapedArrow(arrow:widget.arrow, borderRadius: BorderRadius.all( Radius.elliptical(3,3)), padding: widget.padding),
+            shape: _ShapedArrow(arrow:widget.arrow, borderRadius: BorderRadius.all( Radius.elliptical(3,3)), padding: widget.padding),
+            clipBehavior: Clip.hardEdge,
             elevation:0,
             color: widget.backgroundColor,
             child: Container(
-              padding: EdgeInsets.all(widget.padding).copyWith(bottom:widget.padding * 2),
+              // padding: EdgeInsets.all(widget.padding).copyWith(bottom:widget.padding * 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all( Radius.elliptical(3,3))
+              ),
               child: SizedBox(
                 width: widget.width,
                 height: fixedHeight,

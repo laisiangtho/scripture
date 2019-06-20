@@ -108,12 +108,7 @@ class LaiSiangtho extends StatelessWidget {
         )
       ),
       title: 'Lai Siangtho',
-      home: MainBottomNavigationBar(),
-      // initialRoute: 'Home',
-      // routes: <String, WidgetBuilder>{
-      //   'Home': (context) => new Home(),
-      //   'bible': (context) => new Bible()
-      // }
+      home: MainBottomNavigationBar()
     );
   }
 }

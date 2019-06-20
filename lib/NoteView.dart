@@ -11,7 +11,7 @@ class NoteView extends NoteState {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: widget.key,
+      // key: widget.key,
       body: FutureBuilder(
         future: store.bible,
         builder: (BuildContext context, AsyncSnapshot e){
@@ -32,8 +32,8 @@ class NoteView extends NoteState {
   }
   Widget buildScrollView() {
     return CustomScrollView(
-      key: widget.key,
-      // controller: widget.scrollController,
+      // key: widget.key,
+      // controller: store.scrollController,
       semanticChildCount: 0,
       slivers: <Widget>[
         new SliverPersistentHeader(
@@ -42,7 +42,7 @@ class NoteView extends NoteState {
           delegate: WidgetHeaderSliver(bar)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: store.bottomBarHeightMax),
+          padding: EdgeInsets.only(bottom: store.contentBottomPadding),
           sliver: bookmarks()
         )
       ]

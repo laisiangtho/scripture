@@ -51,7 +51,7 @@ class HomeView extends HomeState {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      // key: widget.scaffoldKey,
+
       key: scaffoldKey,
       body: ReorderableList(
         onReorder: _reorderCallback,
@@ -74,7 +74,7 @@ class HomeView extends HomeState {
 
   Widget _body() {
     return CustomScrollView(
-      controller: widget.scrollController,
+      controller: store.scrollController,
       slivers: <Widget>[
         new SliverPersistentHeader(
           pinned: true,
@@ -82,7 +82,7 @@ class HomeView extends HomeState {
           delegate: new WidgetHeaderSliver(bar,maxHeight: 140)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: store.bottomBarHeightMax),
+          padding: EdgeInsets.only(bottom: store.contentBottomPadding),
           sliver: new SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) => BookItem(
@@ -151,8 +151,12 @@ class HomeView extends HomeState {
   }
 
   void showSheetInfo(CollectionBook book) {
-    // widget.scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() {});
-    scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) => SheetInfo(book)).closed.whenComplete(() => setState(() { }));
+    // widget.bottomSheet((BuildContext context)=>SheetInfo(book)).closed.whenComplete(() {
+    //   setState((){});
+    // });
+    widget.bottomSheet((BuildContext context)=>SheetInfo(book)).whenComplete(() {
+      setState((){});
+    });
   }
 }
 

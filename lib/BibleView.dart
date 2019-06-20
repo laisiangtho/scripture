@@ -3,19 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-// import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:math';
 import 'dart:ui';
-// import 'package:meta/meta.dart';
 
 import 'Common.dart';
 
 import 'StoreModel.dart';
-// import 'BibleSearch.dart';
 import 'Bible.dart';
 
 
@@ -29,7 +25,6 @@ class BibleView extends BibleState{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: widget.key,
       body: FutureBuilder(
         future: store.activeName(),
         builder: (BuildContext context, AsyncSnapshot e){
@@ -49,51 +44,49 @@ class BibleView extends BibleState{
         }
       ),
       extendBody: true,
-      bottomNavigationBar: bottomStack(),
-      // bottomSheet: bottomStack(),
-
+      bottomNavigationBar: bottomStack()
     );
-
   }
 
   Stack bottomStack() {
-    // print(doubleAnimation.value*store.offset);
-    double navVertical = -25*store.offset;
+    double defaultBottom = store.contentBottomPadding + 10;
+    double offsetVertical = -30*store.offset;
+    double offsetBottom = defaultBottom-(defaultBottom*store.offset);
+    // double offsetBottom = defaultBottom*store.offset;
+    RawMaterialButton chapterNavigation(IconData icon, BorderRadius radius, Function onPressed){
+      return new RawMaterialButton(
+        elevation: 0,
+        highlightElevation: 0.0,
+        fillColor: Theme.of(context).backgroundColor.withOpacity(0.8),
+        shape: new RoundedRectangleBorder(borderRadius: radius),
+        constraints: BoxConstraints(minHeight: 35, minWidth: 40, maxWidth: 50),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        child: new Icon(icon,color: Colors.white),
+        onPressed: () => onPressed()
+      );
+    }
     return Stack(
       children: <Widget>[
         Positioned(
-          bottom:60-(60*store.offset),
-          left:navVertical,
-          child:new RawMaterialButton(
-            elevation: 0,
-            highlightElevation: 0.0,
-            // fillColor: Colors.white,
-            fillColor: Theme.of(context).backgroundColor.withOpacity(0.8),
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.horizontal(right: Radius.elliptical(10, 20))),
-            constraints: BoxConstraints(minHeight: 30, minWidth: 30, maxWidth: 40),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            child: new Icon(Icons.chevron_left,color: Colors.white),
-            onPressed:()=>setPreviousChapter()
-          ),
+          bottom:offsetBottom,
+          left:offsetVertical,
+          child: chapterNavigation(
+            Icons.chevron_left,
+            new BorderRadius.horizontal(right: Radius.elliptical(10, 20)),
+            setPreviousChapter
+          )
         ),
         Positioned(
-          bottom: 60-(60*store.offset),
-          right:navVertical,
-          child:new RawMaterialButton(
-            elevation: 0,
-            highlightElevation: 0.0,
-            // fillColor: Colors.white,
-            fillColor: Theme.of(context).backgroundColor.withOpacity(0.8),
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.horizontal(left: Radius.elliptical(10, 20))),
-            // shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.all(Radius.elliptical(10, 20))),
-            constraints: BoxConstraints(minHeight: 30, minWidth: 30, maxWidth: 40),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            child: new Icon(Icons.chevron_right,color: Colors.white,),
-            onPressed:()=>setNextChapter()
-          ),
+          bottom: offsetBottom,
+          right:offsetVertical,
+          child: chapterNavigation(
+            Icons.chevron_right,
+            new BorderRadius.horizontal(left: Radius.elliptical(10, 20)),
+            setNextChapter
+          )
         ),
         Positioned(
-          top: 70,
+          top: 100,
           right:0,
           child: selectedVerse.isNotEmpty?Material(
             elevation:0.2,
@@ -104,28 +97,31 @@ class BibleView extends BibleState{
             // shape: BeveledRectangleBorder(
             //   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(46.0)),
             // ),
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.horizontal(left: Radius.elliptical(2, 2))),
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.horizontal(left: Radius.elliptical(20, 70))),
             child: selectedOption()
           ):Container()
         )
       ]
     );
+
   }
+
   CustomScrollView body() {
     return CustomScrollView(
-      controller: widget.scrollController,
+      controller: store.scrollController,
       slivers: <Widget>[
         new SliverPersistentHeader(
           pinned: true, floating: true,
           delegate: WidgetHeaderSliver(bar,minHeight: 20)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: store.bottomBarHeightMax),
+          padding: EdgeInsets.only(bottom: store.contentBottomPadding),
           sliver: futureBuilderSliver()
         )
       ]
     );
   }
+
   Widget futureBuilderSliver(){
     return new FutureBuilder(
       future: store.verseChapter,
@@ -136,10 +132,29 @@ class BibleView extends BibleState{
           );
         }
         if (snap.hasData) {
-          return SliverList(
-            delegate: new SliverChildBuilderDelegate(
-              (BuildContext context, int index) => _verses(snap.data,index),
-              childCount: snap.data.length
+          return SliverToBoxAdapter(
+            child: GestureDetector(
+              child: ListView.builder(
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snap.data.length,
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                itemBuilder: (BuildContext context, int index) => _verses(snap.data,index)
+              ),
+              // onVerticalDragUpdate: (drag) {
+              //   if (drag.delta.dy > 10) print('down ${drag.delta.dy}');
+              //   if (drag.delta.dy < -10) print('up ${drag.delta.dy}');
+              // },
+              // onHorizontalDragUpdate: (drag) {
+              //   if (drag.delta.dx > 2) setNextChapter();
+              //   if (drag.delta.dx < -2) setPreviousChapter();
+              // },
+              // onVerticalDragEnd: (e){
+              //   print('object $e');
+              // },
+              onHorizontalDragEnd: (e){
+                print('object $e');
+              },
             )
           );
         } else {
@@ -150,51 +165,14 @@ class BibleView extends BibleState{
       }
     );
   }
-  Widget futureBuilderWithGesture(){
-    return GestureDetector(
-      child: FutureBuilder(
-        future: store.verseChapter,
-        builder: (BuildContext context, AsyncSnapshot<List<VERSE>> snap) {
-          if (snap.hasError) print(snap.error);
-          return snap.hasData? Container(
-            // padding: EdgeInsets.all(4.0),
-            child: ListView.builder(
-              // padding: EdgeInsets.only(top: 0),
-              // scrollDirection: Axis.vertical,
-              // shrinkWrap: true,
-              // primary: true,
-              // key: scaffoldKey,
-              // controller: scrollController,
-              // physics: ClampingScrollPhysics(),
-              physics: ScrollPhysics(),
-              // physics: ScrollPhysics(),
-              itemCount: snap.data.length,
-              itemBuilder: (BuildContext context, int index) => _verses(snap.data,index)
-            )
-          ):Center(child: CircularProgressIndicator());
-        }
-      ),
-      onVerticalDragUpdate: (drag) {
-        if (drag.delta.dy > 10) print('down ${drag.delta.dy}');
-        if (drag.delta.dy < -10) print('up ${drag.delta.dy}');
-      },
-      onHorizontalDragUpdate: (drag) {
-        if (drag.delta.dx > 2) setNextChapter();
-        if (drag.delta.dx < -2) setPreviousChapter();
-      },
-      onHorizontalDragEnd: (e){},
-      onVerticalDragEnd: (e){},
-    );
-  }
-
 
   Widget _verses(List<VERSE> verseList, index){
     VERSE verse = verseList[index];
     bool isSelected = selectedVerse.indexWhere((i)=>i==verse.verse) >= 0;
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      dense: true,
+      contentPadding: EdgeInsets.symmetric(horizontal: 7, vertical: 0),
+      // dense: true,
       onTap: () {
         setState(() {
           if (isSelected){
@@ -225,7 +203,7 @@ class BibleView extends BibleState{
               TextSpan(
                 text: verse.verseText,
                 style: TextStyle(
-                  color: isSelected?Colors.white:null,
+                  // color: isSelected?Colors.red:null,
                   // backgroundColor: isSelected?Colors.grey:null,
                   backgroundColor: isSelected?Theme.of(context).backgroundColor:null,
                   // background: Paint(),
@@ -243,6 +221,7 @@ class BibleView extends BibleState{
       )
     );
   }
+
   void showSheetOption() {
     // Scaffold.of(context).showBottomSheet((BuildContext context) => ??).closed.whenComplete(() {}});
     // scaffoldKey.currentState.showBottomSheet((BuildContext context) => ??).closed.whenComplete(() {}});
@@ -276,11 +255,12 @@ class BibleView extends BibleState{
           );
         },
       // barrierColor: Colors.white.withOpacity(0.3),
-      pageBuilder: (BuildContext context,x, y) => PopupBook(shrinkOffset: shrinkOffset)
+      pageBuilder: (BuildContext context,x, y) => PopupBook(mainContext: keyBookButton.currentContext.findRenderObject())
     )).then((e){
       setBookChapter(e);
     });
   }
+
   void chapterPopup (double shrinkOffset) {
     Navigator.of(context).push(PageRouteBuilder(
       opaque: false,
@@ -294,11 +274,12 @@ class BibleView extends BibleState{
           child: child
         );
       },
-      pageBuilder: (BuildContext context, x, y) => PopupChapter(shrinkOffset: shrinkOffset,chapterCount:activeName.chapterCount)
+      pageBuilder: (BuildContext context, x, y) => PopupChapter(mainContext: keyChapterButton.currentContext.findRenderObject(),chapterCount:activeName.chapterCount)
     )).then((e){
       setChapter(e);
     });
   }
+
   void optionPopup (double shrinkOffset) {
     Navigator.of(context).push(PageRouteBuilder(
       opaque: false,
@@ -317,26 +298,20 @@ class BibleView extends BibleState{
     });
   }
 
-
   Widget selectedOption(){
     return Column(
-      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
-      // verticalDirection: VerticalDirection.up,
       children: <Widget>[
         CupertinoButton(
-          padding: EdgeInsets.all(0),
-          // child: Text('Copy'),
-          minSize: 30,
-          child: Icon(Icons.content_copy,size:15),
+          // padding: EdgeInsets.all(7),
+          child: Icon(Icons.content_copy,size:19),
           onPressed:(){
             this.getSelectedVerse.then((e){
               Clipboard.setData(new ClipboardData(text: e)).whenComplete((){
-                // Navigator.pop(context,'copy');
               });
             });
-            // Clipboard.setData(new ClipboardData(text: _copy));
           }
         ),
         // CupertinoButton(
@@ -352,14 +327,12 @@ class BibleView extends BibleState{
         //   onPressed:(){}
         // ),
         CupertinoButton(
-          padding: EdgeInsets.all(0),
-          minSize: 30,
-          child: Icon(Icons.cancel, size:15),
+          // padding: EdgeInsets.all(0),
+          child: Icon(Icons.cancel, size:19),
           onPressed:(){
             setState((){
               selectedVerse.clear();
             });
-            // Navigator.pop(context,'clear');
           }
         )
       ]
@@ -367,126 +340,81 @@ class BibleView extends BibleState{
   }
 
   Widget bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink){
+
     double width = MediaQuery.of(context).size.width/2;
     // double commaWidth=1.0, chapterWidth=50.0, taskWidth=width - (commaWidth + chapterWidth);
-    Widget titleContainer({Alignment alignment,double width,String title,Function onPress, BorderRadius borderRadius}){
+    Widget titleContainer({key,double width:100,String title,Function onPress, BorderRadius borderRadius}){
       return Container(
-        alignment: alignment,
-        constraints: BoxConstraints(maxWidth: width,minWidth: 60.0),
+        key:key,
+        constraints: BoxConstraints(maxWidth: width, minWidth:30.0),
         child: CupertinoButton(
           color: Colors.grey[200].withOpacity(shrink),
-          minSize: 28,
-          padding: EdgeInsets.symmetric(vertical:0, horizontal:10*shrink),
+          minSize: 30,
+          padding: EdgeInsets.symmetric(vertical:0, horizontal:15*shrink),
           borderRadius: borderRadius,
           child: Text(
-            title,maxLines: 1,overflow: TextOverflow.clip, textScaleFactor: max(0.7, shrink),
-            // textAlign: TextAlign.right,
+            title,maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, shrink),
             style: TextStyle(
-              color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 16
+              color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 18
             )
           ),
           onPressed: onPress
-        ),
+        )
       );
     }
 
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
+    return Stack(
       children: <Widget>[
         Align(
           widthFactor: 1,
-          child: Opacity(
-            opacity: 1,
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              minSize: 30,
-              child:Icon(isChapterBookmarked?Icons.bookmark:Icons.bookmark_border,color:isChapterBookmarked?Colors.red:Colors.grey[300],size: (10*shrink)+20),
-              onPressed: () {
-                store.addCollectionBookmark().then((e){
-                  setState((){});
-                });
-              }
-            )
-          )
-        ),
-        titleContainer(
-          alignment: Alignment.centerRight,
-          width: (width-30),
-          title: activeName.bookName,
-          onPress: ()=>booksPopup(shrink),
-          borderRadius: new BorderRadius.horizontal(left:Radius.circular(30))
-        ),
-        Container(
-          alignment: Alignment.center,
-          constraints: BoxConstraints(maxWidth:shrink),
-          child:Opacity(
-            opacity: stretch,
-            child:  Text(',',style: TextStyle(color: Colors.grey))
-          )
-        ),
-        titleContainer(
           alignment: Alignment.centerLeft,
-          width: 69,
-          title: store.digit(store.chapterId),
-          onPress: ()=>chapterPopup(shrink),
-          borderRadius: new BorderRadius.horizontal(right:Radius.circular(30))
-        ),
-        Container(
-          constraints: BoxConstraints(
-            minWidth: width-70,
-          ),
-          child: new ButtonTheme(
-            padding: EdgeInsets.zero,
-            child: new ButtonBar(
-              // alignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Align(
-                //   widthFactor: shrink,
-                //   child: Opacity(
-                //     opacity: shrink,
-                //     child: CupertinoButton(
-                //       padding: EdgeInsets.zero,
-                //       minSize: 30,
-                //       child:Icon(CupertinoIcons.info,color:Colors.grey,size: (8*shrink)+15),
-                //       onPressed: () {
-                //         print('info');
-                //       }
-                //     )
-                //   )
-                // ),
-                // Align(
-                //   widthFactor: shrink,
-                //   child: Opacity(
-                //     opacity: shrink,
-                //     child: CupertinoButton(
-                //       padding: EdgeInsets.zero,
-                //       minSize: 30,
-                //       child:Icon(CupertinoIcons.search,color:Colors.grey,size: (8*shrink)+15),
-                //       onPressed: () {
-                //         print('search');
-                //       }
-                //     )
-                //   )
-                // ),
-                // Align(
-                //   widthFactor: shrink,
-                //   child: Opacity(
-                //     opacity: shrink,
-                //     child: CupertinoButton(
-                //       padding: EdgeInsets.zero,
-                //       minSize: 30,
-                //       child:Icon(Icons.format_size,color:Colors.grey,size: (8*shrink)+15),
-                //       onPressed: () => optionPopup(shrink)
-                //     )
-                //   )
-                // )
-              ]
-            )
+          child: CupertinoButton(
+            // padding: EdgeInsets.zero,
+            // color: Colors.red,
+            padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
+            // padding: EdgeInsets.lerp(EdgeInsets.symmetric(vertical: 0,horizontal: 0), EdgeInsets.symmetric(vertical: 0,horizontal: 0), shrink),
+            minSize: 30,
+            child:Icon(isChapterBookmarked?Icons.bookmark:Icons.bookmark_border,color:isChapterBookmarked?Colors.red:Colors.grey[300],size: (10*shrink)+20),
+            onPressed: () {
+              store.addCollectionBookmark().then((e){
+                setState((){});
+              });
+            }
           )
-        )
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              titleContainer(
+                key: keyBookButton,
+                width: width,
+                title: activeName.bookName,
+                onPress: ()=>booksPopup(shrink),
+                borderRadius: new BorderRadius.horizontal(left:Radius.circular(30))
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                width: 1,
+                child:Opacity(
+                  opacity: stretch,
+                  child:  Text(',',style: TextStyle(color: Colors.grey))
+                )
+              ),
+              titleContainer(
+                key: keyChapterButton,
+                title: store.digit(store.chapterId),
+                onPress: ()=>chapterPopup(shrink),
+                borderRadius: new BorderRadius.horizontal(right:Radius.circular(30))
+              )
+            ]
+          )
+        ),
+        // Align(
+        //   alignment: Alignment.centerRight,
+        //   child: Icon(Icons.format_size,color:Colors.grey[300],size: (10*shrink)+20)
+        // )
       ]
     );
   }

@@ -7,13 +7,8 @@ import 'Store.dart';
 import 'StoreModel.dart';
 
 class PopupBook extends StatefulWidget {
-  PopupBook(
-    {
-      Key key,
-      this.shrinkOffset:1.0,
-    }
-  ) : super(key: key);
-  final double shrinkOffset;
+  PopupBook({this.mainContext});
+  final RenderBox mainContext;
 
   @override
   State<StatefulWidget> createState() => _Chapter();
@@ -29,15 +24,16 @@ class _Chapter extends State<PopupBook> with TickerProviderStateMixin {
   }
   @override
   Widget build(BuildContext context) {
-    double paddingTop = MediaQuery.of(context).padding.top;
-    double halfWidth = (MediaQuery.of(context).size.width/2) - 20;
+    final Size targetSize = widget.mainContext.size;
+    final Offset targetPosition = widget.mainContext.localToGlobal(Offset.zero);
+
+    double halfWidth = (MediaQuery.of(context).size.width/2) - 50;
     return Popup(
-      offsetPersentage: widget.shrinkOffset,
       right:halfWidth,
-      // top:  20*widget.shrinkOffset+43,
-      top:  (10*widget.shrinkOffset)+paddingTop+40,
-      arrow:  140,
-      height: 500,
+      left: 10,
+      height: MediaQuery.of(context).size.height,
+      top: targetPosition.dy + targetSize.height + 7,
+      arrow: targetPosition.dx + (targetSize.width/2)-15,
       child: FutureBuilder<List<BOOK>>(
         future: store.bookTitle,
         builder: (BuildContext context, AsyncSnapshot<List<BOOK>> e) {
@@ -47,10 +43,10 @@ class _Chapter extends State<PopupBook> with TickerProviderStateMixin {
     );
   }
   ListView view(books){
-    return ListView.separated(
-      separatorBuilder: (context, index) => Divider( color: Colors.grey, height: 0),
+    return ListView.builder(
+      // separatorBuilder: (context, index) => Divider( color: Colors.white, height: 2),
       padding: EdgeInsets.zero,
-      shrinkWrap: true,
+      // shrinkWrap: true,
       itemCount: books.length,
       itemBuilder: (BuildContext context, int index) {
         BOOK book = books[index];
@@ -59,9 +55,10 @@ class _Chapter extends State<PopupBook> with TickerProviderStateMixin {
     );
   }
 
-  Padding header(BOOK testament){
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal:5.0, vertical:5),
+  Widget header(BOOK testament){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal:5.0, vertical:10),
+      // color: Colors.red,
       child: Text(
         testament.name,
         textAlign: TextAlign.center,
@@ -78,7 +75,8 @@ class _Chapter extends State<PopupBook> with TickerProviderStateMixin {
     bool isCurrentBook = store.bookId == book.id;
     return InkWell(
       child:Container(
-        padding: EdgeInsets.symmetric(vertical:8, horizontal: 10),
+        color: isCurrentBook?Colors.grey[600]:null,
+        padding: EdgeInsets.symmetric(vertical:15, horizontal: 10),
         child: AnimatedSize(
           vsync: this,
           duration: const Duration(milliseconds: 500),
@@ -86,9 +84,8 @@ class _Chapter extends State<PopupBook> with TickerProviderStateMixin {
           child: Text(book.name,
             // textScaleFactor: 0.9,
             style: TextStyle(
-              height: 0.7,
-              color: isCurrentBook?Colors.white30:Colors.white,
-              fontWeight: FontWeight.w200,
+              fontSize: 18,
+              color: Colors.white
             )
           )
         ),

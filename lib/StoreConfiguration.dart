@@ -1,6 +1,7 @@
 // import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 // import 'package:flutter/foundation.dart';
 // import 'package:path_provider/path_provider.dart';
@@ -52,6 +53,8 @@ Future<bool> docsExists(String fileName) async {
   return await documents(fileName).then((File e) async => await e.exists());
 }
 
+
+
 abstract class StoreConfiguration {
   final String appName = 'laisiangtho';
   final String appTitle = 'Lai Siangtho';
@@ -67,9 +70,19 @@ abstract class StoreConfiguration {
   int verseId = 1;
   int verseCount;
   double offset=0.0;
-  double bottomBarHeight=50.0;
-  var contextMedia;
+  bool bottomSheetShow=false;
 
-  // double get contentBottomPadding => this.bottomBarHeight + this.contextMedia.padding.bottom;
-  double get bottomBarHeightMax => this.bottomBarHeight + this.contextMedia.padding.bottom;
+  var contextMedia;
+  double bottomBarHeight=50.0;
+  double get contentBottomPadding => this.bottomBarHeight + this.contextMedia.padding.bottom;
+
+
+  // GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  ScrollController scrollController = new ScrollController();
+  PageController pageController = new PageController();
+  FocusNode focusNode = new FocusNode();
+
+  // GlobalKey keyBottomBar = new GlobalKey();
+  // GlobalKey keyNavigation = new GlobalKey();
+  // var keyNavigation;
 }

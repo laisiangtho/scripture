@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 
-import 'dart:math' as math;
+import 'dart:math';
 
 import 'Store.dart';
 
@@ -18,7 +18,6 @@ import 'Search.dart';
 
 import 'Common.dart';
 
-
 class MainBottomNavigationBar extends StatefulWidget {
 
   @override
@@ -27,46 +26,37 @@ class MainBottomNavigationBar extends StatefulWidget {
 
 class StateExtended extends State<MainBottomNavigationBar> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  ScrollController scrollController = new ScrollController();
-  PageController pageController = new PageController();
-  FocusNode focusNode = new FocusNode();
-  Store store = new Store();
 
+  Store store = new Store();
 
   final List<Widget> _page = [];
   final List<BottomBarItem> _pageButton = [];
   int _pageIndex = 0;
 
-
-  // double navMaxheight = 50.0, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
   double navMaxheight, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
-  double scrollOffsetCalc = 0.0;
+
 
   @override
   void initState() {
-    navMaxheight = store.bottomBarHeight;
-    super.initState();
-    focusNode.addListener(() => setState(() {}));
+    store.focusNode.addListener(() => setState(() {}));
 
     _pageButton.add(BottomBarItem(icon:Icons.flag, label:"Book"));
     _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Read"));
     _pageButton.add(BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"));
     _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
-    // _pageButton.add(BottomBarItem(icon:Icons.local_library, label:"Book"));
-    // _pageButton.add(BottomBarItem(icon:Icons.library_books, label:"Read"));
-    // _pageButton.add(BottomBarItem(icon:Icons.flag, label:"Bookmarkinsas dfasf asdf"));
-    // _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
     // _pageButton.add(BottomBarItem(icon:Icons.more_horiz, label:"More"));
 
-    _page.add(Home(scrollController: scrollController,offset:scrollOffsetCalc,pageController:pageController));
-    _page.add(Bible(scrollController: scrollController,offset:scrollOffsetCalc));
-    _page.add(Note(scrollController: scrollController,offset:scrollOffsetCalc,pageController:pageController));
-    _page.add(Search(scrollController: scrollController,offset:scrollOffsetCalc,focusNode: focusNode));
-    // _page.add(More(scrollController: scrollController,offset:scrollOffsetCalc,));
+    _page.add(Home(bottomSheet:showBottomSheets));
+    _page.add(Bible());
+    _page.add(Note());
+    _page.add(Search());
+    // _page.add(More());
 
-    scrollController..addListener(() {
+    WidgetsBinding.instance.addPostFrameCallback(initAfterLayout);
+
+    store.scrollController.addListener(() {
       setState(() {
-        double offset = scrollController.offset;
+        double offset = store.scrollController.offset;
         _scrollDelta += (offset - _scrollOldOffset);
         if (_scrollDelta > navMaxheight){
           _scrollDelta = navMaxheight;
@@ -75,28 +65,33 @@ class StateExtended extends State<MainBottomNavigationBar> {
         }
         _scrollOldOffset = offset;
 
-        double maxExtent = scrollController.position.maxScrollExtent, limit = maxExtent - navMaxheight;
-        double minExtent = scrollController.position.minScrollExtent;
+        double maxExtent = store.scrollController.position.maxScrollExtent, limit = maxExtent - navMaxheight;
+        double minExtent = store.scrollController.position.minScrollExtent;
         if (offset >= limit ){
-          _scrollDelta = math.max(-(offset - maxExtent),-_scrollDelta);
+          _scrollDelta = max(-(offset - maxExtent),-_scrollDelta);
           _scrollOffset = -_scrollDelta;
         } else if (offset <= minExtent ) {
-          _scrollOffset = navMaxheight;
+          _scrollOffset = navMinheight;
         } else {
           _scrollOffset = -_scrollDelta;
         }
+        store.offset = (_scrollOffset.abs()-navMinheight)/(navMaxheight-navMinheight);
 
-        scrollOffsetCalc = ((_scrollOffset.abs() - navMinheight) * 100) / (navMaxheight - navMinheight) / 100;
-        store.offset=scrollOffsetCalc;
       });
     });
 
+    super.initState();
+  }
+
+  void initAfterLayout(Duration duration) {
+    navMaxheight = store.contentBottomPadding;
+    // navMaxheight = store.bottomBarHeight;
   }
 
   @override
   void dispose() {
+    store.pageController.dispose();
     super.dispose();
-    pageController.dispose();
   }
 
   @override
@@ -104,16 +99,14 @@ class StateExtended extends State<MainBottomNavigationBar> {
     if(mounted) super.setState(fn);
   }
 
-  bool get isNodeFocus => focusNode.hasFocus;
-
   void navPressed(int index) {
     // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
-    pageController.jumpToPage(index);
+    store.pageController.jumpToPage(index);
   }
 
-  void navPageChanged(int page) {
+  void pageChanged(int page) {
     setState(() {
-      this._scrollOffset = 0;
+      // this._scrollOffset = 0;
       this._pageIndex = page;
     });
   }
@@ -130,44 +123,45 @@ class StateExtended extends State<MainBottomNavigationBar> {
           key: scaffoldKey,
           resizeToAvoidBottomInset: true,
           body: new PageView(
-            controller: pageController,onPageChanged: navPageChanged,
+            controller: store.pageController,onPageChanged: pageChanged,
             physics:new NeverScrollableScrollPhysics(),
             // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
             children:_page
           ),
           extendBody: true,
-          bottomNavigationBar: viewNavigation()
+          bottomNavigationBar: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraint) => viewNavigation()
+          )
         )
-      ),
+      )
     );
   }
+  showBottomSheets(builder) {
+    // setState((){
+    //   // store.bottomSheetShow = true;
+    // });
+    // PersistentBottomSheetController sheet
+    // return scaffoldKey.currentState.showBottomSheet<void>(builder)
+    // ..closed.whenComplete(() => setState(() {
+    //   // store.bottomSheetShow = false;
+    // }));
+    // bottomSheet.close()
+     return showModalBottomSheet(context: context, builder: builder)
+     ..whenComplete(() => setState(() {}));
+  }
+
   Widget viewNavigation() {
-    if (isNodeFocus) return null;
+    if (store.focusNode.hasFocus || store.bottomSheetShow) return null;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: <Widget>[
         Positioned(
           bottom: (_scrollOffset > 0)?0:_scrollOffset,
           width: MediaQuery.of(context).size.width,
-          // height: store.bottomBarHeightMax,
-          child: viewBottomNavigationCustom()
-          // child: Container(
-          //   width: double.infinity,
-          //   height: store.bottomBarHeightMax,
-          //   height: navMaxheight,
-          //   child: SizedBox.shrink(
-          //     child: viewBottomNavigationCustom()
-          //   )
-          // )
+          height: store.contentBottomPadding,
+          child: BottomBarAnimated(items:_pageButton, tap:navPressed, index:_pageIndex)
         )
       ]
-    );
-  }
-  Widget viewBottomNavigationCustom() {
-    return BottomBarAnimated(
-      items:_pageButton,
-      tap:navPressed,
-      index:_pageIndex,
     );
   }
 }
@@ -175,12 +169,10 @@ class StateExtended extends State<MainBottomNavigationBar> {
 class BottomBarItem {
   BottomBarItem({
     this.label,
-    this.icon,
-    this.color
+    this.icon
   });
   final String label;
   final IconData icon;
-  final Color color;
 }
 
 class BottomBarAnimated extends StatefulWidget {

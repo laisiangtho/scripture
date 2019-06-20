@@ -26,8 +26,8 @@ class _StateSheet extends State<SheetInfo> {
 
   @override
   void initState() {
-    super.initState();
     store.identify = widget.book.identify;
+    super.initState();
   }
 
   @override
@@ -56,7 +56,7 @@ class _StateSheet extends State<SheetInfo> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Row(
           mainAxisSize: MainAxisSize.max,
@@ -65,20 +65,21 @@ class _StateSheet extends State<SheetInfo> {
           children: <Widget>[
             Expanded(
               child: Align(
-                alignment: Alignment(0.26,0.0),
-                child: Text(book.name,textAlign: TextAlign.end,style: Theme.of(context).textTheme.headline.copyWith(color: Colors.white70,fontSize: 17)),
+                alignment: Alignment(0.0,0.0),
+                heightFactor: 3,
+                child: Text(book.name,textAlign: TextAlign.end,style: Theme.of(context).textTheme.headline),
               ),
             ),
-            CupertinoButton(
-              child: Icon(Icons.keyboard_arrow_down,color: Colors.white),
-              onPressed: ()=>Navigator.pop(context,'done'),
-            )
+            // CupertinoButton(
+            //   child: Icon(Icons.keyboard_arrow_down,color: Colors.red,),
+            //   onPressed: ()=>Navigator.pop(context,'done'),
+            // )
           ]
         ),
         RichText(
           text: TextSpan(
             text:book.year.toString(),
-            style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white24),
+            style: Theme.of(context).textTheme.subhead.copyWith(),
             children: <TextSpan>[
                 TextSpan(text:'/'),
                 TextSpan(text:book.language.name.toUpperCase())
@@ -89,16 +90,19 @@ class _StateSheet extends State<SheetInfo> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: RaisedButton.icon(
-            color: Colors.grey[400],
+            // color:book.available > 0?Colors.blue: Colors.grey[400],
+            color:book.available > 0?Colors.red: Colors.blue,
             textColor: Colors.white,
             disabledTextColor: Colors.white,
-            elevation: 0,
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
             disabledColor: Colors.grey,
+            elevation: 0,
+            highlightElevation: 0,
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            // textTheme: ButtonTextTheme.primary,
             icon: isDownloading?SizedBox(width:13, height:13,
               child:CircularProgressIndicator(strokeWidth: 1)
             ):new Icon(book.available > 0?Icons.delete:Icons.cloud_download),
-            label: Text(book.available > 0?'Delete':'Download'),
+            label: Text(book.available > 0?'Delete':'Download', style: TextStyle(fontSize: 25),),
             onPressed: isDownloading?null:updateAvailableAction
           )
         ),
@@ -113,7 +117,7 @@ class _StateSheet extends State<SheetInfo> {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   text:book.description == null?'...${book.name}':book.description,
-                  style: Theme.of(context).textTheme.body2.copyWith(color: Colors.white)
+                  style: Theme.of(context).textTheme.body2
                 )
               )
             )

@@ -8,15 +8,8 @@ import 'Common.dart';
 
 class Search extends StatefulWidget {
   Search({
-    Key key,
-    this.scrollController,
-    this.offset,
-    this.focusNode,
+    Key key
   }) : super(key: key);
-
-  final ScrollController scrollController;
-  final FocusNode focusNode;
-  final double offset;
 
   @override
   SearchView createState() => new SearchView();
@@ -48,8 +41,8 @@ abstract class SearchState extends State<Search> with TickerProviderStateMixin, 
     // widget.focusNode.addListener(() => setState(() {}));
     textController.addListener(() => setState(() {}));
     WidgetsBinding.instance.addObserver(this);
-    widget.focusNode.addListener((){
-      if(widget.focusNode.hasFocus) {
+    store.focusNode.addListener((){
+      if(store.focusNode.hasFocus) {
         textController.selection = TextSelection(baseOffset: 0, extentOffset: textController.text.length);
       }
     });
@@ -81,12 +74,12 @@ abstract class SearchState extends State<Search> with TickerProviderStateMixin, 
 
   // void hideKeyboard() => FocusScope.of(context).detach();
   // void showKeyboard() => FocusScope.of(context).requestFocus(new FocusNode());
-  void hideKeyboard() => widget.focusNode.unfocus();
-  void showKeyboard() => FocusScope.of(context).requestFocus(widget.focusNode);
+  void hideKeyboard() => store.focusNode.unfocus();
+  void showKeyboard() => FocusScope.of(context).requestFocus(store.focusNode);
   // bool get hasFocusNode => widget.focusNode.hasFocus;
   void inputClear() {
     // textController.clearComposing();
-    if(widget.focusNode.hasFocus)textController.clear();
+    if(store.focusNode.hasFocus)textController.clear();
   }
   // void inputClear() => textController.text='';
   // bool get hasTextField => textController.text.isNotEmpty;
@@ -132,7 +125,7 @@ class SearchView extends SearchState {
   CustomScrollView body() {
     return CustomScrollView(
       key: widget.key,
-      controller: widget.scrollController,
+      controller: store.scrollController,
       semanticChildCount: 0,
       slivers: <Widget>[
         new SliverPersistentHeader(
@@ -141,8 +134,8 @@ class SearchView extends SearchState {
           delegate: WidgetHeaderSliver(bar)
         ),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: widget.focusNode.hasFocus?0:store.bottomBarHeightMax),
-          sliver: widget.focusNode.hasFocus?suggest():result(),
+          padding: EdgeInsets.only(bottom: store.focusNode.hasFocus?0:store.contentBottomPadding),
+          sliver: store.focusNode.hasFocus?suggest():result(),
         )
       ]
     );
@@ -218,7 +211,7 @@ class SearchView extends SearchState {
     //       )
     //     )
     //   );
-    if (widget.focusNode.hasFocus) return Container(
+    if (store.focusNode.hasFocus) return Container(
         child: InkWell(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
@@ -235,13 +228,13 @@ class SearchView extends SearchState {
   TextFormField input(double stretch,double shrink){
     return TextFormField(
       controller: textController,
-      focusNode: widget.focusNode,
+      focusNode: store.focusNode,
       autofocus: false,
       autovalidate: false,
       textInputAction: TextInputAction.search,
       keyboardType: TextInputType.text,
       onFieldSubmitted: inputSubmit,
-      textAlign: widget.focusNode.hasFocus?TextAlign.start:TextAlign.center,
+      textAlign: store.focusNode.hasFocus?TextAlign.start:TextAlign.center,
 
       style: TextStyle(
         fontFamily: 'sans-serif',
@@ -256,7 +249,7 @@ class SearchView extends SearchState {
         suffixIcon: Opacity(
           opacity: shrink,
           child: SizedBox.shrink(
-            child:(widget.focusNode.hasFocus && textController.text.isNotEmpty)?InkWell(
+            child:(store.focusNode.hasFocus && textController.text.isNotEmpty)?InkWell(
               child: Icon(Icons.cancel,color:Colors.grey,size: 13,),
               onTap: inputClear
             ):null
@@ -274,7 +267,7 @@ class SearchView extends SearchState {
         // hintStyle: TextStyle(color: Colors.grey),
         contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: (3*shrink)),
         // fillColor: Color(0xffeff1f4).withOpacity(shrink),
-        fillColor: Colors.grey[widget.focusNode.hasFocus?200:100].withOpacity(shrink),
+        fillColor: Colors.grey[store.focusNode.hasFocus?200:100].withOpacity(shrink),
         // fillColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(shrink),
         // fillColor: Theme.of(context).backgroundColor.withOpacity(shrink),
         filled: true,

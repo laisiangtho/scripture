@@ -8,11 +8,11 @@ class PopupChapter extends StatefulWidget {
   PopupChapter(
     {
       Key key,
-      this.shrinkOffset,
+      this.mainContext,
       this.chapterCount,
     }
   ) : super(key: key);
-  final double shrinkOffset;
+  final RenderBox mainContext;
   final int chapterCount;
 
   @override
@@ -24,6 +24,9 @@ class _Chapter extends State<PopupChapter> {
   int perItem;
   double height;
 
+  Size targetSize;
+  Offset targetPosition;
+
   @protected
   Store store = new Store();
 
@@ -32,42 +35,41 @@ class _Chapter extends State<PopupChapter> {
     super.initState();
     items = widget.chapterCount;
     perItem = items > 4?4:items;
-    height =(items/perItem).ceilToDouble()*45;
+    height =(items < 4)?(250 / items).toDouble():(items/perItem).ceilToDouble()*62;
+
+    targetSize = widget.mainContext.size;
+    targetPosition = widget.mainContext.localToGlobal(Offset.zero);
   }
 
   @override
   Widget build(BuildContext context) {
-    double paddingTop = MediaQuery.of(context).padding.top;
-    double halfWidth = (MediaQuery.of(context).size.width/2) - 20;
+    // double paddingTop = MediaQuery.of(context).padding.top;
+    double halfWidth = (MediaQuery.of(context).size.width/2) - 50;
+
     return Popup(
-      offsetPersentage: widget.shrinkOffset,
+      left:halfWidth,
+      right: 10,
       height: height,
-      left: halfWidth,
-      top:  (10*widget.shrinkOffset)+paddingTop+40,
-      arrow:  13*widget.shrinkOffset+15,
+      top: targetPosition.dy + targetSize.height + 7,
+      arrow:  targetPosition.dx - halfWidth + (targetSize.width/2)-7,
       child: view()
     );
   }
   GridView view () {
     return new GridView.count(
-      // padding: EdgeInsets.zero,
-      mainAxisSpacing: 1,
-      crossAxisSpacing:1,
+      padding: EdgeInsets.zero,
+      mainAxisSpacing:0,
+      crossAxisSpacing:0,
       childAspectRatio: 1,
-      shrinkWrap: true,
       crossAxisCount: perItem,
       children: new List<Widget>.generate(items, (index) {
         ++index;
         bool isCurrentChapter = store.chapterId == index;
         return InkWell(
-          child: Container(
-            // padding: EdgeInsets.symmetric(vertical:20),
+          child: Center(
             child: Text(store.digit(index),
-              textAlign: TextAlign.center,
-              textScaleFactor: 0.9,
               style: TextStyle(
-                color: isCurrentChapter?Colors.white30:Colors.white,
-                height: 0.55
+                color: isCurrentChapter?Colors.white30:Colors.white, fontSize: 19
               )
             )
           ),
@@ -77,57 +79,3 @@ class _Chapter extends State<PopupChapter> {
     );
   }
 }
-
-
-  // void chaptersPopup (double shrinkOffset) {
-  //   int _rowItems = store.chapterCount;
-  //   int _perItem = _rowItems > 4?4:_rowItems;
-  //   double _rowHeight =(_rowItems/_perItem).ceilToDouble()*45;
-  //   Navigator.of(context).push(PageRouteBuilder(
-  //     opaque: false,
-  //     barrierDismissible: true,
-  //     transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-  //       return new SlideTransition(
-  //           position: new Tween<Offset>(
-  //             begin: const Offset(0.0, 0.7),
-  //             end: Offset.zero,
-  //           ).animate(animation),
-  //           child: child
-  //         );
-  //       },
-  //     pageBuilder: (BuildContext context, x, y) => Popup(
-  //       offsetPersentage: shrinkOffset,
-  //       height: _rowHeight,
-  //       top:  45+(87-45)*shrinkOffset,
-  //       // arrow:  96-(96-65)*shrinkOffset,
-  //       arrow:  80-(80-50)*shrinkOffset,
-  //       child: chaptersGirdView(_perItem, _rowItems)
-  //     )
-  //   ));
-  // }
-  // GridView chaptersGirdView (int _perItem, int _rowItems) {
-  //   return new GridView.count(
-  //     padding: EdgeInsets.all(0),
-  //     mainAxisSpacing: 1,
-  //     crossAxisSpacing:1,
-  //     childAspectRatio: 1,
-  //     shrinkWrap: true,
-  //     crossAxisCount: _perItem,
-  //     children: new List<Widget>.generate(_rowItems, (index) {
-  //       ++index;
-  //       bool isCurrentChapter = store.chapterId == index;
-  //       return InkWell(
-  //         child: Container(
-  //           padding: EdgeInsets.symmetric(vertical:14),
-  //           child: Text('$index',
-  //             textAlign: TextAlign.center,
-  //             style: TextStyle(
-  //               color: isCurrentChapter?Colors.white30:Colors.white,
-  //             )
-  //           )
-  //         ),
-  //         onTap: () => setChapter(index)
-  //       );
-  //     })
-  //   );
-  // }

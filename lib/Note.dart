@@ -10,15 +10,8 @@ import 'NoteView.dart';
 
 class Note extends StatefulWidget {
   Note({
-    Key key,
-    this.scrollController,
-    this.pageController,
-    this.offset,
+    Key key
   }) : super(key: key);
-
-  final ScrollController scrollController;
-  final PageController pageController;
-  final double offset;
 
   @override
   NoteView createState() => new NoteView();
@@ -33,7 +26,7 @@ abstract class NoteState extends State<Note> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    widget.scrollController?.addListener(() => setState(() {}));
+    store.scrollController?.addListener(() => setState(() {}));
   }
 
   @override
@@ -47,7 +40,7 @@ abstract class NoteState extends State<Note> with TickerProviderStateMixin{
   }
 
   void toBible (){
-    widget.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+    store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
     // widget.pageController.jumpToPage(1);
   }
 }
