@@ -110,10 +110,7 @@ class BibleView extends BibleState{
     return CustomScrollView(
       controller: store.scrollController,
       slivers: <Widget>[
-        new SliverPersistentHeader(
-          pinned: true, floating: true,
-          delegate: WidgetHeaderSliver(bar,minHeight: 20)
-        ),
+        new SliverPersistentHeader(pinned: true, floating: true, delegate: WidgetHeaderSliver(bar,minHeight: 20)),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: store.contentBottomPadding),
           sliver: futureBuilderSliver()

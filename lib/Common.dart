@@ -199,7 +199,7 @@ class WidgetBottomNavigation extends StatelessWidget {
       ),
       padding: EdgeInsets.only(top: 0.5),
       child: Container(
-        padding: EdgeInsets.only(top:5,bottom: paddingBottom),
+        padding: EdgeInsets.only(bottom: paddingBottom),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
           borderRadius: new BorderRadius.vertical(top: Radius.elliptical(5, 2))
@@ -209,3 +209,34 @@ class WidgetBottomNavigation extends StatelessWidget {
     );
   }
 }
+/*
+InitLayout(snapshot,()=>)
+*/
+// initLayout(snapshot,()=>Text('a'));
+
+// Widget initLayout(e,s){
+//   if (e.hasData){
+//     return s();
+//   } else if (e.hasError) {
+//     return WidgetError(message: e.error);
+//   } else {
+//     return WidgetLoad();
+//   }
+// }
+
+// class WidgetInitLayout extends StatelessWidget {
+//   WidgetInitLayout({this.snapshot,this.body});
+//   final snapshot;
+//   final body;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (this.snapshot.hasData){
+//     return this.body();
+//   } else if (this.snapshot.hasError) {
+//     return new WidgetError(message: this.snapshot.error);
+//   } else {
+//     return new WidgetLoad();
+//   }
+//   }
+// }

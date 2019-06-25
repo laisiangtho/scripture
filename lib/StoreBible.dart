@@ -130,15 +130,15 @@ mixin StoreBible on StoreConfiguration {
     return list;
   }
 
-  Future<List> verseSearchTesting(String query) async{
+  Future<List> verseSearchAllInOne(String query) async{
     await this.bible;
     List list = [];
     if (query.isEmpty) return list;
     _currentBible.book.forEach((bId, bO) {
       // 'id':this.digit(bId),
-      Map bookBlock={'name':bO['info']['name'],'child':[]};
+      Map bookBlock={'id':int.parse(bId),'name':bO['info']['name'],'child':[]};
       bO['chapter'].forEach((cId, cO) {
-        Map chapterBlock={'id':cId,'child':[]};
+        Map chapterBlock={'id':int.parse(cId),'child':[]};
         cO['verse'].forEach((vId, v) {
           if (new RegExp(query,caseSensitive: false).hasMatch(v['text'])){
             // list.add(VERSE(
@@ -149,7 +149,8 @@ mixin StoreBible on StoreConfiguration {
             //   verseText: v['text'],
             //   verseTitle: v['title']
             // ));
-            Map verseBlock={'bid':bId,'cid':cId,'id':vId,'text': v['text']};
+            // Map verseBlock={'bid':bId,'cid':cId,'id':vId,'text': v['text']};
+            Map verseBlock={'id':vId,'text': v['text']};
             chapterBlock['child'].add(verseBlock);
           }
         });

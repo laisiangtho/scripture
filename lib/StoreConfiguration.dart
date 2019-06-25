@@ -11,8 +11,6 @@ import 'package:http/http.dart';
 
 import 'StoreModel.dart';
 
-
-
 BIBLE computeParseBible(String response){
   Map<String, dynamic> parsed = decodeJSON(response);
   return BIBLE.fromJSON(parsed);
@@ -54,7 +52,6 @@ Future<bool> docsExists(String fileName) async {
 }
 
 
-
 abstract class StoreConfiguration {
   final String appName = 'laisiangtho';
   final String appTitle = 'Lai Siangtho';
@@ -62,6 +59,7 @@ abstract class StoreConfiguration {
 
   String identify ='';
   String searchQuery ='';
+  String suggestQuery ='';
 
   int testamentId = 1;
   int bookId = 1;
@@ -73,8 +71,7 @@ abstract class StoreConfiguration {
   bool bottomSheetShow=false;
 
   var contextMedia;
-  double bottomBarHeight=50.0;
-  double get contentBottomPadding => this.bottomBarHeight + this.contextMedia.padding.bottom;
+  double bottomBarHeight=55.0;
 
 
   // GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -85,4 +82,8 @@ abstract class StoreConfiguration {
   // GlobalKey keyBottomBar = new GlobalKey();
   // GlobalKey keyNavigation = new GlobalKey();
   // var keyNavigation;
+
+
+  double get contentBottomPadding => this.focusNode.hasFocus?0.0:(this.bottomBarHeight + this.contextMedia.padding.bottom).toDouble();
+  int get uniqueIdentify => new DateTime.now().millisecondsSinceEpoch;
 }

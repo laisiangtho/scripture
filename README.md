@@ -1,36 +1,30 @@
 # Bible@Lai Siangtho
 
 
+## Android
 
+minSdkVersion=16
 
-`flutter build apk`
-
-## minSdkVersion=16
-
-- [x] `flutter build apk --release --target-platform=android-arm`
-- [ ] `flutter build appbundle --release --target-platform=android-arm`
+- [ ] `flutter build apk --release --target-platform=android-arm`
+- [x] `flutter build appbundle --release --target-platform=android-arm`
 - [ ] `flutter run --release --target-platform=android-arm`
 
-## minSdkVersion=21
+minSdkVersion=21
 
-- [x] `flutter build apk --release --target-platform=android-arm64`
+- [ ] `flutter build apk --release --target-platform=android-arm64`
+- [x] `flutter build appbundle --release --target-platform=android-arm64`
+- [ ] `flutter run --target-platform=android-arm64`
+- [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
-- [ ] `flutter run --release --target-platform=android-arm64`
 
 ## Directory
 
 - build/app/outputs/apk/release/app-release.apk
-
 - android\gradle.properties
 - android\app\build.gradle
 
+flutter build apk --split-per-abi --release
 
-
-flutter build apk --split-per-abi
-
-
-flutter build apk --release --target-platform=android-arm64,android-arm
-
-# Android
+## Android->release
   versionCode android-arm
   versionCode++ android-arm64

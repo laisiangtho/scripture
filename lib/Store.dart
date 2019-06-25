@@ -32,17 +32,19 @@ class Store extends StoreConfiguration with StoreCollection, StoreBible {
   }
 
   Future<List<Map<String, dynamic>>>  testingBookmark() async {
-
     return await this.bookmark.then((e) async{
-
-     List<NAME> names = await this.getNames;
-     List<Map<String, dynamic>> list = [];
-     for (var bookmark in e) {
-       NAME book = names.singleWhere((i)=>i.book == bookmark.book,orElse: ()=>null);
-      //  int index = bookName.indexWhere((i)=>i.id == bookmark.bookId && i.type == false);
-       list.add(bookmark.toView(book.bookName));
-     }
-     return list;
+     List<NAME> bookNames = await this.getNames;
+    //  List<Map<String, dynamic>> list = [];
+    //  for (var bookmark in e) {
+    //    NAME book = bookNames.singleWhere((i)=>i.book == bookmark.book,orElse: ()=>null);
+    //   //  int index = bookName.indexWhere((i)=>i.id == bookmark.bookId && i.type == false);
+    //    list.add(bookmark.toView(book.bookName));
+    //  }
+    //  return list;
+     return e.map((bookmark){
+       NAME book = bookNames.singleWhere((i)=>i.book == bookmark.book,orElse: ()=>null);
+      return bookmark.toView(this.digit(bookmark.chapter),book.bookName,book.testamentName);
+     }).toList();
     });
   }
 }

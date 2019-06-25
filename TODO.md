@@ -26,6 +26,9 @@
 
   - [x] bible -> chapter -> verse
     - [x] chapter list
+    - [x] book list
+      - [ ] collapsible with chapters
+      - [ ] auto scroll to
     - [x] bookmark chapter
     - [x] Popup Offset/width
     - [x] Offset & Width chapter navigator
@@ -38,19 +41,40 @@
 
   - [x] note -> library
     - [ ] improve
-    - [x] bookmarks chapter
+    - bookmarks
+      - [x] chapter
+      - [x] view list/orderByBook
     - [ ] bookmark verse
 
   - [x] search -> verse
     - [ ] improve
-    - [ ] result header sticky
-    - [x] keyword highlight
-    - [ ] result count
-    - [ ] suggestion result count
-    - [ ] delete suggestion
+    - [x] result
+      - option
+        - [ ] type -> Exact phrase, all words, any words
+        - [ ] scope -> all, ot, nt, selection
+      - [ ] header sticky
+      - [x] keyword highlight
+      - [ ] count(book,chapter,verse)
+      - [ ] no match found in ???
+    - [x] suggestion
+      - [ ] count
+      - [x] keyword highlight
+      - [x] delete(Dismissible)
 
   - [ ] more -> info
     - [ ] about
       - [ ] detail (count langs, count books)
       - [ ] update notes
       - [ ] version
+
+## b.16
+
+Improved
+- Bookmark list
+
+## b.20
+
+Improved
+- appBar height & padding
+- bottomBar padding
+- search view

@@ -1,6 +1,4 @@
 
-// import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -11,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-// import '_DemoMenu.dart';
+// import 'DemoMenu.dart';
 
 import 'SheetInfo.dart';
 import 'Common.dart';
@@ -51,7 +49,6 @@ class HomeView extends HomeState {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
       key: scaffoldKey,
       body: ReorderableList(
         onReorder: _reorderCallback,
@@ -76,11 +73,7 @@ class HomeView extends HomeState {
     return CustomScrollView(
       controller: store.scrollController,
       slivers: <Widget>[
-        new SliverPersistentHeader(
-          pinned: true,
-          floating: true,
-          delegate: new WidgetHeaderSliver(bar,maxHeight: 140)
-        ),
+        new SliverPersistentHeader(pinned: true,floating: true,delegate: new WidgetHeaderSliver(bar,minHeight: 70,maxHeight: 140)),
         new SliverPadding(
           padding: EdgeInsets.only(bottom: store.contentBottomPadding),
           sliver: new SliverList(
@@ -100,8 +93,8 @@ class HomeView extends HomeState {
       ]
     );
   }
-  Widget bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink){
 
+  Widget bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink){
     return Stack(
       children: <Widget>[
         Align(
@@ -114,7 +107,7 @@ class HomeView extends HomeState {
                 // color: Color.lerp(Colors.white, Colors.white24, stretch),
                 color: Colors.black,
                 fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
-                fontSize:35 - (13*stretch),
+                fontSize:45 - (20*stretch),
                 // shadows: <Shadow>[
                 //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
                 // ]
@@ -127,15 +120,15 @@ class HomeView extends HomeState {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             CupertinoButton(
-              padding: EdgeInsets.zero,
+              // padding: EdgeInsets.zero,
               child: isUpdating?SizedBox(width:20, height:20,
                 child:CircularProgressIndicator(strokeWidth: 1)
-              ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey),
+              ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey, size: 30),
               onPressed: updateCollectionCallBack
             ),
             CupertinoButton(
-              padding: EdgeInsets.zero,
-              child: new Icon(Icons.sort,color: isSorting?Colors.red:Colors.grey),
+              // padding: EdgeInsets.zero,
+              child: new Icon(Icons.sort,color: isSorting?Colors.red:Colors.grey, size: 30),
               onPressed: (){
                 if (isSorting) store.writeCollection();
                 setState(() {
@@ -143,7 +136,7 @@ class HomeView extends HomeState {
                 });
               }
             ),
-            // DemoMenu()
+            // new DemoMenu()
           ]
         )
       ]
@@ -236,7 +229,7 @@ class BookItem extends StatelessWidget {
             // ),
             title: Text(
               book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,fontSize: 20,color: isAvailable?Colors.black:Colors.grey)
+              style: Theme.of(context).textTheme.headline.copyWith(height: 0.8,fontSize: 22,color: isAvailable?Colors.black:Colors.grey)
             ),
             subtitle: Row(
               mainAxisSize: MainAxisSize.min,
@@ -268,7 +261,7 @@ class BookItem extends StatelessWidget {
                 ),
                 Text(' '),
                 // Icon(Icons.arrow_forward, color:Colors.grey[200], size: 15),
-                Text(book.shortname,style: Theme.of(context).textTheme.subhead.copyWith(color:Colors.black,fontSize: 11)),
+                Text(book.shortname,style: Theme.of(context).textTheme.subhead.copyWith(color:Colors.black,fontSize: 15)),
                 // Text(' '),
                 // Text(book.language.name.toUpperCase(),style: Theme.of(context).textTheme.subhead.copyWith(color:Colors.black,fontSize: 11)),
               ]
@@ -279,7 +272,7 @@ class BookItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(book.year.toString(),style: Theme.of(context).textTheme.caption.copyWith(fontSize: 15,color: Colors.black)),
-                Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.black:Colors.grey[200], size: 20),
+                Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.black:Colors.grey[200], size: 25),
                 dragHandle
               ]
             ),
@@ -296,7 +289,7 @@ class BookItem extends StatelessWidget {
       child: _item,
       secondaryActions: <Widget>[
         new IconSlideAction(
-          caption: 'Info',
+          // caption: 'Info',
           // color: Colors.grey,
           // color: Colors.transparent,
           icon: Icons.info,

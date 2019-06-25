@@ -18,6 +18,7 @@ class Note extends StatefulWidget {
 }
 
 abstract class NoteState extends State<Note> with TickerProviderStateMixin{
+  final GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
 
   Store store = new Store();
 
@@ -27,6 +28,8 @@ abstract class NoteState extends State<Note> with TickerProviderStateMixin{
   void initState() {
     super.initState();
     store.scrollController?.addListener(() => setState(() {}));
+
+
   }
 
   @override

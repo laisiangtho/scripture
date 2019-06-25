@@ -58,37 +58,23 @@ class _StateSheet extends State<SheetInfo> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Align(
-                alignment: Alignment(0.0,0.0),
-                heightFactor: 3,
-                child: Text(book.name,textAlign: TextAlign.end,style: Theme.of(context).textTheme.headline),
-              ),
-            ),
-            // CupertinoButton(
-            //   child: Icon(Icons.keyboard_arrow_down,color: Colors.red,),
-            //   onPressed: ()=>Navigator.pop(context,'done'),
-            // )
-          ]
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text(book.name,textAlign: TextAlign.end,style: Theme.of(context).textTheme.headline),
         ),
         RichText(
           text: TextSpan(
             text:book.year.toString(),
-            style: Theme.of(context).textTheme.subhead.copyWith(),
+            style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 14),
             children: <TextSpan>[
-                TextSpan(text:'/'),
-                TextSpan(text:book.language.name.toUpperCase())
+              TextSpan(text:'/'),
+              TextSpan(text:book.language.name.toUpperCase())
             ]
           )
         ),
 
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 5),
+          padding: EdgeInsets.symmetric(vertical: 30),
           child: RaisedButton.icon(
             // color:book.available > 0?Colors.blue: Colors.grey[400],
             color:book.available > 0?Colors.red: Colors.blue,
@@ -106,23 +92,23 @@ class _StateSheet extends State<SheetInfo> {
             onPressed: isDownloading?null:updateAvailableAction
           )
         ),
-        ConstrainedBox(
-          constraints: new BoxConstraints(
-            maxHeight: 300
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            child: SingleChildScrollView(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text:book.description == null?'...${book.name}':book.description,
-                  style: Theme.of(context).textTheme.body2
-                )
-              )
-            )
-          )
-        )
+        // ConstrainedBox(
+        //   constraints: new BoxConstraints(
+        //     maxHeight: 300
+        //   ),
+        //   child: Padding(
+        //     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        //     child: SingleChildScrollView(
+        //       child: RichText(
+        //         textAlign: TextAlign.center,
+        //         text: TextSpan(
+        //           text:book.description == null?'...${book.name}':book.description,
+        //           style: Theme.of(context).textTheme.body2
+        //         )
+        //       )
+        //     )
+        //   )
+        // )
       ]
     );
   }

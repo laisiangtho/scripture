@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'MainBottomNavigationBar.dart';
+import 'Store.dart';
 // import 'package:bible/Home.dart';
 // import 'package:bible/Bible.dart';
 
@@ -30,8 +31,12 @@ void main() {
 
 
 class LaiSiangtho extends StatelessWidget {
+
+  final Store store = new Store();
+
   @override
   Widget build(BuildContext context) {
+
     MaterialColor colorPrimarySwatch = MaterialColor(
       // 0xFFF5F5F5,
       0xFFFFFFFF,
@@ -85,11 +90,10 @@ class LaiSiangtho extends StatelessWidget {
           splashColor: Colors.transparent
         ),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        cupertinoOverrideTheme: CupertinoThemeData(
-        ),
+        cupertinoOverrideTheme: CupertinoThemeData(),
 
         textTheme: TextTheme(
-          title: TextStyle(fontWeight: FontWeight.w200),
+          title: TextStyle(fontWeight: FontWeight.w300),
           subtitle: TextStyle(fontWeight: FontWeight.w400),
           headline: TextStyle(fontWeight: FontWeight.w300),
           subhead: TextStyle(fontWeight: FontWeight.w400),
@@ -107,8 +111,8 @@ class LaiSiangtho extends StatelessWidget {
           border: InputBorder.none
         )
       ),
-      title: 'Lai Siangtho',
-      home: MainBottomNavigationBar()
+      title: store.appTitle,
+      home: new MainBottomNavigationBar()
     );
   }
 }

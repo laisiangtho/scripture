@@ -41,11 +41,13 @@ class CollectionBookmark {
       'chapter': this.chapter
     };
   }
-  Map<String, dynamic> toView(bookName) {
+  Map<String, dynamic> toView(chapterName,bookName,testamentName) {
     return this.toJSON()..addAll({
       'book': book,
       'chapter': chapter,
-      'bookName': bookName
+      'chapterName': chapterName,
+      'bookName': bookName,
+      'testamentName': testamentName
     });
     // return {
     //   'book': book,

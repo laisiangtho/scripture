@@ -46,7 +46,7 @@ class StateExtended extends State<MainBottomNavigationBar> {
     _pageButton.add(BottomBarItem(icon:CupertinoIcons.search, label:"Search"));
     // _pageButton.add(BottomBarItem(icon:Icons.more_horiz, label:"More"));
 
-    _page.add(Home(bottomSheet:showBottomSheets));
+    _page.add(Home(bottomSheet:showModelSheets));
     _page.add(Bible());
     _page.add(Note());
     _page.add(Search());
@@ -120,8 +120,8 @@ class StateExtended extends State<MainBottomNavigationBar> {
         top: false,
         bottom: false,
         child: new Scaffold(
+          // resizeToAvoidBottomInset: true,
           key: scaffoldKey,
-          resizeToAvoidBottomInset: true,
           body: new PageView(
             controller: store.pageController,onPageChanged: pageChanged,
             physics:new NeverScrollableScrollPhysics(),
@@ -129,23 +129,38 @@ class StateExtended extends State<MainBottomNavigationBar> {
             children:_page
           ),
           extendBody: true,
-          bottomNavigationBar: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraint) => viewNavigation()
-          )
+          bottomNavigationBar: viewNavigation()
+          // extendBody: true,
+          // bottomNavigationBar: viewNavigation()
+          // bottomNavigationBar: LayoutBuilder(
+          //   builder: (BuildContext context, BoxConstraints constraint) => viewNavigation()
+          // )
         )
       )
     );
   }
   showBottomSheets(builder) {
-    // setState((){
-    //   // store.bottomSheetShow = true;
-    // });
+    /*
+    showBottomSheets((BuildContext context)=>new TmpSheet()).closed.whenComplete(() {
+      setState((){});
+    });
+    */
+    setState((){
+      store.bottomSheetShow = true;
+    });
     // PersistentBottomSheetController sheet
-    // return scaffoldKey.currentState.showBottomSheet<void>(builder)
-    // ..closed.whenComplete(() => setState(() {
-    //   // store.bottomSheetShow = false;
-    // }));
+    return scaffoldKey.currentState.showBottomSheet<void>(builder)
+    ..closed.whenComplete(() => setState(() {
+      store.bottomSheetShow = false;
+    }));
     // bottomSheet.close()
+  }
+  showModelSheets(builder) {
+    /*
+    showModelSheets((BuildContext context)=>new TmpSheet()).whenComplete(() {
+      setState((){});
+    });
+    */
      return showModalBottomSheet(context: context, builder: builder)
      ..whenComplete(() => setState(() {}));
   }
@@ -215,11 +230,9 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
       button.add(
         CupertinoButton(
           pressedOpacity: 0.5,
-          // minSize: width-7,
-          padding: EdgeInsets.all(0.5),
+          padding: EdgeInsets.zero,
           child: AnimatedContainer(
-            // margin: EdgeInsets.symmetric(vertical: 7,horizontal: 2),
-            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 12),
+            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
             decoration: BoxDecoration(
               color: isSelectedButton?Colors.grey.withOpacity(1):null,
               borderRadius: BorderRadius.all(Radius.circular(30))
@@ -239,8 +252,7 @@ class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProvid
                   curve: Curves.easeInOut,
                   child: Container(
                     constraints: BoxConstraints(
-                      maxWidth: width-10,
-                      maxHeight: double.infinity
+                      maxWidth: width-5
                     ),
                     child: Text(
                       isSelectedButton?item.label:'', overflow: TextOverflow.clip, maxLines: 1,
