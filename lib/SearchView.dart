@@ -156,7 +156,7 @@ class SearchView extends SearchState {
           //   maxWidth: 20
           // ),
           // color: Colors.red,
-          child: Icon(Icons.search,color:Colors.grey[400],size: 15,),
+          child: Icon(Icons.search,color:Colors.grey,size: 20)
         ),
         hintText: " ...search Verse",
         // hintStyle: TextStyle(color: Colors.grey),

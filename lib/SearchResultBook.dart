@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'Store.dart';
 import 'Search.dart';
 
-class DemoSearchResult extends StatefulWidget {
-  DemoSearchResult({Key key,this.book}) : super(key: key);
+class SearchResultBook extends StatefulWidget {
+  SearchResultBook({Key key,this.book}) : super(key: key);
   final Map book;
 
   @override
-  _DemoSearchResultState createState() => _DemoSearchResultView();
+  _SearchResultBookState createState() => _SearchResultBookView();
 }
 
-abstract class _DemoSearchResultState extends State<DemoSearchResult>{
+abstract class _SearchResultBookState extends State<SearchResultBook>{
   Store store = new Store();
 
   @override
@@ -22,7 +22,7 @@ abstract class _DemoSearchResultState extends State<DemoSearchResult>{
   }
 }
 
-class _DemoSearchResultView extends _DemoSearchResultState {
+class _SearchResultBookView extends _SearchResultBookState {
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _DemoSearchResultView extends _DemoSearchResultState {
         bottom: false,
         child: new Scaffold(
           body: CustomScrollView(
-            controller: store.scrollController,
+            // controller: store.scrollController,
             slivers: <Widget>[
               new SliverPersistentHeader(pinned: true, floating: true, delegate: WidgetHeaderSliver(bar)),
               new SliverList(

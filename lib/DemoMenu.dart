@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'DemoAnimatedList.dart';
 import 'DemoNoteBookmark.dart';
-import 'DemoSearchResult.dart';
 
 
 
@@ -25,8 +24,7 @@ class DemoMenu extends StatelessWidget {
       itemBuilder: (BuildContext context) {
         List<Map<String, dynamic>> testRoutes = [
           {'name':'Animated List','context': DemoAnimatedList()},
-          {'name':'Note, Bookmark','context': DemoNoteBookmark()},
-          {'name':'Search Result','context': DemoSearchResult()},
+          {'name':'Note, Bookmark','context': DemoNoteBookmark()}
         ];
         return testRoutes.map((Map<String, dynamic> choice) {
           return new PopupMenuItem<Widget>(

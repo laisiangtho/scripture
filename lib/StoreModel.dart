@@ -80,6 +80,7 @@ class CollectionBook<T> {
   final int version;
   int available;
   int order;
+  // Key(store.uniqueIdentify.toString())
 
   CollectionBook({this.key, this.identify, this.name, this.shortname, this.year, this.language, this.description, this.version, this.available,this.order});
 

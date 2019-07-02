@@ -36,7 +36,7 @@
     },
     {
       "identify": "ddb1931",
-      "name": "Det Danske Bibel. De Hellige Skrifter",
+      "name": "Det Danske Bibel",
       "shortname": "Danske",
       "year": "1931",
       "language": {
@@ -164,34 +164,10 @@
   ],
   "collection": {
     "xml": [],
-    "json": [
-      "ddb1931",
-      "dnb1930",
-      "falam1973",
-      "hakha1920",
-      "judson1835",
-      "luther1912",
-      "mizo1917",
-      "niv2011",
-      "ostervald1877",
-      "paite1971",
-      "sizang1932",
-      "tedim1932"
-    ],
-    "sqlite": [
-      "ddb1931",
-      "dnb1930",
-      "falam1973",
-      "hakha1920",
-      "judson1835",
-      "luther1912",
-      "mizo1917",
-      "niv2011",
-      "ostervald1877",
-      "paite1971",
-      "sizang1932",
-      "tedim1932"
-    ],
+    "json": [],
+    "sqlite": [],
+    "wbc": [],
+    "koh": [],
     "ph4": []
   },
   "language": {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bible/Store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,19 +104,19 @@ class WidgetEmptyIdentify extends StatelessWidget {
         // strutStyle: StrutStyle(fontSize: 30.0, height: 0.7),
         text: TextSpan(
           text: this.startWith,
-          style: Theme.of(context).textTheme.subhead.copyWith(fontFamily: 'Caveat',fontSize: 28,color: Colors.grey,height: 0.9),
+          style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 29, fontWeight: FontWeight.w300,color: Colors.grey),
           children: <TextSpan>[
             TextSpan(text:this.atLeast),
             TextSpan(
               text: this.enable,
-              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 42),
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.red,fontSize: 40,fontWeight: FontWeight.w200,),
             ),
             TextSpan(
               text: this.task,
             ),
             TextSpan(
               text: this.message,
-              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.brown,fontSize: 35),
+              style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.brown,fontSize: 31,fontWeight: FontWeight.w300),
             ),
             TextSpan(
               text: this.endWith,

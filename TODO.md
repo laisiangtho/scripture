@@ -3,6 +3,8 @@
   - initial
     - [x] default bibleIdentify
     - [x] read local resource
+    - [x] remove plugin -> flutter_slidable
+    - [x] slidable into single StatefullWidget -> (bookmark)
 
   - [x] Scroll to top
 
@@ -15,14 +17,14 @@
 
   - bottomBar/navBar/menuBar/tabBar
     - [x] flexible
-    - [ ] fully hide on scale
-    - [ ] button paddding (iOS-8)
+    - [x] fully hide on scale
+    - [x] button paddding (iOS-8)
 
   - [x] iOS Launch icon & screen
 
-
   - [x] book -> collection
     - [ ] detail (count langs, count books)
+    - [ ] future data before navigation, so it will not struggle the slide
 
   - [x] bible -> chapter -> verse
     - [x] chapter list
@@ -66,15 +68,3 @@
       - [ ] detail (count langs, count books)
       - [ ] update notes
       - [ ] version
-
-## b.16
-
-Improved
-- Bookmark list
-
-## b.20
-
-Improved
-- appBar height & padding
-- bottomBar padding
-- search view

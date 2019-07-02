@@ -1,7 +1,7 @@
+```dart
 import 'package:flutter/material.dart';
 
 // import 'Common.dart';
-import 'SheetInfo.dart';
 import 'StoreModel.dart';
 import 'Store.dart';
 import 'HomeView.dart';
@@ -9,10 +9,12 @@ import 'HomeView.dart';
 class Home extends StatefulWidget {
   Home({
     Key key,
-    this.bottomSheet
+    this.bottomSheet,
+    this.offset,
   }) : super(key: key);
 
   final dynamic bottomSheet;
+  final double offset;
 
   @override
   HomeView createState() => new HomeView();
@@ -20,8 +22,7 @@ class Home extends StatefulWidget {
 
 abstract class HomeState extends State<Home> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  // GlobalKey<RefreshIndicatorState> refreshIndicatorState = new GlobalKey<RefreshIndicatorState>();
-  final GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
+  GlobalKey<RefreshIndicatorState> refreshIndicatorState = new GlobalKey<RefreshIndicatorState>();
 
   VoidCallback updateCollectionCallBack;
   bool isUpdating = false;
@@ -59,15 +60,6 @@ abstract class HomeState extends State<Home> {
   void toBible(CollectionBook book) async{
     store.identify = book.identify;
     store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
-  }
-
-  void showSheetInfo(CollectionBook book) {
-    // widget.bottomSheet((BuildContext context)=>SheetInfo(book)).closed.whenComplete(() {
-    //   setState((){});
-    // });
-    widget.bottomSheet((BuildContext context)=>SheetInfo(book)).whenComplete(() {
-      setState((){});
-    });
   }
 
   void updateCollectionAction() {

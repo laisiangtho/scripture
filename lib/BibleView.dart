@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+
 import 'dart:math';
 import 'dart:ui';
 
@@ -135,7 +135,8 @@ class BibleView extends BibleState{
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: snap.data.length,
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(vertical: 7.0),
+                // padding: EdgeInsets.zero,
                 itemBuilder: (BuildContext context, int index) => _verses(snap.data,index)
               ),
               // onVerticalDragUpdate: (drag) {
@@ -149,9 +150,9 @@ class BibleView extends BibleState{
               // onVerticalDragEnd: (e){
               //   print('object $e');
               // },
-              onHorizontalDragEnd: (e){
-                print('object $e');
-              },
+              // onHorizontalDragEnd: (e){
+              //   // print('object $e');
+              // },
             )
           );
         } else {
@@ -168,7 +169,7 @@ class BibleView extends BibleState{
     bool isSelected = selectedVerse.indexWhere((i)=>i==verse.verse) >= 0;
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 7, vertical: 0),
+      // contentPadding: EdgeInsets.symmetric(horizontal: 7, vertical: 0),
       // dense: true,
       onTap: () {
         setState(() {
@@ -188,8 +189,12 @@ class BibleView extends BibleState{
         child: RichText(
           textScaleFactor: 0.20,
           text:TextSpan(
-            text:  verse.verseTitle!=null?'\n   ${verse.verseTitle}\n\n'.toUpperCase():'',
+            // text:  titleText,
+            text:  verse.verseTitle!=null && verse.verseTitle.isNotEmpty?'\n   abc-${verse.verseTitle}\n\n'.toUpperCase():'',
             style: Theme.of(context).textTheme.display4,
+            // style: TextStyle(
+            //   color: Colors.black
+            // ),
             children: <TextSpan>[
               TextSpan(text: '   '),
               TextSpan(
