@@ -29,10 +29,7 @@
       },
       "version": "1",
       "description": "Translated from The Original Tongues by Rev. A. Judson, D.D.",
-      "publisher": {
-        "text": "Bible Society of Myanmar",
-        "url": "http://www.myanmarbible.com/"
-      }
+      "publisher": "Bible Society of Myanmar"
     },
     {
       "identify": "ddb1931",
@@ -45,7 +42,7 @@
         "name": "da"
       },
       "version": "1",
-      "description": "The electronic edition of this Bible comes from the Danish 1933 edition. The Old Testament is an update from the 1931 edition, and the New Testament is an update from the 1907 edition.",
+      "description": "The electronic edition of this Bible comes from the Danish 1933 edition.",
       "publisher": "Det Danske Bibelselskab",
       "copyright": "The New Testament is Public Domain."
     },
@@ -87,7 +84,7 @@
         "name": "fr"
       },
       "version": "1",
-      "description": "La Bible Ostervald a été une référence et largement utilisée pendant 150 ans, jusqu’à la fin du 19ème siècle. Mais elle reprit de la popularité vers la fin du 20ème siècle avec l’édition 1996. Toutefois cette dernière manque de précision et de fidélité au Texte Original du Nouveau Testament ou Texte Reçu, c’est pourquoi nous avons trouvé bon de mettre enligne ici l’édition 1877 original de la Bible Ostervald afin de donner aux fidèles un outil de comparaison grandement nécessaire. Vous allez trouver que l’édition 1877 de l’Ostervald est vastement supérieure à l’édition 1996, et si vous devez absolument utiliser l’Ostervald pour vos études nous vous conseillons fortement celle de 1877."
+      "description": "La Bible Ostervald a été une référence et largement utilisée pendant 150 ans, jusqu’à la fin du 19ème siècle."
     },
     {
       "identify": "paite1971",
@@ -171,40 +168,5 @@
     "ph4": []
   },
   "language": {
-    "en": {
-      "text": "English",
-      "local": "English",
-      "textdirection": "ltr"
-    },
-    "my": {
-      "text": "Myanmar",
-      "local": "Burmese",
-      "textdirection": "ltr"
-    },
-    "no": {
-      "text": "Norwegian",
-      "local": "Norsk",
-      "textdirection": "ltr"
-    },
-    "da": {
-      "text": "Danish",
-      "local": "Dansk",
-      "textdirection": "ltr"
-    },
-    "sv": {
-      "text": "Swedish",
-      "local": "Svensk",
-      "textdirection": "ltr"
-    },
-    "fi": {
-      "text": "Finish",
-      "local": "Suomi",
-      "textdirection": "ltr"
-    },
-    "zo": {
-      "text": "Zolai",
-      "local": "Zolai",
-      "textdirection": "ltr"
-    }
   }
 }

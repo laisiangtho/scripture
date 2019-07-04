@@ -1,3 +1,4 @@
+import 'package:bible/Note.dart';
 import 'package:flutter/material.dart';
 
 // import 'Common.dart';
@@ -59,6 +60,33 @@ abstract class HomeState extends State<Home> {
   void toBible(CollectionBook book) async{
     store.identify = book.identify;
     store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
+    // showDialog(
+    //   context: context,
+    //   builder: (_) => WidgetLoad(),
+    // );
+    // store.activeName().whenComplete((){
+    //   Navigator.of(context).pop();
+    //   store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
+    // });
+    // store.activeName().then((e){
+    //   showDialog(
+    //     context: context,
+    //     builder: (_) => WidgetLoad(),
+    //   );
+    // }).whenComplete((){
+    //   Navigator.of(context).pop();
+    //   store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
+    // });
+    // showDialog(
+    //   context: context,
+    //   builder: (_) {
+    //     store.activeName();
+    //     return WidgetLoad();
+    //   },
+    // ).whenComplete((){
+    //   Navigator.of(context).pop();
+    //   store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
+    // });
   }
 
   void showSheetInfo(CollectionBook book) {

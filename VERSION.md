@@ -17,3 +17,10 @@ Improve
 Improve
 - Layout(book,bookmarks)
 - Performance
+
+# b.26
+Fix
+- Title trim
+Improve
+- Icon
+- verses fontSize

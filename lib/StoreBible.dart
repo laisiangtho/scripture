@@ -116,15 +116,17 @@ mixin StoreBible on StoreConfiguration {
   Future<List<VERSE>> get verseChapter async{
     await this.bible;
     List<VERSE> list = [];
-    Map o = _currentBible.book[this.bookId.toString()]['chapter'][this.chapterId.toString()]['verse'];
+    String cId = this.chapterId.toString();
+    String bId = this.bookId.toString();
+    Map o = _currentBible.book[bId]['chapter'][cId]['verse'];
     o.forEach((vId, v) {
       list.add(VERSE(
         testament: this.testamentId.toString(),
-        book: this.bookId.toString(),
-        chapter: this.chapterId.toString(),
+        book: bId,
+        chapter: cId,
         verse: vId,
         verseText: v['text'],
-        verseTitle: v['title']
+        verseTitle: v['title']??''
       ));
     });
     return list;

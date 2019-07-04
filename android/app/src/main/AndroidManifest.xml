@@ -20,8 +20,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:allowBackup="true"
         android:label="Lai Siangtho"
-        android:icon="@drawable/icon"
-        android:roundIcon="@mipmap/icon_round">
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

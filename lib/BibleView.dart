@@ -190,16 +190,16 @@ class BibleView extends BibleState{
           textScaleFactor: 0.20,
           text:TextSpan(
             // text:  titleText,
-            text:  verse.verseTitle!=null && verse.verseTitle.isNotEmpty?'\n   abc-${verse.verseTitle}\n\n'.toUpperCase():'',
             style: Theme.of(context).textTheme.display4,
-            // style: TextStyle(
-            //   color: Colors.black
-            // ),
             children: <TextSpan>[
+              TextSpan(
+                text: verse.verseTitle.isNotEmpty?'\n   ${verse.verseTitle}\n\n'.toUpperCase():'',
+                style: TextStyle(color: Colors.grey, fontSize: 80)
+              ),
               TextSpan(text: '   '),
               TextSpan(
                 text: store.digit(verse.verse),
-                style: TextStyle(color: Colors.black45)
+                style: TextStyle(color: Colors.black45, fontSize: 90)
               ),
               TextSpan(text: ' '),
               TextSpan(

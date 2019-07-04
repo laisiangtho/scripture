@@ -102,7 +102,9 @@ class LaiSiangtho extends StatelessWidget {
           button: TextStyle(fontWeight: FontWeight.w300),
           body1: TextStyle(fontWeight: FontWeight.w300),
           body2: TextStyle(fontWeight: FontWeight.w300),
-          display4: TextStyle(fontWeight: FontWeight.w300,color: Colors.black) // bible verse
+          // display2: TextStyle(fontWeight: FontWeight.w300,color: Colors.black),
+          // display3: TextStyle(fontWeight: FontWeight.w300,color: Colors.black),
+          display4: TextStyle(fontWeight: FontWeight.w300,color: Colors.black,height: 1.0) // bible verse
         ),
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: InputBorder.none,

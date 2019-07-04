@@ -90,7 +90,7 @@ class _StateSheet extends State<SheetInfo> {
               child:CircularProgressIndicator(strokeWidth: 1)
             ):new Icon(book.available > 0?Icons.remove_circle:Icons.add_circle),
             label: Padding(
-              padding: EdgeInsets.symmetric(vertical: 7),
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 7),
               child: Text(book.available > 0?'Delete':'Download', style: TextStyle(fontSize: 25))
             ),
             onPressed: isDownloading?null:updateAvailableAction

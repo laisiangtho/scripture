@@ -22,7 +22,6 @@ abstract class BibleState extends State<Bible> with TickerProviderStateMixin{
   GlobalKey keyChapterButton = new GlobalKey();
   NAME activeName;
   List<String> selectedVerse=[];
-  double shrinkOffsetPercentage=1.0;
 
   bool isChapterBookmarked=false;
 
