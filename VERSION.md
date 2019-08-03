@@ -30,3 +30,7 @@ Improve
 - bottom nav
 - swipe chapter nav
 - icon
+
+# b.29
+Fix
+- swipe(left/right) chapter navigation

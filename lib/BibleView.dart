@@ -126,7 +126,7 @@ class BibleView extends BibleState{
       ]
     );
   }
-  int setChapterDrag;
+  double setChapterDrag;
   double initialX;
   double initialY;
   double dragDistance;
@@ -158,17 +158,13 @@ class BibleView extends BibleState{
                 if (e.delta.dx < 0) dragDistance = initialX - e.localPosition.dx;
                 if (dragDistance >= 50.0){
                   // initialX = e.localPosition.dx;
-                  // if (e.delta.dx > 1) setNextChapter();
-                  // if (e.delta.dx < -1) setPreviousChapter();
-                  if (e.delta.dx > 1) setChapterDrag = 1;
-                  if (e.delta.dx < -1) setChapterDrag = -1;
+                  setChapterDrag = e.delta.dx;
                 }
               },
               // onHorizontalDragCancel: (){},
               onHorizontalDragEnd:(e){
                 if (dragDistance >= 50.0){
-                  if (setChapterDrag > 0) setNextChapter();
-                  if (setChapterDrag < 0) setPreviousChapter();
+                  if (setChapterDrag > 0) setPreviousChapter(); else setNextChapter();
                 }
               }
             )

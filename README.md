@@ -25,6 +25,9 @@ Lai Siangtho has currently:
 - Jinghpaw Common Language Bible
 - သမ္မာကျမ်း (ခေတ်သုံ)
 - Matu Bible
+- Pathen Thutheng BU (Thadou)
+- Lai Siengthou (Zou)
+- King James Version
 
 Feature:
 - Bookmark
@@ -40,18 +43,15 @@ As it is active in develpment, please feel free to rate/write yours review, so t
 
 ## Android
 
-flutter build appbundle --target-platform android-arm,android-arm64
-
 minSdkVersion=16
-
+- [x] `flutter build appbundle --target-platform android-arm,android-arm64`
 - [ ] `flutter build apk --release --target-platform=android-arm`
-- [x] `flutter build appbundle --release --target-platform=android-arm`
+- [ ] `flutter build appbundle --release --target-platform=android-arm`
 - [ ] `flutter run --release --target-platform=android-arm`
 
 minSdkVersion=21
-
 - [ ] `flutter build apk --release --target-platform=android-arm64`
-- [x] `flutter build appbundle --release --target-platform=android-arm64`
+- [ ] `flutter build appbundle --release --target-platform=android-arm64`
 - [ ] `flutter run --target-platform=android-arm64`
 - [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
