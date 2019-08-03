@@ -64,7 +64,7 @@ class SearchResult extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
               text: chapters.join(', '),
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 14),
             ),
             TextSpan(
               text: '...'
@@ -80,7 +80,7 @@ class SearchResult extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
               text: verses.length.toString(),
-              // style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 15),
             )
           ]
         )

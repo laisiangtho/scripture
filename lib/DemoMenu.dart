@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'DemoAnimatedList.dart';
-import 'DemoNoteBookmark.dart';
+// import 'DemoAnimatedList.dart';
+// import 'DemoNoteBookmark.dart';
 
 
 
@@ -23,8 +23,8 @@ class DemoMenu extends StatelessWidget {
       icon: Icon(Icons.more_vert, color: Colors.red),
       itemBuilder: (BuildContext context) {
         List<Map<String, dynamic>> testRoutes = [
-          {'name':'Animated List','context': DemoAnimatedList()},
-          {'name':'Note, Bookmark','context': DemoNoteBookmark()}
+          // {'name':'Animated List','context': DemoAnimatedList()},
+          // {'name':'Note, Bookmark','context': DemoNoteBookmark()}
         ];
         return testRoutes.map((Map<String, dynamic> choice) {
           return new PopupMenuItem<Widget>(

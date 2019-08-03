@@ -24,3 +24,9 @@ Fix
 Improve
 - Icon
 - verses fontSize
+
+# b.28
+Improve
+- bottom nav
+- swipe chapter nav
+- icon

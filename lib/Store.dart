@@ -10,9 +10,10 @@ class Store extends StoreConfiguration with StoreCollection, StoreBible {
 
   Future<bool> updateCollectionAvailable() async{
     return await getCollectionBookIdentify().then((CollectionBook book) async{
-      await updateBible(book.available > 0).then((int e) async{
+      return await updateBible(book.available > 0).then((int e) async{
         book.available = e;
         await writeCollection();
+        return book.available > 0;
       });
     });
   }

@@ -21,15 +21,15 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def platformName
-  if (project.hasProperty("target-platform")) {
-      platformName = project.getProperty("target-platform")
-      if (platformName == 'android-arm64') {
-        flutterVersionCode = flutterVersionCode.toInteger() + 1
-      }
-  } else {
-      platformName = 'what'
-  }
+// def platformName
+//   if (project.hasProperty("target-platform")) {
+//       platformName = project.getProperty("target-platform")
+//       if (platformName == 'android-arm64') {
+//         flutterVersionCode = flutterVersionCode.toInteger() + 1
+//       }
+//   } else {
+//       platformName = 'what'
+//   }
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -60,8 +60,8 @@ android {
         //     abiFilters "armeabi", "x86", "armeabi-v7a"
         // }
         // multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         release {
@@ -114,8 +114,8 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    // androidTestImplementation 'androidx.test:runner:1.1.1'
-    // androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    // androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }

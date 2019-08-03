@@ -26,7 +26,6 @@ class MainBottomNavigationBar extends StatefulWidget {
 
 class StateExtended extends State<MainBottomNavigationBar> {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   Store store = new Store();
 
   final List<Widget> _page = [];
@@ -34,7 +33,6 @@ class StateExtended extends State<MainBottomNavigationBar> {
   int _pageIndex = 0;
 
   double navMaxheight, navMinheight = 0.0, _scrollOffset = 0, _scrollDelta = 0, _scrollOldOffset = 0;
-
 
   @override
   void initState() {
@@ -130,11 +128,6 @@ class StateExtended extends State<MainBottomNavigationBar> {
           ),
           extendBody: true,
           bottomNavigationBar: viewNavigation()
-          // extendBody: true,
-          // bottomNavigationBar: viewNavigation()
-          // bottomNavigationBar: LayoutBuilder(
-          //   builder: (BuildContext context, BoxConstraints constraint) => viewNavigation()
-          // )
         )
       )
     );
@@ -208,65 +201,59 @@ class BottomBarAnimated extends StatefulWidget {
 
 class _BottomBarAnimatedState extends State<BottomBarAnimated> with TickerProviderStateMixin {
   int selectedButton = 0;
+  double itemWidth;
+
   @override
   Widget build(BuildContext context) {
+    itemWidth = MediaQuery.of(context).size.width/widget.items.length;
+
     return WidgetBottomNavigation(
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: children()
+        children: widget.items.asMap().map((index, item) => MapEntry(index, button(index,item))).values.toList()
       )
     );
   }
 
-  List<Widget> children() {
-    List<Widget> button = List();
-    double width = MediaQuery.of(context).size.width/widget.items.length;
-    for (int i = 0; i < widget.items.length; i++) {
-      BottomBarItem item = widget.items[i];
-      bool isSelectedButton = widget.index == i;
-
-      button.add(
-        CupertinoButton(
-          pressedOpacity: 0.5,
-          padding: EdgeInsets.zero,
-          child: AnimatedContainer(
-            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-            decoration: BoxDecoration(
-              color: isSelectedButton?Colors.grey.withOpacity(1):null,
-              borderRadius: BorderRadius.all(Radius.circular(30))
-            ),
-            duration: widget.animationDuration,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(item.icon, size:25,color: isSelectedButton? Colors.white:Colors.grey[500]),
-
-                SizedBox(width:2),
-                AnimatedSize(
-                  vsync: this,
-                  duration: widget.animationDuration,
-                  curve: Curves.easeInOut,
-                  child: Container(
-                    constraints: BoxConstraints(
-                      maxWidth: width-5
-                    ),
-                    child: Text(
-                      isSelectedButton?item.label:'', overflow: TextOverflow.clip, maxLines: 1,
-                      style: TextStyle(color: Colors.white,fontSize: 15)
-                    )
-                  )
+  Widget button(int index, BottomBarItem item) {
+    bool isButtomSelected = widget.index == index;
+    return CupertinoButton(
+      pressedOpacity: 0.5,
+      padding: EdgeInsets.zero,
+      child: AnimatedContainer(
+        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+        decoration: BoxDecoration(
+          color: isButtomSelected?Colors.grey.withOpacity(1):null,
+          borderRadius: BorderRadius.all(Radius.circular(30))
+        ),
+        duration: widget.animationDuration,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(item.icon, size:25,color: isButtomSelected? Colors.white:Colors.grey[500]),
+            SizedBox(width:2),
+            AnimatedSize(
+              vsync: this,
+              duration: widget.animationDuration,
+              curve: Curves.easeInOut,
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: itemWidth-5
+                ),
+                child: Text(
+                  isButtomSelected?item.label:'', overflow: TextOverflow.clip, maxLines: 1,
+                  style: TextStyle(color: Colors.white,fontSize: 15)
                 )
-              ]
+              )
             )
-          ),
-          onPressed: ()=>widget.tap(i)
+          ]
         )
-      );
-    }
-    return button;
+      ),
+      onPressed: ()=>widget.tap(index)
+    );
   }
 }

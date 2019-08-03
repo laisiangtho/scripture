@@ -1,6 +1,12 @@
 # Bible@Lai Siangtho
 
+![alt text][logo]
+
 Lai Siangtho is 'the Holy Bible' app, and the continuous version of what we have released in 2008 that was saying "somehow we wanna serve resource which may seem any sense with you". There has been a huge improvement, and one of the biggest was developed using Flutter, which mean running on Multi-platform.
+
+...at [Google play][playStore],
+[Join][playStore Join],
+or [readme][Home]!
 
 Lai Siangtho has currently:
 - New International Version
@@ -33,6 +39,8 @@ Feature:
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Bible app.
 
 ## Android
+
+flutter build appbundle --target-platform android-arm,android-arm64
 
 minSdkVersion=16
 
@@ -68,3 +76,10 @@ git add .
 git commit -a -m "commit" (do not need commit message either)
 git push
 ```
+
+[playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
+[playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
+[Home]: https://github.com/laisiangtho/development
+
+
+[logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"

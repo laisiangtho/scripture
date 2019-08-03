@@ -67,6 +67,14 @@ class BibleView extends BibleState{
     }
     return Stack(
       children: <Widget>[
+        // Positioned(
+        //   top:100,
+        //   left:9,
+        //   child: Container(
+        //     color: Colors.blue,
+        //     child: Text('test'),
+        //   )
+        // ),
         Positioned(
           bottom:offsetBottom,
           left:offsetVertical,
@@ -118,7 +126,10 @@ class BibleView extends BibleState{
       ]
     );
   }
-
+  int setChapterDrag;
+  double initialX;
+  double initialY;
+  double dragDistance;
   Widget futureBuilderSliver(){
     return new FutureBuilder(
       future: store.verseChapter,
@@ -139,20 +150,27 @@ class BibleView extends BibleState{
                 // padding: EdgeInsets.zero,
                 itemBuilder: (BuildContext context, int index) => _verses(snap.data,index)
               ),
-              // onVerticalDragUpdate: (drag) {
-              //   if (drag.delta.dy > 10) print('down ${drag.delta.dy}');
-              //   if (drag.delta.dy < -10) print('up ${drag.delta.dy}');
-              // },
-              // onHorizontalDragUpdate: (drag) {
-              //   if (drag.delta.dx > 2) setNextChapter();
-              //   if (drag.delta.dx < -2) setPreviousChapter();
-              // },
-              // onVerticalDragEnd: (e){
-              //   print('object $e');
-              // },
-              // onHorizontalDragEnd: (e){
-              //   // print('object $e');
-              // },
+              onHorizontalDragStart:(e){
+                initialX = e.globalPosition.dx;
+              },
+              onHorizontalDragUpdate:(e){
+                dragDistance = e.localPosition.dx - initialX;
+                if (e.delta.dx < 0) dragDistance = initialX - e.localPosition.dx;
+                if (dragDistance >= 50.0){
+                  // initialX = e.localPosition.dx;
+                  // if (e.delta.dx > 1) setNextChapter();
+                  // if (e.delta.dx < -1) setPreviousChapter();
+                  if (e.delta.dx > 1) setChapterDrag = 1;
+                  if (e.delta.dx < -1) setChapterDrag = -1;
+                }
+              },
+              // onHorizontalDragCancel: (){},
+              onHorizontalDragEnd:(e){
+                if (dragDistance >= 50.0){
+                  if (setChapterDrag > 0) setNextChapter();
+                  if (setChapterDrag < 0) setPreviousChapter();
+                }
+              }
             )
           );
         } else {
