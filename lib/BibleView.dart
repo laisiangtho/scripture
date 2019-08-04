@@ -14,7 +14,6 @@ import 'Common.dart';
 import 'StoreModel.dart';
 import 'Bible.dart';
 
-
 import 'PopupBook.dart';
 import 'PopupChapter.dart';
 import 'SheetOption.dart';
@@ -67,14 +66,6 @@ class BibleView extends BibleState{
     }
     return Stack(
       children: <Widget>[
-        // Positioned(
-        //   top:100,
-        //   left:9,
-        //   child: Container(
-        //     color: Colors.blue,
-        //     child: Text('test'),
-        //   )
-        // ),
         Positioned(
           bottom:offsetBottom,
           left:offsetVertical,

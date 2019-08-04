@@ -9,14 +9,14 @@ Lai Siangtho is 'the Holy Bible' app, and the continuous version of what we have
 or [readme][Home]!
 
 Lai Siangtho has currently:
-- New International Version
-- သမ္မာကျမ်း (ယုဒသန်)
-- Det Danske Bibel
-- Norsk Bibel
+- New International Version -
+- သမ္မာကျမ်း (ယုဒသန်) -
+- Det Danske Bibel -
+- Norsk Bibel -
 - Luther(German)
 - La Bible Ostervald (French)
 - Pathian Laisiangthou (Paite)
-- Pathian Lehkhabu Thianghlim (Mizo)
+- Pathian Lehkhabu Thianghlim (Mizo:1917/1995)
 - Lai Siangtho (Sizang)
 - Lai Siangtho (Tedim)
 - Baibal Thianghlim (Falam)
@@ -28,6 +28,8 @@ Lai Siangtho has currently:
 - Pathen Thutheng BU (Thadou)
 - Lai Siengthou (Zou)
 - King James Version
+- World English Bible
+- Bible in Basic English
 
 Feature:
 - Bookmark

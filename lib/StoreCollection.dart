@@ -24,8 +24,8 @@ mixin StoreCollection on StoreConfiguration {
     _collection.book.sort((a, b) => a.order.compareTo(b.order));
     return _collection;
   }
-  Future writeCollection() async{
-    return await docsWrite(basename(_assetsBookJSON),encodeJSON(_collection.toJSON()).toString());
+  Future<bool> writeCollection() async{
+    return await docsWrite(basename(_assetsBookJSON),encodeJSON(_collection.toJSON()).toString()).catchError((e)=>false).then((s)=>true);
   }
 
   Future updateCollection() async{
@@ -60,12 +60,7 @@ mixin StoreCollection on StoreConfiguration {
       });
     }
     if (this.identify.isEmpty){
-     _collection.book.firstWhere((e){
-       if (e.available > 0) this.identify = e.identify;
-       return true;
-     });
-
-
+     this.identify = _collection.book.firstWhere((i) => i.available > 0,orElse: () => _collection.book.first).identify;
     }
     return _collection;
   }

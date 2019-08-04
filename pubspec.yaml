@@ -1,6 +1,6 @@
 name: bible
 description: the Holy Bible in languages
-version: 1.0.0+29
+version: 1.0.0+30
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -11,7 +11,7 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   # Custom
-  path_provider: ^1.1.0
+  path_provider: ^1.2.0
   http: ^0.12.0
 
   flutter_reorderable_list: ^0.1.3

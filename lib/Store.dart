@@ -12,8 +12,7 @@ class Store extends StoreConfiguration with StoreCollection, StoreBible {
     return await getCollectionBookIdentify().then((CollectionBook book) async{
       return await updateBible(book.available > 0).then((int e) async{
         book.available = e;
-        await writeCollection();
-        return book.available > 0;
+        return await writeCollection();
       });
     });
   }

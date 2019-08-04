@@ -114,7 +114,10 @@ class StateExtended extends State<MainBottomNavigationBar> {
     store.contextMedia = MediaQuery.of(context);
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
+      height: double.infinity,
+      width: double.infinity,
       child: SafeArea(
+        minimum: EdgeInsets.zero,
         top: false,
         bottom: false,
         child: new Scaffold(

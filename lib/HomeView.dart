@@ -161,7 +161,7 @@ class HomeView extends HomeState {
   Widget booksItem(BuildContext context, List<CollectionBook> o,int index, Animation<double> animation){
     CollectionBook collectionBook = o[index];
     // Key id = Key(store.uniqueIdentify.toString());
-    Widget menu = booksItemWidget(collectionBook);
+    Widget menu = booksItemWidget(collectionBook, index);
     return new SlideableAnimatedList(
       key: collectionBook.key,
       animation: animation,
@@ -183,7 +183,7 @@ class HomeView extends HomeState {
     );
   }
 
-  Widget booksItemWidget(CollectionBook collectionBook){
+  Widget booksItemWidget(CollectionBook collectionBook,int index){
     // return ListTile(
     //   title: Text('${collectionBook.name}'),
     // );
@@ -209,6 +209,7 @@ class HomeView extends HomeState {
             child: new ListTile(
               // dense: true,
               title: Text(
+                // index.toString()+' '+ collectionBook.order.toString(), maxLines: 1, overflow: TextOverflow.ellipsis,
                 collectionBook.name, maxLines: 1, overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headline.copyWith(fontSize: 22,color: isAvailable?Colors.black:Colors.grey)
               ),

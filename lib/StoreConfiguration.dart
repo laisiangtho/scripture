@@ -16,40 +16,20 @@ BIBLE computeParseBible(String response){
   return BIBLE.fromJSON(parsed);
 }
 
-Future<Response> requestHTTP(String url) async {
-  return await Client().get(url);
-}
-Map<String, dynamic> decodeJSON(String response) {
-  return json.decode(response);
-}
-String encodeJSON(Map response) {
-  return json.encode(response);
-}
+Future<Response> requestHTTP(String url) async => await Client().get(url);
+Map<String, dynamic> decodeJSON(String response)  => json.decode(response);
+String encodeJSON(Map response) => json.encode(response);
+Future<String> loadBundleAsString(String fileName) async => await rootBundle.loadString(fileName);
+Future<FileSystemEntity> get appDirectory async => await getApplicationDocumentsDirectory();
 
-Future<String> loadBundleAsString(String fileName) async {
-  return await rootBundle.loadString(fileName);
-}
-Future<FileSystemEntity> get appDirectory async {
-  return await getApplicationDocumentsDirectory();
-}
 Future<File> documents(String fileName) async {
   FileSystemEntity directory = await appDirectory;
   return new File(join(directory.path, fileName));
 }
-Future<File> docsWrite(String fileName,String fileContext) async {
-  return await documents(fileName).then((File e) async => await e.writeAsString(fileContext));
-  // return await this.docs(fileName).then((File e) async => await e.writeAsString(json.encode(fileContext)));
-}
-Future<String> docsRead(String fileName) async {
-  return await documents(fileName).then((File e) async => await e.readAsString());
-  // return await this.docs(fileName).then((File e) async => json.decode(await e.readAsString()));
-}
-Future<FileSystemEntity> docsDelete(String fileName) async {
-  return await documents(fileName).then((File e) async => await e.delete());
-}
-Future<bool> docsExists(String fileName) async {
-  return await documents(fileName).then((File e) async => await e.exists());
-}
+Future<File> docsWrite(String fileName,String fileContext) async => await documents(fileName).then((File e) async => await e.writeAsString(fileContext));
+Future<String> docsRead(String fileName) async => await documents(fileName).then((File e) async => await e.readAsString());
+Future<FileSystemEntity> docsDelete(String fileName) async => await documents(fileName).then((File e) async => await e.delete());
+Future<bool> docsExists(String fileName) async => await documents(fileName).then((File e) async => await e.exists());
 
 
 abstract class StoreConfiguration {

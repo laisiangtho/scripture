@@ -34,3 +34,11 @@ Improve
 # b.29
 Fix
 - swipe(left/right) chapter navigation
+
+# b.30
+Fix
+- Initializing data
+- Updating available books
+Improve
+- view(layout)
+- Icon
