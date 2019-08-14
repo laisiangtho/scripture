@@ -9,10 +9,11 @@ Lai Siangtho is 'the Holy Bible' app, and the continuous version of what we have
 or [readme][Home]!
 
 Lai Siangtho has currently:
-- New International Version -
-- သမ္မာကျမ်း (ယုဒသန်) -
-- Det Danske Bibel -
-- Norsk Bibel -
+
+- New International Version
+- သမ္မာကျမ်း (ယုဒသန်)
+- Det Danske Bibel
+- Norsk Bibel
 - Luther(German)
 - La Bible Ostervald (French)
 - Pathian Laisiangthou (Paite)
@@ -32,6 +33,7 @@ Lai Siangtho has currently:
 - Bible in Basic English
 
 Feature:
+
 - Bookmark
 - Search
 - Open Source
@@ -46,12 +48,14 @@ As it is active in develpment, please feel free to rate/write yours review, so t
 ## Android
 
 minSdkVersion=16
+
 - [x] `flutter build appbundle --target-platform android-arm,android-arm64`
 - [ ] `flutter build apk --release --target-platform=android-arm`
 - [ ] `flutter build appbundle --release --target-platform=android-arm`
 - [ ] `flutter run --release --target-platform=android-arm`
 
 minSdkVersion=21
+
 - [ ] `flutter build apk --release --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
 - [ ] `flutter run --target-platform=android-arm64`
@@ -67,6 +71,7 @@ minSdkVersion=21
 flutter build apk --split-per-abi --release
 
 ## Android->release
+
   versionCode android-arm
   versionCode++ android-arm64
 
@@ -82,6 +87,5 @@ git push
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
 [playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
 [Home]: https://github.com/laisiangtho/development
-
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"

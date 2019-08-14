@@ -28,7 +28,7 @@ mixin StoreCollection on StoreConfiguration {
     return await docsWrite(basename(_assetsBookJSON),encodeJSON(_collection.toJSON()).toString()).catchError((e)=>false).then((s)=>true);
   }
 
-  Future updateCollection() async{
+  Future<Collection> updateCollection() async{
     return await requestHTTP('nosj.koob/retsam/elbib/ohtgnaisial/moc.tnetnocresubuhtig.war//:sptth'.split('').reversed.join()).then((response) async{
       Map<String, dynamic> parsed = decodeJSON(response.body);
       await parsed['book'].forEach((e){
@@ -37,19 +37,27 @@ mixin StoreCollection on StoreConfiguration {
           CollectionBook book = _collection.book.elementAt(index);
           book.order = index;
           e.addAll(book.userSetting());
+        } else {
+          _collection.book.add(CollectionBook.fromJSON(e));
         }
       });
       parsed['keyword'] =  _collection.keyword.map((e)=>e.toJSON()).toList();
       parsed['bookmark'] = _collection.bookmark.map((e)=>e.toJSON()).toList();
       await _parseCollection(parsed);
       await writeCollection();
+      return _collection;
     });
   }
 
+  Future deleteCollection() async {
+    String fileName = basename(_assetsBookJSON);
+    return await docsExists(fileName).then((bool yes) async{
+      return (yes)?await docsDelete(fileName):false;
+    });
+  }
   Future<Collection> getCollection() async {
     if (_collection == null) {
       String fileName = basename(_assetsBookJSON);
-      // await docsDelete(fileName);
       await docsExists(fileName).then((bool yes) async{
         if (yes){
           await docsRead(fileName).then((response) => _parseCollection(response));

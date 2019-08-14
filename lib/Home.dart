@@ -46,12 +46,12 @@ abstract class HomeState extends State<Home> {
   }
 
   @override
-   void setState(fn) {
+  void setState(fn) {
     if(mounted) super.setState(fn);
   }
 
   void collectionGenerate (e){
-    collection = e.data;
+    collection = e;
   }
 
   List<CollectionBook> get collectionOffline => collection.book.where((e)=> e.available > 0).toList();
@@ -99,17 +99,20 @@ abstract class HomeState extends State<Home> {
   }
 
   void updateCollectionAction() {
+    int totalPrevious = collection.book.length;
     setState(() {
       isUpdating = true;
       updateCollectionCallBack = null;
     });
-    store.updateCollection().catchError((_e){
-      print(_e);
+    store.updateCollection().then((Collection e){
+      for (int index = totalPrevious; index < collection.book.length; index++) animatedListKey.currentState.insertItem(index);
     }).whenComplete((){
       setState(() {
         isUpdating = false;
         updateCollectionCallBack = updateCollectionAction;
       });
+    }).catchError((_e){
+      print(_e);
     });
   }
 }

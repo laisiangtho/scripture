@@ -54,7 +54,7 @@ class HomeView extends HomeState {
         future: store.getCollection(),
         builder: (BuildContext context, AsyncSnapshot<Collection> e){
           if (e.hasData){
-            collectionGenerate(e);
+            collectionGenerate(e.data);
             return _body();
           } else if (e.hasError) {
             return WidgetError(message: e.error);
@@ -108,7 +108,8 @@ class HomeView extends HomeState {
                 fontFamily: "sans-serif",
                 // color: Color.lerp(Colors.white, Colors.white24, stretch),
                 color: Colors.black,
-                fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
+                fontWeight: FontWeight.w200,
+                // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
                 fontSize:45 - (20*stretch),
                 // shadows: <Shadow>[
                 //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
@@ -149,17 +150,18 @@ class HomeView extends HomeState {
     return AnimatedList(
       key: animatedListKey,
       physics: ScrollPhysics(),
+      // controller: store.scrollController,
       shrinkWrap: true,
       // primary: true,
       // reverse: true,
       padding: EdgeInsets.zero,
       initialItemCount: collection.book.length,
-      itemBuilder: (context, index, animation) => booksItem(context, collection.book,index,animation),
+      itemBuilder: booksItem
     );
   }
 
-  Widget booksItem(BuildContext context, List<CollectionBook> o,int index, Animation<double> animation){
-    CollectionBook collectionBook = o[index];
+  Widget booksItem(BuildContext context, int index, Animation<double> animation){
+    CollectionBook collectionBook = collection.book[index];
     // Key id = Key(store.uniqueIdentify.toString());
     Widget menu = booksItemWidget(collectionBook, index);
     return new SlideableAnimatedList(
@@ -184,9 +186,6 @@ class HomeView extends HomeState {
   }
 
   Widget booksItemWidget(CollectionBook collectionBook,int index){
-    // return ListTile(
-    //   title: Text('${collectionBook.name}'),
-    // );
     bool isAvailable = collectionBook.available > 0;
     return ReorderableItem( key: collectionBook.key, childBuilder: (BuildContext context, ReorderableItemState state){
       BoxDecoration decoration;
@@ -209,7 +208,7 @@ class HomeView extends HomeState {
             child: new ListTile(
               // dense: true,
               title: Text(
-                // index.toString()+' '+ collectionBook.order.toString(), maxLines: 1, overflow: TextOverflow.ellipsis,
+                // index.toString()+','+ collectionBook.order.toString() +','+collectionBook.identify,
                 collectionBook.name, maxLines: 1, overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headline.copyWith(fontSize: 22,color: isAvailable?Colors.black:Colors.grey)
               ),
@@ -219,10 +218,10 @@ class HomeView extends HomeState {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(4),
+                    padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: isAvailable?Colors.grey:Colors.grey[200]
+                      color: isAvailable?Colors.grey[500]:Colors.grey[200]
                     ),
                     child: Text(
                       collectionBook.language.name.toUpperCase(),

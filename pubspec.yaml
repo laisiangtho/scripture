@@ -1,6 +1,6 @@
 name: bible
 description: the Holy Bible in languages
-version: 1.0.0+30
+version: 1.0.0+31
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
