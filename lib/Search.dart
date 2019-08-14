@@ -29,13 +29,15 @@ abstract class SearchState extends State<Search> with TickerProviderStateMixin, 
   @override
   void initState() {
     textController.text = store.searchQuery;
-
     textController.addListener(() => setState(() {}));
     WidgetsBinding.instance.addObserver(this);
     store.focusNode.addListener((){
       if(store.focusNode.hasFocus) {
         textController.selection = TextSelection(baseOffset: 0, extentOffset: textController.text.length);
       }
+    });
+    store.googleAnalytics.then((e) {
+      e.sendEvent(store.identify, store.searchQuery ?? 'search');
     });
     super.initState();
   }

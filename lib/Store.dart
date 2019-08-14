@@ -3,11 +3,20 @@ import 'StoreCollection.dart';
 import 'StoreBible.dart';
 import 'StoreConfiguration.dart';
 
+import 'package:usage/usage_io.dart';
+import 'dart:io';
+import 'package:path/path.dart';
+
 class Store extends StoreConfiguration with StoreCollection, StoreBible {
   static final Store _instance = new Store.internal();
   factory Store() => _instance;
   Store.internal();
 
+   Future<Analytics> get googleAnalytics async{
+    return appDirectory.then((FileSystemEntity e){
+      return new AnalyticsIO(appAnalytics, join(e.path, 'analytics'), appVersion);
+    });
+  }
   Future<bool> updateCollectionAvailable() async{
     return await getCollectionBookIdentify().then((CollectionBook book) async{
       return await updateBible(book.available > 0).then((int e) async{

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
 import 'MainBottomNavigationBar.dart';
 import 'Store.dart';
 // import 'package:bible/Home.dart';
@@ -25,6 +26,15 @@ void main() {
   // ));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) => runApp(LaiSiangtho()));
+
+  // String UA = 'UA-18644721-1';
+
+  // Analytics ga = new AnalyticsIO(UA, 'ga_test', '31');
+  // Analytics ga = new AnalyticsIO(UA, 'ga_test', '31','documentsDirectory': PathProvider.getApplicationDocumentsDirectory()));
+  // ga.analyticsOpt = AnalyticsOpt.optIn;
+  // ga.sendScreenView('home');
+  // ga.sendException('foo exception');
+    // documentsDirectory: PathProvider.getApplicationDocumentsDirectory());
 }
 
 
@@ -32,10 +42,26 @@ void main() {
 
 class LaiSiangtho extends StatelessWidget {
 
+  // final String UA = 'UA-18644721-1';
+  // final String UA = 'App + Web | 207437591';
+  // final String UA = '207437591';
   final Store store = new Store();
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    // Analytics analytics = getAnalytics();
+    // analytics.sendEvent('main', '31.0');
+    // googleAnalytics().then((e){
+    //   e.sendEvent('main', '31.0');
+    //   print('sending');
+    // });
+    // googleAnalytics().then((e){
+    //   e.sendEvent('main', '31.0');
+    //   print('sending');
+    // });
 
     MaterialColor colorPrimarySwatch = MaterialColor(
       // 0xFFF5F5F5,

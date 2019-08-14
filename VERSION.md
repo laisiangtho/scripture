@@ -70,3 +70,9 @@ Fix
 - Bible index
 Improve
 - color
+
+## b.32
+
+Prepare
+
+- Analytics

@@ -31,6 +31,7 @@ abstract class BibleState extends State<Bible> with TickerProviderStateMixin{
   void initState() {
     // selectedVerse.clear();
     store.scrollController?.addListener(() => setState(() {}));
+    store.googleAnalytics.then((e) => e.sendEvent('bible', store.identify));
     super.initState();
   }
 

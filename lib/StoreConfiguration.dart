@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
+// import 'package:usage/usage_io.dart';
 import 'package:http/http.dart';
 
 import 'StoreModel.dart';
@@ -31,11 +32,12 @@ Future<String> docsRead(String fileName) async => await documents(fileName).then
 Future<FileSystemEntity> docsDelete(String fileName) async => await documents(fileName).then((File e) async => await e.delete());
 Future<bool> docsExists(String fileName) async => await documents(fileName).then((File e) async => await e.exists());
 
-
 abstract class StoreConfiguration {
   final String appName = 'laisiangtho';
   final String appTitle = 'Lai Siangtho';
+  final String appVersion = '1.0.0-32';
   final String appDescription = 'the Holy Bible in languages';
+  final String appAnalytics = 'UA-18644721-1';
 
   String identify ='';
   String searchQuery ='';

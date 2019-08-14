@@ -37,6 +37,7 @@ abstract class HomeState extends State<Home> {
   void initState() {
     store.scrollController?.addListener(() => setState(() {}));
     updateCollectionCallBack = updateCollectionAction;
+    store.googleAnalytics.then((e) => e.sendEvent('home', store.appVersion));
     super.initState();
   }
 
@@ -111,6 +112,7 @@ abstract class HomeState extends State<Home> {
         isUpdating = false;
         updateCollectionCallBack = updateCollectionAction;
       });
+      store.googleAnalytics.then((e)=>e.sendEvent('update', store.appVersion));
     }).catchError((_e){
       print(_e);
     });

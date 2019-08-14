@@ -28,6 +28,7 @@ abstract class NoteState extends State<Note> with TickerProviderStateMixin{
   void initState() {
     super.initState();
     store.scrollController?.addListener(() => setState(() {}));
+    store.googleAnalytics.then((e) => e.sendEvent('bookmark', store.appVersion));
   }
 
   @override
