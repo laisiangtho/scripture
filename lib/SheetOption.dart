@@ -40,7 +40,7 @@ class _StateSheet extends State<SheetOption> {
   }
   get selectedVerse {
     List<String> list = [];
-    return store.verseChapter.then((List<VERSE> e){
+    return store.getVerseChapter.then((List<VERSE> e){
       widget.verse..sort((a, b) => a.compareTo(b))..forEach((id) {
         var o = e.where((i)=> i.verse == id).single;
         list.add(o.verse+': '+o.verseText);

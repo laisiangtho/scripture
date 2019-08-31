@@ -6,24 +6,21 @@ import 'package:path/path.dart';
 import 'StoreModel.dart';
 import 'StoreConfiguration.dart';
 
+Collection parseCollectionBookCompute(dynamic response) {
+  Map<String, dynamic> parsed = (response is String)?decodeJSON(response):response;
+  return Collection.fromJSON(parsed);
+}
+
 mixin StoreCollection on StoreConfiguration {
 
   String _assetsBookJSON = 'assets/book.json';
   Collection _collection;
-  // List<CollectionBook> _collectionBook;
-  // List<CollectionBookmark> _collectionBookmark;
-  // List<CollectionWord> _collectionWord;
 
-  static Collection parseCollectionBookCompute(dynamic response) {
-    Map<String, dynamic> parsed = (response is String)?decodeJSON(response):response;
-    return Collection.fromJSON(parsed);
-  }
-  Future<Collection> _parseCollection(dynamic response) async{
-    // return _collection = await compute(parseCollectionBookCompute,response);
-    _collection = await compute(parseCollectionBookCompute,response);
+  Future _parseCollection(dynamic response) async{
+    await compute(parseCollectionBookCompute,response).then((e) => _collection = e);
     _collection.book.sort((a, b) => a.order.compareTo(b.order));
-    return _collection;
   }
+
   Future<bool> writeCollection() async{
     return await docsWrite(basename(_assetsBookJSON),encodeJSON(_collection.toJSON()).toString()).catchError((e)=>false).then((s)=>true);
   }
@@ -41,7 +38,7 @@ mixin StoreCollection on StoreConfiguration {
           _collection.book.add(CollectionBook.fromJSON(e));
         }
       });
-      parsed['keyword'] =  _collection.keyword.map((e)=>e.toJSON()).toList();
+      parsed['keyword'] = _collection.keyword.map((e)=>e.toJSON()).toList();
       parsed['bookmark'] = _collection.bookmark.map((e)=>e.toJSON()).toList();
       await _parseCollection(parsed);
       await writeCollection();

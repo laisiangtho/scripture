@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'SlideableAnimatedList.dart';
 
 // import 'DemoMenu.dart';
@@ -47,6 +48,7 @@ class HomeView extends HomeState {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: scaffoldKey,
+      // backgroundColor: Colors.blue,
       body: ReorderableList(
         onReorder: _reorderCallback,
         onReorderDone: _reorderDone,
@@ -55,36 +57,84 @@ class HomeView extends HomeState {
         builder: (BuildContext context, AsyncSnapshot<Collection> e){
           if (e.hasData){
             collectionGenerate(e.data);
-            return _body();
+            return _nested();
           } else if (e.hasError) {
             return WidgetError(message: e.error);
           } else {
             return WidgetLoad();
           }
         })
+      ),
+    );
+  }
+
+  Widget _nested() {
+    return NestedScrollView(
+      controller: store.scrollController,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          new SliverPersistentHeader(pinned: true,floating: true,delegate: new WidgetHeaderSliver(bar,minHeight: 70,maxHeight: 140)),
+        ];
+      },
+      body: _nestedRefresh()
+    );
+  }
+
+  Widget _nestedRefresh() {
+    return RefreshConfiguration(
+      // maxOverScrollExtent :100.0,
+      child: SmartRefresher(
+        enablePullDown: true,
+        child: _body(),
+        controller: refreshController,
+        onRefresh: refreshUpdate,
+        header: _refreshHeader()
       )
+    );
+  }
+
+
+  Widget _refreshHeader() {
+    return CustomHeader(
+      refreshStyle: RefreshStyle.Behind,
+      onOffsetChange: (offset) {
+        if (refreshController.headerMode.value != RefreshStatus.refreshing)
+          scaleController.value = offset / 80.0;
+      },
+      builder: (c, RefreshStatus mode) {
+        Widget child;
+        switch (mode) {
+          case RefreshStatus.failed:
+            child = Text("failed, please retry!");
+            break;
+          case RefreshStatus.completed:
+            child = Text("Updated");
+            break;
+          case RefreshStatus.canRefresh:
+            child = Text("Release to update");
+            break;
+          case RefreshStatus.refreshing:
+            child = CircularProgressIndicator(strokeWidth: 1,);
+            break;
+          default:
+            child = Text("Pull down to update");
+            break;
+        }
+        return Container(
+          child: FadeTransition(
+            opacity: scaleController,
+            child: child
+          ),
+          alignment: Alignment.center
+        );
+      },
     );
   }
 
   Widget _body() {
     return CustomScrollView(
-      controller: store.scrollController,
+      // controller: store.scrollController,
       slivers: <Widget>[
-        new SliverPersistentHeader(pinned: true,floating: true,delegate: new WidgetHeaderSliver(bar,minHeight: 70,maxHeight: 140)),
-        // new SliverToBoxAdapter(
-        //   child: booksAnimatedList()
-        // ),
-        // new SliverPadding(
-        //   padding: EdgeInsets.only(bottom: store.contentBottomPadding),
-        //   sliver: SliverToBoxAdapter(
-        //     child: Container(
-        //       padding: EdgeInsets.all(20),
-        //       child: Center(
-        //         child: Text('Hello World')
-        //       )
-        //     )
-        //   )
-        // )
         new SliverPadding(
           padding: EdgeInsets.only(bottom: store.contentBottomPadding),
           sliver: SliverToBoxAdapter(
@@ -122,13 +172,13 @@ class HomeView extends HomeState {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            CupertinoButton(
-              // padding: EdgeInsets.zero,
-              child: isUpdating?SizedBox(width:20, height:20,
-                child:CircularProgressIndicator(strokeWidth: 1)
-              ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey, size: 30),
-              onPressed: updateCollectionCallBack
-            ),
+            // CupertinoButton(
+            //   // padding: EdgeInsets.zero,
+            //   child: isUpdating?SizedBox(width:20, height:20,
+            //     child:CircularProgressIndicator(strokeWidth: 1)
+            //   ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey, size: 30),
+            //   onPressed: updateCollectionCallBack
+            // ),
             CupertinoButton(
               // padding: EdgeInsets.zero,
               child: new Icon(Icons.sort,color: isSorting?Colors.red:Colors.grey, size: 30),
@@ -150,10 +200,7 @@ class HomeView extends HomeState {
     return AnimatedList(
       key: animatedListKey,
       physics: ScrollPhysics(),
-      // controller: store.scrollController,
       shrinkWrap: true,
-      // primary: true,
-      // reverse: true,
       padding: EdgeInsets.zero,
       initialItemCount: collection.book.length,
       itemBuilder: booksItem
@@ -162,19 +209,16 @@ class HomeView extends HomeState {
 
   Widget booksItem(BuildContext context, int index, Animation<double> animation){
     CollectionBook collectionBook = collection.book[index];
-    // Key id = Key(store.uniqueIdentify.toString());
-    Widget menu = booksItemWidget(collectionBook, index);
     return new SlideableAnimatedList(
       key: collectionBook.key,
       animation: animation,
-      menu: menu,
+      menu: booksItemWidget(collectionBook),
       menuRight: <Widget>[
         new RawMaterialButton(
           elevation: 0,
           highlightElevation: 0.0,
           fillColor: Colors.grey,
           shape: new RoundedRectangleBorder(borderRadius: BorderRadius.horizontal(left: Radius.elliptical(100, 100))),
-          // constraints: BoxConstraints(minHeight: 35, minWidth: 40, maxWidth: 50),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           materialTapTargetSize: MaterialTapTargetSize.padded,
@@ -185,7 +229,7 @@ class HomeView extends HomeState {
     );
   }
 
-  Widget booksItemWidget(CollectionBook collectionBook,int index){
+  Widget booksItemWidget(CollectionBook collectionBook){
     bool isAvailable = collectionBook.available > 0;
     return ReorderableItem( key: collectionBook.key, childBuilder: (BuildContext context, ReorderableItemState state){
       BoxDecoration decoration;
@@ -206,9 +250,8 @@ class HomeView extends HomeState {
           opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
           child: IntrinsicHeight(
             child: new ListTile(
-              // dense: true,
+              dense: true,
               title: Text(
-                // index.toString()+','+ collectionBook.order.toString() +','+collectionBook.identify,
                 collectionBook.name, maxLines: 1, overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.headline.copyWith(fontSize: 22,color: isAvailable?Colors.black:Colors.grey)
               ),

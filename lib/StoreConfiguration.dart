@@ -3,11 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:path_provider/path_provider.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart' show rootBundle;
-// import 'package:usage/usage_io.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 import 'StoreModel.dart';
@@ -35,7 +32,7 @@ Future<bool> docsExists(String fileName) async => await documents(fileName).then
 abstract class StoreConfiguration {
   final String appName = 'laisiangtho';
   final String appTitle = 'Lai Siangtho';
-  final String appVersion = '1.0.0-32';
+  final String appVersion = '1.0.1+33';
   final String appDescription = 'the Holy Bible in languages';
   final String appAnalytics = 'UA-18644721-1';
 
@@ -44,7 +41,9 @@ abstract class StoreConfiguration {
   String suggestQuery ='';
 
   int testamentId = 1;
+  String testamentName = '';
   int bookId = 1;
+  String bookName = '';
   int chapterId = 1;
   int chapterCount;
   int verseId = 1;

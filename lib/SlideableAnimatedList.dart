@@ -17,8 +17,8 @@ class _SlideableAnimatedListState extends State<SlideableAnimatedList> with Sing
 
   @override
   initState() {
-    super.initState();
     animatedListController = new AnimationController(vsync: this, duration: const Duration(milliseconds: 100));
+    super.initState();
   }
 
   // @override
@@ -56,6 +56,7 @@ class _SlideableAnimatedListState extends State<SlideableAnimatedList> with Sing
       key: widget.key,
       axis: Axis.vertical,
       sizeFactor: widget.animation,
+      // sizeFactor: animationDouble,
       child: new GestureDetector(
         behavior: HitTestBehavior.opaque,
         // behavior: HitTestBehavior.translucent,

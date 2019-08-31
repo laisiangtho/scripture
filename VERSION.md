@@ -1,19 +1,19 @@
 # Version
 
-## b.1
+## 1.0.0+1
 
 Prepare
 
 - Production
 - Data structure
 
-## b.16
+## 1.0.0+16
 
 Improve
 
 - Bookmark list
 
-## b.20
+## 1.0.0+20
 
 Improve
 
@@ -21,14 +21,14 @@ Improve
 - bottomBar padding
 - search view
 
-## b.24
+## 1.0.0+24
 
 Improve
 
 - Layout(book,bookmarks)
 - Performance
 
-## b.26
+## 1.0.0+26
 
 Fix
 
@@ -39,7 +39,7 @@ Improve
 - Icon
 - verses fontSize
 
-## b.28
+## 1.0.0+28
 
 Improve
 
@@ -47,13 +47,13 @@ Improve
 - swipe chapter nav
 - icon
 
-## b.29
+## 1.0.0+29
 
 Fix
 
 - swipe(left/right) chapter navigation
 
-## b.30
+## 1.0.0+30
 
 Fix
 
@@ -63,7 +63,7 @@ Improve
 - view(layout)
 - Icon
 
-## b.31
+## 1.0.0+31
 
 Fix
 
@@ -71,8 +71,32 @@ Fix
 Improve
 - color
 
-## b.32
+## 1.0.0+32
 
 Prepare
 
 - Analytics
+
+## 1.0.1+33
+
+Improve
+
+- Performance
+Add
+- World English Bible
+- Bible in Basic English
+- ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
+Prepare
+- Analytics
+
+## 1.0.1+34
+
+- Improve
+  - Performance
+  - Collection update UI
+- Add
+  - World English Bible
+  - Bible in Basic English
+  - ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
+- Prepare
+  - Analytics

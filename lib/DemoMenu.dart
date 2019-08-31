@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 import 'Store.dart';
 
 // import 'DemoAnimatedList.dart';
 // import 'DemoNoteBookmark.dart';
+
+import 'DemoReorder.dart';
+import 'DemoEachChapter.dart';
 
 class DemoMenu extends StatefulWidget {
   @override
@@ -24,14 +28,18 @@ class _DemoMenuState extends State<DemoMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return new PopupMenuButton<VoidCallback>(
-      onSelected: (VoidCallback choice){
-        choice();
-        // Navigator.push(
-        //   context, MaterialPageRoute(builder: (context) => choice),
-        // ).then((e){
-        //   print(e);
-        // });
+    return new PopupMenuButton<dynamic>(
+      onSelected: (dynamic choice){
+        // print(choice is Function);
+        if (choice is Function){
+          choice();
+        } else {
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => choice),
+          ).then((e){
+            print(e);
+          });
+        }
       },
       elevation: 1,
       padding: EdgeInsets.all(0),
@@ -40,10 +48,13 @@ class _DemoMenuState extends State<DemoMenu> {
       itemBuilder: (BuildContext context) {
         List<Map<String, dynamic>> testRoutes = [
           {'name':'collection Delete','action': deleteCollection},
-          // {'name':'Note, Bookmark','action': DemoNoteBookmark()}
+          {'name':'Each chapter','action': DemoEachChapter()},
+          {'name':'test Reorder','action': DemoReorder()}
+          // {'name':'Note, Bookmark','action': 'testing'}
         ];
+        // dynamic, VoidCallback
         return testRoutes.map((Map<String, dynamic> choice) {
-          return new PopupMenuItem<VoidCallback>(
+          return new PopupMenuItem<dynamic>(
             value: choice['action'],
             child: Text(choice['name']),
           );

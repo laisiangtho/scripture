@@ -68,3 +68,9 @@
       - [ ] detail (count langs, count books)
       - [ ] update notes
       - [ ] version
+
+  - [ ] E/EnhancedIntentService(12713): binding to the service failed
+
+
+  select_content
+   content_type: New International Version (NIV), item_id:

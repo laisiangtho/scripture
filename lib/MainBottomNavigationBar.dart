@@ -112,28 +112,41 @@ class StateExtended extends State<MainBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     store.contextMedia = MediaQuery.of(context);
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      height: double.infinity,
-      width: double.infinity,
-      child: SafeArea(
-        minimum: EdgeInsets.zero,
-        top: false,
-        bottom: false,
-        child: new Scaffold(
-          // resizeToAvoidBottomInset: true,
-          key: scaffoldKey,
-          body: new PageView(
-            controller: store.pageController,onPageChanged: pageChanged,
-            physics:new NeverScrollableScrollPhysics(),
-            // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
-            children:_page
-          ),
-          extendBody: true,
-          bottomNavigationBar: viewNavigation()
-        )
-      )
+    return new Scaffold(
+      // resizeToAvoidBottomInset: true,
+      key: scaffoldKey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: new PageView(
+        controller: store.pageController,onPageChanged: pageChanged,
+        physics:new NeverScrollableScrollPhysics(),
+        // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
+        children:_page
+      ),
+      bottomNavigationBar: viewNavigation(),
+      extendBody: true
     );
+    // return Container(
+    //   color: Theme.of(context).scaffoldBackgroundColor,
+    //   height: double.infinity,
+    //   width: double.infinity,
+    //   child: SafeArea(
+    //     minimum: EdgeInsets.zero,
+    //     top: false,
+    //     bottom: false,
+    //     child: new Scaffold(
+    //       resizeToAvoidBottomInset: true,
+    //       key: scaffoldKey,
+    //       body: new PageView(
+    //         controller: store.pageController,onPageChanged: pageChanged,
+    //         physics:new NeverScrollableScrollPhysics(),
+    //         // physics:nodeFocus?new NeverScrollableScrollPhysics():null,
+    //         children:_page
+    //       ),
+    //       bottomNavigationBar: viewNavigation(),
+    //       extendBody: true
+    //     )
+    //   )
+    // );
   }
   showBottomSheets(builder) {
     /*

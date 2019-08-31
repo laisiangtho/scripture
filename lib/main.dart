@@ -2,69 +2,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 import 'MainBottomNavigationBar.dart';
 import 'Store.dart';
-// import 'package:bible/Home.dart';
-// import 'package:bible/Bible.dart';
-
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Color(0xFFFFFFFF), //top bar color
-      statusBarBrightness: Brightness.light, // iOS
-      statusBarIconBrightness: Brightness.dark, //top bar icons
+      statusBarColor: Color(0xFFFFFFFF),
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
       systemNavigationBarColor: Color(0xFFFFFFFF),
-      systemNavigationBarIconBrightness: Brightness.dark, //bottom bar icons
+      systemNavigationBarIconBrightness: Brightness.dark
     )
   );
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-  //   statusBarColor: Colors.white, // Color for Android
-  //   statusBarBrightness: Brightness.light, // Dark == white status bar -- for IOS.
+  //   statusBarColor: Colors.white,
+  //   statusBarBrightness: Brightness.light,
   //   statusBarIconBrightness: Brightness.dark,
+  //   systemNavigationBarColor: Colors.white,
+  //   systemNavigationBarIconBrightness: Brightness.dark
   // ));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-      .then((_) => runApp(LaiSiangtho()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) => runApp(LaiSiangtho()));
 
-  // String UA = 'UA-18644721-1';
-
-  // Analytics ga = new AnalyticsIO(UA, 'ga_test', '31');
-  // Analytics ga = new AnalyticsIO(UA, 'ga_test', '31','documentsDirectory': PathProvider.getApplicationDocumentsDirectory()));
-  // ga.analyticsOpt = AnalyticsOpt.optIn;
-  // ga.sendScreenView('home');
-  // ga.sendException('foo exception');
-    // documentsDirectory: PathProvider.getApplicationDocumentsDirectory());
 }
-
-
-
 
 class LaiSiangtho extends StatelessWidget {
 
-  // final String UA = 'UA-18644721-1';
-  // final String UA = 'App + Web | 207437591';
-  // final String UA = '207437591';
   final Store store = new Store();
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    // Analytics analytics = getAnalytics();
-    // analytics.sendEvent('main', '31.0');
-    // googleAnalytics().then((e){
-    //   e.sendEvent('main', '31.0');
-    //   print('sending');
-    // });
-    // googleAnalytics().then((e){
-    //   e.sendEvent('main', '31.0');
-    //   print('sending');
-    // });
 
     MaterialColor colorPrimarySwatch = MaterialColor(
-      // 0xFFF5F5F5,
       0xFFFFFFFF,
       <int, Color>{
         10: Color(0xFFFFFFFF),
@@ -81,11 +50,12 @@ class LaiSiangtho extends StatelessWidget {
         900: Color(0xFF212121)
       },
     );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      showPerformanceOverlay: false,
-      showSemanticsDebugger: false,
-      debugShowMaterialGrid: false,
+      // showPerformanceOverlay: false,
+      // showSemanticsDebugger: false,
+      // debugShowMaterialGrid: false,
       theme: ThemeData(
         // fontFamily: "Caveat, Paduak, sans-serif",
         fontFamily: "Paduak",
@@ -140,6 +110,7 @@ class LaiSiangtho extends StatelessWidget {
         )
       ),
       title: store.appTitle,
+      // navigatorObservers: <NavigatorObserver>[store.observer],
       home: new MainBottomNavigationBar()
     );
   }

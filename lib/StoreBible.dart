@@ -52,17 +52,22 @@ mixin StoreBible on StoreConfiguration {
       }
       _bibleCollection.add(_currentBible);
     });
+
     return _currentBible;
   }
 
   Future<BIBLE> get bible async{
-    if (_bibleCollection.isEmpty) await this._getBible();
-    if (_currentBible.info.identify != this.identify){
+    if (_bibleCollection.isEmpty || _currentBible == null) {
+      await this._getBible();
+    } else if (_currentBible.info.identify != this.identify){
       _currentBible = _bibleCollection.singleWhere((e) => e.info.identify == this.identify,orElse: ()=>null);
       if (_currentBible == null) await this._getBible();
     }
     return _currentBible;
   }
+
+
+  // Future<BIBLE> get currentBible async => _currentBible;
 
   // new RegExp(k, "gi").test(s)
   // String verse = "Thah dinga a kikaikhia mipa honkhia in la, sihna ding mun a zuan mipa lehkaih kik in.";
@@ -112,14 +117,14 @@ mixin StoreBible on StoreConfiguration {
     });
     return list;
   }
-    // verseChapter, verseSearch, verseBookmark
-  Future<List<VERSE>> get verseChapter async{
+
+  // getVerseChapter, getVerseSearch, getVerseBookmark
+  Future<List<VERSE>> get getVerseChapter async{
     await this.bible;
     List<VERSE> list = [];
     String cId = this.chapterId.toString();
     String bId = this.bookId.toString();
-    Map o = _currentBible.book[bId]['chapter'][cId]['verse'];
-    o.forEach((vId, v) {
+    _currentBible.book[bId]['chapter'][cId]['verse'].forEach((vId, v) {
       list.add(VERSE(
         testament: this.testamentId.toString(),
         book: bId,
@@ -132,7 +137,7 @@ mixin StoreBible on StoreConfiguration {
     return list;
   }
 
-  Future<List> verseSearchAllInOne(String query) async{
+  Future<List> getVerseSearchAllInOne(String query) async{
     await this.bible;
     List list = [];
     if (query.isEmpty) return list;

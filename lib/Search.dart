@@ -36,9 +36,7 @@ abstract class SearchState extends State<Search> with TickerProviderStateMixin, 
         textController.selection = TextSelection(baseOffset: 0, extentOffset: textController.text.length);
       }
     });
-    store.googleAnalytics.then((e) {
-      e.sendEvent(store.identify, store.searchQuery ?? 'search');
-    });
+    store.analyticsScreen('search','SearchState');
     super.initState();
   }
 
@@ -55,7 +53,9 @@ abstract class SearchState extends State<Search> with TickerProviderStateMixin, 
   }
 
   @override
-  void didChangeMetrics() {}
+  void didChangeMetrics() {
+    store.analyticsSearch(store.searchQuery);
+  }
 
   String get suggestQuery => this.textController.text;
   // String get searchQuery => store.searchQuery;

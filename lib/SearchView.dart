@@ -66,7 +66,7 @@ class SearchView extends SearchState {
   Widget result(){
     if (store.searchQuery.isEmpty) return page();
     return FutureBuilder(
-      future: store.verseSearchAllInOne(store.searchQuery),
+      future: store.getVerseSearchAllInOne(store.searchQuery),
       builder: (BuildContext context, AsyncSnapshot<List> snapshot) => new SearchResult(result:snapshot)
     );
   }

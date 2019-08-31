@@ -30,6 +30,7 @@ class BibleView extends BibleState{
           if (e.hasData){
             collectionGenerate(e);
             isCollectionBookmark();
+            test();
             return body();
           } else if (e.hasError) {
             if (store.identify.isEmpty){
@@ -117,13 +118,15 @@ class BibleView extends BibleState{
       ]
     );
   }
+
   double setChapterDrag;
   double initialX;
   double initialY;
   double dragDistance;
+
   Widget futureBuilderSliver(){
     return new FutureBuilder(
-      future: store.verseChapter,
+      future: store.getVerseChapter,
       builder: (BuildContext context, AsyncSnapshot<List<VERSE>> snap) {
         if (snap.hasError) {
           return new SliverFillRemaining(
@@ -253,6 +256,7 @@ class BibleView extends BibleState{
       opaque: false,
       barrierDismissible: true,
       transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+
         return new SlideTransition(
             position: new Tween<Offset>(
               begin: const Offset(0.0, 0.7),
@@ -265,6 +269,7 @@ class BibleView extends BibleState{
       pageBuilder: (BuildContext context,x, y) => PopupBook(mainContext: keyBookButton.currentContext.findRenderObject())
     )).then((e){
       setBookChapter(e);
+      store.analyticsScreen('booksPopup','BookPopup');
     });
   }
 
@@ -273,6 +278,7 @@ class BibleView extends BibleState{
       opaque: false,
       barrierDismissible: true,
       transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+
         return new SlideTransition(
           position: new Tween<Offset>(
             begin: const Offset(0.0, 0.7),
@@ -284,6 +290,7 @@ class BibleView extends BibleState{
       pageBuilder: (BuildContext context, x, y) => PopupChapter(mainContext: keyChapterButton.currentContext.findRenderObject(),chapterCount:activeName.chapterCount)
     )).then((e){
       setChapter(e);
+      store.analyticsScreen('chapterPopup','ChapterPopup');
     });
   }
 

@@ -49,7 +49,7 @@ class _StateSheet extends State<SheetInfo> {
         isDownloading = !isDownloading;
       });
       Navigator.pop(context,'done');
-      store.googleAnalytics.then((e)=>e.sendEvent(store.identify, store.appVersion));
+      // store.googleAnalytics.then((e)=>e.sendEvent(store.identify, store.appVersion));
     });
   }
 

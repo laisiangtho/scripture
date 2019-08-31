@@ -24,16 +24,31 @@ abstract class BibleState extends State<Bible> with TickerProviderStateMixin{
   List<String> selectedVerse=[];
 
   bool isChapterBookmarked=false;
+  bool isAnalyticsBibleSent=false;
 
   Store store = new Store();
 
   @override
   void initState() {
+    print('initState');
     // selectedVerse.clear();
-    store.scrollController?.addListener(() => setState(() {}));
-    store.googleAnalytics.then((e) => e.sendEvent('bible', store.identify));
+    // store.scrollController?.addListener(() => setState(() {}));
+    // store.analyticsScreen('bible','BibleState');
+    // store.analyticsContent('read',store.identify);
+    // print(store.currentBible.info.name);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // store.analyticsBible();
+    //   // store.analyticsRead();
+    //   print('initState->addPostFrameCallback');
+    //   // print(store.currentBible.info.name);
+
+    // });
+
     super.initState();
+
+
   }
+
 
   @override
   dispose() {
@@ -45,7 +60,22 @@ abstract class BibleState extends State<Bible> with TickerProviderStateMixin{
     if(mounted) super.setState(fn);
   }
 
-  void updateState() => setState((){});
+  void updateState() {
+    //  setState((){});
+    //  print('updateState');
+     store.analyticsRead();
+  }
+  void test() {
+
+    if (isAnalyticsBibleSent) return;
+     store.analyticsBible().whenComplete((){
+      //  print('isAnalyticsBibleSent');
+      //  setState((){
+      //    isAnalyticsBibleSent = true;
+      //  });
+       isAnalyticsBibleSent = true;
+     });
+  }
 
   void collectionGenerate (e) => activeName = e.data;
 
@@ -105,7 +135,7 @@ abstract class BibleState extends State<Bible> with TickerProviderStateMixin{
 
   get getSelectedVerse {
     List<String> list = [];
-    return store.verseChapter.then((List<VERSE> e){
+    return store.getVerseChapter.then((List<VERSE> e){
       this.selectedVerse..sort((a, b) => a.compareTo(b))..forEach((id) {
         var o = e.where((i)=> i.verse == id).single;
         list.add(o.verse+': '+o.verseText);

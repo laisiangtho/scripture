@@ -1,5 +1,6 @@
 import 'package:bible/Note.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // import 'Common.dart';
 import 'SheetInfo.dart';
@@ -19,13 +20,16 @@ class Home extends StatefulWidget {
   HomeView createState() => new HomeView();
 }
 
-abstract class HomeState extends State<Home> {
+abstract class HomeState extends State<Home> with TickerProviderStateMixin {
+  // SingleTickerProviderStateMixin TickerProviderStateMixin
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   // GlobalKey<RefreshIndicatorState> refreshIndicatorState = new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
+  final RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  VoidCallback updateCollectionCallBack;
-  bool isUpdating = false;
+  AnimationController animatedController, scaleController;
+
+
   bool isSorting = false;
 
   Collection collection;
@@ -36,8 +40,18 @@ abstract class HomeState extends State<Home> {
   @override
   void initState() {
     store.scrollController?.addListener(() => setState(() {}));
-    updateCollectionCallBack = updateCollectionAction;
-    store.googleAnalytics.then((e) => e.sendEvent('home', store.appVersion));
+    store.analyticsScreen('home','HomeState');
+
+    animatedController = AnimationController(vsync: this, duration: Duration(milliseconds: 2000));
+    scaleController =AnimationController(value: 0.0, vsync: this, upperBound: 1.0);
+    refreshController.headerMode.addListener(() {
+      if (refreshController.headerStatus == RefreshStatus.idle) {
+        // scaleController.value = 0.0;
+        animatedController.reset();
+      } else if (refreshController.headerStatus == RefreshStatus.refreshing) {
+        animatedController.repeat();
+      }
+    });
     super.initState();
   }
 
@@ -61,60 +75,25 @@ abstract class HomeState extends State<Home> {
   void toBible(CollectionBook book) async{
     store.identify = book.identify;
     store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
-    // showDialog(
-    //   context: context,
-    //   builder: (_) => WidgetLoad(),
-    // );
-    // store.activeName().whenComplete((){
-    //   Navigator.of(context).pop();
-    //   store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
-    // });
-    // store.activeName().then((e){
-    //   showDialog(
-    //     context: context,
-    //     builder: (_) => WidgetLoad(),
-    //   );
-    // }).whenComplete((){
-    //   Navigator.of(context).pop();
-    //   store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
-    // });
-    // showDialog(
-    //   context: context,
-    //   builder: (_) {
-    //     store.activeName();
-    //     return WidgetLoad();
-    //   },
-    // ).whenComplete((){
-    //   Navigator.of(context).pop();
-    //   store.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
-    // });
   }
 
   void showSheetInfo(CollectionBook book) {
-    // widget.bottomSheet((BuildContext context)=>SheetInfo(book)).closed.whenComplete(() {
-    //   setState((){});
-    // });
-    widget.bottomSheet((BuildContext context)=>SheetInfo(book)).whenComplete(() {
-      setState((){});
-    });
+    widget.bottomSheet((BuildContext context)=>SheetInfo(book)).whenComplete(()=>setState((){}));
   }
 
-  void updateCollectionAction() {
+  void refreshUpdate() async{
     int totalPrevious = collection.book.length;
-    setState(() {
-      isUpdating = true;
-      updateCollectionCallBack = null;
-    });
-    store.updateCollection().then((Collection e){
+    // await Future.delayed(Duration(milliseconds: 1000));
+    await store.updateCollection().then((Collection e){
       for (int index = totalPrevious; index < collection.book.length; index++) animatedListKey.currentState.insertItem(index);
     }).whenComplete((){
-      setState(() {
-        isUpdating = false;
-        updateCollectionCallBack = updateCollectionAction;
-      });
-      store.googleAnalytics.then((e)=>e.sendEvent('update', store.appVersion));
-    }).catchError((_e){
-      print(_e);
+      setState(() {});
+      refreshController.refreshCompleted();
+      store.analyticsShare('Update success ', store.appVersion);
+      // print('completed object');
+    }).catchError((e){
+      store.analyticsShare('Update fail', store.appVersion);
+      refreshController.refreshFailed();
     });
   }
 }

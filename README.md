@@ -31,6 +31,7 @@ Lai Siangtho has currently:
 - King James Version
 - World English Bible
 - Bible in Basic English
+- ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
 
 Feature:
 
@@ -61,6 +62,9 @@ minSdkVersion=21
 - [ ] `flutter run --target-platform=android-arm64`
 - [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
+
+
+adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
 
 ## Directory
 
