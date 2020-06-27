@@ -63,7 +63,6 @@ minSdkVersion=21
 - [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
 
-
 adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
 
 ## Directory
