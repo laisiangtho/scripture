@@ -1,3 +1,5 @@
+lib/*/*v[0-9].dart
+
 # Miscellaneous
 *.class
 *.log
