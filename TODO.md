@@ -24,7 +24,7 @@
 
 - [x] book -> collection
   - [ ] detail (count langs, count books)
-  - [ ] future data before navigation, so it will not struggle the slide
+  - [x] future data before navigation, so it will not struggle the slide
 
 - [x] bible -> chapter -> verse
   - [x] chapter list
@@ -57,7 +57,7 @@
     - [ ] header sticky
     - [x] keyword highlight
     - [ ] count(book,chapter,verse)
-    - [ ] no match found in ???
+    - [x] no match found in ???
   - [x] suggestion
     - [ ] count
     - [x] keyword highlight
@@ -73,3 +73,7 @@
 
 select_content
   content_type: New International Version (NIV), item_id
+
+- api
+  - [x] look for AnimatedSwitcher???
+  - [ ] Mock http

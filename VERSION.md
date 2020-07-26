@@ -91,6 +91,8 @@ Prepare
 
 ## 1.0.1+34
 
+Supported Android devices 15262 devices
+
 - Improve
   - Performance
   - Collection update UI
@@ -100,3 +102,18 @@ Prepare
   - ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
 - Prepare
   - Analytics
+
+## 1.0.2+35
+
+- Improve
+  - Performance
+  - Layout
+  - Responsive
+  - Search
+
+- Feature
+  - Keeping state
+  - Smart scroll
+  - Search suggestion live verses
+  - Swipe to navigate chapter
+  - customizeable font size

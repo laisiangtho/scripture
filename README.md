@@ -48,30 +48,37 @@ As it is active in develpment, please feel free to rate/write yours review, so t
 
 ## Android
 
-minSdkVersion=16
+### minSdkVersion=16
 
-- [x] `flutter build appbundle --target-platform android-arm,android-arm64`
+- [x] `flutter build appbundle --release`
+- [ ] `flutter build appbundle --target-platform android-arm,android-arm64`
 - [ ] `flutter build apk --release --target-platform=android-arm`
 - [ ] `flutter build appbundle --release --target-platform=android-arm`
 - [ ] `flutter run --release --target-platform=android-arm`
 
-minSdkVersion=21
+### minSdkVersion=21
 
-- [ ] `flutter build apk --release --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
+- [ ] `flutter build apk --release --target-platform=android-arm64`
 - [ ] `flutter run --target-platform=android-arm64`
 - [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
 - [ ] `flutter build appbundle --release --target-platform=android-arm64`
+- [ ] `flutter build apk --split-per-abi --release`
 
+### analytics (debug on windows)
+
+```Shell
+cd C:\dev\android-sdk\platform-tools
 adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
+```
 
 ## Directory
 
+- (production) android/key.properties
+- (development) android/local.properties
 - build/app/outputs/apk/release/app-release.apk
 - android\gradle.properties
 - android\app\build.gradle
-
-flutter build apk --split-per-abi --release
 
 ## Android->release
 
