@@ -1,5 +1,5 @@
 /*
-version: 0.1
+version: 0.2
 developer: Khen Solomon Lethil
 */
 import 'dart:math';
@@ -7,13 +7,6 @@ import 'dart:math';
 // import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
-
-// class ScrollPageOffset {
-//   static final ScrollPageOffset _instance = new ScrollPageOffset.internal();
-//   factory ScrollPageOffset() => _instance;
-//   ScrollPageOffset.internal();
-// }
 
 abstract class ScrollPageController {
 
@@ -24,33 +17,24 @@ abstract class ScrollPageController {
   }
 
   ScrollController controller;
-  // get scrollNotification;
-  // scrollNotification(_scrollNotification);
-
-  /// Notification
-  // ScrollNotification get notification;
 
   /// Height of the bar
   double get height;
-  // get scrollNotification;
 
-  // ScrollNotification get notification;
-
-  /// Notifier of the visible height factor of bar
   double _delta = 0.0, _offsetOld = 0.0; //_minOffset=0.0, _maxOffset=1.0;
   final heightNotify = ValueNotifier<double>(1.0);
   final direction = ValueNotifier<int>(0);
-
-  /// Notifier of the pin state changes
-  final pinNotify = ValueNotifier<bool>(false);
-
-
-  // void showToggle(bool status) => heightNotify.value = status?0.0:1.0;
+  final enableNotify = ValueNotifier<bool>(true);
+  void enable (bool s) => enableNotify.value = s;
 
   double get percentage => (_delta / height).toDouble();
-  double get heightFactor => (1.0 - percentage).toDouble();
+  double get percentageShrink => (1.0 - percentage).toDouble();
+  // double get percentageStretch => ??;
 
   void _scrollNotification(ScrollNotification notification) {
+    // print('${notification}');
+    // if (notification is ScrollUpdateNotification) {
+    // }
     if (notification == null) return;
     if (notification is UserScrollNotification) {
       // NOTE: down
@@ -60,15 +44,14 @@ abstract class ScrollPageController {
       // if (notification.direction == ScrollDirection.idle) direction.value = 0;
       // direction.value = notification.direction.index;
       direction.value = notification.direction.index;
-      // print(notification.direction);
       if (notification.direction == ScrollDirection.idle) {
 
         // _scrollEnd(notification.metrics);
-        // if ([0.0, 1.0].contains(heightFactor)) {
+        // if ([0.0, 1.0].contains(percentageShrink)) {
         //   return;
         // }
 
-        // final offset = heightFactor.round() == 1? -_delta: height - _delta;
+        // final offset = percentageShrink.round() == 1? -_delta: height - _delta;
 
         // controller.animateTo(
         //   controller.offset + offset,
@@ -80,19 +63,17 @@ abstract class ScrollPageController {
     // if (notification is ScrollStartNotification) {}
     if (notification is ScrollUpdateNotification) {
       // if (notification.depth > 0)
-      _scrollUpdate(notification.metrics);
+      // print(notification.depth);
+      if (enableNotify.value) _scrollUpdate(notification.metrics);
     }
-    if (notification is ScrollEndNotification)  _scrollEnd(notification.metrics);
-
+    if (notification is ScrollEndNotification) _scrollEnd(notification.metrics);
   }
-
-
-  // void _listener() {
-  //     _scrollListener(controller.position);
-  // }
 
   void _scrollUpdate(ScrollMetrics scroll) {
     final pixels = scroll.pixels;
+    if (pixels < 0.0) return;
+    // if ([0.0, 1.0].contains(heightNotify.value)) return;
+    if ((_delta == 0.0 && heightNotify.value == 0.0) || (_delta == height && heightNotify.value == 1.0)) return;
     double maxExtent = scroll.maxScrollExtent, limit = maxExtent - height;
     if (pixels >= limit ){
       if (_delta > 0.0 ) {
@@ -104,10 +85,15 @@ abstract class ScrollPageController {
       _delta = (_delta + pixels - _offsetOld).clamp(0.0, height);
       _offsetOld = pixels;
     }
-    if ((_delta == 0.0 && heightNotify.value == 0.0) || (_delta == height && heightNotify.value == 1.0)) return;
-    heightNotify.value = heightFactor;
+    // if ((_delta == 0.0 && heightNotify.value == 0.0) || (_delta == height && heightNotify.value == 1.0)) return;
+    heightNotify.value = percentageShrink;
   }
+
   /*
+  void _listener() {
+      _scrollListener(controller.position);
+  }
+
   void _scrollListener(ScrollPosition position) {
 
     double pixels = position.pixels;
@@ -128,7 +114,7 @@ abstract class ScrollPageController {
       return;
     }
     if ((_delta == 0.0 && heightNotify.value == 0.0) || (_delta == height && heightNotify.value == 1.0)) return;
-    heightNotify.value = heightFactor;
+    heightNotify.value = percentageShrink;
     */
     /*
     _delta += (pixels - _offsetOld);
@@ -160,7 +146,6 @@ abstract class ScrollPageController {
         _offsetOld = pixels;
         final _deltaBottom = _atBottom.clamp(0.0, height);
         _delta = min(_delta,_deltaBottom);
-        print('? $_delta');
       }
     } else {
       _delta = (_delta + pixels - _offsetOld).clamp(0.0, height);
@@ -177,54 +162,35 @@ abstract class ScrollPageController {
       // }
     }
     if ((_delta == 0.0 && heightNotify.value == 0.0) || (_delta == height && heightNotify.value == 1.0)) return;
-    heightNotify.value = heightFactor;
+    heightNotify.value = percentageShrink;
   }
   */
   void _scrollEnd(ScrollMetrics scroll) {
     /// NOTE: do skip for its reached
-    // print('?end');
     if (_delta == 0.0 || _delta == height) return;
-    // print('?2');
 
-    if ([0.0, 1.0].contains(heightFactor)) return;
-    // print('?3');
+    if ([0.0, 1.0].contains(percentageShrink)) return;
 
-    // if (direction.value == 2){
-    //   _delta = 0.0;
-    // } else {
-    //   // if (_delta ) {
-    //   //   _delta = 0.0;
-    //   // } else {
-    //   //   _delta = height;
-    //   // }
-    // }
-    _delta = heightFactor.round() == 1? 0.0:height;
-    // print(_delta);
-    // _delta = height;
-    heightNotify.value = heightFactor;
+    _delta = percentageShrink.round() == 1? 0.0:height;
+    heightNotify.value = percentageShrink;
   }
 
   void dispose() {
     controller.dispose();
     direction.dispose();
     heightNotify.dispose();
-    pinNotify.dispose();
   }
 
 }
 
 extension ScrollControllerExtension on ScrollController {
   static final _master = ScrollController();
-  // static final _masterOffset = <int, double>{};
-  // static final _master = <int, ScrollController>{};
   // static final _bar = <int, _ScrollBarControllerExtends>{};
   static final _bottom = <int, _ScrollBottomControllerExtends>{};
 
-
-  // double get initialScrollOffset => notification.value?.metrics?.pixels??0.0;
-
   static final _scrollNotification = ValueNotifier<ScrollNotification>(null);
   ValueNotifier<ScrollNotification> get notification => _scrollNotification;
+
   void scrollNotification(Function(ScrollNotification) listener) {
     _scrollNotification.addListener(() => listener(_scrollNotification.value));
   }
@@ -232,16 +198,6 @@ extension ScrollControllerExtension on ScrollController {
   ScrollController get master => _master;
   // ScrollController get master => ScrollController();
 
-  // ScrollController get master {
-  //   print(this.hashCode);
-  //   if (_master.containsKey(this.hashCode)) {
-  //     return _master[this.hashCode];
-  //   }
-  //   // return _master[this.hashCode] = ScrollController(keepScrollOffset:true,initialScrollOffset:initialScrollOffset);
-  //   // double offset = _masterOffset.containsKey(this.hashCode)?_masterOffset[this.hashCode]:0.0;
-  //   // print(offset);
-  //   return _master[this.hashCode] = ScrollController(keepScrollOffset:true,initialScrollOffset:initialScrollOffset);
-  // }
   // _ScrollBarControllerExtends get bar {
   //   if (_bar.containsKey(this.hashCode)) {
   //     return _bar[this.hashCode];
@@ -255,10 +211,7 @@ extension ScrollControllerExtension on ScrollController {
     }
     return _bottom[this.hashCode] = _ScrollBottomControllerExtends(this);
   }
-
 }
-
-
 
 class _ScrollBottomControllerExtends extends ScrollPageController {
   _ScrollBottomControllerExtends(ScrollController scrollController)
@@ -267,15 +220,6 @@ class _ScrollBottomControllerExtends extends ScrollPageController {
 
   @override
   double height = kBottomNavigationBarHeight;
-
-
-  // ScrollNotification get notification => controller.notification.value;
-  // ScrollNotification scrollNotification => controller.notification.value;
-
-  // @override
-  // void scrollNotification(Function(ScrollNotification) listener) {
-  //   controller.notification.addListener(() => listener(controller.notification.value));
-  // }
 
   /// Notifier of the active page index
   final pageNotify = ValueNotifier<int>(0);
@@ -290,12 +234,13 @@ class _ScrollBottomControllerExtends extends ScrollPageController {
     pageNotify.addListener(() => listener(pageNotify.value));
   }
 
-  /// Set a new tab
+  /// Set current page index
   void pageChange(int index) => pageNotify.value = index;
 
   @override
   void dispose() {
     pageNotify.dispose();
+    toggleNotify.dispose();
     super.dispose();
   }
 }

@@ -58,8 +58,6 @@ abstract class ScrollNotify {
     if (notification is ScrollEndNotification) {
       _scrollEnd(notification.metrics);
     }
-    // print('_bottomPercentage $_bottomPercentage _bottomShrink $_bottomShrink _bottomStretch $_bottomStretch');
-    // print('_bottomPercentage $_bottomPercentage');
     // if (notification is OverscrollNotification) {}
     return false;
   }
@@ -69,7 +67,6 @@ abstract class ScrollNotify {
     double _atBottom = scroll.extentAfter;
     double _sizeHeight = scroll.extentInside;
     /// NOTE: do skip for bouncing and random numbers in scroll.pixel sequence, eg. 0.2 0.3 [1.0] 0.4
-    // print('?: $testTmp _atTop $_atTop _atBottom $_atBottom _sizeHeight $_sizeHeight maxScrollExtent ${scroll.maxScrollExtent}');
     if ((_atTop + _atBottom) < _sizeHeight) return;
     if (_atTop == _offsetMin) return;
     // if (_atBottom == _offsetMin) return;

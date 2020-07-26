@@ -1,101 +1,127 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/rendering.dart';
-// import 'scrollExtension.dart';
 
-// _SliverAppBarDelegate ScrollPageBarDelegate
 class ScrollPageBarDelegate extends SliverPersistentHeaderDelegate {
+  /// SliverPersistentHeaderDelegate
   ScrollPageBarDelegate(
     this.builder,
     {
-      this.minHeight, this.maxHeight
+      this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight
     }
   );
   final double minHeight;
   final double maxHeight;
   final Function builder;
 
-  double stretch = 0.0;
-  double shrink = 1.0;
-
   @override
+  // bool shouldRebuild(ScrollPageBarDelegate oldDelegate) => maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight;
   bool shouldRebuild(ScrollPageBarDelegate oldDelegate) => true;
 
   @override
-  double get maxExtent => maxHeight??kToolbarHeight;
+  double get maxExtent => maxHeight;
   // kToolbarHeight
 
   @override
-  double get minExtent => minHeight??kToolbarHeight;
+  double get minExtent => minHeight;
+
+  // double stretch = 0.0;
+  // double shrink = 1.0;
+  // double get shrink => (maxHeight - minExtent)/(maxExtent - minExtent);
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // return LayoutBuilder(builder: (context, constraints) =>_container(context,shrinkOffset,overlapsContent));
-    return LayoutBuilder(builder: (context, constraints){
-      final percentage = (constraints.maxHeight - minExtent)/(maxExtent - minExtent);
-      return _container(context,shrinkOffset,overlapsContent, percentage);
-    });
-  }
 
-
-  // Widget _container(BuildContext context, double shrinkOffset, bool overlapsContent, double percentage) {
-  //   return Container(
-  //     color: Colors.white,
-  //     padding: EdgeInsets.only(bottom: 0.5),
-  //     child: Container(
-  //       padding: EdgeInsets.only(top: 25),
-  //       decoration: BoxDecoration(
-  //         // color: Colors.grey,
-  //         borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(5, 2))
-  //       ),
-  //       // child: new SizedBox.expand(
-  //       //   child: builder(context,shrinkOffset,overlapsContent,percentage)
-  //       // )
-  //       child: builder(context,shrinkOffset,overlapsContent,percentage)
-  //     )
-  //   );
-  // }
-
-  Widget _container(BuildContext context, double shrinkOffset, bool overlapsContent, double percentage) {
+    double stretch = (shrinkOffset/maxExtent).toDouble();
+    double shrink = (1.0 - stretch).toDouble();
+    // return ClipRRect(
+    //   borderRadius: BorderRadius.circular(2.0),
+    //   child: Container(
+    //     margin: const EdgeInsets.only(bottom: 0.5),
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(3.0),
+    //       color: Theme.of(context).primaryColor,
+    //       boxShadow: [
+    //         BoxShadow(
+    //           color: Colors.black38,
+    //           offset: Offset(0.0, 1.0),
+    //           blurRadius: 0.5,
+    //         ),
+    //       ],
+    //     ),
+    //     child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
+    //   )
+    // );
     return Container(
-      decoration: new BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(3, 2))
-      ),
-      padding: EdgeInsets.only(bottom: 0.5),
-      child: Container(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(5, 2))
+      // padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: new BorderRadius.vertical(
+          bottom: Radius.elliptical(3, 2)
         ),
-        child: new SizedBox.expand(
-          child: builder(context,shrinkOffset,overlapsContent,percentage)
-        )
+        // borderRadius: BorderRadius.only(
+        //   bottomLeft: Radius.circular(10.0),
+        //   bottomRight: Radius.circular(10.0)
+        // ),
+        // border: Border(
+        //   bottom: BorderSide(
+        //     color: Colors.grey,
+        //     width: 1.0,
+        //   ),
+        // ),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 0.0,
+            color: Colors.black38,
+            // color: Theme.of(context).backgroundColor,
+            spreadRadius: 0.0,
+            offset: Offset(0.0, .0),
+          )
+        ]
+      ),
+      child: new SizedBox.expand(
+        child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
       )
     );
+    // return Container(
+    //   // padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+    //   decoration: BoxDecoration(
+    //     color: Theme.of(context).primaryColor,
+    //     borderRadius: new BorderRadius.vertical(
+    //       bottom: Radius.elliptical(3, 2)
+    //     ),
+    //     // borderRadius: BorderRadius.only(
+    //     //   bottomLeft: Radius.circular(10.0),
+    //     //   bottomRight: Radius.circular(10.0)
+    //     // ),
+    //     // border: Border(
+    //     //   bottom: BorderSide(
+    //     //     color: Colors.grey,
+    //     //     width: 1.0,
+    //     //   ),
+    //     // ),
+    //     boxShadow: [
+    //       BoxShadow(
+    //         blurRadius: 0.0,
+    //         color: Colors.black38,
+    //         // color: Theme.of(context).backgroundColor,
+    //         spreadRadius: 0.0,
+    //         offset: Offset(0.0, .0),
+    //       )
+    //     ]
+    //   ),
+    //   child: new SizedBox.expand(
+    //     child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
+    //   )
+    // );
+    // return LayoutBuilder(builder: (context, constraints){
+    //   // print('constraints.maxHeight ${constraints.maxHeight}');
+    //   // final percentage = (constraints.maxHeight - minExtent)/(maxExtent - minExtent);
+    //   // return _container(context,shrinkOffset,overlapsContent, percentage);
+    //   // print('stretch $stretch shrink $shrink');
+    // });
+
   }
-
-  // Widget _container(BuildContext context, BoxConstraints constraints) {
-  //   return Container(
-  //     color: Colors.white,
-  //     padding: EdgeInsets.only(bottom: 0.5),
-  //     child: Container(
-  //       padding: EdgeInsets.only(top: 25),
-  //       decoration: BoxDecoration(
-  //         // color: Colors.grey,
-  //         borderRadius: new BorderRadius.vertical(bottom: Radius.elliptical(5, 2))
-  //       ),
-  //       // child: new SizedBox.expand(
-  //       //   child: builder(context,0,0)
-  //       // )
-  //       child: Text('bar'),
-  //     )
-  //   );
-  // }
 }
-
+/*
 class ScrollPageBarDelegateTesting extends SliverPersistentHeaderDelegate {
   int index = 0;
   @override
@@ -138,3 +164,4 @@ class ScrollPageBarDelegateTesting extends SliverPersistentHeaderDelegate {
   @override
   double get minExtent => 80.0;
 }
+*/

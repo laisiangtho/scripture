@@ -3,37 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'scrollExtension.dart';
 
-class BottomBarItem {
-  BottomBarItem({
-    this.label,
-    this.icon
+class ModelPage {
+  ModelPage({
+    this.name,
+    this.icon,
+    this.screenName,
+    this.screenClass,
+    this.key,
+    this.child,
   });
-  final String label;
+  final String screenName;
+  final String screenClass;
+  final GlobalKey<State<dynamic>> key;
+  final Widget child;
+  final String name;
   final IconData icon;
 }
+// core.analyticsScreen('home','HomeState');
 
 class ScrollPageBottom extends StatefulWidget {
 
   final ScrollController controller;
+  final void Function(int) pageClick;
+  final List<ModelPage> items;
   final Duration duration;
   final Widget child;
-  final void Function(int) pageChange;
 
   ScrollPageBottom({
     this.controller,
-    // this.pageNotify,
-    this.pageChange,
+    this.items,
+    this.pageClick,
     this.duration: const Duration(milliseconds: 400),
     this.child,
   });
 
-  final List<BottomBarItem> items = [
-    BottomBarItem(icon:Icons.flag, label:"Book"),
-    BottomBarItem(icon:Icons.local_library, label:"Read"),
-    BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"),
-    BottomBarItem(icon:CupertinoIcons.search, label:"Search"),
-    // BottomBarItem(icon:Icons.more_horiz, label:"More")
-  ];
+  // final List<ModelPage> items = [
+  //   ModelPage(icon:Icons.flag, name:"Book"),
+  //   ModelPage(icon:Icons.local_library, name:"Read"),
+  //   // BottomBarItem(icon:Icons.collections_bookmark, name:"Bookmark"),
+  //   ModelPage(icon:Icons.book, name:"Bookmark"),
+  //   ModelPage(icon:CupertinoIcons.search, name:"Search"),
+  //   ModelPage(icon:Icons.more_horiz, name:"More")
+  // ];
 
   @override
   _BottomBarAnimatedState createState() => _BottomBarAnimatedState();
@@ -44,23 +55,16 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
   Duration get animationDuration => widget.duration;
   double get height => controller.bottom.height;
   int milliseconds(double heightFactor) => [0.0, 1.0].contains(heightFactor)?200:0;
+  List<ModelPage> get items => widget.items;
 
-  // double _itemWidth;
-
-  final List<BottomBarItem> items = [
-    BottomBarItem(icon:Icons.flag, label:"Book"),
-    BottomBarItem(icon:Icons.local_library, label:"Read"),
-    BottomBarItem(icon:Icons.collections_bookmark, label:"Bookmark"),
-    BottomBarItem(icon:CupertinoIcons.search, label:"Search"),
-    // BottomBarItem(icon:Icons.more_horiz, label:"More")
-  ];
+  double itemWidthMax;
 
   @override
   Widget build(BuildContext context) {
-    // _itemWidth = MediaQuery.of(context).size.width/items.length;
+    itemWidthMax = MediaQuery.of(context).size.width/items.length;
     return ValueListenableBuilder<bool>(
       valueListenable: controller.master.bottom.toggleNotify,
-      builder: (BuildContext context, bool hide,Widget child) => (hide)?SizedBox.shrink():_height()
+      builder: (BuildContext context, bool hide,Widget child) => (hide)?Container():_height()
     );
   }
 
@@ -89,39 +93,63 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
   }
 
   Widget _animatedContainer(BuildContext context, double heightFactor,Widget child) {
-    return Stack(
-      children: <Widget>[
-        AnimatedPositioned(
-          duration: Duration(milliseconds:milliseconds(heightFactor)),
-          // alignment: Alignment(0, heightFactor),
-          bottom:(height*heightFactor)-height,
-          child: Container(
-            decoration: new BoxDecoration(
-              color: Theme.of(context).backgroundColor,
-              borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
-            ),
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: 0.5),
-            child: Container(
-              // padding: EdgeInsets.only(bottom: paddingBottom),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: new BorderRadius.vertical(top: Radius.elliptical(5, 2))
-              ),
-              child: child
+    // return Stack(
+    //   alignment: Alignment(1.0, -1.0),
+    //   fit: StackFit.loose,
+    //   children: <Widget>[
+    //     AnimatedPositioned(
+    //       duration: Duration(milliseconds:milliseconds(heightFactor)),
+    //       // alignment: Alignment(0, heightFactor),
+    //       bottom:(height*heightFactor)-height,
+    //       child: Container(
+    //         decoration: new BoxDecoration(
+    //           color: Theme.of(context).backgroundColor,
+    //           borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
+    //         ),
+    //         width: MediaQuery.of(context).size.width,
+    //         padding: EdgeInsets.only(top: 0.5),
+    //         child: Container(
+    //           // padding: EdgeInsets.only(bottom: paddingBottom),
+    //           decoration: BoxDecoration(
+    //             color: Theme.of(context).primaryColor,
+    //             borderRadius: new BorderRadius.vertical(top: Radius.elliptical(5, 2))
+    //           ),
+    //           child: child
+    //         )
+    //       )
+    //     )
+    //   ],
+    // );
+    return Align(
+      heightFactor: heightFactor,
+      alignment: Alignment(0.0, -1.0),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: new BorderRadius.vertical(
+            top: Radius.elliptical(3, 2),
+            // bottom: Radius.elliptical(3, 2)
+          ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 0.0,
+              // color: Theme.of(context).backgroundColor,
+              color: Colors.black38,
+              spreadRadius: 0.0,
+              offset: Offset(0.0, .0),
             )
-          )
-        )
-      ],
+          ]
+        ),
+        child: child
+      )
     );
-
-
-
   }
-  Widget _button(int index, BottomBarItem item, bool isButtomSelected) {
+
+  Widget _button(int index, ModelPage item, bool isButtomSelected) {
     return CupertinoButton(
       pressedOpacity: 0.5,
       // padding: EdgeInsets.zero,
+      padding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
       // padding: EdgeInsets.all(20),
       child: AnimatedContainer(
         padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
@@ -142,24 +170,66 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
               duration: animationDuration,
               curve: Curves.easeInOut,
               child: Container(
-                // constraints: BoxConstraints(
-                //   maxWidth: _itemWidth-5
-                // ),
+                constraints: BoxConstraints(
+                  maxWidth: itemWidthMax-5
+                ),
                 child: Text(
-                  isButtomSelected?item.label:'', overflow: TextOverflow.clip, maxLines: 1,
-                  style: TextStyle(color: Colors.white,fontSize: 15)
+                  isButtomSelected?item.name:'', overflow: TextOverflow.clip, maxLines: 1,
+                  style: TextStyle(color: Colors.white,fontSize: 13)
                 )
               )
             )
           ]
         )
-        // child:Text(
-        //   isButtomSelected?item.label:'', overflow: TextOverflow.clip, maxLines: 1,
-        //   style: TextStyle(color: Colors.white,fontSize: 15)
-        // )
       ),
       // onPressed: () => store.pageController.jumpToPage(index)
-      onPressed: () => controller.master.bottom.pageNotify.value != index? widget.pageChange(index):null
+      onPressed: () => controller.master.bottom.pageNotify.value != index? widget.pageClick(index):null
     );
   }
 }
+/*
+ClipRRect(
+  borderRadius: BorderRadius.only(
+    topLeft: Radius.circular(25),
+    topRight: Radius.circular(25),
+  )
+  child:null
+)
+*/
+/*
+class CornerRadiusClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width - 20, 0);
+    path.lineTo(20, 0);
+    path.lineTo(0, size.height);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+class _Clipper extends CustomClipper<Path> {
+  final double radius;
+
+  _Clipper(this.radius);
+
+  @override
+  Path getClip(Size size) {
+    final path = new Path();
+    final rect = new Rect.fromLTRB(0.0, 0.0, size.width, size.height);
+    path.addRRect(new RRect.fromRectAndRadius(rect, new Radius.circular(radius)));
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+*/

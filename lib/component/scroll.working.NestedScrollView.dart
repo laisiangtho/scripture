@@ -106,7 +106,6 @@ class _PageView extends _PageState {
   }
 
   Widget bar(BuildContext context,double offset,bool overlaps){
-    // print('bar');
     // return Stack(
     //   children: <Widget>[
     //     Text('read $offset')
