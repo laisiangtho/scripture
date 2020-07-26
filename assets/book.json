@@ -3,8 +3,8 @@
   "updated": "2019-01-18T17:45:28.365Z",
   "version": 1,
   "bookmark": [],
-  "keyword": ["God","Good","Jesus"],
-  "book": [
+  "keyword": ["God is good","good and evil","Jesus is the Christ","bawngnawi leh khuaizu"],
+  "bible": [
     {
       "identify": "niv2011",
       "name": "New International Version",
@@ -168,5 +168,13 @@
     "ph4": []
   },
   "language": {
+  },
+  "settting":{
+    "identify": "",
+    "bookId": 1,
+    "chapterId": 1,
+    "verseId": 1,
+    "fontSize": 16.0,
+    "searchQuery": ""
   }
 }
