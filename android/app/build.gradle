@@ -69,14 +69,6 @@ android {
         }
     }
 
-    // buildTypes {
-    //     release {
-    //         // TODO: Add your own signing config for the release build.
-    //         // Signing with the debug keys for now, so `flutter run --release` works.
-    //         signingConfig signingConfigs.debug
-    //     }
-    // }
-
     buildTypes {
         debug {
             minifyEnabled false
@@ -84,6 +76,9 @@ android {
         }
         release {
             shrinkResources true
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            // signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
             minifyEnabled true
             useProguard true
@@ -103,20 +98,17 @@ flutter {
     source '../..'
 }
 
-// dependencies {
-//     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-// }
-
 dependencies {
-    testImplementation 'junit:junit:4.12'
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
     // androidTestImplementation 'com.android.support.test:runner:1.0.2'
     // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     // implementation 'com.google.firebase:firebase-core:17.0.0'
     // implementation 'com.google.firebase:firebase-analytics:17.0.1'
-    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    // implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
