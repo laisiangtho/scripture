@@ -15,18 +15,9 @@ class Collection {
 
   factory Collection.fromJSON(Map<String, dynamic> o) {
     // NOTE: change of collection bible model
-    // dynamic changeBibleProperty(){
-    //   if (o.containsKey('bible')){
-    //     return o['bible'];
-    //   }
-    //   return o['book'];
-    // }
-
     return Collection(
       version: o['version'] as int,
       // bible: o['bible'].map<CollectionBible>((json) => CollectionBible.fromJSON(json)).toList(),
-      // bible: o['bible'].map<CollectionBible>((json) => CollectionBible.fromJSON(json)).toList(),
-      // bible: changeBibleProperty().asMap().map<CollectionBible>((json) => CollectionBible.fromJSON(json)).toList(),
       bible: (o['bible']??o['book']).map<CollectionBible>((json) => CollectionBible.fromJSON(json)).toList(),
       bookmark: o['bookmark'].map<CollectionBookmark>((json) => CollectionBookmark.fromJSON(json)).toList(),
       keyword: o['keyword'].map<CollectionKeyword>((json) => CollectionKeyword.fromJSON(json)).toList(),
@@ -55,8 +46,8 @@ class CollectionBookmark {
   factory CollectionBookmark.fromJSON(Map<String, dynamic> o) {
     // NOTE: book and chapter property from previous version
     return CollectionBookmark(
-      bookId: o['book']??o['bookId'] as int,
-      chapterId: o['chapter']??o['chapterId'] as int
+      bookId: o['bookId']??o['book'] as int,
+      chapterId: o['chapterId']??o['chapter'] as int
     );
   }
 
