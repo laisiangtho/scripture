@@ -34,6 +34,7 @@ class View extends _State with _Bar, _Suggest, _Result {
       size: core.fontSize,
       lang: core.getCollectionLanguage.name,
       child:focusNode.hasFocus?suggest():result()
+      // child:result()
     );
   }
 }

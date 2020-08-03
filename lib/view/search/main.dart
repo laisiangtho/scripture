@@ -24,9 +24,17 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final textController = new TextEditingController();
   final focusNode = new FocusNode();
 
-  Future<BIBLE> getResult() => core.verseSearch();
+  Future<bool> _dataResult;
+  Future<bool> get getResult => _dataResult=hasNotResult?_newResult():_dataResult;
+  Future<bool> _newResult() async{
+    await core.verseSearch();
+    return hasNotResult == false;
+  }
+
+  // Future<BIBLE> getResult() => core.verseSearch();
   bool get hasNotResult => core.verseSearchBibleIsEmpty();
   BIBLE get bible => core.verseSearchBible;
+  bool get shrinkResult => bible.verseCount > 300;
 
   CollectionBible get bibleInfo => core.getCollectionBible;
   List<CollectionKeyword> get keywords => core.collection.keyword;
@@ -36,6 +44,27 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     } else {
       return this.keywords.where((e)=>e.word.toLowerCase().startsWith(searchQuery.toLowerCase())).toList();
     }
+  }
+
+  void toBible(int bookId, int chapterId) {
+    core.bookId = bookId;
+    core.chapterId = chapterId;
+    controller.master.bottom.pageChange(1);
+  }
+
+  String get searchQuery => this.textController.text;
+  // void showKeyboard() => FocusScope.of(context).requestFocus(focusNode);
+  void showKeyboard() => focusNode.requestFocus();
+  // FocusScope.of(context).unfocus()
+  void hideKeyboard() => focusNode.unfocus();
+  void inputClear() => textController.clear();
+  void inputCancel() => hideKeyboard();
+  void inputSubmit(String word) {
+    hideKeyboard();
+    // core.searchQuery = word;
+    this.textController.text = word;
+    core.searchQuery = word;
+    core.analyticsSearch(this.searchQuery);
   }
 
   @override
@@ -64,22 +93,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   @override
   void setState(fn) {
     if(mounted) super.setState(fn);
-  }
-
-  String get searchQuery => this.textController.text;
-
-  // void showKeyboard() => FocusScope.of(context).requestFocus(focusNode);
-  void showKeyboard() => focusNode.requestFocus();
-  // FocusScope.of(context).unfocus()
-  void hideKeyboard() => focusNode.unfocus();
-  void inputClear() => textController.clear();
-  void inputCancel() => hideKeyboard();
-  void inputSubmit(String word) {
-    hideKeyboard();
-    // core.searchQuery = word;
-    this.textController.text = word;
-    core.searchQuery = word;
-    core.analyticsSearch(this.searchQuery);
   }
 
 }

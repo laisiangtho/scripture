@@ -7,16 +7,14 @@ mixin _Suggest on _State {
       return _suggestionKeyword();
     }
     return FutureBuilder(
-      future: getResult(),
-      builder: (BuildContext context, AsyncSnapshot<BIBLE> snapshot) {
+      future: getResult,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.hasError) {
-          print('error');
           return WidgetMessage(message: snapshot.error.toString());
         }
         if (snapshot.hasData) {
-          if (snapshot.data.book.length > 0) {
-            // return _suggestionSingle(snapshot.data);
-            return _suggestionMulti(snapshot.data);
+          if (snapshot.data) {
+            return _suggestionBook();
           } else if (this.searchQuery.isNotEmpty) {
             return WidgetContent(atLeast: 'found no contain\nof ',enable:this.searchQuery,task: '\nin ',message:bibleInfo?.name);
           } else {
@@ -29,25 +27,7 @@ mixin _Suggest on _State {
     );
   }
 
-  // Widget _suggestionSingle(BIBLE bible) {
-  //   List<VERSE> verses = bible.book.first.chapter.first.verse;
-  //   return new SliverList(
-  //     delegate: SliverChildBuilderDelegate(
-  //       (BuildContext context, int verseIndex) {
-  //         VERSE verse = verses[verseIndex];
-  //         return new Column(
-  //           children: <Widget>[
-  //             Text(verse.name),
-  //             Text(verse.text),
-  //           ]
-  //         );
-  //       },
-  //       childCount: verses.length
-  //     )
-  //   );
-  // }
-
-  Widget _suggestionMulti(BIBLE bible) {
+  Widget _suggestionBook() {
     return new SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int bookIndex) {
@@ -71,23 +51,103 @@ mixin _Suggest on _State {
   }
 
   Widget _suggestionChapter(List<CHAPTER> chapters) {
+    final bool shrinkChapter = (chapters.length > 1 && shrinkResult);
+    final int shrinkChapterTotal = shrinkChapter?1:chapters.length;
     return ListView.builder(
       shrinkWrap: true,
       primary: false,
-      itemCount: chapters.length,
+      // itemCount: chapters.length,
+      itemCount: shrinkChapterTotal,
       itemBuilder: (context, chapterIndex){
         CHAPTER chapter = chapters[chapterIndex];
         return new Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // Text(chapter.name),
-            Container(
-              margin: EdgeInsets.symmetric(vertical:10),
-              child: Text(chapter.name, style: TextStyle(color:Colors.grey),),
+            if(shrinkChapter) Padding(
+              padding: EdgeInsets.symmetric(vertical:10, horizontal: 20),
+              child: Text(
+                // chapters.map((e) => e.id).join(', '),
+                chapters.where((e) => e.id  != chapter.id).map((e) => core.digit(e.id)).join(', '),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color:Colors.grey,
+                  fontSize: 13.0
+                ),
+              ),
             ),
-            // Text(chapter.verse.map((e) => e.id).join(', ')),
+
+            // if(shrinkChapter) Container(
+            //   child: RichText(
+            //     text: TextSpan(
+            //       text:'...',
+            //       children: chapters.where((e) => e.id  != chapter.id).map(
+            //         (e) => TextSpan(
+            //           text: core.digit(e.id)
+            //         )
+            //       ).toList(),
+            //       // children: <InlineSpan>[ TextSpan(text:'')]
+            //       style: TextStyle(
+            //         color:Colors.grey,
+            //         fontSize: 13.0
+            //       )
+            //     ),
+            //     textAlign: TextAlign.center,
+            //   ),
+            // ),
+
+            // if(shrinkChapter) GridView(
+            //   // children: <Widget>[],
+            //   // crossAxisCount: 7,
+            //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 10),
+            //   // childAspectRatio: 2.0,
+            //   padding: EdgeInsets.all(15.0),
+            //   shrinkWrap: true,
+            //   primary: false,
+            //   children: chapters.where(
+            //     (e) => e.id  != chapter.id).map(
+            //       (e) => RawMaterialButton(
+            //         onPressed: null,
+            //         elevation: 2.0,
+            //         fillColor: Colors.white,
+            //         child: Text(core.digit(e.id)),
+            //         // padding: EdgeInsets.all(15.0),
+            //         shape: CircleBorder(),
+            //       )
+            //     ).toList(),
+            // ),
+
+            // if(shrinkChapter) Row(
+            //   mainAxisSize: MainAxisSize.min,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   // children: <Widget>[],
+            //   children: chapters.where(
+            //     (e) => e.id  != chapter.id).map(
+            //       (e) => RawMaterialButton(
+            //         onPressed: () {},
+            //         elevation: 2.0,
+            //         fillColor: Colors.white,
+            //         child: Text(core.digit(e.id)),
+            //         padding: EdgeInsets.all(15.0),
+            //         shape: CircleBorder(),
+            //       )
+            //     ).toList(),
+            // ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(vertical:10),
+              child: Text(
+                chapter.name,
+                style: TextStyle(
+                  color:Colors.black54,
+                  fontSize: 18
+                ),
+              ),
+            ),
+
             _suggestionVerse(chapter.verse)
+
           ]
         );
       }
@@ -95,17 +155,19 @@ mixin _Suggest on _State {
   }
 
   Widget _suggestionVerse(List<VERSE> verses) {
+    final bool shrinkVerse = (verses.length > 1 && shrinkResult);
+    final int shrinkVerseTotal = shrinkVerse?1:verses.length;
     return ListView.builder(
       shrinkWrap: true,
       primary: false,
       // itemCount: verses.length,
-      itemCount: 1,
+      itemCount: shrinkVerseTotal,
       itemBuilder: (context, index){
         VERSE verse = verses[index];
         return new WidgetVerse(
           verse:verse,
           keyword: this.searchQuery,
-          alsoInVerse: (verses.length > 1)?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
+          alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
         );
       }
     );
@@ -114,7 +176,8 @@ mixin _Suggest on _State {
 
   Widget _suggestionKeyword(){
     return SliverPadding(
-      padding: EdgeInsets.only(top: 2),
+      // padding: EdgeInsets.only(top: 2),
+      padding: EdgeInsets.symmetric(vertical: 5),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) => _suggestionKeywordBuilder(context, keywordSuggestion[index],index),
