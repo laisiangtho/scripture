@@ -18,10 +18,15 @@ class WidgetMessage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(this.message, textAlign: TextAlign.center,),
+              Text(
+                this.message, textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 21
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.only(bottom: 20,top: 20),
-                child: Icon(CupertinoIcons.ellipsis),
+                child: Icon(CupertinoIcons.ellipsis,size: 25,),
               ),
             ],
           )
