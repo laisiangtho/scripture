@@ -75,6 +75,7 @@ class View extends _State with _Bar, _Refresh, _Info {
     return CustomScrollView(
       controller: controller,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      semanticChildCount: 2,
       slivers: <Widget>[
         sliverPersistentHeader(),
         sliverRefresh(),
@@ -100,7 +101,13 @@ class View extends _State with _Bar, _Refresh, _Info {
       menu: booksItemWidget(collectionBible),
       right: <Widget>[
         new CupertinoButton(
-          child: new Icon(Icons.more_horiz,color: Colors.grey, size: 27),
+          // padding: EdgeInsets.symmetric(horizontal:20),
+          // color: Colors.red,
+          // child: new Icon(Icons.more_horiz,color: Colors.grey, size: 27),
+          child: new Icon(
+            Icons.more_horiz,color: Colors.grey,
+            semanticLabel: 'More',
+          ),
           onPressed: () => this.showInfo(collectionBible)
         )
       ]
@@ -150,13 +157,17 @@ class View extends _State with _Bar, _Refresh, _Info {
             opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
             child: IntrinsicHeight(
               child: new ListTile(
-                dense: true,
+                // dense: true,
+                selected: isCurrent,
+                enabled: true,
                 title: Text(
                   collectionBible.name, maxLines: 1, overflow: TextOverflow.ellipsis,
+                  semanticsLabel: collectionBible.name,
                   style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 18,
-                    color: isAvailable?Colors.black:Colors.grey,
-                    // height: 1.5
+                    fontSize: 20,
+                    fontWeight: isAvailable?FontWeight.w400:FontWeight.w300,
+                    // color: isAvailable?Colors.black:Colors.grey,
+                    height: collectionBible.language.name=='my'?2.0:1.2
                   )
                   // style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 18,color: isAvailable?Colors.black:Colors.grey)
                 ),
@@ -173,6 +184,7 @@ class View extends _State with _Bar, _Refresh, _Info {
                         minWidth: 40.0,
                       ),
                       padding: EdgeInsets.symmetric(vertical:4),
+                      // margin: EdgeInsets.only(top:5),
                       decoration: BoxDecoration(
                         // shape: BoxShape.circle,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -197,7 +209,7 @@ class View extends _State with _Bar, _Refresh, _Info {
                     Text(' '),
                     Text(collectionBible.shortname,style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontSize: 15,
-                        // height: 1.5
+                        height: collectionBible.language.name=='my'?1.5:1.0
                       )
                     )
                   ]
@@ -207,9 +219,14 @@ class View extends _State with _Bar, _Refresh, _Info {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(collectionBible.year.toString(),style: DefaultTextStyle.of(context).style.copyWith(fontSize: 13,color: isAvailable?Colors.black:Colors.grey[400])),
+                    Text(collectionBible.year.toString(),
+                      style: DefaultTextStyle.of(context).style.copyWith(
+                        fontSize: 18,color: isAvailable?Colors.black:Colors.grey[400],
+                        fontWeight: FontWeight.w300,
+                      )
+                    ),
                     // Icon(Icons.arrow_forward_ios, color: isAvailable?isCurrent?Colors.blue:Colors.grey:Colors.grey[200], size: 18),
-                    Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey:Colors.grey[200], size: 20),
+                    Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey:Colors.grey[200], size: 24),
                     dragHandle
                   ]
                 ),

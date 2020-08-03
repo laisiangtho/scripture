@@ -22,11 +22,13 @@
 
 - [x] iOS Launch icon & screen
 
-- [x] book -> collection
+- [x] collection.bible
   - [ ] detail (count langs, count books)
   - [x] future data before navigation, so it will not struggle the slide
+  - [ ] hide bible, send to unwanted list
+  - [ ] userHome
 
-- [x] bible -> chapter -> verse
+- [x] read -> chapter -> verse
   - [x] chapter list
   - [x] book list
     - [ ] collapsible with chapters
@@ -38,7 +40,9 @@
   - option
     - [x] sheet show/hide toggle
     - [x] auto close sheet if selectedVerse.isEmpty
-    - [ ] fontSize, Color
+    - custom
+      - [x] fontSize
+      - [ ] fontColor
     - [ ] sharing
 
 - [x] note -> library
@@ -71,9 +75,14 @@
 
 - [ ] E/EnhancedIntentService(12713): binding to the service failed
 
-select_content
-  content_type: New International Version (NIV), item_id
-
 - api
   - [x] look for AnimatedSwitcher???
   - [ ] Mock http
+
+## Feature
+
+- [ ] share
+
+
+select_content
+content_type: New International Version (NIV), item_id

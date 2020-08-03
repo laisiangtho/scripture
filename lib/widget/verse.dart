@@ -26,6 +26,7 @@ class WidgetVerse extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical:20, horizontal:20),
           child: Text(
             verse.title.toUpperCase(),
+            semanticsLabel: verse.title,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black54,
@@ -61,7 +62,10 @@ class WidgetVerse extends StatelessWidget {
                 TextSpan(
                   text: '\t',
                   children: <TextSpan>[
-                    TextSpan(text: verse.name),
+                    TextSpan(
+                      text: verse.name,
+                      semanticsLabel: verse.name
+                    ),
                   ],
                   style: TextStyle(
                     color: Colors.grey,
@@ -80,10 +84,15 @@ class WidgetVerse extends StatelessWidget {
                       color: Colors.red,
                     )
                   ),
+                  semanticsLabel: verse.text,
                   style: TextStyle(
                     color: userVerse.selected?Colors.black54:null,
                     shadows: <Shadow>[
-                      Shadow(offset: Offset(userVerse.selected?0.3:0, 0),blurRadius: userVerse.selected?0.2:0.0,color: Colors.red)
+                      Shadow(
+                        offset: Offset(userVerse.selected?0.1:0, 0),
+                        blurRadius: userVerse.selected?0.2:0.0,
+                        color: Colors.red
+                      )
                     ],
                     // decoration: userVerse.selected?TextDecoration.underline:TextDecoration.none,
                     // decorationColor: Colors.red,
@@ -108,10 +117,8 @@ class WidgetVerse extends StatelessWidget {
               fontSize: userVerse.fontSize,
               height: userVerse.fontHeight
             ),
-            // onTap: null,
-            onTap: (){
-              if (selection is Function) selection(verse.id);
-            }
+            onTap: () => (selection is Function)?selection(verse.id):null
+            // onTap: (selection is Function)?() => selection(verse.id):null
           )
         ),
 
@@ -123,7 +130,7 @@ class WidgetVerse extends StatelessWidget {
     // final style = TextStyle(color: Colors.red, fontSize: 22);
     // children: hightLight(verse['text'], store.searchQuery, style),
     List<TextSpan> spans = [];
-    if (matchWord == null || matchWord.length < 3){
+    if (matchWord == null || matchWord.length < 2){
       spans.add(TextSpan(text: text));
     } else {
       int spanBoundary = 0;

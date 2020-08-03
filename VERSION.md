@@ -59,7 +59,9 @@ Fix
 
 - Initializing data
 - Updating available books
+
 Improve
+
 - view(layout)
 - Icon
 
@@ -68,7 +70,9 @@ Improve
 Fix
 
 - Bible index
+
 Improve
+
 - color
 
 ## 1.0.0+32
@@ -82,38 +86,82 @@ Prepare
 Improve
 
 - Performance
+
 Add
+
 - World English Bible
 - Bible in Basic English
 - ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
+
 Prepare
+
 - Analytics
 
 ## 1.0.1+34
 
-Supported Android devices 15262 devices
+Supported Android devices: 15262 devices
 
-- Improve
-  - Performance
-  - Collection update UI
-- Add
-  - World English Bible
-  - Bible in Basic English
-  - ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
-- Prepare
-  - Analytics
+Improve
+
+- Performance
+- Collection update UI
+
+Add
+
+- World English Bible
+- Bible in Basic English
+- ကမ္ဘာသစ်ဘာသာပြန်ကျမ်း (နေ့စဉ်သုံး)
+
+Prepare
+
+- Analytics
 
 ## 1.0.2+35
 
-- Improve
-  - Performance
-  - Layout
-  - Responsive
-  - Search
+Supported Android devices: 15264 devices
+Accessibility issues in Content labeling: 773
+Stability Devices without issues: 12
+API warnings identified: 4
 
-- Feature
-  - Keeping state
-  - Smart scroll
-  - Search suggestion live verses
-  - Swipe to navigate chapter
-  - customizeable font size
+Improve
+
+- Performance
+- Layout
+- Responsive
+- Search
+
+Feature
+
+- Keeping state
+- Smart scroll
+- Search suggestion live verses (instant result)
+- Swipe to navigate chapter
+- customizeable font size
+
+## 1.0.2+36
+
+Improve
+
+- Accessibility (font size and color)
+- Performance
+  - setState
+- Search instant suggestion and result
+
+Fix
+
+- Myanamr text padding and height
+- Toolbar background color
+
+Feature
+
+- ?
+
+Add
+
+- Tooltips on buttons
+- Compare verse???
+
+Change
+
+- Icon
+- Remove loading progress (not really necessary)

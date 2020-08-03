@@ -8,12 +8,12 @@ class ModelPage {
     this.name,
     this.icon,
     this.screenName,
-    this.screenClass,
+    this.description,
     this.key,
     this.child,
   });
   final String screenName;
-  final String screenClass;
+  final String description;
   final GlobalKey<State<dynamic>> key;
   final Widget child;
   final String name;
@@ -146,44 +146,57 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
   }
 
   Widget _button(int index, ModelPage item, bool isButtomSelected) {
-    return CupertinoButton(
-      pressedOpacity: 0.5,
-      // padding: EdgeInsets.zero,
-      padding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-      // padding: EdgeInsets.all(20),
-      child: AnimatedContainer(
-        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-        decoration: BoxDecoration(
-          color: isButtomSelected?Colors.grey.withOpacity(1):null,
-          borderRadius: BorderRadius.all(Radius.circular(30))
-        ),
-        duration: animationDuration,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(item.icon, size:25,color: isButtomSelected? Colors.white:Colors.grey[500]),
-            SizedBox(width:2),
-            AnimatedSize(
-              vsync: this,
-              duration: animationDuration,
-              curve: Curves.easeInOut,
-              child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: itemWidthMax-5
-                ),
-                child: Text(
-                  isButtomSelected?item.name:'', overflow: TextOverflow.clip, maxLines: 1,
-                  style: TextStyle(color: Colors.white,fontSize: 13)
+    return Tooltip(
+      message: item.description,
+      child: CupertinoButton(
+        pressedOpacity: 0.5,
+        // padding: EdgeInsets.zero,
+        padding: EdgeInsets.symmetric(vertical: 10,horizontal:0),
+        // color: isButtomSelected?Colors.red:null,
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+        // padding: EdgeInsets.all(20),
+        child: AnimatedContainer(
+          padding: EdgeInsets.symmetric(vertical: 7,horizontal: 8),
+          // margin: EdgeInsets.symmetric(vertical: 0,horizontal: 1),
+          decoration: BoxDecoration(
+            // color: isButtomSelected?Colors.grey.withOpacity(1):null,
+            color: isButtomSelected?Colors.grey:null,
+            borderRadius: BorderRadius.all(Radius.circular(50))
+          ),
+          duration: animationDuration,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Icon(item.icon, size:28,color: isButtomSelected? Colors.white:Colors.grey[500]),
+              Icon(
+                item.icon,
+                size:isButtomSelected?28:30,
+                color: isButtomSelected? Colors.white:Colors.grey
+              ),
+              SizedBox(width:2),
+              AnimatedSize(
+                vsync: this,
+                duration: animationDuration,
+                curve: Curves.easeInOut,
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: itemWidthMax-2
+                  ),
+                  child: Text(
+                    isButtomSelected?item.name:'', overflow: TextOverflow.clip, maxLines: 1,
+                    semanticsLabel: item.name,
+                    style: TextStyle(color: Colors.white,fontSize: 15)
+                  )
                 )
               )
-            )
-          ]
-        )
+            ]
+          )
+        ),
+        // onPressed: () => store.pageController.jumpToPage(index)
+        onPressed: () => controller.master.bottom.pageNotify.value != index? widget.pageClick(index):null
       ),
-      // onPressed: () => store.pageController.jumpToPage(index)
-      onPressed: () => controller.master.bottom.pageNotify.value != index? widget.pageClick(index):null
     );
   }
 }

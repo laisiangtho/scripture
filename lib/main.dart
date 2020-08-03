@@ -78,7 +78,7 @@ class App extends StatelessWidget {
         primaryColor: colorPrimarySwatch[10],
         backgroundColor: colorPrimarySwatch[400],
         // primarySwatch: colorPrimarySwatch,
-        canvasColor: Colors.transparent,
+        // canvasColor: Colors.transparent,
         // canvasColor: colorPrimarySwatch[0],
 
         // dialogTheme: DialogTheme(
@@ -108,7 +108,7 @@ class App extends StatelessWidget {
           caption: TextStyle( color:Colors.black,height: 1.3),
         ),
         snackBarTheme: new SnackBarThemeData(
-          backgroundColor: Colors.black45,
+          // backgroundColor: Colors.black45,
           // actionTextColor,
           // disabledActionTextColor,
           // contentTextStyle,

@@ -17,11 +17,17 @@ mixin _Bar on _State {
       children: <Widget>[
         Align(
           alignment: Alignment(-.95, 0.0),
-          child: CupertinoButton(
-            padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
-            minSize: 30,
-            child:Icon(Icons.bookmark,color:hasBookmark?Colors.red:Colors.grey[300],size: (30*stretch).clamp(20, 30).toDouble()),
-            onPressed: setBookmark
+          child: Tooltip(
+            message: 'Bookmark toggle',
+            child: CupertinoButton(
+              padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
+              minSize: 30,
+              child: Icon(
+                Icons.bookmark,color:hasBookmark?Colors.red:Colors.grey[300],
+                size: (30*stretch).clamp(20, 30).toDouble()
+              ),
+              onPressed: setBookmark
+            ),
           )
         ),
         Align(
@@ -35,22 +41,26 @@ mixin _Bar on _State {
                 duration: Duration(milliseconds: 200),
                 key:keyBookButton,
                 constraints: BoxConstraints(maxWidth: width, minWidth:30.0),
-                child: CupertinoButton(
-                  color: Colors.grey[200].withOpacity(stretch),
-                  minSize: 33,
-                  padding: EdgeInsets.symmetric(horizontal:15*stretch),
-                  borderRadius: new BorderRadius.horizontal(left:Radius.circular(30)),
-                  child: Text(
-                    // localChapter?.name?.bookName??'....',
-                    // key:ValueKey<int>(localChapter?.name?.bookId??0),
-                    tmpbook?.name??'....',
-                    key:ValueKey<int>(tmpbook?.id??0),
-                    maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, stretch),
-                    style: TextStyle(
-                      color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,height: 1.3
-                    )
+                child: Tooltip(
+                  message: "Select book",
+                  child: CupertinoButton(
+                    color: Colors.grey[200].withOpacity(stretch),
+                    minSize: 33,
+                    padding: EdgeInsets.symmetric(horizontal:15*stretch),
+                    borderRadius: new BorderRadius.horizontal(left:Radius.circular(30)),
+                    child: Text(
+                      // localChapter?.name?.bookName??'....',
+                      // key:ValueKey<int>(localChapter?.name?.bookId??0),
+                      tmpbook?.name??'....',
+                      key:ValueKey<int>(tmpbook?.id??0),
+                      semanticsLabel: tmpbook?.name,
+                      maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, stretch),
+                      style: TextStyle(
+                        color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,height: 1.3
+                      )
+                    ),
+                    onPressed: showBookList
                   ),
-                  onPressed: showBookList
                 )
               ),
               Container(
@@ -65,28 +75,32 @@ mixin _Bar on _State {
                 duration: Duration(milliseconds: 300),
                 key:keyChapterButton,
                 constraints: BoxConstraints(maxWidth: 100.0, minWidth:30.0),
-                child: CupertinoButton(
-                  color: Colors.grey[200].withOpacity(stretch),
-                  minSize: 33,
-                  padding: EdgeInsets.symmetric( horizontal:15*stretch),
-                  borderRadius: new BorderRadius.horizontal(right:Radius.circular(30)),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds:400),
-                    transitionBuilder: (Widget child, Animation<double> animation) {
-                      return ScaleTransition(child: child, scale: animation);
-                    },
-                    child: Text(
-                      // localChapter?.chapterName??'#',
-                      // key:ValueKey<int>(localChapter?.chapterId??0),
-                      tmpchapter?.name??'#',
-                      key:ValueKey<int>(tmpchapter?.id??0),
-                      maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, stretch),
-                      style: TextStyle(
-                        color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,
-                      )
+                child: Tooltip(
+                  message: "Select chapter",
+                  child: CupertinoButton(
+                    color: Colors.grey[200].withOpacity(stretch),
+                    minSize: 33,
+                    padding: EdgeInsets.symmetric( horizontal:15*stretch),
+                    borderRadius: new BorderRadius.horizontal(right:Radius.circular(30)),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds:400),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return ScaleTransition(child: child, scale: animation);
+                      },
+                      child: Text(
+                        // localChapter?.chapterName??'#',
+                        // key:ValueKey<int>(localChapter?.chapterId??0),
+                        tmpchapter?.name??'#',
+                        key:ValueKey<int>(tmpchapter?.id??0),
+                        semanticsLabel: tmpchapter?.name,
+                        maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, stretch),
+                        style: TextStyle(
+                          color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,
+                        )
+                      ),
                     ),
+                    onPressed: showChapterList
                   ),
-                  onPressed: showChapterList
                 )
               ),
             ]
@@ -94,18 +108,23 @@ mixin _Bar on _State {
         ),
         Align(
           alignment: Alignment(.95, 0.0),
-          child: CupertinoButton(
-            key: keyOptionButton,
-            padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
-            minSize: 30,
-            child:Icon(Icons.text_format,color:Colors.grey[300],size: (30*stretch).clamp(20, 30).toDouble()),
-            onPressed: showOptionList
+          child: Tooltip(
+            message: 'Adjust font size',
+            child: CupertinoButton(
+              key: keyOptionButton,
+              padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
+              minSize: 30,
+              child: Icon(
+                Icons.text_format, color: Colors.grey[300],
+                size: (30*stretch).clamp(20, 30).toDouble()
+              ),
+              onPressed: showOptionList
+            ),
           )
         )
       ]
     );
   }
-
 
 }
 /*

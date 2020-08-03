@@ -42,6 +42,7 @@ class _PopBookListState extends State<PopBookList> {
       // separatorBuilder: (context, index) => Divider( color: Colors.white, height: 2),
       padding: EdgeInsets.zero,
       // shrinkWrap: true,
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       itemCount: book.length,
       itemBuilder: (BuildContext context, int index) {
         // NAME book = book.listName[index];
@@ -87,7 +88,7 @@ class _PopBookListState extends State<PopBookList> {
     return InkWell(
       child:Container(
         color: isCurrentBook?Colors.grey[600]:null,
-        padding: EdgeInsets.symmetric(vertical:15, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical:5, horizontal: 10),
         // child: AnimatedSize(
         //   vsync: this,
         //   duration: const Duration(milliseconds: 500),
@@ -102,10 +103,13 @@ class _PopBookListState extends State<PopBookList> {
         // ),
         child: Text(
           book.name,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
           style: TextStyle(
              color: isCurrentBook?Colors.white30:Colors.white,
             //  fontWeight: FontWeight.w300,
-             height: 1.2
+            fontSize: 18,
+             height: 1.5
           )
         )
       ),

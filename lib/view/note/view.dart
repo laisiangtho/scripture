@@ -33,8 +33,6 @@ class View extends _State {
     if (isNotReady || bookmarks.length == 0) {
       return new WidgetContent(atLeast:'collection of\n',enable:'Bookmark',task: ' &\nother ',message: 'library');
     }
-    // TODO: on empty, without setstate
-
     return new SliverPadding(
       padding: EdgeInsets.only(top:7.0,bottom: MediaQuery.of(context).padding.bottom+5.0),
       sliver: new SliverAnimatedList(

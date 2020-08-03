@@ -18,12 +18,27 @@ class View extends _State with _Bar, _Bottom, _Gesture {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomPadding: true,
       body: ScrollPage(
         controller: controller,
         child: _scrollView()
       ),
-      extendBody: true,
-      bottomNavigationBar: bottomStack(),
+      // body: Stack(
+      //   children: <Widget>[
+      //     ScrollPage(
+      //       controller: controller,
+      //       child: _scrollView()
+      //     ),
+      //     Align(
+      //       alignment: Alignment.bottomCenter,
+      //       child: bottomSheet(),
+      //     ),
+      //   ],
+      // ),
+      // extendBody: true,
+      // bottomNavigationBar: bottomStack(),
+      bottomNavigationBar: bottomSheet(),
     );
   }
 
@@ -54,7 +69,7 @@ class View extends _State with _Bar, _Bottom, _Gesture {
       slivers: <Widget>[
         sliverPersistentHeader(),
         new SliverPadding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom+40.0),
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
           // padding: EdgeInsets.zero,
           // sliver: hasNotResult?_loadChapter():_loadVerse()
           sliver: _loadChapter()
@@ -66,26 +81,37 @@ class View extends _State with _Bar, _Bottom, _Gesture {
   Widget _loadChapter(){
     if (isNotReady) return _msg('no Book is loaded for reading');
     // if (hasNotResult == false) return _loadVerse();
-    return FutureBuilder<BIBLE>(
-      future: getResult(),
-      builder: (BuildContext context, AsyncSnapshot<BIBLE> snapshot){
+    return FutureBuilder<bool>(
+      future: getResult,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
         if (snapshot.hasError) {
           return _msg(snapshot.error.toString());
         }
         if (snapshot.hasData) {
-          if (snapshot.data.book.length > 0) {
-            return _loadChapterBuilder(snapshot);
+          if (snapshot.data) {
+            return _loadChapterBuilder();
           } else {
-            return _msg('Something wrong');
+            return _msg('Something went wrong');
           }
         } else {
           return _msg('A moment');
         }
+        // switch (snapshot.connectionState) {
+        //   case ConnectionState.waiting:
+        //     return _msg('A moment...');
+        //   case ConnectionState.active:
+        //     // return _msg('loading...');
+        //   case ConnectionState.none:
+        //     // return _msg('getting ready...');
+        //   case ConnectionState.done:
+        //   default:
+        //     return _loadChapterBuilder();
+        // }
       }
     );
   }
 
-  Widget _loadChapterBuilder(AsyncSnapshot<BIBLE> snapshot){
+  Widget _loadChapterBuilder(){
     // print(3);
     return _loadVerse();
   }

@@ -19,14 +19,8 @@ part 'option.dart';
 part 'book.dart';
 part 'chapter.dart';
 
+
 class Main extends StatefulWidget {
-
-  // static of context.findAncestorStateOfType<State<View>>();
-  // static FrogColor of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<FrogColor>();
-  // static State<Main> of(BuildContext context) => context.findAncestorStateOfType<View>();
-  // static State<Main> of(BuildContext context) => context.findAncestorStateOfType<View>();
-  static bool of(BuildContext context) => View().hasNotResult;
-
   Main({Key key}) : super(key: key);
   @override
   View createState() => new View();
@@ -44,22 +38,26 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
 
   List<int> verseSelectionList = new List();
   bool hasBookmark = false;
+  String identify = '';
 
-  Future<BIBLE> _dataResult;
-  Future<BIBLE> getResult() => _dataResult=hasNotResult?_newResult:_dataResult;
-  Future<BIBLE> get _newResult => core.verseChapter().whenComplete((){
-    core.hasBookmark().then((value) {
-      setState(() {
-        hasBookmark = value;
-      });
-      core.analyticsBible(bible.book.first.info);
-    });
-  });
 
-  BIBLE get bible => core.verseChapterBible;
+  Future<bool> _dataResult;
+  Future<bool> get getResult => _dataResult=hasNotResult?_newResult():_dataResult;
+  Future<bool> _newResult() async{
+    await core.verseChapter();
+    hasBookmark = await core.hasBookmark();
+    if (identify != core.identify){
+      identify = core.identify;
+      core.analyticsBible();
+    }
+    setState(() {});
+    return hasNotResult == false;
+  }
+
   bool get hasNotResult => core.verseChapterBibleIsEmpty();
   bool get isNotReady => hasNotResult && core.userBible == null && core.userBibleList.length == 0;
 
+  BIBLE get bible => core.verseChapterBible;
   CollectionBible get bibleInfo => core.getCollectionBible;
   CollectionBible get tmpbible => bible?.info;
   DefinitionBook get tmpbook => bible?.book?.first?.info;
@@ -67,8 +65,9 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   List<VERSE> get tmpverse => bible?.book?.first?.chapter?.first?.verse;
 
   void _localNameAndChapterRefresh() {
-    getResult().whenComplete(() {
-      core.analyticsRead();
+    getResult.whenComplete(() {
+      setState(() {});
+      core.analyticsReading();
     });
     controller.animateTo(
       controller.position.minScrollExtent,
@@ -82,8 +81,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
       _localNameAndChapterRefresh();
     }).catchError((e){
       print('setChapterPrevious $e');
-    }).whenComplete((){
-
     });
   }
 

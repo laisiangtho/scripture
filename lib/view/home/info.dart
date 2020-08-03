@@ -25,6 +25,7 @@ class _SheetInfo extends StatefulWidget {
 class _SheetInfoState extends State<_SheetInfo> {
   bool isDownloading=false;
   String message='';
+  int _counter=0;
 
   final core = new Core();
 
@@ -86,7 +87,11 @@ class _SheetInfoState extends State<_SheetInfo> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
-            child: Text(bible.name,textAlign: TextAlign.end,style: Theme.of(context).textTheme.headline5),
+            child: Text(
+              bible.name,textAlign: TextAlign.end,
+              semanticsLabel: bible.name,
+              style: Theme.of(context).textTheme.headline5
+            ),
           ),
           RichText(
             textAlign: TextAlign.center,
@@ -96,7 +101,9 @@ class _SheetInfoState extends State<_SheetInfo> {
               children: <TextSpan>[
                 TextSpan(text:'/'),
                 TextSpan(text:bible.language.name.toUpperCase()),
-                TextSpan(text:' (${bible.identify})'),
+                TextSpan(
+                  text:' (${bible.identify})',
+                ),
                 // TextSpan(text:book.publisher)
               ]
             )
@@ -107,7 +114,7 @@ class _SheetInfoState extends State<_SheetInfo> {
             text: TextSpan(
               text:'\n',
               // style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 14),
-              style: TextStyle(color:Colors.grey, fontWeight: FontWeight.w300),
+              style: TextStyle(color:Colors.grey, fontSize: 21, fontWeight: FontWeight.w300),
               children: <TextSpan>[
                 TextSpan(text:'...'),
                 TextSpan(text:message,style: TextStyle(color:Colors.red)),
@@ -120,7 +127,7 @@ class _SheetInfoState extends State<_SheetInfo> {
             padding: EdgeInsets.symmetric(vertical: 30),
             child: RaisedButton.icon(
               padding: EdgeInsets.symmetric(horizontal:15, vertical:10),
-              color:isAvailable?Colors.red: Colors.grey,
+              color:isAvailable?Colors.red: Colors.black45,
               textColor: Colors.white,
               disabledTextColor: Colors.grey,
               disabledColor: Colors.grey[200],
@@ -135,7 +142,12 @@ class _SheetInfoState extends State<_SheetInfo> {
                   valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
                 )
               ):new Icon(isAvailable?Icons.remove_circle:Icons.add_circle, size: 20.0,),
-              label: Text(isAvailable?'Delete':'Download', textAlign: TextAlign.center, style: TextStyle(fontSize: 20,height: 1.05)),
+              label: Text(
+                isAvailable?'Delete':'Download', textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,height: 1.05
+                )
+              ),
               onPressed: isDownloading?null:updateAvailableAction
             )
           ),

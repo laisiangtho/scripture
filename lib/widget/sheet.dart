@@ -25,9 +25,13 @@ class WidgetSheet extends StatelessWidget {
           // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
           borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
         ),
+        // child: new SizedBox.shrink(
+        //   child: this.child
+        // ),
         child: new SizedBox.expand(
           child: this.child
-        )
+        ),
+        // child: this.child
       )
     );
   }

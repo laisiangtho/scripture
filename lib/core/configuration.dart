@@ -17,6 +17,7 @@ mixin _Configuration  {
 
   Collection collection;
 
+  // userBiblePrimary userBibleSecondary userBibleCurrent userBibleParallel
   DefinitionBible userBible;
   List<DefinitionBible> userBibleList = [];
 

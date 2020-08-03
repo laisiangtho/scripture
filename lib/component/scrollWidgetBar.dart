@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-class ScrollPageBarDelegate extends SliverPersistentHeaderDelegate {
-  /// SliverPersistentHeaderDelegate
-  ScrollPageBarDelegate(
+class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
+  ScrollBarDelegate(
     this.builder,
     {
       this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight
@@ -14,7 +12,87 @@ class ScrollPageBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   // bool shouldRebuild(ScrollPageBarDelegate oldDelegate) => maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight;
-  bool shouldRebuild(ScrollPageBarDelegate oldDelegate) => true;
+  bool shouldRebuild(ScrollBarDelegate oldDelegate) => true;
+
+  @override
+  double get maxExtent => maxHeight;
+  // kToolbarHeight
+
+  @override
+  double get minExtent => minHeight;
+
+  // double stretch = 0.0;
+  // double shrink = 1.0;
+  // double get shrink => (maxHeight - minExtent)/(maxExtent - minExtent);
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+
+    double stretch = (shrinkOffset/maxExtent).toDouble();
+    double shrink = (1.0 - stretch).toDouble();
+    // return new SizedBox.expand(
+    //   child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
+    // );
+    return builder(context,shrinkOffset,overlapsContent,shrink,stretch);
+  }
+}
+
+
+class ScrollPageBarDelegate extends ScrollBarDelegate {
+  ScrollPageBarDelegate(
+    this.builder,
+    {
+      this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight
+    }
+  ) : super(null);
+  final double minHeight;
+  final double maxHeight;
+  final Function builder;
+    @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+
+    double stretch = (shrinkOffset/maxExtent).toDouble();
+    double shrink = (1.0 - stretch).toDouble();
+    return Container(
+      // padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: new BorderRadius.vertical(
+          bottom: Radius.elliptical(3, 2)
+        ),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 0.0,
+            color: Colors.black38,
+            // color: Theme.of(context).backgroundColor,
+            spreadRadius: 0.0,
+            offset: Offset(0.0, .0),
+          )
+        ]
+      ),
+      child: new SizedBox.expand(
+        child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
+      )
+    );
+  }
+}
+
+/*
+class ScrollPageBarDelegateTmp extends SliverPersistentHeaderDelegate {
+  /// SliverPersistentHeaderDelegate
+  ScrollPageBarDelegateTmp(
+    this.builder,
+    {
+      this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight
+    }
+  );
+  final double minHeight;
+  final double maxHeight;
+  final Function builder;
+
+  @override
+  // bool shouldRebuild(ScrollPageBarDelegateTmp oldDelegate) => maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight;
+  bool shouldRebuild(ScrollPageBarDelegateTmp oldDelegate) => true;
 
   @override
   double get maxExtent => maxHeight;
@@ -121,6 +199,8 @@ class ScrollPageBarDelegate extends SliverPersistentHeaderDelegate {
 
   }
 }
+*/
+
 /*
 class ScrollPageBarDelegateTesting extends SliverPersistentHeaderDelegate {
   int index = 0;
