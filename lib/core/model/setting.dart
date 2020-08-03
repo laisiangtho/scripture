@@ -13,7 +13,7 @@ class CollectionSetting {
     this.bookId:1,
     this.chapterId:1,
     this.verseId:1,
-    this.fontSize:16.0,
+    this.fontSize:22.0,
     this.searchQuery:'',
   });
 
