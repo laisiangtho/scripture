@@ -38,6 +38,7 @@ mixin _Bar on _State {
           child: Container(
             child: Text(
               core.appName,
+              semanticsLabel: core.appName,
               // 'the holy Bible'.toUpperCase(),
               style: TextStyle(
                 fontFamily: "sans-serif",
@@ -94,10 +95,15 @@ mixin _Bar on _State {
             //   ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey, size: 30),
             //   onPressed: updateCollectionCallBack
             // ),
-            CupertinoButton(
-              // padding: EdgeInsets.zero,
-              child: new Icon(Icons.sort,color: this.isSorting?Colors.red:Colors.grey, size: 30),
-              onPressed: setSorting
+            Tooltip(
+              message: 'Sort available Bible list',
+              child: CupertinoButton(
+                // padding: EdgeInsets.zero,
+                child: new Icon(
+                  Icons.sort,color: this.isSorting?Colors.red:Colors.grey, size: 30,
+                ),
+                onPressed: setSorting
+              ),
             ),
             // new DemoMenu()
           ]
