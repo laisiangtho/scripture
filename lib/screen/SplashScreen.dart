@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 // SplashScreen Launcher
 class SplashScreen extends StatelessWidget {
-  final double progress;
-  SplashScreen({this.progress});
+  final String message;
+  SplashScreen({this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +62,16 @@ class SplashScreen extends StatelessWidget {
                 )
               ),
             ),
-            CircularProgressIndicator(
-              value: progress+0.1,
-              backgroundColor: Colors.grey[300],
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
-              strokeWidth: 1
+            // CircularProgressIndicator(
+            //   value: progress+0.1,
+            //   backgroundColor: Colors.grey[300],
+            //   valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
+            //   strokeWidth: 1
+            // ),
+            Text(message,
+              style: TextStyle(
+                color: Colors.red,
+              ),
             ),
             Container(
               padding: EdgeInsets.all(10),
