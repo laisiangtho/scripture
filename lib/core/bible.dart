@@ -8,8 +8,7 @@ mixin _Bible on _Collection {
       userBible = userBibleList.firstWhere((DefinitionBible e) => e.info.identify == this.identify,orElse: ()=>null);
     }
     if (userBible == null) {
-      // print('getBibleCurrent $identify');
-      return this.loadDefinitionBible(this.identify).then((_){
+      return await this.loadDefinitionBible(this.identify).then((_){
         return userBible;
       }).catchError((e){
         throw e;
@@ -28,17 +27,15 @@ mixin _Bible on _Collection {
     userBibleList.add(userBible);
   }
 
-  Future<void> loadDefinitionBible(String id) => docsExists(basename(this._url(id))).then((String fileName){
+  Future<void> loadDefinitionBible(String id) async => await docsExists(basename(this._url(id))).then((String fileName) async{
     if (fileName == null) {
-      return _downloadBible(id).catchError((e){
+      return await _downloadBible(id).catchError((e){
         // NOTE: Future.error
         throw e;
       });
     } else {
-      return docsRead(fileName).then(
-        (e) {
-          _parseDefinitionBible(e);
-        }
+      return await docsRead(fileName).then(
+        (e) async => await _parseDefinitionBible(e)
       ).catchError((e){
         // NOTE: Future.error
         throw e;
@@ -102,26 +99,24 @@ mixin _Bible on _Collection {
     });
   }
 
-  // String digit(int e) => e.toString().replaceAllMapped(new RegExp(r'[0-9]'), (i) => bible?.digit[int.parse(i.group(0))]);
-  String digit(int e) => e.toString().replaceAllMapped(
-    new RegExp(r'[0-9]'), (i) => userBible == null?i.group(0):userBible.digit[int.parse(i.group(0))]
-  );
-
   List<DefinitionBook> get getDefinitionBookList => userBible.bookInfo;
-  DefinitionBook getDefinitionBookById(int bookId) => getDefinitionBookList.firstWhere((DefinitionBook e) => e.id == bookId);
-  DefinitionBook get getDefinitionBookCurrent => getDefinitionBookById(this.bookId);
+  DefinitionBook getDefinitionBookById(int bookId) => this.getDefinitionBookList?.firstWhere(
+    (DefinitionBook e) => e.id == bookId, orElse: () => null
+  );
+  DefinitionBook get getDefinitionBookCurrent => this.getDefinitionBookById(this.bookId);
 
   List<DefinitionTestament> get getDefinitionTestamentList => userBible.testamentInfo;
-  DefinitionTestament getDefinitionTestamentById(int testamentId) => getDefinitionTestamentList.firstWhere((DefinitionTestament e) => e.id == testamentId);
-  DefinitionTestament get getDefinitionTestamentCurrent => getDefinitionTestamentById(this.testamentId);
+  DefinitionTestament getDefinitionTestamentById(int testamentId) => this.getDefinitionTestamentList.firstWhere(
+    (DefinitionTestament e) => e.id == testamentId, orElse: () => null
+  );
+  DefinitionTestament get getDefinitionTestamentCurrent => this.getDefinitionTestamentById(this.testamentId);
 
-  int get testamentId => this.bookId > 39?2:1;
-  String get bookName => getDefinitionBookCurrent.name;
+  String get bookName => this.getDefinitionBookCurrent.name;
   String get chapterName => this.digit(chapterId);
 
   BIBLE verseSearchBible;
   Future<BIBLE> verseSearch() => this.getBibleCurrent.then((_) => verseSearchDispatch).catchError((e){
-    // print(e);
+    throw e;
   });
 
   bool verseSearchBibleIsEmpty() {
@@ -147,45 +142,45 @@ mixin _Bible on _Collection {
         info: userBible.info,
         book: []
       );
+
       userBible.book.forEach((bId, bO) {
-        BOOK bookBlock = new BOOK(
-          info: userBible.bookInfo.firstWhere((e) => e.id == int.parse(bId),orElse: ()=>null),
-          chapter: []
-        );
-        bO['chapter'].forEach((chapterId, cO) {
-          chapterId = int.parse(chapterId);
-          CHAPTER chapterBlock = new CHAPTER(
-            id:chapterId,
-            name:this.digit(chapterId),
-            verse: []
-          );
-          cO['verse'].forEach((verseId, v) {
+        List<CHAPTER> chapterBlock = [];
+        bO['chapter'].forEach((cId, cO) {
+          List<VERSE> verseBlock = [];
+          cO['verse'].forEach((vId, v) {
             if (new RegExp(searchQuery,caseSensitive: false).hasMatch(v['text'])){
-              verseId = int.parse(verseId);
-              chapterBlock.verse.add(new VERSE.fromJSON(verseId, this.digit(verseId), v));
               verseSearchBible.verseCount++;
+              verseBlock.add(new VERSE.fromJSON(int.parse(vId), this.digit(vId), v));
             }
           });
-          if (chapterBlock.verse.length > 0) {
-            bookBlock.chapter.add(chapterBlock);
+
+          if (verseBlock.length > 0) {
             verseSearchBible.chapterCount++;
+            chapterBlock.add(new CHAPTER(
+              id:int.parse(cId),
+              name:this.digit(cId),
+              verse: verseBlock
+            ));
           }
         });
-        if (bookBlock.chapter.length > 0) {
-          verseSearchBible.book.add(bookBlock);
+
+        if (chapterBlock.length > 0) {
           verseSearchBible.bookCount++;
+          verseSearchBible.book.add(new BOOK(
+            info: getDefinitionBookById(int.parse(bId)),
+            chapter: chapterBlock
+          ));
         }
       });
       // print('+ verseSearch: Ok ($searchQuery)');
-    } else {
-      // print('- verseSearch from log for $searchQuery');
     }
+    // print('- verseSearch: log ($searchQuery) book:${verseSearchBible.bookCount} chapter:${verseSearchBible.chapterCount} verse:${verseSearchBible.verseCount}');
     return verseSearchBible;
   }
 
   BIBLE verseChapterBible;
-  Future<BIBLE> verseChapter() => this.getBibleCurrent.then((_) => verseChapterDispatch).catchError((e){
-    // print(e);
+  Future<BIBLE> verseChapter() async => await this.getBibleCurrent.then((_) => verseChapterDispatch).catchError((e){
+    throw e;
   });
 
   bool verseChapterBibleIsEmpty() {
@@ -215,21 +210,19 @@ mixin _Bible on _Collection {
       );
 
       userBible.book[bId]['chapter'][cId]['verse'].forEach((vId, v) {
-        int verseId = int.parse(vId);
-        chapterBlock.verse.add(new VERSE.fromJSON(verseId, this.digit(verseId), v));
+        chapterBlock.verse.add(new VERSE.fromJSON(int.parse(vId), this.digit(vId), v));
       });
 
       BOOK bookBlock = new BOOK(
-        info: userBible.bookInfo.firstWhere((e) => e.id == this.bookId,orElse: ()=>null),
+        info: getDefinitionBookCurrent,
         chapter: [
           chapterBlock
         ]
       );
       verseChapterBible.book.add(bookBlock);
       // print('+ verseChapter: Ok');
-    } else {
-      // print('- verseChapter from log');
     }
+    // print('- verseChapter: log');
     return verseChapterBible;
   }
 
