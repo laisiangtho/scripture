@@ -34,43 +34,43 @@ class Core extends _Collection with _Bible, _Bookmark, _Mock {
   //retrieve the instance through the app
   static Core get instance => _instance;
 
-  Future init() async {
+  Future<void> init() async {
     await appInfo.then((PackageInfo packageInfo) {
       this.appName = packageInfo.appName;
       this.packageName = packageInfo.packageName;
       this.version = packageInfo.version;
       this.buildNumber = packageInfo.buildNumber;
-      initProgress.value=0.2;
       // print('$appName $packageName $version $buildNumber');
     });
 
-    await readCollection().whenComplete(
-      () => initProgress.value=0.5
-    );
-    await switchCollectionIdentify(false).whenComplete(
-      () => initProgress.value=0.6
-    );
-    // await getBibleCurrent.whenComplete(
-    //   () => initProgress.value=0.6
-    // );
-    await loadDefinitionBible(identify).catchError((e){
+    await readCollection();
+    await switchCollectionIdentify(false);
+    await getBibleCurrent.catchError((e){
       // print('init loadDefinitionBible $e');
     }).whenComplete((){
-      initProgress.value=0.7;
+      print('finish init');
     });
-    await Future.delayed(const Duration(milliseconds: 20), () {initProgress.value=0.9;});
-    await Future.delayed(const Duration(milliseconds: 20), () {initProgress.value=1.0;});
+    // await loadDefinitionBible(identify).catchError((e){
+    //   // print('init loadDefinitionBible $e');
+    // }).whenComplete((){
+    //   print('finish init');
+    // });
+    // return await Future.delayed(Duration(milliseconds: 300), (){});
   }
 
-  Future<void> analyticsBible(DefinitionBook book) async {
+
+  // NOTE: used on read: when [bible] is switch
+  Future<void> analyticsBible() async{
     CollectionBible e = getCollectionBible;
-    this.analyticsContent('${e.name} (${e.shortname})', book.name);
+    // print('analyticsBible ${e.name} ${e.shortname} book:$bookName');
+    if (e != null) this.analyticsContent('${e.name} (${e.shortname})', this.bookName);
   }
 
-  Future<void> analyticsRead() async {
-    // NOTE: used on read: [book,chapter] change
+  // NOTE: used on read: when [book,chapter] are change
+  Future<void> analyticsReading() async {
     CollectionBible e = getCollectionBible;
-    this.analyticsBook('${e.name} (${e.shortname})',this.bookName,this.chapterName);
+    // print('analyticsReading ${e.name} ${e.shortname} book:$bookName chapter: $chapterName');
+    if (e != null) this.analyticsBook('${e.name} (${e.shortname})', this.bookName, this.chapterName);
   }
 
 }
