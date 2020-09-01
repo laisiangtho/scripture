@@ -83,11 +83,11 @@ class DefinitionBook {
 }
 
 class BIBLE {
-  CollectionBible info;
-  List<BOOK> book;
+  final CollectionBible info;
+  final List<BOOK> book;
 
   // NOTE: used in search result
-  String query;
+  final String query;
   int bookCount;
   int chapterCount;
   int verseCount;
@@ -105,8 +105,8 @@ class BIBLE {
 class BOOK {
   // int id;
   // String name;
-  DefinitionBook info;
-  List<CHAPTER> chapter;
+  final DefinitionBook info;
+  final List<CHAPTER> chapter;
   BOOK({
     // this.id,
     // this.name,
@@ -125,9 +125,9 @@ class BOOK {
 }
 
 class CHAPTER {
-  int id;
-  String name;
-  List<VERSE> verse;
+  final int id;
+  final String name;
+  final List<VERSE> verse;
   CHAPTER({
     this.id,
     this.name,
@@ -136,13 +136,15 @@ class CHAPTER {
 }
 
 class VERSE {
-  int id;
-  String name;
-  String text;
-  String title;
-  String reference;
-  String merge;
+  final GlobalKey key;
+  final int id;
+  final String name;
+  final String text;
+  final String title;
+  final String reference;
+  final String merge;
   VERSE({
+    this.key,
     this.id,
     this.name,
     this.text,
@@ -151,8 +153,9 @@ class VERSE {
     this.merge,
   });
 
-  factory VERSE.fromJSON(int id,String name,Map<String, dynamic> o) {
+  factory VERSE.fromJSON(GlobalKey key,int id,String name,Map<String, dynamic> o) {
     return VERSE(
+      key:key,
       id:id,
       name: name,
       text:o['text'],

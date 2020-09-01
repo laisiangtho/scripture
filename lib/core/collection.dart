@@ -65,32 +65,70 @@ abstract class _Collection with _Configuration, _Utility {
   });
 
   Future<void> updateCollectionBookAvailability(String id,int available) async {
-    await collectionBookByIdentify(id).then((CollectionBible bible) => bible.available = available);
-    await writeCollection();
+    // TODO: collection available item on auto download
+    CollectionBible bible = collectionBookByIdentify(id);
+    if(bible.available != available) {
+      bible.available = available;
+      bool isDelete = available == 0;
+      if (isDelete) switchIdentifyPrimary(force:id == this.primaryId);
+      await writeCollection();
+      this.analyticsShare(isDelete?'delete':'download', id);
+      print(isDelete?'delete':'download');
+    }
+    // await collectionBookByIdentify(id).then((CollectionBible bible) => bible.available = available);
+    // await writeCollection();
   }
 
-  Future<void> switchCollectionIdentify (bool force) async =>  await readCollection().then(
-    (o) {
-      if (this.identify.isEmpty) {
-        this.identify = o.bible.firstWhere((i) => i.available > 0,orElse: () => o.bible.first).identify;
-      } else if (force == true){
-        this.identify = o.bible.firstWhere((i) => i.available > 0,orElse: () => o.bible.first).identify;
-      }
-      // collection.setting.identify = 'niv2011';
+  // switchCollectionIdentify switchIdentifyPrimary switchIdentifyParallel
+  // Future<void> switchIdentifyPrimary (bool force) async =>  await readCollection().then(
+  //   (o) {
+  //     if (this.primaryId.isEmpty) {
+  //       this.primaryId = o.bible.firstWhere((i) => i.available > 0,orElse: () => o.bible.first).identify;
+  //     } else if (force == true){
+  //       this.primaryId = o.bible.firstWhere((i) => i.available > 0,orElse: () => o.bible.first).identify;
+  //     }
+  //     // collection.setting.identify = 'niv2011';
+  //   }
+  // );
+  // Future<void> switchIdentifyParallel () async =>  await readCollection().then(
+  //   (o) {
+  //     if (this.parallelId.isEmpty || this.parallelId == this.primaryId ) {
+  //       this.parallelId = o.bible.firstWhere((i) => i.identify != this.primaryId && i.available > 0,orElse: () => o.bible.first).identify;
+  //     }
+  //   }
+  // );
+  void switchIdentifyPrimary({bool force}) {
+    if (this.primaryId.isEmpty || force == true) {
+      this.primaryId = collection.bible.firstWhere(
+        (i) => i.available > 0,
+        orElse: () => collection.bible.first
+      ).identify;
     }
-  );
+  }
+
+  void switchIdentifyParallel() {
+    if (this.parallelId.isEmpty || this.parallelId == this.primaryId ) {
+      this.parallelId = collection.bible.singleWhere(
+        (i) => i.identify != this.primaryId && i.available > 0,
+        // NOTE: when no available next to primaryId
+        orElse: () => collection.bible.firstWhere((i) => i.identify != this.primaryId)
+      ).identify;
+    }
+  }
 
   Future<List<CollectionBible>> collectionBibleList() async => await readCollection().then((o)=>o.bible);
   Future<List<CollectionKeyword>> collectionKeywordList() async => await readCollection().then((o)=>o.keyword);
   // Future<List<CollectionBookmark>> get collectionBookmarkList async => await readCollection().then((o) => o.bookmark);
   List<CollectionBookmark> get collectionBookmarkList => collection.bookmark;
+  // CollectionBible collectionBookByIdentify(String id) => collection.bible.singleWhere((CollectionBible e)=>e.identify == id);
+  CollectionBible collectionBookByIdentify(String id) => collection.bible.firstWhere((CollectionBible e)=>e.identify == id);
 
-  Future<CollectionBible> collectionBookByIdentify(String id) async => await collectionBibleList().then(
-    (bible)=> bible.singleWhere((CollectionBible e)=>e.identify == id)
-  );
-  // CollectionBible collectionBookByIdentify(String id) => collection.bible.firstWhere((CollectionBible e)=>e.identify == id);
-  CollectionBible get getCollectionBible => collection.bible.firstWhere((CollectionBible e)=>e.identify == this.identify);
-  CollectionLanguage get getCollectionLanguage => getCollectionBible.language;
+  // collectionPrimary collectionParallel scripturePrimary scriptureParallel collectionLanguagePrimary collectionLanguageParallel
+  CollectionBible get collectionPrimary => collectionBookByIdentify(primaryId);
+  CollectionLanguage get collectionLanguagePrimary => collectionPrimary.language;
+
+  CollectionBible get collectionParallel => collectionBookByIdentify(parallelId);
+  CollectionLanguage get collectionLanguageParallel => collectionParallel.language;
 
   Future<void> addKeyword(String query) async => await collectionKeywordList().then(
     (keyword) async {

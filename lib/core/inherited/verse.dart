@@ -7,8 +7,9 @@ class VerseInheritedWidget extends InheritedWidget {
   final bool selected;
 
   bool get isUTF8 => lang == 'my';
+  // double get fontHeight => this.isUTF8?1.3:1.2;
   double get fontHeight => this.isUTF8?1.3:1.2;
-  double get fontSize => this.isUTF8?size-2:size;
+  double get fontSize => this.isUTF8?size-1.5:size;
   double get titleSize => (this.fontSize-3).toDouble();
 
   const VerseInheritedWidget({

@@ -7,6 +7,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:flutter_tts/flutter_tts.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,21 +19,23 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:bible/model.dart';
 
 part 'configuration.dart';
+part 'scripture.dart';
 part 'engine.dart';
 part 'collection.dart';
 part 'bible.dart';
 part 'bookmark.dart';
 part 'mock.dart';
 part 'utility.dart';
+part 'speech.dart';
 
-class Core extends _Collection with _Bible, _Bookmark, _Mock {
-  //Creates instance through `_internal` constructor
+class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock {
+  // Creates instance through `_internal` constructor
   static Core _instance = new Core.internal();
   Core.internal();
 
   factory Core() => _instance;
 
-  //retrieve the instance through the app
+  // retrieve the instance through the app
   static Core get instance => _instance;
 
   Future<void> init() async {
@@ -44,12 +48,26 @@ class Core extends _Collection with _Bible, _Bookmark, _Mock {
     });
 
     await readCollection();
-    await switchCollectionIdentify(false);
-    await getBibleCurrent.catchError((e){
-      // print('init loadDefinitionBible $e');
+    switchIdentifyPrimary();
+    await getBiblePrimary.catchError((e){
+      print('error Primary $e');
     }).whenComplete((){
-      print('finish init');
+      print('Ok primary: $primaryId');
     });
+
+    switchIdentifyParallel();
+    await getBibleParallel.catchError((e){
+      print('error Parallel $e');
+    }).whenComplete((){
+      print('Ok parallel: $parallelId');
+    });
+
+    await initSpeech().catchError((e){
+      print('error speech $e');
+    }).whenComplete((){
+      print('Ok speech');
+    });
+
     // await loadDefinitionBible(identify).catchError((e){
     //   // print('init loadDefinitionBible $e');
     // }).whenComplete((){
@@ -61,14 +79,14 @@ class Core extends _Collection with _Bible, _Bookmark, _Mock {
 
   // NOTE: used on read: when [bible] is switch
   Future<void> analyticsBible() async{
-    CollectionBible e = getCollectionBible;
+    CollectionBible e = collectionPrimary;
     // print('analyticsBible ${e.name} ${e.shortname} book:$bookName');
     if (e != null) this.analyticsContent('${e.name} (${e.shortname})', this.bookName);
   }
 
   // NOTE: used on read: when [book,chapter] are change
   Future<void> analyticsReading() async {
-    CollectionBible e = getCollectionBible;
+    CollectionBible e = collectionPrimary;
     // print('analyticsReading ${e.name} ${e.shortname} book:$bookName chapter: $chapterName');
     if (e != null) this.analyticsBook('${e.name} (${e.shortname})', this.bookName, this.chapterName);
   }

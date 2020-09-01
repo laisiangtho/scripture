@@ -30,7 +30,7 @@ Future<String> requestHTTP(String url) async {
     }
   } catch (e) {
     // print(e.message);
-    return Future.error("No internet connection", StackTrace.fromString(e.toString()));
+    return Future.error("No Internet", StackTrace.fromString(e.toString()));
   }
 }
 

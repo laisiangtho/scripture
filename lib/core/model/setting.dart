@@ -2,6 +2,7 @@ part of 'collection.dart';
 
 class CollectionSetting {
   String identify;
+  String parallel;
   int bookId;
   int chapterId;
   int verseId;
@@ -10,6 +11,7 @@ class CollectionSetting {
 
   CollectionSetting({
     this.identify:'',
+    this.parallel:'',
     this.bookId:1,
     this.chapterId:1,
     this.verseId:1,
@@ -23,6 +25,7 @@ class CollectionSetting {
     }
     return CollectionSetting(
       identify: o['identify'],
+      parallel: o['parallel'] as String,
       bookId: o['bookId'] as int,
       chapterId: o['chapterId'] as int,
       verseId: o['verseId'] as int,
@@ -34,6 +37,7 @@ class CollectionSetting {
   Map<String, dynamic> toJSON() {
     return {
       'identify': this.identify,
+      'parallel': this.parallel,
       'bookId': this.bookId,
       'chapterId': this.chapterId,
       'verseId': this.verseId,
