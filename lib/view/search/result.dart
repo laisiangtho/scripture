@@ -155,7 +155,8 @@ mixin _Result on _State {
                     width: 50,
                     child: FlatButton(
                       child: Text(
-                        core.digit(e.id),
+                        // core.digit(e.id),
+                        e.name,
                         style: TextStyle(
                           fontSize: 15
                         ),
@@ -223,7 +224,8 @@ mixin _Result on _State {
         return new WidgetVerse(
           verse:verse,
           keyword: this.searchQuery,
-          alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
+          // alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
+          alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => e.name).join(', '):''
         );
       }
     );

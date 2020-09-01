@@ -27,16 +27,24 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   Future<bool> _dataResult;
   Future<bool> get getResult => _dataResult=hasNotResult?_newResult():_dataResult;
   Future<bool> _newResult() async{
-    await core.verseSearch();
+    await core.versePrimarySearch();
     return hasNotResult == false;
   }
 
   // Future<BIBLE> getResult() => core.verseSearch();
-  bool get hasNotResult => core.verseSearchBibleIsEmpty();
-  BIBLE get bible => core.verseSearchBible;
+  // bool get hasNotResult => core.scripturePrimary.verseSearchDataIsEmpty();
+
+  bool get hasNotResult => core.scripturePrimary.verseSearchDataIsEmpty(
+    id: core.primaryId,
+    testament: core.testamentId,
+    book: core.bookId,
+    chapter: core.chapterId,
+    query: core.searchQuery
+  );
+  BIBLE get bible => core.scripturePrimary.verseSearchData;
   bool get shrinkResult => bible.verseCount > 300;
 
-  CollectionBible get bibleInfo => core.getCollectionBible;
+  CollectionBible get bibleInfo => core.collectionPrimary;
   List<CollectionKeyword> get keywords => core.collection.keyword;
   List<CollectionKeyword> get keywordSuggestion {
     if (searchQuery.isEmpty){
@@ -52,7 +60,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     controller.master.bottom.pageChange(1);
   }
 
-  String get searchQuery => this.textController.text;
+  String get searchQuery => this.textController.text??'';
   // void showKeyboard() => FocusScope.of(context).requestFocus(focusNode);
   void showKeyboard() => focusNode.requestFocus();
   // FocusScope.of(context).unfocus()

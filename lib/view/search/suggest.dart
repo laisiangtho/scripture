@@ -68,7 +68,8 @@ mixin _Suggest on _State {
               padding: EdgeInsets.symmetric(vertical:10, horizontal: 20),
               child: Text(
                 // chapters.map((e) => e.id).join(', '),
-                chapters.where((e) => e.id  != chapter.id).map((e) => core.digit(e.id)).join(', '),
+                // chapters.where((e) => e.id  != chapter.id).map((e) => core.digit(e.id)).join(', '),
+                chapters.where((e) => e.id  != chapter.id).map((e) => e.name).join(', '),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color:Colors.grey,
@@ -167,7 +168,8 @@ mixin _Suggest on _State {
         return new WidgetVerse(
           verse:verse,
           keyword: this.searchQuery,
-          alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
+          // alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
+          alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => e.name).join(', '):''
         );
       }
     );
