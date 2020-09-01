@@ -4,7 +4,7 @@ export 'widget/loading.dart';
 export 'widget/popup.dart';
 export 'widget/content.dart';
 export 'widget/verse.dart';
-// export 'widget/bottomsheet.dart';
+export 'widget/keepAlive.dart';
 export 'widget/slideableAnimatedList.dart';
 // export 'widget/common.dart';
 // export 'widget/sheetInfo.dart';

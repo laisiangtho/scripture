@@ -32,7 +32,7 @@ class WidgetVerse extends StatelessWidget {
               color: Colors.black54,
               fontSize: userVerse.titleSize,
               fontWeight: FontWeight.w300,
-              fontStyle: FontStyle.italic,
+              // fontStyle: FontStyle.italic,
               height: 1.6
               // transform: TextTransform.capitalize,
             )
@@ -119,6 +119,26 @@ class WidgetVerse extends StatelessWidget {
             ),
             onTap: () => (selection is Function)?selection(verse.id):null
             // onTap: (selection is Function)?() => selection(verse.id):null
+            // onTap: () {
+            //   showMenu(
+            //     context: context,
+            //     // position: RelativeRect.fromLTRB(100, 100, 100, 100),
+            //     position: RelativeRect.fromLTRB(0.0, 300.0, 300.0, 0.0),
+            //     shape: CircleBorder(),
+            //     items: [
+            //       PopupMenuItem(
+            //         child: Text("Highlight"),
+            //       ),
+            //       PopupMenuItem(
+            //         child: Text("Color"),
+            //       ),
+            //       PopupMenuItem(
+            //         child: Text("Pop"),
+            //       ),
+            //     ],
+            //     elevation: 8.0,
+            //   );
+            // },
           )
         ),
 
