@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-import 'package:flutter/cupertino.dart';
-// import 'package:flutter/rendering.dart';
-import 'scrollExtension.dart';
+part of 'available.dart';
 
 class ScrollPage extends StatelessWidget {
   final ScrollController controller;

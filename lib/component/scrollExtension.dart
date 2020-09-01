@@ -2,11 +2,7 @@
 version: 0.2
 developer: Khen Solomon Lethil
 */
-import 'dart:math';
-// import 'dart:io';
-// import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+part of 'available.dart';
 
 abstract class ScrollPageController {
 
@@ -180,7 +176,6 @@ abstract class ScrollPageController {
     direction.dispose();
     heightNotify.dispose();
   }
-
 }
 
 extension ScrollControllerExtension on ScrollController {

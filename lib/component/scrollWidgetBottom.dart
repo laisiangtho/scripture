@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
-import 'package:flutter/cupertino.dart';
-import 'scrollExtension.dart';
+part of 'available.dart';
 
 class ModelPage {
   ModelPage({
@@ -64,8 +61,11 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
     itemWidthMax = MediaQuery.of(context).size.width/items.length;
     return ValueListenableBuilder<bool>(
       valueListenable: controller.master.bottom.toggleNotify,
-      builder: (BuildContext context, bool hide,Widget child) => (hide)?Container():_height()
+      // builder: (BuildContext context, bool hide,Widget child) => (hide)?Container():_height()
+      // builder: (BuildContext context, bool hide,Widget child) => (hide)?SizedBox.shrink():_height()
+      builder: (BuildContext context, bool hide,Widget child) => (hide)?Container(height: 0,color:Colors.brown):_height()
     );
+    // return _height();
   }
 
   Widget _height() {
@@ -122,7 +122,7 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
     // );
     return Align(
       heightFactor: heightFactor,
-      alignment: Alignment(0.0, -1.0),
+      alignment: Alignment(0.0, -.87),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
