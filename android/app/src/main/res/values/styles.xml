@@ -5,5 +5,15 @@
         <!--Required Api 21 above-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:defaultFocusHighlightEnabled">false</item>
     </style>
+    <!-- <style name="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+    </style> -->
 </resources>
