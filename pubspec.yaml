@@ -35,6 +35,9 @@ dependencies:
   firebase_core: ^0.4.5
   firebase_analytics: ^5.0.16
   flutter_reorderable_list: ^0.1.4
+  flutter_tts: ^1.2.6
+  # scrollable_positioned_list: ^0.1.7
+  # scroll_to_index: ^1.0.6
 
 dev_dependencies:
   flutter_test:
