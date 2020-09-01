@@ -1,24 +1,36 @@
 import 'dart:math';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+// import 'dart:io' show Platform;
+// import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter_tts/flutter_tts.dart';
+// import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+// import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:bible/core.dart';
 import 'package:bible/component.dart';
 import 'package:bible/widget.dart';
+import 'package:flutter/services.dart';
 
+import 'package:bible/view/home/main.dart' as Home;
 /// start/nav: 1234567
 /// setstate: 167
 /// keepAlive: 7
 
 part 'view.dart';
 part 'bar.dart';
-part 'bottom.dart';
+part 'bottomSheet.dart';
+part 'bottomSheetMenu.dart';
+part 'bottomSheetParallel.dart';
+part 'bottomSheetAudio.dart';
 part 'gesture.dart';
 part 'option.dart';
 part 'book.dart';
 part 'chapter.dart';
-
 
 class Main extends StatefulWidget {
   Main({Key key}) : super(key: key);
@@ -31,38 +43,63 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final controller = ScrollController();
   final core = Core();
   final sliverAnimatedListKey = GlobalKey<SliverAnimatedListState>();
+  // final ItemScrollController itemScrollController = ItemScrollController();
+  // final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  // final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  // AutoScrollController autoScrollController;
 
   final keyBookButton = new GlobalKey();
   final keyChapterButton = new GlobalKey();
   final keyOptionButton = new GlobalKey();
+  final keyListView = new GlobalKey();
 
   List<int> verseSelectionList = new List();
   bool hasBookmark = false;
-  String identify = '';
-
+  String primaryId = '';
 
   Future<bool> _dataResult;
-  Future<bool> get getResult => _dataResult=hasNotResult?_newResult():_dataResult;
-  Future<bool> _newResult() async{
-    await core.verseChapter();
+  Future<bool> get getResult => _dataResult=hasNotResult?_newResult:_dataResult;
+  Future<bool> get _newResult async => core.versePrimaryChapter().then((value) async{
     hasBookmark = await core.hasBookmark();
-    if (identify != core.identify){
-      identify = core.identify;
+    if (primaryId != core.primaryId){
+      primaryId = core.primaryId;
       core.analyticsBible();
     }
     setState(() {});
     return hasNotResult == false;
-  }
+  });
 
-  bool get hasNotResult => core.verseChapterBibleIsEmpty();
-  bool get isNotReady => hasNotResult && core.userBible == null && core.userBibleList.length == 0;
+  // Future<BIBLE> get getResultParallel async => core.verseParallelChapter();
 
-  BIBLE get bible => core.verseChapterBible;
-  CollectionBible get bibleInfo => core.getCollectionBible;
-  CollectionBible get tmpbible => bible?.info;
+  // Future<bool> _newResult() async{
+  //   // await core.verseChapter();
+  //   // hasBookmark = await core.hasBookmark();
+  //   // if (identify != core.identify){
+  //   //   identify = core.identify;
+  //   //   core.analyticsBible();
+  //   // }
+  //   // setState(() {});
+  //   // return hasNotResult == false;
+  // }
+
+  bool get hasNotResult => core.scripturePrimary.verseChapterDataIsEmpty(
+    id: core.primaryId,
+    testament: core.testamentId,
+    book: core.bookId,
+    chapter: core.chapterId
+  );
+  bool get isNotReady => hasNotResult && core.scripturePrimary.notReady();
+
+  BIBLE get bible => core.scripturePrimary.verseChapterData;
+  // bool get hasNotResult => core.verseChapterDataIsEmpty();
+  // bool get isNotReady => hasNotResult && core.userBible == null && core.userBibleList.length == 0;
+
+  // BIBLE get bible => core.verseChapterData;
+  CollectionBible get bibleInfo => core.collectionPrimary;
+  // CollectionBible get tmpbible => bible?.info;
   DefinitionBook get tmpbook => bible?.book?.first?.info;
   CHAPTER get tmpchapter => bible?.book?.first?.chapter?.first;
-  List<VERSE> get tmpverse => bible?.book?.first?.chapter?.first?.verse;
+  List<VERSE> get tmpverse => tmpchapter?.verse;
 
   void _localNameAndChapterRefresh() {
     getResult.whenComplete(() {
@@ -76,23 +113,33 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     );
   }
 
+  // int _tmpIndex = 0;
   void setChapterPrevious() {
-    core.chapterPrevious.then((value){
-      _localNameAndChapterRefresh();
-    }).catchError((e){
-      print('setChapterPrevious $e');
-    });
+    // core.chapterPrevious.then((value){
+    //   _localNameAndChapterRefresh();
+    // }).catchError((e){
+    //   showSnack(e.toString());
+    // });
+    // _tmpIndex--;
+    // if (_tmpIndex < 0) _tmpIndex = 0;
+    // scrollToIndex(_tmpIndex);
+    controller.master.bottom.toggle(false);
   }
 
   void setChapterNext() {
-    core.chapterNext.then((value){
-      _localNameAndChapterRefresh();
-    }).catchError((e){
-      print('setChapterNext $e');
-    });
+    // core.chapterNext.then((value){
+    //   _localNameAndChapterRefresh();
+    // }).catchError((e){
+    //  showSnack(e.toString());
+    // });
+
+    // _tmpIndex++;
+    // if (_tmpIndex > (tmpverse.length-1)) _tmpIndex = 0;
+    // scrollToIndex(_tmpIndex);
+    controller.master.bottom.toggle(true);
   }
 
- void setChapter(int id) {
+  void setChapter(int id) {
     if (id == null) return;
     core.chapterId = id;
     _localNameAndChapterRefresh();
@@ -103,7 +150,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     core.chapterBook(id).then((value){
       _localNameAndChapterRefresh();
     }).catchError((e){
-      // print('chapterBook $e');
+      showSnack(e.toString());
     });
   }
 
@@ -145,6 +192,16 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   //   //   return list.join("\n");
   //   // });
   // }
+  void verseSelectionCopy() {
+    List<String> list = [];
+    this.verseSelectionList..sort((a, b) => a.compareTo(b))..forEach((id) {
+      VERSE o = tmpverse.where((i)=> i.id == id).single;
+      list.add(o.name+': '+o.text);
+    });
+    Clipboard.setData(new ClipboardData(text: list.join("\n"))).whenComplete((){
+      showSnack('Copied to Clipboard');
+    });
+  }
 
   void setFontSize(bool increase) {
     double tmp = core.fontSize;
@@ -212,10 +269,43 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     });
   }
 
+  void showSnack(String message){
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(milliseconds:500),
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // backgroundColor: Colors.grey,
+      )
+    );
+  }
+
+
+  Future scrollToIndex(int index) async {
+    double scrollTo = 40.0;
+    if (index > 0) {
+      final offsetList = tmpverse.where((e) => tmpverse.indexOf(e) < index).map<double>((e) => e.key.currentContext?.size?.height);
+      if (offsetList.length > 0){
+        scrollTo = offsetList.reduce((a,b )=>a+b) + scrollTo;
+      }
+    }
+    controller.animateTo(scrollTo, duration: new Duration(seconds: 1), curve: Curves.ease);
+    print('$index go $scrollTo $kToolbarHeight');
+
+  }
+
   @override
   void initState(){
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_){});
+
+    // itemScrollController.
+    // itemPositionsListener
+    // autoScrollController = AutoScrollController(
+    //   viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+    //   axis: Axis.vertical,
+    //   suggestedRowHeight: 200
+    // );
   }
 
   @override

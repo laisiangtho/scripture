@@ -5,14 +5,15 @@ mixin _Bar on _State {
 
   Widget sliverPersistentHeader() {
     return new SliverPersistentHeader(
-      pinned: true,
       floating:true,
+      pinned: true,
       delegate: new ScrollPageBarDelegate(bar,minHeight: 20)
     );
   }
 
   Widget bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink){
     double width = MediaQuery.of(context).size.width/2;
+    // print('overlaps $overlaps stretch $stretch shrink $shrink');
     return Stack(
       children: <Widget>[
         Align(
@@ -71,6 +72,10 @@ mixin _Bar on _State {
                   child:  Text(',',style: TextStyle(color: Colors.grey))
                 )
               ),
+              // CupertinoButton(
+              //   child: Text('t $counter'),
+              //   onPressed: _scrollToIndex
+              // ),
               AnimatedContainer(
                 duration: Duration(milliseconds: 300),
                 key:keyChapterButton,

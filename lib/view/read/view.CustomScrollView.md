@@ -1,3 +1,6 @@
+# v1
+
+```dart
 part of 'main.dart';
 
 class View extends _State with _Bar, _Gesture {
@@ -16,12 +19,11 @@ class View extends _State with _Bar, _Gesture {
       bottomNavigationBar: _BottomSheet(
         // key: ValueKey<int>(112),
         // key: _scaffoldKeyBottom,
-        // primaryBible:bible,
+        primaryBible:bible,
         nextChapter: setChapterNext,
         previousChapter: setChapterPrevious,
         verseSelectionList: verseSelectionList,
         verseSelectionCopy: verseSelectionCopy,
-        scrollToIndex: scrollToIndex,
       )
     );
   }
@@ -88,37 +90,65 @@ class View extends _State with _Bar, _Gesture {
 
   Widget _loadVerse(){
     // print(4);
+    // SliverToBoxAdapter
+    // SliverFillViewport
+    // SliverFillRemaining
+    // SliverFillViewport();
     return new SliverToBoxAdapter(
       // fillOverscroll: true,
       // hasScrollBody: true,
       child: chapterGesture(
         child: ListView.builder(
-          key: UniqueKey(),
           addAutomaticKeepAlives: true,
           // physics: ScrollPhysics(),
           shrinkWrap: true,
-          // primary: true,
+          primary: false,
           // controller: autoScrollController,
-          controller: controller,
+          // controller: controller,
           itemCount: tmpverse.length,
           padding: EdgeInsets.symmetric(vertical: 7.0),
           itemBuilder: (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
         )
+        // child: ScrollablePositionedList.builder(
+        //   // scrollDirection: Axis.horizontal,
+        //   physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        //   addAutomaticKeepAlives: true,
+        //   initialScrollIndex: 0,
+        //   itemPositionsListener: itemPositionsListener,
+        //   itemCount: tmpverse.length,
+        //   // padding: EdgeInsets.symmetric(vertical: 7.0),
+        //   itemBuilder: (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
+        // )
       ),
     );
   }
 
   Widget _inheritedVerse(BuildContext context, int index, VERSE verse){
-    return VerseInheritedWidget(
-      key: verse.key,
-      size: core.fontSize,
-      lang: core.collectionLanguagePrimary.name,
-      selected: verseSelectionList.indexWhere((id) => id == verse.id) >= 0,
-      child: WidgetVerse(
-        verse: verse,
-        selection: verseSelection,
-      )
+    return AutoScrollTag(
+      key: ValueKey<int>(index),
+      controller: autoScrollController,
+      highlightColor: Colors.red,
+      // controller: controller,
+      index: index,
+      child: VerseInheritedWidget(
+        size: core.fontSize,
+        lang: core.collectionLanguagePrimary.name,
+        selected: verseSelectionList.indexWhere((id) => id == verse.id) >= 0,
+        child: WidgetVerse(
+          verse: verse,
+          selection: verseSelection,
+        )
+      ),
     );
+    // return VerseInheritedWidget(
+    //   size: core.fontSize,
+    //   lang: core.collectionLanguagePrimary.name,
+    //   selected: verseSelectionList.indexWhere((id) => id == verse.id) >= 0,
+    //   child: WidgetVerse(
+    //     verse: verse,
+    //     selection: verseSelection,
+    //   )
+    // );
   }
 
 }
