@@ -33,13 +33,15 @@ class View extends _State with _Bar, _Refresh, _Info {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      body: ReorderableList(
-        onReorder: this.reorderCallback,
-        onReorderDone: this.reorderDone,
-        decoratePlaceholder: (Widget item, double opacity){
-          return DecoratedPlaceholder(widget: item, offset: opacity);
-        },
-        child: _reorder(),
+      body: SafeArea(
+        child: ReorderableList(
+          onReorder: this.reorderCallback,
+          onReorderDone: this.reorderDone,
+          decoratePlaceholder: (Widget item, double opacity){
+            return DecoratedPlaceholder(widget: item, offset: opacity);
+          },
+          child: _reorder(),
+        ),
       )
     );
   }
@@ -116,7 +118,8 @@ class View extends _State with _Bar, _Refresh, _Info {
 
   Widget booksItemWidget(CollectionBible collectionBible){
     bool isAvailable = collectionBible.available > 0;
-    bool isCurrent = collectionBible.identify == core.identify;
+    bool isPrimary = collectionBible.identify == core.primaryId;
+    // bool isParallel = collectionBible.identify == core.parallelId;
     return ReorderableItem(
       key: ValueKey<String>(collectionBible.identify),
       childBuilder: (BuildContext context, ReorderableItemState state){
@@ -158,7 +161,7 @@ class View extends _State with _Bar, _Refresh, _Info {
             child: IntrinsicHeight(
               child: new ListTile(
                 // dense: true,
-                selected: isCurrent,
+                selected: isPrimary,
                 enabled: true,
                 title: Text(
                   collectionBible.name, maxLines: 1, overflow: TextOverflow.ellipsis,
@@ -189,7 +192,7 @@ class View extends _State with _Bar, _Refresh, _Info {
                         // shape: BoxShape.circle,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         // color: isAvailable?isCurrent?Colors.grey:Colors.grey[400]:Colors.grey[200]
-                        color: isAvailable?isCurrent?Colors.black54:Colors.grey:Colors.grey[200]
+                        color: isAvailable?isPrimary?Colors.black54:Colors.grey:Colors.grey[200]
                         // isCurrent?Colors.blue[300]:
                       ),
                       child: Text(
@@ -221,12 +224,12 @@ class View extends _State with _Bar, _Refresh, _Info {
                   children: <Widget>[
                     Text(collectionBible.year.toString(),
                       style: DefaultTextStyle.of(context).style.copyWith(
-                        fontSize: 18,color: isAvailable?Colors.black:Colors.grey[400],
-                        fontWeight: FontWeight.w300,
+                        fontSize: 16,color: isAvailable?Colors.black:Colors.grey[400],
+                        // fontWeight: FontWeight.w300,
                       )
                     ),
                     // Icon(Icons.arrow_forward_ios, color: isAvailable?isCurrent?Colors.blue:Colors.grey:Colors.grey[200], size: 18),
-                    Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey:Colors.grey[200], size: 24),
+                    Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey:Colors.grey[200], size: 22),
                     dragHandle
                   ]
                 ),

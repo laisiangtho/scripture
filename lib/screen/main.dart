@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'package:bible/core.dart';
 import 'package:bible/component.dart';
-// import 'package:bible/widget.dart';
+import 'package:bible/widget.dart';
 
 import 'package:bible/view/home/main.dart' as Home;
 import 'package:bible/view/read/main.dart' as Read;
 import 'package:bible/view/note/main.dart' as Note;
 import 'package:bible/view/search/main.dart' as Search;
-import 'package:bible/view/more/main.dart' as More;
+// import 'package:bible/view/more/main.dart' as More;
 
 import 'package:bible/screen/SplashScreen.dart';
 
@@ -30,14 +30,23 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
   final GlobalKey<Read.View> read = GlobalKey<Read.View>();
   final GlobalKey<Note.View> note = GlobalKey<Note.View>();
   final GlobalKey<Search.View> search = GlobalKey<Search.View>();
-  final GlobalKey<More.View> more = GlobalKey<More.View>();
+  // final GlobalKey<More.View> more = GlobalKey<More.View>();
+  final homeKey = UniqueKey();
+  final readKey = UniqueKey();
+  final noteKey = UniqueKey();
+  final searchKey = UniqueKey();
+  // final homeKey = ValueKey<int>(1);
+  // final readKey = ValueKey<int>(2);
+  // final noteKey = ValueKey<int>(3);
+  // final searchKey = ValueKey<int>(4);
+  // // final moreKey = ValueKey<int>(5);
 
   String identify;
   int bookId;
   int chapterId;
 
   List<Widget> pageView = [];
-  List<ModelPage> pageList = [];
+  List<ModelPage> pageButton = [];
 
   Future<void> initiator;
 
@@ -46,21 +55,22 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     super.initState();
     initiator = core.init();
     if (pageView.length == 0){
-      pageList = [
+      pageButton = [
         ModelPage(icon:Icons.flag, name:"Home", description: "List of Holy Bible in many languages", key: home),
         ModelPage(icon:Icons.local_library, name:"Read", description: "Read bible by chapter", key: read),
         ModelPage(icon:Icons.book, name:"Bookmark", description: "Bookmark list", key: note),
         ModelPage( icon:CupertinoIcons.search, name:"Search", description: "Search bible", key: search),
-        ModelPage(icon:Icons.more_horiz, name:"More",description: "More information",  key: more)
+        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information",  key: more)
       ];
       pageView = [
-        KeepAlive(key:UniqueKey(), child: new Home.Main(key: home)),
-        KeepAlive(key:UniqueKey(), child: new Read.Main(key: read)),
-        KeepAlive(key:UniqueKey(), child: new Note.Main(key: note)),
-        KeepAlive(key:UniqueKey(), child: new Search.Main(key: search)),
-        KeepAlive(key:UniqueKey(), child: new More.Main())
+        WidgetKeepAlive(key:homeKey, child: new Home.Main(key: home,barMaxHeight:120)),
+        WidgetKeepAlive(key:readKey, child: new Read.Main(key: read)),
+        WidgetKeepAlive(key:noteKey, child: new Note.Main(key: note)),
+        WidgetKeepAlive(key:searchKey, child: new Search.Main(key: search)),
+        // KeepAliveMain(key:UniqueKey(), child: new More.Main(key: search))
       ];
     }
+
     // focusNode.addListener(() {
     //   _controller.master.bottom.toggle(focusNode.hasFocus);
     // });
@@ -68,7 +78,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     _controller.master.bottom.pageListener((int index){
       // navigator.currentState.pushReplacementNamed(index.toString());
 
-      ModelPage page = pageList[index];
+      ModelPage page = pageButton[index];
       if(page.key.currentState != null){
         // NOTE: check State isMounted
         // if (identify != core.identify || bookId != core.bookId || chapterId != core.chapterId){
@@ -113,7 +123,6 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     // _controller.master.bottom.pageChange(index);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -147,26 +156,23 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
       key: scaffoldKey,
       primary: true,
       resizeToAvoidBottomInset: true,
-      // backgroundColor: Colors.transparent,
-      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
       body: SafeArea(
-        top: true,
+        // top: true,
         // bottom: false,
         // maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,
         child: _page()
       ),
-      bottomNavigationBar: _bottom(),
-      // extendBody: true
-      // extendBodyBehindAppBar: true,
+      // body: _page(),
+      bottomNavigationBar: _bottom()
     );
   }
 
   Widget _bottom() {
     return ScrollPageBottom(
       controller: _controller,
-      items: pageList,
+      items: pageButton,
       pageClick:_pageClick,
       // child: Text('??1'),
     );
@@ -176,24 +182,22 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     // return PageView(
     //   controller: pageController,
     //   onPageChanged: _pageChanged,
-    //   // onPageChanged: _controller.bottom.pageChange,
     //   physics:new NeverScrollableScrollPhysics(),
     //   children: pageView
     // );
 
     // return PageView.custom(
-    //   // key: UniqueKey(),
     //   controller: pageController,
     //   onPageChanged: _pageChanged,
     //   physics:new NeverScrollableScrollPhysics(),
     //   childrenDelegate: SliverChildBuilderDelegate(
     //     (BuildContext context, int index) => KeepAlive(key: UniqueKey(), child: pageView[index]),,
     //     childCount: pageView.length,
-    //     // findChildIndexCallback: (Key key) {
-    //     //   final ValueKey valueKey = key;
-    //     //   final Widget child = valueKey.value;
-    //     //   return pageView.indexOf(child);
-    //     // }
+    //     findChildIndexCallback: (Key key) {
+    //       final ValueKey valueKey = key;
+    //       final Widget child = valueKey.value;
+    //       return pageView.indexOf(child);
+    //     }
     //   )
     // );
 
@@ -202,7 +206,6 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
       onPageChanged: _pageChanged,
       allowImplicitScrolling:false,
       physics:new NeverScrollableScrollPhysics(),
-      // itemBuilder: (a,index) => KeepAlive(key: UniqueKey(), child: pageView[index]),
       itemBuilder: (BuildContext context, int index) => pageView[index],
       itemCount: pageView.length,
     );
@@ -246,24 +249,4 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
   //   return MaterialPageRoute(builder: (context) => Container(color: Colors.white,child: Center(child: Text("Unknown"))));
   // }
 
-}
-
-class KeepAlive extends StatefulWidget {
-  const KeepAlive({Key key, this.child}) : super(key: key);
-
-  final Widget child;
-
-  @override
-  _KeepAliveState createState() => _KeepAliveState();
-}
-
-class _KeepAliveState extends State<KeepAlive> with AutomaticKeepAliveClientMixin{
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
-  }
 }

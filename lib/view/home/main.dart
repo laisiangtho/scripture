@@ -13,7 +13,9 @@ part 'refresh.dart';
 part 'info.dart';
 
 class Main extends StatefulWidget {
-  Main({Key key}) : super(key: key);
+  Main({Key key,this.title,this.barMaxHeight}) : super(key: key);
+  final String title;
+  final double barMaxHeight;//: 120;
   @override
   State<StatefulWidget> createState() => View();
 }
@@ -60,13 +62,27 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     });
   }
 
- void toBible(CollectionBible bible) {
-    if (core.identify != bible.identify){
-      setState(() {
-        core.identify = bible.identify;
-      });
+  void toBible(CollectionBible bible) {
+    // if (core.primaryId != bible.identify){
+    //   setState(() {
+    //     core.primaryId = bible.identify;
+    //   });
+    // }
+    // controller.master.bottom.pageChange(1);
+    if (Navigator.canPop(context)){
+      if (core.parallelId != bible.identify){
+        core.parallelId = bible.identify;
+        core.writeCollection();
+      }
+      Navigator.of(context).pop();
+    } else {
+      if (core.primaryId != bible.identify){
+        setState(() {
+          core.primaryId = bible.identify;
+        });
+      }
+      controller.master.bottom.pageChange(1);
     }
-    controller.master.bottom.pageChange(1);
     // core.pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeOutExpo);
   }
 }

@@ -9,11 +9,47 @@ mixin _Bar on _State {
     return new SliverPersistentHeader(
       pinned: true,
       floating:false,
-      delegate: new ScrollPageBarDelegate(_bar,maxHeight: 120)
+      delegate: new ScrollPageBarDelegate(Navigator.canPop(context)?_barPopup:_barPage,maxHeight: widget.barMaxHeight)
+      // delegate: new ScrollPageBarDelegate(_barPopup,maxHeight: widget.barMaxHeight)
     );
   }
 
-  Widget _bar(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
+  Widget _barPopup(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
+    return Stack(
+      children: <Widget>[
+        Align(
+          alignment: Alignment(-.95,0),
+          child: CupertinoButton(
+            onPressed: () => Navigator.of(context).pop(),
+            padding: EdgeInsets.zero,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                new Icon(
+                  Icons.arrow_back_ios,
+                  size: 27,
+                ),
+                Text(widget.title??'Back')
+              ],
+            )
+          ),
+        ),
+        // if (widget.title != null)Align(
+        //   // alignment: Alignment.lerp(Alignment(-0.2,0.5),Alignment(-0.5,-.4), stretch),
+        //   alignment: Alignment(-.6,0),
+        //   child: _barTitle(shrink)
+        // ),
+        Align(
+          alignment: Alignment(.95,0),
+          child: _barSortButton(),
+        ),
+      ]
+    );
+  }
+
+
+  Widget _barPage(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
     // double stretch = percentage;
     // double shrink = percentage;
     return Stack(
@@ -23,7 +59,7 @@ mixin _Bar on _State {
         //   child:Transform.rotate(
         //     angle:6*shrink,
         //     child: Container(
-        //       child: Text('1.0.1'),
+        //       child: Text(core.version),
         //       padding: EdgeInsets.all(2),
         //       decoration: BoxDecoration(
         //         color: Theme.of(context).backgroundColor,
@@ -33,82 +69,57 @@ mixin _Bar on _State {
         //   )
         // ),
         Align(
-          // alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,0), stretch),
-          alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,0), stretch),
-          child: Container(
-            child: Text(
-              core.appName,
-              semanticsLabel: core.appName,
-              // 'the holy Bible'.toUpperCase(),
-              style: TextStyle(
-                fontFamily: "sans-serif",
-                // color: Color.lerp(Colors.white, Colors.white24, stretch),
-                color: Colors.black,
-                fontWeight: FontWeight.w200,
-                // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
-                // fontSize:35 - (16*stretch),
-                fontSize:(35*shrink).clamp(25.0, 35.0),
-                // shadows: <Shadow>[
-                //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
-                // ]
-              )
-            )
-          )
-          // child: RichText(
-          //   text: TextSpan(
-          //     style: DefaultTextStyle.of(context).style.copyWith(
-          //       fontFamily: "sans-serif",
-          //       // fontSize:45 - (16*shrink).clamp(lowerLimit, upperLimit),
-          //       fontSize:(45*shrink).clamp(16.0, 46.0),
-          //       // fontSize:20,
-          //       fontWeight: FontWeight.w100,color: Colors.black26,
-          //       shadows: <Shadow>[
-          //         Shadow(
-          //           offset: Offset(0.0, 0.0),
-          //           blurRadius: 1.0,
-          //           color: Color.fromARGB(255, 0, 0, 0),
-          //         ),
-          //         Shadow(
-          //           offset: Offset(0.0, 0.0),
-          //           blurRadius: 2.0,
-          //           // color: Color.fromARGB(2, 0, 0, 255),
-          //         ),
-          //       ],
-          //     ),
-          //     children: <TextSpan>[
-          //       TextSpan(text: 'The ', style: TextStyle(fontWeight: FontWeight.w100,fontSize: 20, color: Colors.black54)),
-          //       TextSpan(text: 'HOLY ', style: TextStyle(fontWeight: FontWeight.w200,fontSize: 25, color: Colors.black54)),
-          //       TextSpan(text: 'Bible', style: TextStyle(fontWeight: FontWeight.w300,color: Colors.black54)),
-          //       TextSpan(text: "s", style: TextStyle(color: Colors.grey, )),
-          //     ],
-          //   ),
-          // ),
+          alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,-.1), stretch),
+          // alignment: Alignment(-.9,0),
+          child: _barTitle(shrink)
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // CupertinoButton(
-            //   // padding: EdgeInsets.zero,
-            //   child: isUpdating?SizedBox(width:20, height:20,
-            //     child:CircularProgressIndicator(strokeWidth: 1)
-            //   ):new Icon(CupertinoIcons.refresh_circled,color: Colors.grey, size: 30),
-            //   onPressed: updateCollectionCallBack
-            // ),
-            Tooltip(
-              message: 'Sort available Bible list',
-              child: CupertinoButton(
-                // padding: EdgeInsets.zero,
-                child: new Icon(
-                  Icons.sort,color: this.isSorting?Colors.red:Colors.grey, size: 30,
-                ),
-                onPressed: setSorting
-              ),
-            ),
-            // new DemoMenu()
-          ]
-        )
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   children: <Widget>[
+        //     _barSortButton()
+        //   ]
+        // ),
+        Align(
+          alignment: Alignment(.95,-1),
+          child: _barSortButton(),
+        ),
       ]
+    );
+  }
+
+  Widget _barSortButton(){
+    return Tooltip(
+      message: 'Sort available Bible list',
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        // padding: EdgeInsets.symmetric(vertical:10,horizontal:10),
+        // color: Colors.blue,
+        child: new Icon(
+          Icons.sort,color: this.isSorting?Colors.red:null,
+          size: 30,
+        ),
+        onPressed: setSorting
+      ),
+    );
+  }
+
+  Widget _barTitle(double shrink){
+    return Text(
+      widget.title??core.appName,
+      semanticsLabel: widget.title??core.appName,
+      style: TextStyle(
+        fontFamily: "sans-serif",
+        // color: Color.lerp(Colors.white, Colors.white24, stretch),
+        color: Colors.black,
+        fontWeight: FontWeight.w200,
+        // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
+        // fontSize:35 - (16*stretch),
+        fontSize:(35*shrink).clamp(25.0, 35.0),
+        // shadows: <Shadow>[
+        //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
+        // ]
+      )
     );
   }
   // void markNeedsBuild() => (context as Element).markNeedsBuild();

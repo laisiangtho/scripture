@@ -25,7 +25,6 @@ class _SheetInfo extends StatefulWidget {
 class _SheetInfoState extends State<_SheetInfo> {
   bool isDownloading=false;
   String message='';
-  int _counter=0;
 
   final core = new Core();
 
