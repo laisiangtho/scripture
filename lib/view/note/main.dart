@@ -23,7 +23,9 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   // Collection get collection => core.collection;
   List<CollectionBookmark> get bookmarks => core.collectionBookmarkList;
 
-  bool get isNotReady => core.userBible == null && core.userBibleList.length == 0;
+  // bool get isNotReady => core.userBible == null && core.userBibleList.length == 0;
+  // bool get isNotReady => core.scripturePrimary.hasLoaded;
+  bool get isNotReady => core.scripturePrimary.notReady();
 
   @override
   void initState() {

@@ -102,7 +102,7 @@ class View extends _State {
             // '${bookmark.bookId} bookmark.info.name',
             book.name,
             maxLines: 1, overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.headline6.copyWith(
+            style: Theme.of(context).textTheme.headline2.copyWith(
               fontSize: 18,
               color: Colors.black,
               // height: 1.4
@@ -110,12 +110,14 @@ class View extends _State {
           ),
           subtitle: Text(testament.name,
             style: Theme.of(context).textTheme.subtitle2.copyWith(
-              fontSize: 14
+              fontSize: 14,
+              color: Colors.grey[500]
             )
           ),
           trailing: Text(core.digit(bookmark.chapterId),
             style: Theme.of(context).textTheme.subtitle2.copyWith(
               fontSize: 18,
+              color: Colors.grey[500]
               // height: 1.4
             )
           ),
