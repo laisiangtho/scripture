@@ -9,58 +9,66 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      // backgroundColor: Colors.red,
+      // backgroundColor: Theme.of(context).primaryColor,
+      // drawerEnableOpenDragGesture: false,
+      // endDrawerEnableOpenDragGesture: false,
       body: Center(
         child: Column(
           // mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(bottom: 40),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: '"',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w200,
-                    fontSize: 29,
+            RichText(
+              textAlign: TextAlign.center,
+              // strutStyle: StrutStyle(),
+              text: TextSpan(
+                text: '"',
+                semanticsLabel: Core.instance.appDescription,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 33,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text:'the',
+                    style: TextStyle(
+                      fontSize: 36,
+                    )
                   ),
-                  children: <TextSpan>[
-                    TextSpan(text:'the'),
-                    TextSpan(
-                      text: ' holy\n',
-                      style: TextStyle(
-                        color: Colors.brown,
-                        fontSize: 33,
-                      )
-                    ),
-                    TextSpan(
-                      text: 'Bible\n',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 51,
-                      )
-                    ),
-                    TextSpan(
-                      text: 'in ',
-                      style: TextStyle(
-                        color: Colors.brown,
-                        fontSize: 15,
-                      )
-                    ),
-                    TextSpan(
-                      text: 'languages"',
-                      style: TextStyle(
-                        fontSize: 22,
-                      )
-                    ),
-                  ]
-                )
-              ),
+                  TextSpan(
+                    text: ' holy\n',
+                    style: TextStyle(
+                      color: Colors.brown,
+                      fontSize: 37,
+                    )
+                  ),
+                  TextSpan(
+                    text: 'Bible\n',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 62,
+                    )
+                  ),
+                  TextSpan(
+                    text: 'in ',
+                    style: TextStyle(
+                      color: Colors.brown,
+                      fontSize: 21,
+                    )
+                  ),
+                  TextSpan(
+                    text: 'languages',
+                    style: TextStyle(
+                      fontSize: 23,
+                    )
+                  ),
+                  TextSpan(
+                    text: '"'
+                  ),
+                ]
+              )
             ),
             // CircularProgressIndicator(
             //   value: progress+0.1,
@@ -68,31 +76,73 @@ class SplashScreen extends StatelessWidget {
             //   valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
             //   strokeWidth: 1
             // ),
-            Text(message,
-              style: TextStyle(
+            // SizedBox(
+            //   height: 25,
+            //   width: 25,
+            //   child: CircularProgressIndicator(
+            //     semanticsLabel: 'Loading',
+            //     valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+            //     strokeWidth: 2
+            //   ),
+            // ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical:40),
+              padding: EdgeInsets.symmetric(vertical:2, horizontal: 10),
+              decoration: BoxDecoration(
                 color: Colors.red,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Text(
+                message,
+                semanticsLabel: message,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.only(top:50 ),
-              // decoration: new BoxDecoration(
-              //   color: Colors.grey,
-              //   // color: Theme.of(context).backgroundColor,
-              //   // borderRadius: new BorderRadius.vertical(top: Radius.elliptical(3, 2))
-              //   borderRadius: new BorderRadius.all(Radius.elliptical(10, 50)),
-              //   // boxShadow: [BoxShadow(blurRadius:60,color: Colors.brown,offset: Offset(0,1))]
-              // ),
-              child: Text(
-                // 'Lai Siangtho'.toUpperCase(),
-                Core.instance.appName.toUpperCase(),
-                // MaterialApp.of(context).,
-                // Scaffold.of(context).,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey
-                )
-              ),
+            // Row(
+            //   // mainAxisSize: MainAxisSize.min,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     SizedBox(
+            //       height: 20,
+            //       width: 20,
+            //       child: CircularProgressIndicator(
+            //         semanticsLabel: 'Loading',
+            //         // value: progress+0.1,
+            //         // backgroundColor: Colors.grey[300],
+            //         valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
+            //         strokeWidth: 2
+            //       ),
+            //     ),
+            //     Text(
+            //       message,
+            //       semanticsLabel: message,
+            //       style: TextStyle(
+            //         color: Colors.red,
+            //         fontSize: 30,
+            //       ),
+            //     ),
+            //   ]
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.all(10),
+            //   child: CircularProgressIndicator(
+            //     // value: progress+0.1,
+            //     backgroundColor: Colors.grey[300],
+            //     valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
+            //     strokeWidth: 1
+            //   ),
+            // ),
+            Text(
+              Core.instance.appName.toUpperCase(),
+              semanticsLabel: Core.instance.appName,
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey
+              )
             ),
           ],
         ),

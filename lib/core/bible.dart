@@ -96,4 +96,5 @@ mixin _Bible on _Collection {
     }
     this.bookId = id;
   });
+
 }

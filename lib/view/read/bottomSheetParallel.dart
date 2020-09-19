@@ -9,7 +9,7 @@ class BottomSheetParallel extends StatefulWidget {
   }) : super(key: key);
   final ScrollController controller;
   final List<int> verseSelectionList;
-  final Future<void> Function(int) scrollToIndex;
+  final Future<void> Function(int,{bool isId}) scrollToIndex;
 
   @override
   BottomSheetParallelState createState() => BottomSheetParallelState();
@@ -53,12 +53,17 @@ class BottomSheetParallelState extends State<BottomSheetParallel> {
   CHAPTER get tmpchapter => bible?.book?.first?.chapter?.first;
   List<VERSE> get tmpverse => tmpchapter?.verse;
 
+  void verseScroll(int id) {
+    widget.scrollToIndex(id,isId:true);
+    // print('scroll to: $id');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
         // controller: widget.controller,
-        // physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverOverlapAbsorber(
@@ -68,13 +73,16 @@ class BottomSheetParallelState extends State<BottomSheetParallel> {
                 elevation: 0,
                 title: Text(widgetTitle),
                 actions: <Widget>[
-                  CupertinoButton(
-                    onPressed: (){
-                      Navigator.of(context, rootNavigator: true).push(
-                        MaterialPageRoute(builder: (context) => new Home.Main(title: 'Parallel',))
-                      );
-                    },
-                    child:Icon(Icons.linear_scale),
+                  Tooltip(
+                    message: 'Select Parallel',
+                    child: CupertinoButton(
+                      onPressed: (){
+                        Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(builder: (context) => new Home.Main(title: 'Parallel',))
+                        );
+                      },
+                      child:Icon(Icons.linear_scale),
+                    ),
                   )
                 ]
               )
@@ -150,12 +158,22 @@ class BottomSheetParallelState extends State<BottomSheetParallel> {
 
   Widget _loadVerse(){
     // print(4);
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
-        childCount: tmpverse.length,
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(vertical:10),
+      sliver: SliverList(
+        key: ValueKey<int>(34),
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
+          childCount: tmpverse.length,
+        ),
       ),
     );
+    // return SliverList(
+    //   delegate: SliverChildBuilderDelegate(
+    //     (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
+    //     childCount: tmpverse.length,
+    //   ),
+    // );
     // return new SliverFillRemaining(
     //   child: ListView.builder(
     //     // key: PageStorageKey('parallel-verse'),
@@ -179,6 +197,7 @@ class BottomSheetParallelState extends State<BottomSheetParallel> {
       // selected: verseSelectionList.indexWhere((id) => id == verse.id) >= 0,
       child: WidgetVerse(
         verse: verse,
+        selection: verseScroll,
         // selection: verseSelection,
       )
     );

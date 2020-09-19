@@ -23,10 +23,18 @@ class View extends _State {
       ]
     );
   }
+
   Widget bar(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
     return Container(
-      child: Center(child: Text('Bookmark'))
+      alignment: Alignment.center,
+      child: Text(
+        'Bookmark',
+        semanticsLabel: 'Bookmark',
+      )
     );
+    // return Container(
+    //   child: Center(child: Text('Bookmark'))
+    // );
   }
 
   Widget body(){
@@ -55,7 +63,13 @@ class View extends _State {
       menu: menu,
       right: <Widget>[
         new CupertinoButton(
-          child: new Icon(Icons.delete,color: Colors.grey, size: 27),
+          // child: new Icon(Icons.delete,color: Colors.grey, size: 27),
+          child: new Icon(
+            // Icons.sort,
+            CustomIcon.trash,
+            color: Colors.grey,
+            size: 20,
+          ),
           onPressed: () {
             // o.removeAt(index);
             core.keyBookmarkList.currentState.removeItem(

@@ -36,7 +36,8 @@
   - [x] bookmark chapter
   - [x] Popup Offset/width
   - [x] Offset & Width chapter navigator
-  - [ ] GestureDetector
+  - [x] GestureDetector
+  - [ ] Hightlight by quotation marks
   - option
     - [x] sheet show/hide toggle
     - [x] auto close sheet if selectedVerse.isEmpty
@@ -83,6 +84,7 @@
 
 - [ ] share
 
+## temporary
 
 select_content
 content_type: New International Version (NIV), item_id

@@ -96,7 +96,7 @@ class _SheetInfoState extends State<_SheetInfo> {
             textAlign: TextAlign.center,
             text: TextSpan(
               text:bible.year.toString(),
-              style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 14),
+              style: Theme.of(context).textTheme.headline6,
               children: <TextSpan>[
                 TextSpan(text:'/'),
                 TextSpan(text:bible.language.name.toUpperCase()),

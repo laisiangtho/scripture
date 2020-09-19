@@ -6,17 +6,14 @@ class View extends _State with _Bar, _Gesture {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: true,
+      // resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomPadding: true,
       body: ScrollPage(
         controller: controller,
-        child: _scrollView()
+        child: _page()
       ),
-      // extendBody: true,
       bottomNavigationBar: _BottomSheet(
-        // key: ValueKey<int>(112),
-        // key: _scaffoldKeyBottom,
-        // primaryBible:bible,
+        key: keyBottom,
         nextChapter: setChapterNext,
         previousChapter: setChapterPrevious,
         verseSelectionList: verseSelectionList,
@@ -26,7 +23,7 @@ class View extends _State with _Bar, _Gesture {
     );
   }
 
-  Widget _scrollView() {
+  Widget _page() {
     return CustomScrollView(
       controller: controller,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -88,18 +85,32 @@ class View extends _State with _Bar, _Gesture {
 
   Widget _loadVerse(){
     // print(4);
+    // return SliverPadding(
+    //   padding: EdgeInsets.symmetric(vertical:10),
+    //   sliver: SliverList(
+    //     delegate: SliverChildBuilderDelegate(
+    //       (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
+    //       childCount: tmpverse.length,
+    //     ),
+    //   ),
+    // );
+    // return SliverList(
+    //   delegate: SliverChildBuilderDelegate(
+    //     (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
+    //     childCount: tmpverse.length,
+    //   ),
+    // );
     return new SliverToBoxAdapter(
       // fillOverscroll: true,
       // hasScrollBody: true,
       child: chapterGesture(
         child: ListView.builder(
           key: UniqueKey(),
-          addAutomaticKeepAlives: true,
+          // addAutomaticKeepAlives: true,
           // physics: ScrollPhysics(),
           shrinkWrap: true,
-          // primary: true,
-          // controller: autoScrollController,
-          controller: controller,
+          primary: false,
+          // controller: controller,
           itemCount: tmpverse.length,
           padding: EdgeInsets.symmetric(vertical: 7.0),
           itemBuilder: (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),

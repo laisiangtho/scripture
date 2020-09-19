@@ -26,8 +26,9 @@ class WidgetVerse extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical:20, horizontal:20),
           child: Text(
             verse.title.toUpperCase(),
-            semanticsLabel: verse.title,
             textAlign: TextAlign.center,
+            semanticsLabel: verse.title,
+            textDirection: TextDirection.ltr,
             style: TextStyle(
               color: Colors.black54,
               fontSize: userVerse.titleSize,
@@ -64,7 +65,7 @@ class WidgetVerse extends StatelessWidget {
                   children: <TextSpan>[
                     TextSpan(
                       text: verse.name,
-                      semanticsLabel: verse.name
+                      semanticsLabel: 'verse: '+verse.name
                     ),
                   ],
                   style: TextStyle(
@@ -86,14 +87,15 @@ class WidgetVerse extends StatelessWidget {
                   ),
                   semanticsLabel: verse.text,
                   style: TextStyle(
-                    color: userVerse.selected?Colors.black54:null,
-                    shadows: <Shadow>[
-                      Shadow(
-                        offset: Offset(userVerse.selected?0.1:0, 0),
-                        blurRadius: userVerse.selected?0.2:0.0,
-                        color: Colors.red
-                      )
-                    ],
+                    color: userVerse.selected?Colors.red:null,
+                    // color: userVerse.selected?Colors.black54:null,
+                    // shadows: <Shadow>[
+                    //   Shadow(
+                    //     offset: Offset(userVerse.selected?0.1:0, 0),
+                    //     blurRadius: userVerse.selected?0.2:0.0,
+                    //     color: Colors.red
+                    //   )
+                    // ],
                     // decoration: userVerse.selected?TextDecoration.underline:TextDecoration.none,
                     // decorationColor: Colors.red,
                     // decorationThickness: 0.5,
@@ -112,12 +114,12 @@ class WidgetVerse extends StatelessWidget {
               ]
             ),
             style: TextStyle(
-              color: Colors.black,
+              // color: Colors.black,
               fontWeight:FontWeight.w400,
               fontSize: userVerse.fontSize,
               height: userVerse.fontHeight
             ),
-            onTap: () => (selection is Function)?selection(verse.id):null
+            onTap: (selection is Function)?()=>selection(verse.id):null
             // onTap: (selection is Function)?() => selection(verse.id):null
             // onTap: () {
             //   showMenu(
@@ -151,7 +153,7 @@ class WidgetVerse extends StatelessWidget {
     // children: hightLight(verse['text'], store.searchQuery, style),
     List<TextSpan> spans = [];
     if (matchWord == null || matchWord.length < 2){
-      spans.add(TextSpan(text: text));
+      spans.add(TextSpan(text: text, semanticsLabel: text));
     } else {
       int spanBoundary = 0;
       do {

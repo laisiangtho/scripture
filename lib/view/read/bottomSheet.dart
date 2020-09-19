@@ -8,32 +8,35 @@ class _BottomSheet extends StatefulWidget {
     this.verseSelectionList,
     this.verseSelectionCopy,
     this.scrollToIndex,
-    // this.primaryBible
   }) : super(key: key);
 
   final void Function() nextChapter;
   final void Function() previousChapter;
   final void Function() verseSelectionCopy;
-  final Future<void> Function(int) scrollToIndex;
-  // final void Function(int) scrollToIndex;
+  final Future<void> Function(int,{bool isId}) scrollToIndex;
   final List<int> verseSelectionList;
-  // final BIBLE primaryBible;
   @override
   _BottomSheetView createState() => _BottomSheetView();
 }
 
 abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  TabController tabController;
-  ScrollController scrollController;
-  Animation controllerAnimation;
-  AnimationController animationController;
-  BuildContext contextDraggable;
-
   // final core = Core();
-
   final keyMenu = UniqueKey();
   final keyParallel = UniqueKey();
   final keyAudio = UniqueKey();
+
+  final scaffoldParallel = GlobalKey<ScaffoldState>();
+  final scaffoldAudio = GlobalKey<ScaffoldState>();
+
+  TabController tabController;
+  ScrollController scrollController;
+  // Animation controllerAnimation;
+  // AnimationController animationController;
+  BuildContext contextDraggable;
+
+  double get height => kBottomNavigationBarHeight-(smallDevice?20:7);
+
+  bool get smallDevice => MediaQuery.of(context).size.height < 700;
 
   @override
   bool get wantKeepAlive => true;
@@ -41,23 +44,16 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
-    // if (pageView.length == 0){
-    //   pageView = [
-    //     WidgetKeepAlive(key:keyMenu, child: new BottomSheetMenu(key:menu)),
-    //     WidgetKeepAlive(key:keyParallel, child: new BottomSheetParallel(key:parallel)),
-    //     WidgetKeepAlive(key:keyAudio, child: new BottomSheetAudio(key:audio))
-    //   ];
-    // }
+    // animationController = AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+    // controllerAnimation = Tween(begin: 0.0, end: 1.0).animate(
+    //    CurvedAnimation(parent: animationController, curve: Curves.easeIn)
+    // );
+    // animationController.forward();
 
-    animationController = AnimationController(duration: Duration(milliseconds: 300), vsync: this);
-    controllerAnimation = Tween(begin: 0.0, end: 1.0).animate(
-       CurvedAnimation(parent: animationController, curve: Curves.easeIn)
-    );
-    animationController.forward();
-
-    tabController = TabController(length: 3, initialIndex: 0, vsync: this);
+    tabController = TabController(length: 1, initialIndex: 0, vsync: this);
     // tabController = TabController(length: 3, initialIndex: 0, vsync: this);
     tabController.addListener(_handleTabSelection);
+
   }
 
   @override
@@ -73,58 +69,93 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
   List<int> get verseSelectionList => widget.verseSelectionList;
   bool get hasVerseSelection => verseSelectionList.length > 0;
 
-  final double minChildSize = .065;
-  final double maxChildSize = .985;
-  // final double maxChildSize = .5;
+  double get minChildSize =>  smallDevice?0.11:0.07;
   // NOTE: update when scroll notify
-  double initialChildSize = .065;
-  bool isExpanded = false;
+  double initialChildSize = 0.07;
+  final double maxChildSize = 0.985;
+  final double midChildSize = 0.5;
+  // bool get _isExpanded => (initialChildSize <= minChildSize);
 
-  bool get showMenu => (isExpanded && tabController.index != 0);
+  // bool get _showMenu => (_isExpanded && tabController.index != 0);
 
   void _handleTabSelection() {
     if (tabController.indexIsChanging == false) {
-
       setState(() {
-        switcherAnimationHandler(tabController.previousIndex == 0 || tabController.index == 0);
+        // switcherAnimationHandler(tabController.previousIndex == 0 || tabController.index == 0);
       });
     }
   }
 
 
-  void toggleSheet(){
-    // TODO: read-sheet toggle
-    setState(() {
-      initialChildSize = isExpanded ? minChildSize : maxChildSize;
-      isExpanded = !isExpanded;
-      // switcherAnimationHandler(tabController.index != 0);
-    });
-    // DraggableScrollableActuator.reset(context);
-    DraggableScrollableActuator.reset(contextDraggable);
-    // print(initialChildSize);
+  bool _scrollableNotification(DraggableScrollableNotification notification) {
+    double childSize = notification.extent;
+    navigatorController(childSize);
+    initialChildSize = childSize;
+    return true;
   }
 
-  void showParallel(){
-    if (isExpanded == false) {
-      toggleSheet();
+  void navigatorController(double childSize){
+    double _heightNotify = scrollController.master.bottom.heightNotify.value;
+    // double _sizeHeight = notification.context.size.height;
+    double _offset = (childSize-minChildSize)*10;
+    double _delta = _offset.clamp(0.0, 1.0);
+    double shrink = (1.0 - _delta).toDouble();
+    if (childSize > initialChildSize) {
+      // print('up');
+      shrink = min(shrink,_heightNotify);
+    } else {
+      // print('down');
+      shrink = max(shrink,_heightNotify);
+
     }
-    if (tabController.index != 1 ) {
+    if (_heightNotify > 0.0 || _heightNotify < 1.0) {
+      scrollController.master.bottom.heightNotify.value = shrink;
+    }
+
+  }
+
+  bool get isDefaultSize => initialChildSize <= minChildSize;
+  bool get checkChildSize => initialChildSize < midChildSize;
+  bool get isDefaultPage => tabController.index == 0;
+
+  // bool get showParallelIf => (isDefaultSize || isDefaultPage == false );
+  void showParallel(){
+    navigatorController(checkChildSize?1.0:0.0);
+    setState(() {
+      initialChildSize = checkChildSize?midChildSize:minChildSize;
+    });
+    DraggableScrollableActuator.reset(contextDraggable);
+
+    if (isDefaultPage == false) {
+      tabController.animateTo(0);
+    }
+  }
+
+  bool get showAudioIf => (isDefaultSize || tabController.index != 1);
+  void showAudio(){
+    if (isDefaultSize){
+      navigatorController(isDefaultSize?1.0:0.0);
+      setState(() {
+        initialChildSize = isDefaultSize?midChildSize:minChildSize;
+      });
+      DraggableScrollableActuator.reset(contextDraggable);
+    }
+
+    if (isDefaultPage) {
       tabController.animateTo(1);
     }
   }
 
-  bool get showParallelIf => (isExpanded == false || tabController.index != 1 );
-
-  void switcherAnimationHandler(bool status){
-    if (tabController.previousIndex != tabController.index) {
-      if (status) {
-        if (animationController.isCompleted) {
-          animationController.reset();
-        }
-        animationController.forward();
-      }
-    }
-  }
+  // void switcherAnimationHandler(bool status){
+  //   if (tabController.previousIndex != tabController.index) {
+  //     if (status) {
+  //       if (animationController.isCompleted) {
+  //         animationController.reset();
+  //       }
+  //       animationController.forward();
+  //     }
+  //   }
+  // }
 }
 
 class _BottomSheetView extends _BottomSheetState {
@@ -134,32 +165,12 @@ class _BottomSheetView extends _BottomSheetState {
     return DraggableScrollableActuator(
       // key: ValueKey<int>(88698),
       child: NotificationListener<DraggableScrollableNotification>(
-        // key: widget.key,
-        // key: ValueKey<int>(88698),
-        onNotification: (DraggableScrollableNotification notification) {
-          initialChildSize = notification.extent;
-
-          // if (initialChildSize > minChildSize ){
-          //   scrollController.master.bottom.toggle(true);
-          //   print('hide');
-          // } else {
-          //   scrollController.master.bottom.toggle(false);
-          //   print('show');
-          // }
-          if (initialChildSize == maxChildSize) {
-            switcherAnimationHandler(tabController.index != 0);
-            isExpanded = true;
-          } else if (initialChildSize == minChildSize) {
-            switcherAnimationHandler(tabController.index != 0);
-            isExpanded = false;
-          }
-
-          return true;
-        },
+        onNotification:_scrollableNotification,
         child: DraggableScrollableSheet(
-          // key: keySheet,
-          key: ValueKey<double>(initialChildSize),
+          // key: ValueKey<double>(initialChildSize),
+          key:UniqueKey(),
           expand: false,
+          // initialChildSize: initialChildSize,
           initialChildSize: initialChildSize < minChildSize?minChildSize:initialChildSize,
           // initialChildSize: initialChildSize,
           minChildSize: minChildSize,
@@ -221,7 +232,8 @@ class _BottomSheetView extends _BottomSheetState {
         controller: controller,
         physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         slivers: <Widget>[
-          new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar,minHeight: 45, maxHeight: 45)),
+          // new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar)),
+          new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar,minHeight: height, maxHeight: height)),
 
           // TODO: somehow this prevent struggling from overscroll, need to improve but not possible flutter fixed???
           SliverLayoutBuilder(
@@ -232,26 +244,28 @@ class _BottomSheetView extends _BottomSheetState {
                     controller: tabController,
                     physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     children: [
-                      WidgetKeepAlive(
-                        key:keyMenu,
-                        child: new BottomSheetMenu(
-                          verseSelectionList: verseSelectionList,controller: controller,
-                        )
-                      ),
+                      // WidgetKeepAlive(
+                      //   key:keyMenu,
+                      //   child: new BottomSheetMenu(
+                      //     verseSelectionList: verseSelectionList,controller: controller,
+                      //   )
+                      // ),
                       WidgetKeepAlive(
                         key:keyParallel,
                         child: new BottomSheetParallel(
+                          key: scaffoldParallel,
                           verseSelectionList: verseSelectionList,controller: controller,
                           scrollToIndex:widget.scrollToIndex
                         )
                       ),
-                      WidgetKeepAlive(
-                        key:keyAudio,
-                        child: new BottomSheetAudio(
-                          verseSelectionList: verseSelectionList,controller: controller,
-                          scrollToIndex:widget.scrollToIndex
-                        )
-                      )
+                      // WidgetKeepAlive(
+                      //   key:keyAudio,
+                      //   child: new BottomSheetAudio(
+                      //     key: scaffoldAudio,
+                      //     verseSelectionList: verseSelectionList,controller: controller,
+                      //     scrollToIndex:widget.scrollToIndex
+                      //   )
+                      // )
                     ]
                   ),
                   // maxHeight: double.infinity,
@@ -266,74 +280,13 @@ class _BottomSheetView extends _BottomSheetState {
       ),
     );
   }
-  // Widget _scroll_(ScrollController controller) {
-  //   return Scaffold(
-  //     body: CustomScrollView(
-  //       controller: controller,
-  //       physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-  //       slivers: <Widget>[
-  //         // new SliverPersistentHeader( pinned: true, delegate: new ScrollBarDelegate(_bar, minHeight: 45, maxHeight: 45)),
-  //         SliverOverlapAbsorber(
-  //           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-  //           sliver: new SliverPersistentHeader( pinned: true, delegate: new ScrollBarDelegate(_bar, minHeight: 45, maxHeight: 45))
-  //         ),
-  //         SliverOverlapInjector(
-  //           // This is the flip side of the SliverOverlapAbsorber above.
-  //           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-  //           // sliver: sliverPersistentHeader(),
-  //         ),
-
-  //         // TODO: somehow this prevent struggling from overscroll, need to improve but not possible flutter fixed???
-
-  //         SliverLayoutBuilder(
-  //           builder: (BuildContext context, SliverConstraints constraint) {
-  //             return new SliverPersistentHeader(
-  //               delegate: new ScrollBarDelegate(
-  //                 (BuildContext context,double offset,bool overlaps, double stretch,double shrink) => TabBarView(
-  //                   controller: tabController,
-  //                   physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-  //                   children: [
-  //                     WidgetKeepAlive(
-  //                       key:keyMenu,
-  //                       child: new BottomSheetMenu(
-  //                         verseSelectionList: verseSelectionList,controller: controller,
-  //                       )
-  //                     ),
-  //                     WidgetKeepAlive(
-  //                       key:keyParallel,
-  //                       child: new BottomSheetParallel(
-  //                         verseSelectionList: verseSelectionList,controller: controller,
-  //                         scrollToIndex:widget.scrollToIndex
-  //                       )
-  //                     ),
-  //                     WidgetKeepAlive(
-  //                       key:keyAudio,
-  //                       child: new BottomSheetAudio(
-  //                         verseSelectionList: verseSelectionList,controller: controller,
-  //                         scrollToIndex:widget.scrollToIndex
-  //                       )
-  //                     )
-  //                   ]
-  //                 ),
-  //                 // maxHeight: double.infinity,
-  //                 maxHeight: constraint.viewportMainAxisExtent-45.0,
-  //               ),
-  //               floating: true,
-  //               pinned:false,
-  //             );
-  //           }
-  //         ),
-
-  //       ]
-  //     ),
-  //   );
-  // }
 
   Widget _bar(BuildContext context,double offset,bool overlaps, double stretch,double shrink) {
+    // return buttonList;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.9),
-        // borderRadius: BorderRadius.all( Radius.elliptical(3,3)),
+        borderRadius: BorderRadius.all( Radius.elliptical(3,3)),
         boxShadow: [
           BoxShadow(
             blurRadius:0.2,
@@ -345,163 +298,44 @@ class _BottomSheetView extends _BottomSheetState {
           )
         ]
       ),
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          double switchWidth = 140.0;
-          double mainWidth = constraints.maxWidth - switchWidth;
-          return Stack(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  // color: Colors.red,
-                  width: switchWidth,
-                  child: buttonSwitcher(),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  // color: Colors.blue,
-                  width: mainWidth,
-                  child: buttonAction,
-                ),
-              )
-            ],
-          );
-        }
-      ),
+      child: buttonList
     );
   }
 
-  Widget button({Key key,String message,Widget child, Function onPressed,double horizontal:20}) {
-    return Tooltip(
-      key: key,
-      message: message,
-      child: CupertinoButton(
-        // pressedOpacity: 0.5,
-        // color: Colors.red,
-        // padding: EdgeInsets.zero,
-        padding: EdgeInsets.symmetric(vertical: 0,horizontal:horizontal),
-        // color: isButtomSelected?Colors.red:null,
-        borderRadius: BorderRadius.all(Radius.circular(2)),
-        // padding: EdgeInsets.all(20),
-        disabledColor: Colors.grey[100],
-        child: child,
-        onPressed: onPressed,
-      ),
-    );
-  }
-
-  Widget buttonSwitcher() {
-    return AnimatedSwitcher(
-      duration: Duration(milliseconds:200),
-      reverseDuration: Duration(milliseconds:50),
-      // transitionBuilder: (Widget child, Animation<double> animation)  => ScaleTransition(child: child, scale: animation),
-      transitionBuilder: buttonSwitcherTransitionBuilder,
-      child: this.showMenu?buttonSwitcherMenu:buttonSwitcherNavigator
-    );
-  }
-
-  Widget buttonSwitcherTransitionBuilder(Widget child, Animation<double> animation) {
-    return AnimatedBuilder(
-      animation: animationController,
-      builder: (context, widget) {
-        return Opacity(
-          opacity: controllerAnimation.value,
-          child: ScaleTransition(
-            scale: controllerAnimation,
-            child: widget,
-          ),
-        );
-      },
-      child: child,
-    );
-  }
-
-  Widget get buttonSwitcherMenu {
-    return button(
-      key: ValueKey<int>(101),
-      message: "Option",
-      child: Row(
-        // mainAxisSize: MainAxisSize.max,
-        // mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left:0, right:7),
-            child: Icon(
-              Icons.arrow_back_ios,
-              // size:20,
-              // color:Colors.grey
-            ),
-          ),
-          Text('Option'),
-        ],
-      ),
-      onPressed:(){
-        tabController.animateTo(0,duration: Duration(milliseconds:200));
-      }
-    );
-  }
-
-  Widget get buttonSwitcherNavigator {
+  Widget get buttonList {
     return Row(
-      // key: ValueKey<String>('bottom-switcher-nav'),
-      key: ValueKey<int>(102),
-      // mainAxisSize: MainAxisSize.max,
+      key: ValueKey<String>('btn-action'),
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-      // crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         button(
           message: "Previous chapter",
-          child: Icon(
-            // Icons.chevron_left,
-            Icons.arrow_back_ios
-            // size:30,
-          ),
+          child: Icon(CustomIcon.chapter_previous,size: 20),
           onPressed:widget.previousChapter
         ),
 
         button(
           message: "Next chapter",
-          child: Icon(
-            // Icons.chevron_right,
-            Icons.arrow_forward_ios,
-            // size:30,
-          ),
+          child: Icon(CustomIcon.chapter_next,size: 20),
           onPressed:widget.nextChapter
         ),
-      ],
-    );
-  }
 
-  Widget get buttonAction {
-    return Row(
-      key: ValueKey<String>('btn-action'),
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.end,
-      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
         button(
           message: "Compare selected verse Parallel",
-          child: Text('Parallel'),
-          // horizontal: 2,
-          // child: Icon(Icons.scatter_plot,),
-          onPressed:showParallelIf?showParallel:null
+          child: Icon(
+            CustomIcon.language, size: 20
+          ),
+          // onPressed:showParallelIf?showParallel:null
+          onPressed:showParallel
         ),
         // button(
-        //   message: "Listen",
-        //   // child: Text('Audio'),
-        //   child: Icon(Icons.audiotrack,),
-        //   // horizontal: 2,
-        //   onPressed:()=>null
+        //   message: "Listen audio",
+        //   child: Icon(
+        //     CustomIcon.wave_square, size: 20
+        //   ),
+        //   onPressed:showAudioIf?showAudio:null
         // ),
-
         button(
           message: "Copy verse selection",
           onPressed:hasVerseSelection?widget.verseSelectionCopy:null,
@@ -510,13 +344,9 @@ class _BottomSheetView extends _BottomSheetState {
             overflow: Overflow.visible,
             fit: StackFit.passthrough,
             children: <Widget>[
-              Text('Copy'),
-              // Icon(
-              //   // Icons.assignment,
-              //   Icons.content_copy,
-              // ),
+              Icon(CustomIcon.copy, size: 20),
               if(hasVerseSelection)new Positioned(
-                top: -9.0,
+                top: -8.0,
                 right: -9.0,
                 child: Opacity(
                   opacity: 0.9,
@@ -539,39 +369,28 @@ class _BottomSheetView extends _BottomSheetState {
             ],
           )
         ),
-
-        // button(
-        //   message: "Copy selection",
-        //   // child: Text('Copy'),
-        //   child: Icon(
-        //     Icons.content_copy,
-        //     size:25,
-        //     color:Colors.grey
-        //   ),
-        //   onPressed:hasVerseSelection?()=>null:null
-        // ),
-
-        // button(
-        //   message: "Drag up",
-        //   child: Icon(
-        //     Icons.keyboard_arrow_up,
-        //     size:40,
-        //     color:Colors.grey
-        //   ),
-        //   onPressed:null
-        // ),
-        // VerticalDivider(
-        //   width: 50,
-        // ),
-        button(
-          message: "Toggle",
-          child: Icon(
-            isExpanded?Icons.keyboard_arrow_down:Icons.keyboard_arrow_up,
-            size:25,
-          ),
-          onPressed:toggleSheet
-        ),
       ],
     );
   }
+
+  Widget button({Key key,String message,Widget child, Function onPressed,double horizontal:20}) {
+    return Tooltip(
+      key: key,
+      message: message,
+      child: CupertinoButton(
+        // minSize: 20,
+        // pressedOpacity: 0.5,
+        // color: Colors.red,
+        padding: EdgeInsets.zero,
+        // padding: EdgeInsets.symmetric(vertical: 0,horizontal:horizontal),
+        // color: isButtomSelected?Colors.red:null,
+        borderRadius: BorderRadius.all(Radius.circular(2)),
+        // padding: EdgeInsets.all(20),
+        disabledColor: Colors.grey[100],
+        child: child,
+        onPressed: onPressed,
+      ),
+    );
+  }
+
 }

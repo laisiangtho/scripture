@@ -27,8 +27,9 @@ mixin _Bar on _State {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 new Icon(
-                  Icons.arrow_back_ios,
-                  size: 27,
+                  // Icons.arrow_back_ios,
+                  CustomIcon.left_open_big,
+                  // size: 27,
                 ),
                 Text(widget.title??'Back')
               ],
@@ -96,8 +97,10 @@ mixin _Bar on _State {
         // padding: EdgeInsets.symmetric(vertical:10,horizontal:10),
         // color: Colors.blue,
         child: new Icon(
-          Icons.sort,color: this.isSorting?Colors.red:null,
-          size: 30,
+          // Icons.sort,
+          CustomIcon.swatchbook,
+          color: this.isSorting?Colors.red:null,
+          size: 20,
         ),
         onPressed: setSorting
       ),
@@ -111,7 +114,7 @@ mixin _Bar on _State {
       style: TextStyle(
         fontFamily: "sans-serif",
         // color: Color.lerp(Colors.white, Colors.white24, stretch),
-        color: Colors.black,
+        // color: Colors.black,
         fontWeight: FontWeight.w200,
         // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
         // fontSize:35 - (16*stretch),

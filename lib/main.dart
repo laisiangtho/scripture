@@ -9,6 +9,8 @@ import 'package:bible/core.dart';
 
 void main() => runApp(App());
 
+final scaffoldKey = GlobalKey<ScaffoldState>();
+
 class App extends StatelessWidget {
 
   final MaterialColor colorPrimarySwatch = MaterialColor(
@@ -42,19 +44,19 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         // statusBarColor: Colors.transparent,
-        statusBarColor: colorPrimarySwatch[10],
+        // statusBarColor: colorPrimarySwatch[10],
 
-        statusBarBrightness: Brightness.light,
+        // statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: colorPrimarySwatch[10],
+        // systemNavigationBarColor: colorPrimarySwatch[10],
         systemNavigationBarIconBrightness: Brightness.dark
       )
     );
 
     // WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,DeviceOrientation.landscapeLeft
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,DeviceOrientation.landscapeLeft
+    // ]);
 
     return MaterialApp(
       title: Core.instance.appName,
@@ -66,12 +68,13 @@ class App extends StatelessWidget {
         // fontFamily: "Lato, Paduak, sans-serif",
         // fontFamily: "Lato, Mm3Web",
         // fontFamily: "Mm3Web, Lato",
-        fontFamily: "Lato",
+        fontFamily: "Lato,Mm3Web",
+
         // fontFamily: "Mm3Web",
         // fontFamily: "Paduak",
 
         // platform: TargetPlatform.iOS,
-        platform: TargetPlatform.android,
+        // platform: TargetPlatform.android,
 
         // primarySwatch: Colors.lightGreen,
         // primarySwatch: colorPrimarySwatch,
@@ -151,6 +154,22 @@ class App extends StatelessWidget {
         ),
         // tooltipTheme: TooltipThemeData()
       ),
+      // theme: ThemeData(
+      //   brightness: Brightness.light,
+      //   primaryColor: Colors.red,
+      // ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        // scaffoldBackgroundColor: colorPrimarySwatch[400],
+        // scaffoldBackgroundColor: Color(0x00000000),
+        // primaryColor: colorPrimarySwatch[500],
+        // primaryColor: Colors.black54,
+        backgroundColor: colorPrimarySwatch[400],
+        cupertinoOverrideTheme: CupertinoThemeData(
+          // textTheme: CupertinoTextThemeData(),
+          primaryColor: Colors.white60
+        ),
+      ),
       // initialRoute: '/home',
       // routes: {
       //   // When navigating to the "/" route, build the FirstScreen widget.
@@ -163,7 +182,7 @@ class App extends StatelessWidget {
       // onUnknownRoute: (RouteSettings s){
       //   return MaterialPageRoute(builder: (context) => Container(color: Colors.white,child: Center(child: Text("Unknown"))));
       // },
-      home: MainView()
+      home: MainView(key: scaffoldKey,)
     );
   }
 }

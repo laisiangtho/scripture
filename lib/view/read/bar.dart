@@ -7,7 +7,8 @@ mixin _Bar on _State {
     return new SliverPersistentHeader(
       floating:true,
       pinned: true,
-      delegate: new ScrollPageBarDelegate(bar,minHeight: 20)
+      delegate: new ScrollPageBarDelegate(bar,minHeight: 30)
+      // delegate: new ScrollPageBarDelegate(bar)
     );
   }
 
@@ -19,13 +20,13 @@ mixin _Bar on _State {
         Align(
           alignment: Alignment(-.95, 0.0),
           child: Tooltip(
-            message: 'Bookmark toggle',
+            message: 'bookmark toggle',
             child: CupertinoButton(
               padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
               minSize: 30,
               child: Icon(
-                Icons.bookmark,color:hasBookmark?Colors.red:Colors.grey[300],
-                size: (30*stretch).clamp(20, 30).toDouble()
+                CustomIcon.bookmark,color:hasBookmark?Colors.red:Colors.grey,
+                size: (25*stretch).clamp(15, 25).toDouble()
               ),
               onPressed: setBookmark
             ),
@@ -43,11 +44,13 @@ mixin _Bar on _State {
                 key:keyBookButton,
                 constraints: BoxConstraints(maxWidth: width, minWidth:30.0),
                 child: Tooltip(
-                  message: "Select book",
+                  message: "Tap to select book",
                   child: CupertinoButton(
-                    color: Colors.grey[200].withOpacity(stretch),
-                    minSize: 33,
+                    color: (stretch<=0.5)?null:Colors.grey[400].withOpacity(stretch),
+                    // minSize: 33,
+                    minSize: (33*stretch).clamp(25.0, 33.0),
                     padding: EdgeInsets.symmetric(horizontal:15*stretch),
+                    // padding: EdgeInsets.zero,
                     borderRadius: new BorderRadius.horizontal(left:Radius.circular(30)),
                     child: Text(
                       // localChapter?.name?.bookName??'....',
@@ -55,10 +58,12 @@ mixin _Bar on _State {
                       tmpbook?.name??'....',
                       key:ValueKey<int>(tmpbook?.id??0),
                       semanticsLabel: tmpbook?.name,
-                      maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, stretch),
-                      style: TextStyle(
-                        color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,height: 1.3
-                      )
+                      maxLines: 1,overflow: TextOverflow.ellipsis,
+                      textScaleFactor: max(0.7, stretch),
+                      // style: TextStyle(
+                      //   color: Color.lerp(Colors.black87, Colors.black54, shrink),
+                      //   fontSize: 15,height: 1.3
+                      // )
                     ),
                     onPressed: showBookList
                   ),
@@ -81,11 +86,12 @@ mixin _Bar on _State {
                 key:keyChapterButton,
                 constraints: BoxConstraints(maxWidth: 100.0, minWidth:30.0),
                 child: Tooltip(
-                  message: "Select chapter",
+                  message: "Tap to select chapter",
                   child: CupertinoButton(
-                    color: Colors.grey[200].withOpacity(stretch),
-                    minSize: 33,
-                    padding: EdgeInsets.symmetric( horizontal:15*stretch),
+                    color: (stretch<=0.5)?null:Colors.grey[400].withOpacity(stretch),
+                    minSize: (33*stretch).clamp(25.0, 33.0),
+                    padding: EdgeInsets.symmetric(horizontal:15*stretch),
+
                     borderRadius: new BorderRadius.horizontal(right:Radius.circular(30)),
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds:400),
@@ -98,10 +104,10 @@ mixin _Bar on _State {
                         tmpchapter?.name??'#',
                         key:ValueKey<int>(tmpchapter?.id??0),
                         semanticsLabel: tmpchapter?.name,
-                        maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.6, stretch),
-                        style: TextStyle(
-                          color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,
-                        )
+                        maxLines: 1,overflow: TextOverflow.ellipsis, textScaleFactor: max(0.7, stretch),
+                        // style: TextStyle(
+                        //   color: Color.lerp(Colors.black87, Colors.black54, shrink), fontSize: 15,
+                        // )
                       ),
                     ),
                     onPressed: showChapterList
@@ -119,10 +125,15 @@ mixin _Bar on _State {
               key: keyOptionButton,
               padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
               minSize: 30,
+              // child: Icon(
+              //   Icons.text_format, color: Colors.grey[300],
+              //   size: (30*stretch).clamp(20, 30).toDouble()
+              // ),
               child: Icon(
-                Icons.text_format, color: Colors.grey[300],
-                size: (30*stretch).clamp(20, 30).toDouble()
+                CustomIcon.text_size, color: Colors.grey,
+                size: (25*stretch).clamp(15, 25).toDouble()
               ),
+              // child: Text('Aa'),
               onPressed: showOptionList
             ),
           )

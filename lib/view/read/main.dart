@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 // import 'dart:io' show Platform;
 // import 'package:flutter/foundation.dart' show kIsWeb;
@@ -14,7 +15,7 @@ import 'package:flutter/rendering.dart';
 import 'package:bible/core.dart';
 import 'package:bible/component.dart';
 import 'package:bible/widget.dart';
-import 'package:flutter/services.dart';
+import 'package:bible/icon.dart';
 
 import 'package:bible/view/home/main.dart' as Home;
 /// start/nav: 1234567
@@ -24,9 +25,9 @@ import 'package:bible/view/home/main.dart' as Home;
 part 'view.dart';
 part 'bar.dart';
 part 'bottomSheet.dart';
-part 'bottomSheetMenu.dart';
 part 'bottomSheetParallel.dart';
-part 'bottomSheetAudio.dart';
+// part 'bottomSheetMenu.dart';
+// part 'bottomSheetAudio.dart';
 part 'gesture.dart';
 part 'option.dart';
 part 'book.dart';
@@ -48,6 +49,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   // final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   // AutoScrollController autoScrollController;
 
+  final keyBottom = new GlobalKey();
   final keyBookButton = new GlobalKey();
   final keyChapterButton = new GlobalKey();
   final keyOptionButton = new GlobalKey();
@@ -115,28 +117,29 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
 
   // int _tmpIndex = 0;
   void setChapterPrevious() {
-    // core.chapterPrevious.then((value){
-    //   _localNameAndChapterRefresh();
-    // }).catchError((e){
-    //   showSnack(e.toString());
-    // });
+    core.chapterPrevious.then((_){
+      _localNameAndChapterRefresh();
+    }).catchError((e){
+      showSnack(e.toString());
+    });
     // _tmpIndex--;
     // if (_tmpIndex < 0) _tmpIndex = 0;
     // scrollToIndex(_tmpIndex);
-    controller.master.bottom.toggle(false);
+    // controller.master.bottom.toggle(false);
   }
 
   void setChapterNext() {
-    // core.chapterNext.then((value){
-    //   _localNameAndChapterRefresh();
-    // }).catchError((e){
-    //  showSnack(e.toString());
-    // });
+    core.chapterNext.then((_){
+      _localNameAndChapterRefresh();
+    }).catchError((e){
+     showSnack(e.toString());
+     print(e);
+    });
 
     // _tmpIndex++;
     // if (_tmpIndex > (tmpverse.length-1)) _tmpIndex = 0;
     // scrollToIndex(_tmpIndex);
-    controller.master.bottom.toggle(true);
+    // controller.master.bottom.toggle(true);
   }
 
   void setChapter(int id) {
@@ -281,17 +284,18 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   }
 
 
-  Future scrollToIndex(int index) async {
+  Future scrollToIndex(int id,{bool isId:false}) async {
     double scrollTo = 40.0;
-    if (index > 0) {
-      final offsetList = tmpverse.where((e) => tmpverse.indexOf(e) < index).map<double>((e) => e.key.currentContext?.size?.height);
+    if (id > 0) {
+      final offsetList = tmpverse.where(
+        // (e) => tmpverse.indexOf(e) < index
+        (e) => isId?e.id < id:tmpverse.indexOf(e) < id
+      ).map<double>((e) => e.key.currentContext?.size?.height);
       if (offsetList.length > 0){
         scrollTo = offsetList.reduce((a,b )=>a+b) + scrollTo;
       }
     }
     controller.animateTo(scrollTo, duration: new Duration(seconds: 1), curve: Curves.ease);
-    print('$index go $scrollTo $kToolbarHeight');
-
   }
 
   @override

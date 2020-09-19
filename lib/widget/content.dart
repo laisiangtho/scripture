@@ -15,6 +15,9 @@ class WidgetContent extends StatelessWidget {
   final String enable;
   final String task;
   final String message;
+
+  String get label => '$startWith $atLeast $enable $task $message $endWith'.replaceAll("\n", " ").replaceAll("  ", " ");
+
   @override
   // enable at least\na Bible to read
   // enable at least\na Bible to search
@@ -30,6 +33,7 @@ class WidgetContent extends StatelessWidget {
           strutStyle: StrutStyle(fontSize: 30.0, ),
           text: TextSpan(
             text: this.startWith,
+            semanticsLabel: label,
             style: TextStyle(color: Colors.grey,fontSize: 29,fontWeight: FontWeight.w300,height: 1.0,),
             children: <TextSpan>[
               TextSpan(text:this.atLeast),

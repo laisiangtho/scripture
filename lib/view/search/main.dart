@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:bible/component.dart';
 import 'package:bible/widget.dart';
 import 'package:bible/core.dart';
+import 'package:bible/icon.dart';
 
 part 'view.dart';
 part 'bar.dart';

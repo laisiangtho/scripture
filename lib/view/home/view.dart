@@ -73,11 +73,10 @@ class View extends _State with _Bar, _Refresh, _Info {
 
 
   Widget _view() {
-
     return CustomScrollView(
       controller: controller,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      semanticChildCount: 2,
+      semanticChildCount: 3,
       slivers: <Widget>[
         sliverPersistentHeader(),
         sliverRefresh(),
@@ -102,15 +101,14 @@ class View extends _State with _Bar, _Refresh, _Info {
       // controller: animatedListController,
       menu: booksItemWidget(collectionBible),
       right: <Widget>[
-        new CupertinoButton(
-          // padding: EdgeInsets.symmetric(horizontal:20),
-          // color: Colors.red,
-          // child: new Icon(Icons.more_horiz,color: Colors.grey, size: 27),
-          child: new Icon(
-            Icons.more_horiz,color: Colors.grey,
-            semanticLabel: 'More',
+        Tooltip(
+          message: 'More',
+          child: new CupertinoButton(
+            child: new Icon(
+              CustomIcon.dot_horiz,color: Colors.grey,
+            ),
+            onPressed: () => this.showInfo(collectionBible)
           ),
-          onPressed: () => this.showInfo(collectionBible)
         )
       ]
     );
@@ -134,7 +132,7 @@ class View extends _State with _Bar, _Refresh, _Info {
               decoration: new BoxDecoration(
                 color: Color(0x08000000)
               ),
-              child: Icon(Icons.reorder, color: Colors.red, size: 25.0)
+              child: Icon(CustomIcon.drag_handle, color: Colors.red, size: 25.0)
             )
           ):Container();
         return Container(
@@ -228,8 +226,7 @@ class View extends _State with _Bar, _Refresh, _Info {
                         // fontWeight: FontWeight.w300,
                       )
                     ),
-                    // Icon(Icons.arrow_forward_ios, color: isAvailable?isCurrent?Colors.blue:Colors.grey:Colors.grey[200], size: 18),
-                    Icon(Icons.arrow_forward_ios, color: isAvailable?Colors.grey:Colors.grey[200], size: 22),
+                    Icon(CustomIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 22),
                     dragHandle
                   ]
                 ),

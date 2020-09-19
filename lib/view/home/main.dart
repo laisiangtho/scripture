@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:bible/component.dart';
 import 'package:bible/core.dart';
 import 'package:bible/widget.dart';
+import 'package:bible/icon.dart';
 
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 

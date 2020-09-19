@@ -4,28 +4,26 @@ enum SpeechState { playing, stopped, paused, continued }
 
 // speech
 mixin _Speech {
-  FlutterTts speechCore;
-  dynamic speechLangList;
-  String speechLangName;
-  dynamic speechEngine;
+  // FlutterTts speechCore;
+  // dynamic speechLangList;
+  // String speechLangName;
+  // dynamic speechEngine;
 
-  double speechVolume = 0.9;
-  double speechPitch = .9;
-  double speechRate = .8;
+  // double speechVolume = 0.9;
+  // double speechPitch = .9;
+  // double speechRate = .8;
 
-  // String _newVoiceText = 'genesis chapter 1, verse 1. In the beginning God created the heaven and the earth.';
-
-  SpeechState speechState = SpeechState.stopped;
+  // SpeechState speechState = SpeechState.stopped;
 
   Future initSpeech() async{
-    speechCore = FlutterTts();
-    speechLangList = await speechCore.getLanguages;
-    // print(speechLangList);
-    if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        speechEngine = await speechCore.getEngines;
-      }
-    }
+    // speechCore = FlutterTts();
+    // speechLangList = await speechCore.getLanguages;
+    // // print(speechLangList);
+    // if (!kIsWeb) {
+    //   if (Platform.isAndroid) {
+    //     speechEngine = await speechCore.getEngines;
+    //   }
+    // }
     // speechEngine = await speechCore.getEngines;
     // if (speechEngine != null) {
     //   for (dynamic engine in speechEngine) {

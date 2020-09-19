@@ -19,7 +19,8 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(ScrollBarDelegate oldDelegate) => true;
 
   @override
-  double get minExtent => minHeight??kToolbarHeight;
+  double get minExtent => min(minHeight,minHeight??kToolbarHeight);
+  // double get minExtent => minHeight??kToolbarHeight;
 
   @override
   // double get maxExtent => maxHeight??kToolbarHeight;
@@ -67,10 +68,10 @@ class ScrollPageBarDelegate extends ScrollBarDelegate {
         boxShadow: [
           BoxShadow(
             blurRadius: 0.0,
-            color: Colors.black38,
-            // color: Theme.of(context).backgroundColor,
-            spreadRadius: 0.0,
-            offset: Offset(0.0, .0),
+            // color: Colors.black38,
+            color: Theme.of(context).backgroundColor,
+            spreadRadius: 0.7,
+            offset: Offset(0.5, .1),
           )
         ]
       ),
@@ -82,6 +83,25 @@ class ScrollPageBarDelegate extends ScrollBarDelegate {
 
 }
 
+// child: DecoratedBox(
+//         decoration: BoxDecoration(
+//           color: Theme.of(context).primaryColor,
+//           borderRadius: new BorderRadius.vertical(
+//             top: Radius.elliptical(3, 2),
+//             // bottom: Radius.elliptical(3, 2)
+//           ),
+//           boxShadow: [
+//             BoxShadow(
+//               blurRadius: 0.0,
+//               color: Theme.of(context).backgroundColor,
+//               // color: Colors.black38,
+//               spreadRadius: 0.7,
+//               offset: Offset(-0.1, -0.5),
+//             )
+//           ]
+//         ),
+//         child: children
+//       )
 /*
 class ScrollPageBarDelegateTmp extends SliverPersistentHeaderDelegate {
   /// SliverPersistentHeaderDelegate

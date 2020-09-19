@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:bible/core.dart';
 import 'package:bible/component.dart';
 import 'package:bible/widget.dart';
+import 'package:bible/icon.dart';
 
 import 'package:bible/view/home/main.dart' as Home;
 import 'package:bible/view/read/main.dart' as Read;
@@ -14,6 +15,7 @@ import 'package:bible/view/search/main.dart' as Search;
 import 'package:bible/screen/SplashScreen.dart';
 
 class MainView extends StatefulWidget {
+  MainView({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _MainState();
 }
@@ -35,15 +37,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
   final readKey = UniqueKey();
   final noteKey = UniqueKey();
   final searchKey = UniqueKey();
-  // final homeKey = ValueKey<int>(1);
-  // final readKey = ValueKey<int>(2);
-  // final noteKey = ValueKey<int>(3);
-  // final searchKey = ValueKey<int>(4);
-  // // final moreKey = ValueKey<int>(5);
-
-  String identify;
-  int bookId;
-  int chapterId;
+  // final moreKey = ValueKey<int>(5);
 
   List<Widget> pageView = [];
   List<ModelPage> pageButton = [];
@@ -56,37 +50,27 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     initiator = core.init();
     if (pageView.length == 0){
       pageButton = [
-        ModelPage(icon:Icons.flag, name:"Home", description: "List of Holy Bible in many languages", key: home),
-        ModelPage(icon:Icons.local_library, name:"Read", description: "Read bible by chapter", key: read),
-        ModelPage(icon:Icons.book, name:"Bookmark", description: "Bookmark list", key: note),
-        ModelPage( icon:CupertinoIcons.search, name:"Search", description: "Search bible", key: search),
-        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information",  key: more)
+        ModelPage(icon:CustomIcon.flag, name:"Home", description: "List of Holy Bible in many languages", key: home),
+        ModelPage(icon:CustomIcon.book_open, name:"Read", description: "Read bible by chapter", key: read),
+        ModelPage(icon:CustomIcon.list_nested, name:"Bookmark", description: "Bookmark list", key: note),
+        ModelPage(icon:CustomIcon.search, name:"Search", description: "Search bible", key: search),
+        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information", )
       ];
       pageView = [
         WidgetKeepAlive(key:homeKey, child: new Home.Main(key: home,barMaxHeight:120)),
         WidgetKeepAlive(key:readKey, child: new Read.Main(key: read)),
         WidgetKeepAlive(key:noteKey, child: new Note.Main(key: note)),
         WidgetKeepAlive(key:searchKey, child: new Search.Main(key: search)),
-        // KeepAliveMain(key:UniqueKey(), child: new More.Main(key: search))
+        // KeepAliveMain(key:moreKey, child: new More.Main(key: search))
       ];
     }
-
-    // focusNode.addListener(() {
-    //   _controller.master.bottom.toggle(focusNode.hasFocus);
-    // });
 
     _controller.master.bottom.pageListener((int index){
       // navigator.currentState.pushReplacementNamed(index.toString());
 
       ModelPage page = pageButton[index];
+      // NOTE: check State isMounted
       if(page.key.currentState != null){
-        // NOTE: check State isMounted
-        // if (identify != core.identify || bookId != core.bookId || chapterId != core.chapterId){
-        //   page.key.currentState.setState(() {});
-        // }
-        // identify = core.identify;
-        // bookId = core.bookId;
-        // chapterId = core.chapterId;
         page.key.currentState.setState(() {});
       }
       pageController.jumpToPage(index);
@@ -119,9 +103,9 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     _controller.master.bottom.pageChange(index);
   }
 
-  void _pageChanged(int index){
-    // _controller.master.bottom.pageChange(index);
-  }
+  // void _pageChanged(int index){
+  //   _controller.master.bottom.pageChange(index);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,10 +114,10 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return SplashScreen(message:'A moment...');
+            return SplashScreen(message:'...loading');
             break;
           case ConnectionState.active:
-            return SplashScreen(message:'loading...');
+            return SplashScreen(message:'A moment...');
             break;
           case ConnectionState.none:
             return SplashScreen(message:'getting ready...');
@@ -148,7 +132,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     );
     // return LauncherScreen();
     // return WelcomeScreen();
-    // return SplashScreen(message:'A moment...');
+    // return SplashScreen(message:'...loading');
   }
 
   Widget _start() {
@@ -158,13 +142,13 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
       resizeToAvoidBottomInset: true,
       // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
       body: SafeArea(
-        // top: true,
+        top: true,
         // bottom: false,
-        // maintainBottomViewPadding: true,
+        maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,
         child: _page()
       ),
-      // body: _page(),
+      extendBody: true,
       bottomNavigationBar: _bottom()
     );
   }
@@ -203,7 +187,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
 
     return new PageView.builder(
       controller: pageController,
-      onPageChanged: _pageChanged,
+      // onPageChanged: _pageChanged,
       allowImplicitScrolling:false,
       physics:new NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) => pageView[index],

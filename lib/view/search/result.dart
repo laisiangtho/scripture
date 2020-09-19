@@ -63,13 +63,15 @@ mixin _Result on _State {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
+              Padding(
                 // margin: EdgeInsets.only(top:10),
-                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                // color: Colors.red,
                 child: Text(
                   book.info.name.toUpperCase(),
+                  semanticsLabel: 'book: '+book.info.name,
                   style:TextStyle(
-                    fontSize: 17,
+                    fontSize: 22, //17
                     fontWeight: FontWeight.w400,
                     // shadows: <Shadow>[
                     //   Shadow(offset: Offset(0.9, 0.2),blurRadius: 0.4,color: Colors.black54)
@@ -157,6 +159,7 @@ mixin _Result on _State {
                       child: Text(
                         // core.digit(e.id),
                         e.name,
+                        semanticsLabel: 'chapter: '+e.name,
                         style: TextStyle(
                           fontSize: 15
                         ),
@@ -184,6 +187,7 @@ mixin _Result on _State {
               child: RawMaterialButton(
                 child: Text(
                   chapter.name,
+                  semanticsLabel: chapter.name,
                   style: TextStyle(
                     fontSize: 18
                   ),

@@ -105,7 +105,8 @@ mixin _Bar on _State {
               onPressed: inputClear,
               // color: Colors.orange,
               padding: EdgeInsets.zero,
-              child:Icon(Icons.clear,color:Colors.grey,size: 17),
+              // child:Icon(Icons.clear,color:Colors.grey,size: 17),
+              child:Icon(CustomIcon.cancel,color:Colors.grey,size: 10),
             ):null
 
             // child:ValueListenableBuilder<String>(
@@ -130,7 +131,8 @@ mixin _Bar on _State {
             // )
           )
         ),
-        prefixIcon: Icon(Icons.search,color:Colors.grey[focusNode.hasFocus?100:400],size: 22),
+        prefixIcon: Icon(CustomIcon.find,color:Colors.grey[focusNode.hasFocus?100:400],size: 20),
+        // prefixIcon: Icon(Icons.search,color:Colors.grey[focusNode.hasFocus?100:400],size: 22),
         hintText: " ...search Verse",
         // hintStyle: TextStyle(color: Colors.grey),
         contentPadding: EdgeInsets.symmetric(horizontal: 1,vertical: (3*shrink)),

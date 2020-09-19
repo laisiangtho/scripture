@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:flutter_tts/flutter_tts.dart';
+// import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -44,38 +44,28 @@ class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock {
       this.packageName = packageInfo.packageName;
       this.version = packageInfo.version;
       this.buildNumber = packageInfo.buildNumber;
-      // print('$appName $packageName $version $buildNumber');
     });
 
     await readCollection();
     switchIdentifyPrimary();
     await getBiblePrimary.catchError((e){
       print('error Primary $e');
-    }).whenComplete((){
-      print('Ok primary: $primaryId');
     });
 
     switchIdentifyParallel();
     await getBibleParallel.catchError((e){
       print('error Parallel $e');
-    }).whenComplete((){
-      print('Ok parallel: $parallelId');
     });
 
-    await initSpeech().catchError((e){
-      print('error speech $e');
-    }).whenComplete((){
-      print('Ok speech');
-    });
+    // await initSpeech().catchError((e){
+    //   print('error speech $e');
+    // });
 
     // await loadDefinitionBible(identify).catchError((e){
     //   // print('init loadDefinitionBible $e');
-    // }).whenComplete((){
-    //   print('finish init');
     // });
-    // return await Future.delayed(Duration(milliseconds: 300), (){});
+    // await Future.delayed(Duration(milliseconds: 300), (){});
   }
-
 
   // NOTE: used on read: when [bible] is switch
   Future<void> analyticsBible() async{
