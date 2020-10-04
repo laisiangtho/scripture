@@ -30,13 +30,13 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
 
   TabController tabController;
   ScrollController scrollController;
-  // Animation controllerAnimation;
-  // AnimationController animationController;
+
   BuildContext contextDraggable;
 
-  double get height => kBottomNavigationBarHeight-(smallDevice?20:7);
+  final double shrinkSize = 10.0;
+  double get height => kBottomNavigationBarHeight-shrinkSize;
 
-  bool get smallDevice => MediaQuery.of(context).size.height < 700;
+  double get heightDevice => MediaQuery.of(context).size.height-shrinkSize;
 
   @override
   bool get wantKeepAlive => true;
@@ -44,14 +44,8 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
-    // animationController = AnimationController(duration: Duration(milliseconds: 300), vsync: this);
-    // controllerAnimation = Tween(begin: 0.0, end: 1.0).animate(
-    //    CurvedAnimation(parent: animationController, curve: Curves.easeIn)
-    // );
-    // animationController.forward();
 
     tabController = TabController(length: 1, initialIndex: 0, vsync: this);
-    // tabController = TabController(length: 3, initialIndex: 0, vsync: this);
     tabController.addListener(_handleTabSelection);
 
   }
@@ -69,14 +63,11 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
   List<int> get verseSelectionList => widget.verseSelectionList;
   bool get hasVerseSelection => verseSelectionList.length > 0;
 
-  double get minChildSize =>  smallDevice?0.11:0.07;
+  double get minChildSize => (height/heightDevice);
   // NOTE: update when scroll notify
-  double initialChildSize = 0.07;
+  double initialChildSize = 0.0;
   final double maxChildSize = 0.985;
   final double midChildSize = 0.5;
-  // bool get _isExpanded => (initialChildSize <= minChildSize);
-
-  // bool get _showMenu => (_isExpanded && tabController.index != 0);
 
   void _handleTabSelection() {
     if (tabController.indexIsChanging == false) {
@@ -85,7 +76,6 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
       });
     }
   }
-
 
   bool _scrollableNotification(DraggableScrollableNotification notification) {
     double childSize = notification.extent;
@@ -96,7 +86,6 @@ abstract class _BottomSheetState extends State<_BottomSheet> with AutomaticKeepA
 
   void navigatorController(double childSize){
     double _heightNotify = scrollController.master.bottom.heightNotify.value;
-    // double _sizeHeight = notification.context.size.height;
     double _offset = (childSize-minChildSize)*10;
     double _delta = _offset.clamp(0.0, 1.0);
     double shrink = (1.0 - _delta).toDouble();
@@ -162,6 +151,7 @@ class _BottomSheetView extends _BottomSheetState {
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    // print('$minChildSize $initialChildSize');
     return DraggableScrollableActuator(
       // key: ValueKey<int>(88698),
       child: NotificationListener<DraggableScrollableNotification>(
@@ -170,7 +160,6 @@ class _BottomSheetView extends _BottomSheetState {
           // key: ValueKey<double>(initialChildSize),
           key:UniqueKey(),
           expand: false,
-          // initialChildSize: initialChildSize,
           initialChildSize: initialChildSize < minChildSize?minChildSize:initialChildSize,
           // initialChildSize: initialChildSize,
           minChildSize: minChildSize,
@@ -236,46 +225,57 @@ class _BottomSheetView extends _BottomSheetState {
           new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar,minHeight: height, maxHeight: height)),
 
           // TODO: somehow this prevent struggling from overscroll, need to improve but not possible flutter fixed???
-          SliverLayoutBuilder(
-            builder: (BuildContext context, SliverConstraints constraint) {
-              return new SliverPersistentHeader(
-                delegate: new ScrollBarDelegate(
-                  (BuildContext context,double offset,bool overlaps, double stretch,double shrink) => TabBarView(
-                    controller: tabController,
-                    physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                    children: [
-                      // WidgetKeepAlive(
-                      //   key:keyMenu,
-                      //   child: new BottomSheetMenu(
-                      //     verseSelectionList: verseSelectionList,controller: controller,
-                      //   )
-                      // ),
-                      WidgetKeepAlive(
-                        key:keyParallel,
-                        child: new BottomSheetParallel(
-                          key: scaffoldParallel,
-                          verseSelectionList: verseSelectionList,controller: controller,
-                          scrollToIndex:widget.scrollToIndex
-                        )
-                      ),
-                      // WidgetKeepAlive(
-                      //   key:keyAudio,
-                      //   child: new BottomSheetAudio(
-                      //     key: scaffoldAudio,
-                      //     verseSelectionList: verseSelectionList,controller: controller,
-                      //     scrollToIndex:widget.scrollToIndex
-                      //   )
-                      // )
-                    ]
-                  ),
-                  // maxHeight: double.infinity,
-                  maxHeight: constraint.viewportMainAxisExtent-45.0,
-                ),
-                floating: true,
-                pinned:false,
-              );
-            }
-          ),
+          // SliverLayoutBuilder(
+          //   builder: (BuildContext context, SliverConstraints constraint) {
+          //     return new SliverPersistentHeader(
+          //       delegate: new ScrollBarDelegate(
+          //         (BuildContext context,double offset,bool overlaps, double stretch,double shrink) => TabBarView(
+          //           controller: tabController,
+          //           physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          //           children: [
+          //             // WidgetKeepAlive(
+          //             //   key:keyMenu,
+          //             //   child: new BottomSheetMenu(
+          //             //     verseSelectionList: verseSelectionList,controller: controller,
+          //             //   )
+          //             // ),
+          //             WidgetKeepAlive(
+          //               key:keyParallel,
+          //               child: new BottomSheetParallel(
+          //                 key: scaffoldParallel,
+          //                 verseSelectionList: verseSelectionList,controller: controller,
+          //                 scrollToIndex:widget.scrollToIndex
+          //               )
+          //             ),
+          //             // WidgetKeepAlive(
+          //             //   key:keyAudio,
+          //             //   child: new BottomSheetAudio(
+          //             //     key: scaffoldAudio,
+          //             //     verseSelectionList: verseSelectionList,controller: controller,
+          //             //     scrollToIndex:widget.scrollToIndex
+          //             //   )
+          //             // )
+          //           ]
+          //         ),
+          //         // maxHeight: double.infinity,
+          //         // maxHeight: constraint.viewportMainAxisExtent-45.0,
+          //         maxHeight: constraint.viewportMainAxisExtent-height,
+          //       ),
+          //       floating: true,
+          //       pinned:false,
+          //     );
+          //   }
+          // ),
+          SliverFillRemaining(
+            child: WidgetKeepAlive(
+              key:keyParallel,
+              child: new BottomSheetParallel(
+                key: scaffoldParallel,
+                verseSelectionList: verseSelectionList,controller: controller,
+                scrollToIndex:widget.scrollToIndex
+              )
+            )
+          )
         ]
       ),
     );
@@ -286,7 +286,7 @@ class _BottomSheetView extends _BottomSheetState {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.9),
-        borderRadius: BorderRadius.all( Radius.elliptical(3,3)),
+        // borderRadius: BorderRadius.all( Radius.elliptical(3,3)),
         boxShadow: [
           BoxShadow(
             blurRadius:0.2,
@@ -311,20 +311,20 @@ class _BottomSheetView extends _BottomSheetState {
       children: [
         button(
           message: "Previous chapter",
-          child: Icon(CustomIcon.chapter_previous,size: 20),
+          child: Icon(CustomIcon.chapter_previous,size: 25),
           onPressed:widget.previousChapter
         ),
 
         button(
           message: "Next chapter",
-          child: Icon(CustomIcon.chapter_next,size: 20),
+          child: Icon(CustomIcon.chapter_next,size: 25),
           onPressed:widget.nextChapter
         ),
 
         button(
           message: "Compare selected verse Parallel",
           child: Icon(
-            CustomIcon.language, size: 20
+            CustomIcon.language, size: 22
           ),
           // onPressed:showParallelIf?showParallel:null
           onPressed:showParallel
@@ -337,14 +337,14 @@ class _BottomSheetView extends _BottomSheetState {
         //   onPressed:showAudioIf?showAudio:null
         // ),
         button(
-          message: "Copy verse selection",
+          message: "Copy/Share selected verse",
           onPressed:hasVerseSelection?widget.verseSelectionCopy:null,
           // child: Text('Compare ${verseSelectionList.length}'),
           child: Stack(
             overflow: Overflow.visible,
             fit: StackFit.passthrough,
             children: <Widget>[
-              Icon(CustomIcon.copy, size: 20),
+              Icon(CustomIcon.copy, size: 22),
               if(hasVerseSelection)new Positioned(
                 top: -8.0,
                 right: -9.0,
@@ -373,18 +373,18 @@ class _BottomSheetView extends _BottomSheetState {
     );
   }
 
-  Widget button({Key key,String message,Widget child, Function onPressed,double horizontal:20}) {
+  Widget button({Key key,String message,Widget child, Function onPressed}) {
     return Tooltip(
       key: key,
       message: message,
       child: CupertinoButton(
-        // minSize: 20,
+        minSize: 30,
         // pressedOpacity: 0.5,
         // color: Colors.red,
         padding: EdgeInsets.zero,
-        // padding: EdgeInsets.symmetric(vertical: 0,horizontal:horizontal),
+        // padding: EdgeInsets.symmetric(vertical: 10,horizontal:0),
         // color: isButtomSelected?Colors.red:null,
-        borderRadius: BorderRadius.all(Radius.circular(2)),
+        // borderRadius: BorderRadius.all(Radius.circular(2)),
         // padding: EdgeInsets.all(20),
         disabledColor: Colors.grey[100],
         child: child,

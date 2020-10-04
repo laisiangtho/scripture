@@ -4,8 +4,7 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
   ScrollBarDelegate(
     this.builder,
     {
-      this.minHeight:kToolbarHeight,
-      this.maxHeight:kToolbarHeight,
+      this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight,
       this.backgroundColor
     }
   );
@@ -18,13 +17,14 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
   // bool shouldRebuild(ScrollBarDelegate oldDelegate) => maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight;
   bool shouldRebuild(ScrollBarDelegate oldDelegate) => true;
 
-  @override
-  double get minExtent => min(minHeight,minHeight??kToolbarHeight);
-  // double get minExtent => minHeight??kToolbarHeight;
+  double get _min => minHeight??kToolbarHeight;
+  double get _max => maxHeight??kToolbarHeight;
 
   @override
-  // double get maxExtent => maxHeight??kToolbarHeight;
-  double get maxExtent => max(minHeight,maxHeight??kToolbarHeight);
+  double get minExtent => min(_min,_max);
+
+  @override
+  double get maxExtent => max(_min,_max);
 
   @override
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
@@ -33,7 +33,6 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent){
     double stretch = (shrinkOffset/maxExtent).toDouble();
     double shrink = (1.0 - stretch).toDouble();
-    // return builder(context,shrinkOffset,overlapsContent,shrink,stretch);
     return new SizedBox.expand(
       child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
     );
@@ -45,7 +44,7 @@ class ScrollPageBarDelegate extends ScrollBarDelegate {
   ScrollPageBarDelegate(
     this.builder,
     {
-      this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight,
+      this.minHeight, this.maxHeight,
       this.backgroundColor
     }
   ) : super(null);

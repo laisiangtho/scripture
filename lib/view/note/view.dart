@@ -30,6 +30,7 @@ class View extends _State {
       child: Text(
         'Bookmark',
         semanticsLabel: 'Bookmark',
+        style: TextStyle(fontSize: 20),
       )
     );
     // return Container(

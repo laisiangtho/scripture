@@ -114,10 +114,10 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return SplashScreen(message:'...loading');
+            return SplashScreen(message:'A moment');
             break;
           case ConnectionState.active:
-            return SplashScreen(message:'A moment...');
+            return SplashScreen(message:'...wait');
             break;
           case ConnectionState.none:
             return SplashScreen(message:'getting ready...');
@@ -132,7 +132,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
     );
     // return LauncherScreen();
     // return WelcomeScreen();
-    // return SplashScreen(message:'...loading');
+    // return SplashScreen(message:'A moment');
   }
 
   Widget _start() {

@@ -87,7 +87,7 @@ class SplashScreen extends StatelessWidget {
             // ),
             Container(
               margin: EdgeInsets.symmetric(vertical:40),
-              padding: EdgeInsets.symmetric(vertical:2, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical:7, horizontal: 27),
               decoration: BoxDecoration(
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(50),
@@ -97,7 +97,7 @@ class SplashScreen extends StatelessWidget {
                 semanticsLabel: message,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -141,7 +141,7 @@ class SplashScreen extends StatelessWidget {
               semanticsLabel: Core.instance.appName,
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.grey
+                // color: Colors.grey
               )
             ),
           ],

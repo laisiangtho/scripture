@@ -4,13 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
-// import 'dart:io' show Platform;
-// import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:flutter_tts/flutter_tts.dart';
-// import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-// import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:share/share.dart';
 
 import 'package:bible/core.dart';
 import 'package:bible/component.dart';
@@ -18,9 +14,6 @@ import 'package:bible/widget.dart';
 import 'package:bible/icon.dart';
 
 import 'package:bible/view/home/main.dart' as Home;
-/// start/nav: 1234567
-/// setstate: 167
-/// keepAlive: 7
 
 part 'view.dart';
 part 'bar.dart';
@@ -44,10 +37,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final controller = ScrollController();
   final core = Core();
   final sliverAnimatedListKey = GlobalKey<SliverAnimatedListState>();
-  // final ItemScrollController itemScrollController = ItemScrollController();
-  // final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
-  // final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  // AutoScrollController autoScrollController;
 
   final keyBottom = new GlobalKey();
   final keyBookButton = new GlobalKey();
@@ -195,15 +184,19 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   //   //   return list.join("\n");
   //   // });
   // }
+
   void verseSelectionCopy() {
     List<String> list = [];
+    String subject = tmpbook.name+' '+tmpchapter.name;
+    list.add(subject);
     this.verseSelectionList..sort((a, b) => a.compareTo(b))..forEach((id) {
       VERSE o = tmpverse.where((i)=> i.id == id).single;
       list.add(o.name+': '+o.text);
     });
-    Clipboard.setData(new ClipboardData(text: list.join("\n"))).whenComplete((){
-      showSnack('Copied to Clipboard');
-    });
+    // Clipboard.setData(new ClipboardData(text: list.join("\n"))).whenComplete((){
+    //   showSnack('Copied to Clipboard');
+    // });
+    Share.share(list.join("\n"), subject: subject);
   }
 
   void setFontSize(bool increase) {
@@ -301,15 +294,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   @override
   void initState(){
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_){});
-
-    // itemScrollController.
-    // itemPositionsListener
-    // autoScrollController = AutoScrollController(
-    //   viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-    //   axis: Axis.vertical,
-    //   suggestedRowHeight: 200
-    // );
   }
 
   @override

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
 class WidgetContent extends StatelessWidget {
+
   WidgetContent({
+    Key key,
     this.startWith:'...',
     this.atLeast:'enable at least\na ',
     this.enable:'Bible',
     this.task:'\nto ',
     this.message:'read',
     this.endWith:'...'
-  });
+  }): super(key: key);
+
   final String startWith;
   final String endWith;
   final String atLeast;
