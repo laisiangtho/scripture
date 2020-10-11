@@ -224,7 +224,7 @@ class _BottomSheetView extends _BottomSheetState {
           // new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar)),
           new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar,minHeight: height, maxHeight: height)),
 
-          // TODO: somehow this prevent struggling from overscroll, need to improve but not possible flutter fixed???
+          // ???: somehow this prevent struggling from overscroll, need to improve but not possible flutter fixed???
           // SliverLayoutBuilder(
           //   builder: (BuildContext context, SliverConstraints constraint) {
           //     return new SliverPersistentHeader(
