@@ -73,7 +73,7 @@ abstract class _Collection with _Configuration, _Utility {
       if (isDelete) switchIdentifyPrimary(force:id == this.primaryId);
       await writeCollection();
       this.analyticsShare(isDelete?'delete':'download', id);
-      print(isDelete?'delete':'download');
+      // print(isDelete?'delete':'download');
     }
     // await collectionBookByIdentify(id).then((CollectionBible bible) => bible.available = available);
     // await writeCollection();
