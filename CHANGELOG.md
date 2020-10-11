@@ -207,13 +207,28 @@ Update
 - firebase_analytics: ^6.0.0
 - flutter_reorderable_list: ^0.1.4
 
-Launching lib\main.dart on sdk gphone x86 in debug mode...
-WARNING: [Processor] Library 'C:\Users\imsol\.gradle\caches\modules-2\files-2.1\io.flutter\flutter_embedding_debug\1.0.0-d1bc06f032f9d6c148ea6b96b48261d6f545004f\d413186ad73c0653d1d500fc2b85eac24280a0dd\flutter_embedding_debug-1.0.0-d1bc06f032f9d6c148ea6b96b48261d6f545004f.jar' contains references to both AndroidX and old support library. This seems like the library is partially migrated. Jetifier will try to rewrite the library anyway.
- Example of androidX reference: 'androidx/annotation/VisibleForTesting'
- Example of support library reference: 'android/support/annotation/NonNull'
-✓ Built build\app\outputs\flutter-apk\app-debug.apk.
-Installing build\app\outputs\flutter-apk\app.apk...
-Connecting to VM Service at ws://127.0.0.1:56929/myLzVllhcjE=/ws
+## 1.0.4
 
+Improve
 
-This App Bundle contains native code, and you've not uploaded debug symbols. We recommend you upload a symbol file to make your crashes and ANRs easier to analyze and debug
+- Dark mode
+
+Fix
+
+- Chapter navivagor position and height
+
+Feature
+
+- ?
+
+Add
+
+- share package
+
+Change
+
+- ?
+
+Update
+
+- framework, Package
