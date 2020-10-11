@@ -215,7 +215,7 @@ Improve
 
 Fix
 
-- Chapter navivagor position and height
+- Chapter navigator position and height
 
 Feature
 
