@@ -155,28 +155,43 @@ mixin _Result on _State {
                 children: chapters.where((e) => e.id  != chapter.id).map(
                   (e) => SizedBox(
                     width: 50,
-                    child: FlatButton(
+                    child: RawMaterialButton(
                       child: Text(
-                        // core.digit(e.id),
                         e.name,
                         semanticsLabel: 'chapter: '+e.name,
                         style: TextStyle(
                           fontSize: 15
                         ),
                       ),
-                      color: Colors.grey[300],
-                      // textColor: Colors.white,
-                      textColor: Colors.black45,
-                      padding: EdgeInsets.all(7),
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: new CircleBorder(),
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.all(
-                      //     Radius.elliptical(3, 20)
-                      //   )
-                      // ),
-                      onPressed: () => toBible(bookId,e.id)
+                      elevation: 0.0,
+                      padding: EdgeInsets.all(10),
+                      fillColor: Colors.grey[300],
+                      shape: CircleBorder(),
+                      onPressed: ()=> toBible(bookId,e.id)
                     ),
+                    // child: FlatButton(
+                    //   child: Text(
+                    //     // core.digit(e.id),
+                    //     // e.name,
+                    //     'a?',
+                    //     semanticsLabel: 'chapter: '+e.name,
+                    //     style: TextStyle(
+                    //       fontSize: 15
+                    //     ),
+                    //   ),
+                    //   color: Colors.grey[300],
+                    //   // textColor: Colors.white,
+                    //   textColor: Colors.black45,
+                    //   padding: EdgeInsets.all(7),
+                    //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    //   shape: new CircleBorder(),
+                    //   // shape: RoundedRectangleBorder(
+                    //   //   borderRadius: BorderRadius.all(
+                    //   //     Radius.elliptical(3, 20)
+                    //   //   )
+                    //   // ),
+                    //   onPressed: () => toBible(bookId,e.id)
+                    // ),
                   )
                 ).toList(),
               )

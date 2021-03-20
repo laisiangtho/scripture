@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MainView> {
   final controller = ScrollController();
   List<ItemData> _items;
   _MyHomePageState() {
-    _items = List();
+    _items = [];
     for (int i = 0; i < 500; ++i) {
       String label = "List item $i";
       if (i == 5) {

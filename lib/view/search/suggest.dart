@@ -197,7 +197,7 @@ mixin _Suggest on _State {
         setState(() {
           keywordSuggestion.removeAt(index);
         });
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Removed"),
             duration: Duration(milliseconds:5),

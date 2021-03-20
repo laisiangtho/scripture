@@ -124,16 +124,17 @@ class _SheetInfoState extends State<_SheetInfo> {
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30),
-            child: RaisedButton.icon(
-              padding: EdgeInsets.symmetric(horizontal:15, vertical:10),
-              color:isAvailable?Colors.red: Colors.black45,
-              textColor: Colors.white,
-              disabledTextColor: Colors.grey,
-              disabledColor: Colors.grey[200],
-              elevation: 0,
-              highlightElevation: 0,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            child: ElevatedButton.icon(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(isAvailable?Colors.red: Colors.black45),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    // side: BorderSide(color: Colors.red)
+                  )
+                )
+              ),
+              // style: TextButton.styleFrom(primary: Colors.green),
               icon: isDownloading?SizedBox(width:20, height:20,
                 child:CircularProgressIndicator(
                   strokeWidth: 1,
@@ -149,6 +150,31 @@ class _SheetInfoState extends State<_SheetInfo> {
               ),
               onPressed: isDownloading?null:updateAvailableAction
             )
+            // child: RaisedButton.icon(
+            //   padding: EdgeInsets.symmetric(horizontal:15, vertical:10),
+            //   color:isAvailable?Colors.red: Colors.black45,
+            //   textColor: Colors.white,
+            //   disabledTextColor: Colors.grey,
+            //   disabledColor: Colors.grey[200],
+            //   elevation: 0,
+            //   highlightElevation: 0,
+            //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //   shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            //   icon: isDownloading?SizedBox(width:20, height:20,
+            //     child:CircularProgressIndicator(
+            //       strokeWidth: 1,
+            //       backgroundColor: Colors.grey[200],
+            //       valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
+            //     )
+            //   ):new Icon(isAvailable?Icons.remove_circle:Icons.add_circle, size: 20.0,),
+            //   label: Text(
+            //     isAvailable?'Delete':'Download', textAlign: TextAlign.center,
+            //     style: TextStyle(
+            //       fontSize: 20,height: 1.05
+            //     )
+            //   ),
+            //   onPressed: isDownloading?null:updateAvailableAction
+            // )
           ),
           // ConstrainedBox(
           //   constraints: new BoxConstraints(

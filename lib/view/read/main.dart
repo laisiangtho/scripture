@@ -44,7 +44,8 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final keyOptionButton = new GlobalKey();
   final keyListView = new GlobalKey();
 
-  List<int> verseSelectionList = new List();
+  // List<int> verseSelectionList = new List();
+  List<int> verseSelectionList = [];
   bool hasBookmark = false;
   String primaryId = '';
 
@@ -266,7 +267,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   }
 
   void showSnack(String message){
-    Scaffold.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         duration: Duration(milliseconds:500),

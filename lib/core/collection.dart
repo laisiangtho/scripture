@@ -65,7 +65,7 @@ abstract class _Collection with _Configuration, _Utility {
   });
 
   Future<void> updateCollectionBookAvailability(String id,int available) async {
-    // TODO: collection available item on auto download
+    // ??: collection available item on auto download
     CollectionBible bible = collectionBookByIdentify(id);
     if(bible.available != available) {
       bible.available = available;

@@ -341,7 +341,7 @@ class _BottomSheetView extends _BottomSheetState {
           onPressed:hasVerseSelection?widget.verseSelectionCopy:null,
           // child: Text('Compare ${verseSelectionList.length}'),
           child: Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.hardEdge,
             fit: StackFit.passthrough,
             children: <Widget>[
               Icon(CustomIcon.copy, size: 22),

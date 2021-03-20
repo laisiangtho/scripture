@@ -67,13 +67,13 @@ class View extends _State {
         new SliverList(
           delegate: new SliverChildListDelegate(
             <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 child: Text("more to bible"),
                 onPressed: () {
                   controller.master.bottom.pageChange(1);
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("Counter $testCounter"),
                 onPressed: (){
                   setState(() {
@@ -81,11 +81,11 @@ class View extends _State {
                   });
                 }
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("modal bottom sheet"),
                 onPressed: showBottomSheetModal
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("SnackBar"),
                 onPressed: () {
                   // scaffoldKey.currentState.showSnackBar(new SnackBar(
@@ -95,20 +95,20 @@ class View extends _State {
                   //       child: Text('Hi there')
                   //     )
                   // ));
-                  Scaffold.of(context).showSnackBar(new SnackBar(
+                 ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                     content: new Text('value')
                   ));
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("bottom sheet, hide nav, Shape: key"),
                 onPressed: showBottomSheetScaffoldKey,
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("showBottomSheetScaffoldContext"),
                 onPressed: showBottomSheetScaffoldContext,
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("draggableScrollableSheet in bottomsheet"),
                 onPressed: draggableScrollableSheet,
               ),
@@ -137,7 +137,7 @@ class View extends _State {
         ),
         new SliverToBoxAdapter(
           child: Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("Popup"),
               onPressed: () {
                 // Navigator.push(
@@ -285,7 +285,7 @@ class TestRoute extends StatelessWidget {
         title: Text("Second Route"),
       ),
       body: Center(
-        child: RaisedButton(
+        child: ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
           },
@@ -322,7 +322,7 @@ class _TestSwitchState extends State<TestSwitch> {
             style: Theme.of(context).textTheme.caption,
           )
         ),
-        RaisedButton(
+        ElevatedButton(
           child: Text('TestSwitch'),
           onPressed: () {
             setState(() {
@@ -440,7 +440,7 @@ class DraggableScrollableSheetTest extends StatelessWidget {
   Widget _bar(BuildContext context,double shrinkOffset,bool overlapsContent,double shrink,double stretch){
     return Container(
       child: Center(
-        child: FlatButton(
+        child: ElevatedButton(
           child: Text('close'),
           onPressed: (){
             DraggableScrollableActuator.reset(context);
