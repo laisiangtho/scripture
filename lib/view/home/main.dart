@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart' hide ReorderableList;
+import 'package:flutter/material.dart' hide ReorderableList;
 
 import 'package:bible/component.dart';
 import 'package:bible/core.dart';
