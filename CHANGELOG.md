@@ -1,30 +1,17 @@
 # Version
 
-## 1.0.4
-
-Improve
-
-- Dark mode
-
-Fix
-
-- Chapter navigator position and height
-
-Feature
-
-- ?
-
-Add
-
-- share package
-
-Change
-
-- ?
+## 1.0.4+44
 
 Update
 
-- framework, Package
+- cupertino_icons: ^1.0.2
+- package_info: ^2.0.0
+- path_provider: ^2.0.1
+- http: ^0.13.1
+- firebase_core: ^1.0.1
+- firebase_analytics: ^7.1.1
+- share: ^2.0.1
+- flutter_reorderable_list: ^1.0.0
 
 ## 1.0.3+41
 
