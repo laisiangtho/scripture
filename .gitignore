@@ -2,6 +2,7 @@ lib/**/*v[0-9].dart
 lib/**/*v[0-9].md
 assets/delete
 android/key.properties
+android/app/google-services.json
 
 # Miscellaneous
 *.class
