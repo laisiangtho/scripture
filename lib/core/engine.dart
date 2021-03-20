@@ -21,7 +21,7 @@ DefinitionBible parseBibleCompute(String response){
 
 Future<String> requestHTTP(String url) async {
   try {
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(Uri.parse(url));
     // return await http.read(url);
     if (response.statusCode == 200){
       return response.body;
