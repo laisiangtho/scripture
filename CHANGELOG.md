@@ -13,6 +13,14 @@ Update
 - share: ^2.0.1
 - flutter_reorderable_list: ^1.0.0
 
+deprecated
+
+- new list(): []
+- FlatButton: TextButton
+- RaisedButton: ElevatedButton
+- overflow: Overflow.visible,
+- Scaffold.of(context).showSnackBar: ScaffoldMessenger.of(context).showSnackBar
+
 ## 1.0.3+41
 
 Improve
