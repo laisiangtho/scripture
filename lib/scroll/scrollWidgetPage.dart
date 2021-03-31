@@ -1,4 +1,4 @@
-part of 'available.dart';
+part of 'root.dart';
 
 class ScrollPage extends StatelessWidget {
   final ScrollController controller;
@@ -10,9 +10,7 @@ class ScrollPage extends StatelessWidget {
     this.controller,
     this.depth:0,
     @required this.child,
-  }) :
-  assert(child != null),
-  super(key: key);
+  }) : assert(child != null), super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +39,7 @@ class ScrollPageBehavior extends ScrollBehavior {
 class ScrollMainDecoratedBox extends StatelessWidget {
   final Widget child;
   ScrollMainDecoratedBox({Key key,this.child}):super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(

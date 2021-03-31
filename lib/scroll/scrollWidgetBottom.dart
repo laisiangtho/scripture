@@ -1,4 +1,4 @@
-part of 'available.dart';
+part of 'root.dart';
 
 class ModelPage {
   ModelPage({
@@ -9,6 +9,7 @@ class ModelPage {
     this.key,
     this.child,
   });
+
   final String screenName;
   final String description;
   final GlobalKey<State<dynamic>> key;
@@ -16,7 +17,6 @@ class ModelPage {
   final String name;
   final IconData icon;
 }
-// core.analyticsScreen('home','HomeState');
 
 class ScrollPageBottom extends StatefulWidget {
 
@@ -305,6 +305,7 @@ class _BottomBarAnimatedState extends State<ScrollPageBottom> with TickerProvide
   //   );
   // }
 }
+
 /*
 ClipRRect(
   borderRadius: BorderRadius.only(

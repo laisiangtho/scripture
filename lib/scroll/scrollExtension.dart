@@ -2,7 +2,7 @@
 version: 0.2
 developer: Khen Solomon Lethil
 */
-part of 'available.dart';
+part of 'root.dart';
 
 abstract class ScrollPageController {
 
