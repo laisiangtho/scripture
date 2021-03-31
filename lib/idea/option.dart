@@ -1,4 +1,4 @@
-part of 'scope.dart';
+part of 'root.dart';
 
 enum CustomTextDirection {
   localeBased,
@@ -22,8 +22,8 @@ Locale _deviceLocale;
 Locale get deviceLocale => _deviceLocale;
 set deviceLocale(Locale locale) => _deviceLocale ??= locale;
 
-class ApplyThemeOption {
-  const ApplyThemeOption({
+class IdeaTheme {
+  const IdeaTheme({
     this.themeMode,
     double textScaleFactor,
     this.customTextDirection,
@@ -98,7 +98,7 @@ class ApplyThemeOption {
     return overlayStyle;
   }
 
-  ApplyThemeOption copyWith({
+  IdeaTheme copyWith({
     ThemeMode themeMode,
     double textScaleFactor,
     CustomTextDirection customTextDirection,
@@ -107,7 +107,7 @@ class ApplyThemeOption {
     TargetPlatform platform,
     bool isTesting,
   }) {
-    return ApplyThemeOption(
+    return IdeaTheme(
       themeMode: themeMode ?? this.themeMode,
       textScaleFactor: textScaleFactor ?? _textScaleFactor,
       customTextDirection: customTextDirection ?? this.customTextDirection,
@@ -120,7 +120,7 @@ class ApplyThemeOption {
 
   @override
   bool operator ==(Object other) =>
-      other is ApplyThemeOption &&
+      other is IdeaTheme &&
       themeMode == other.themeMode &&
       _textScaleFactor == other._textScaleFactor &&
       customTextDirection == other.customTextDirection &&
@@ -140,26 +140,26 @@ class ApplyThemeOption {
         isTesting,
       );
 
-  static ApplyThemeOption of(BuildContext context) {
+  static IdeaTheme of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<_ModelBindingScope>();
     return scope.modelBindingState.currentModel;
   }
 
-  static void update(BuildContext context, ApplyThemeOption newModel) {
+  static void update(BuildContext context, IdeaTheme newModel) {
     final scope = context.dependOnInheritedWidgetOfExactType<_ModelBindingScope>();
     scope.modelBindingState.updateModel(newModel);
   }
 }
 
-// Applies text ApplyThemeOption to a widget
-class ApplyTextOption extends StatelessWidget {
-  const ApplyTextOption({@required this.child});
+// Applies text IdeaTheme to a widget
+class IdeaTextOption extends StatelessWidget {
+  const IdeaTextOption({@required this.child});
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final options = ApplyThemeOption.of(context);
+    final options = IdeaTheme.of(context);
     final textDirection = options.resolvedTextDirection();
     final textScaleFactor = options.textScaleFactor(context);
 
@@ -177,6 +177,3 @@ class ApplyTextOption extends StatelessWidget {
           );
   }
 }
-
-// Everything below is boilerplate except code relating to time dilation.
-// See https://medium.com/flutter/managing-flutter-application-state-with-inheritedwidgets-1140452befe1

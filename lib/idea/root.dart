@@ -9,31 +9,31 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 
 // import 'package:bible/screen/testing.dart';
-import 'package:bible/screen/main.dart';
+// import 'package:bible/screen/main.dart';
 
 part 'config.dart';
 part 'option.dart';
 part 'theme.dart';
-part 'route.dart';
-part 'splash.dart';
+// part 'route.dart';
+// part 'splash.dart';
 
-class ApplyModelBinding extends StatefulWidget {
-  ApplyModelBinding({
+class IdeaModel extends StatefulWidget {
+  IdeaModel({
     Key key,
-    this.initialModel = const ApplyThemeOption(),
+    this.initialModel = const IdeaTheme(),
     this.child,
   })  : assert(initialModel != null),
         super(key: key);
 
-  final ApplyThemeOption initialModel;
+  final IdeaTheme initialModel;
   final Widget child;
 
   @override
   _ModelBindingState createState() => _ModelBindingState();
 }
 
-class _ModelBindingState extends State<ApplyModelBinding> {
-  ApplyThemeOption currentModel;
+class _ModelBindingState extends State<IdeaModel> {
+  IdeaTheme currentModel;
   Timer _timeDilationTimer;
 
   @override
@@ -49,7 +49,7 @@ class _ModelBindingState extends State<ApplyModelBinding> {
     super.dispose();
   }
 
-  void handleTimeDilation(ApplyThemeOption newModel) {
+  void handleTimeDilation(IdeaTheme newModel) {
     if (currentModel.timeDilation != newModel.timeDilation) {
       _timeDilationTimer?.cancel();
       _timeDilationTimer = null;
@@ -66,7 +66,7 @@ class _ModelBindingState extends State<ApplyModelBinding> {
     }
   }
 
-  void updateModel(ApplyThemeOption newModel) {
+  void updateModel(IdeaTheme newModel) {
     if (newModel != currentModel) {
       handleTimeDilation(newModel);
       setState(() {
@@ -95,5 +95,6 @@ class _ModelBindingScope extends InheritedWidget {
   final _ModelBindingState modelBindingState;
 
   @override
-  bool updateShouldNotify(_ModelBindingScope oldWidget) => true;
+  bool updateShouldNotify(_ModelBindingScope old) =>  old.modelBindingState != modelBindingState;
+  // bool updateShouldNotify(_ModelBindingScope oldWidget) => true;
 }

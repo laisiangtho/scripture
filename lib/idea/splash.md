@@ -1,4 +1,4 @@
-part of 'scope.dart';
+part of 'root.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 

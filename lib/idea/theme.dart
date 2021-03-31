@@ -1,6 +1,6 @@
-part of 'scope.dart';
+part of 'root.dart';
 
-class ApplyThemeData {
+class IdeaData {
   static const _lightFillColor = Colors.black;
   static const _darkFillColor = Colors.white;
 

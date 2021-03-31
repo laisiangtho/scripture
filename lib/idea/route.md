@@ -1,7 +1,7 @@
 
 
 
-part of 'scope.dart';
+part of 'root.dart';
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String);
 
