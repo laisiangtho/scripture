@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart' hide ReorderableList;
 import 'package:flutter/material.dart' hide ReorderableList;
 
-import 'package:bible/component.dart';
+import 'package:bible/scroll.dart';
 import 'package:bible/core.dart';
 import 'package:bible/widget.dart';
 import 'package:bible/icon.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bible/core.dart';
-import 'package:bible/component.dart';
+import 'package:bible/scroll.dart';
 // import 'package:bible/widget.dart';
 
 part 'view.dart';

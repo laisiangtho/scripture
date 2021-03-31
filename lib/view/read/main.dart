@@ -9,7 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:share/share.dart';
 
 import 'package:bible/core.dart';
-import 'package:bible/component.dart';
+import 'package:bible/scroll.dart';
 import 'package:bible/widget.dart';
 import 'package:bible/icon.dart';
 
