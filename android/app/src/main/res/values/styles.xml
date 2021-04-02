@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
-        <item name="android:windowBackground">@drawable/launch_background</item>
-        <!--Required Api 21 above-->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
-        <item name="android:defaultFocusHighlightEnabled">false</item>
-    </style>
-    <!-- <style name="AppTheme.NoActionBar">
+  <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+    <item name="android:windowBackground">@drawable/launch_background</item>
+    <!--Required Api 21 above-->
+    <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
+    <item name="android:defaultFocusHighlightEnabled">false</item>
+    <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <item name="android:windowTranslucentNavigation">false</item>
+  </style>
+  <!-- <style name="AppTheme.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
