@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bible/core.dart';
-import 'package:bible/scroll.dart';
-import 'package:bible/widget.dart';
-import 'package:bible/icon.dart';
+import 'package:scriptive/core.dart';
+import 'package:scriptive/scroll.dart';
+import 'package:scriptive/widget.dart';
+import 'package:scriptive/icon.dart';
 
 part 'view.dart';
 
@@ -15,7 +15,7 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends State<Main> with TickerProviderStateMixin {
-  // final scaffoldKey = GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final core = Core();
   final controller = ScrollController();
   // final sliverAnimatedListKey = GlobalKey<SliverAnimatedListState>();
