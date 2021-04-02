@@ -1,15 +1,13 @@
 part of 'main.dart';
 
-mixin _Result on _State {
+mixin _Result on _State, _Data {
 
   Widget result() {
-    // sliver: hasNotResult?_loadChapter():_loadVerse()
+
     if (this.searchQuery.isEmpty) {
       return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nin ',message:'verses');
     }
-    // if (hasNotResult == false) {
-    //   return _resultBook();
-    // }
+
     return FutureBuilder(
       future: getResult,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

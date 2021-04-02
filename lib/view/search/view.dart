@@ -1,17 +1,13 @@
 part of 'main.dart';
 
-class View extends _State with _Bar, _Suggest, _Result {
+class View extends _State with _Bar, _Data, _Suggest, _Result {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScrollPage(
       key: scaffoldKey,
-      // resizeToAvoidBottomInset: true,
-      // resizeToAvoidBottomPadding: true,
-      body: ScrollPage(
-        controller: controller.master,
-        child: _scroll(),
-      ),
+      controller: controller.master,
+      child: _scroll()
     );
   }
 
@@ -33,8 +29,7 @@ class View extends _State with _Bar, _Suggest, _Result {
     return VerseInheritedWidget(
       size: core.fontSize,
       lang: core.collectionLanguagePrimary.name,
-      child:focusNode.hasFocus?suggest():result()
-      // child:result()
+      child: focusNode.hasFocus?suggest():result()
     );
   }
 }

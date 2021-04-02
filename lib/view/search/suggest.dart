@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-mixin _Suggest on _State {
+mixin _Suggest on _State, _Data {
 
   Widget suggest() {
     if (this.searchQuery.isEmpty) {

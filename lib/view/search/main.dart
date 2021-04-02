@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bible/scroll.dart';
-import 'package:bible/widget.dart';
-import 'package:bible/core.dart';
-import 'package:bible/icon.dart';
+import 'package:scriptive/scroll.dart';
+import 'package:scriptive/widget.dart';
+import 'package:scriptive/core.dart';
+import 'package:scriptive/icon.dart';
 
 part 'view.dart';
+part 'data.dart';
 part 'bar.dart';
 part 'suggest.dart';
 part 'result.dart';
@@ -25,54 +26,18 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   final textController = new TextEditingController();
   final focusNode = new FocusNode();
 
-  Future<bool> _dataResult;
-  Future<bool> get getResult => _dataResult=hasNotResult?_newResult():_dataResult;
-  Future<bool> _newResult() async{
-    await core.versePrimarySearch();
-    return hasNotResult == false;
-  }
+  String get searchQuery => this.textController.text;
 
-  // Future<BIBLE> getResult() => core.verseSearch();
-  // bool get hasNotResult => core.scripturePrimary.verseSearchDataIsEmpty();
-
-  bool get hasNotResult => core.scripturePrimary.verseSearchDataIsEmpty(
-    id: core.primaryId,
-    testament: core.testamentId,
-    book: core.bookId,
-    chapter: core.chapterId,
-    query: core.searchQuery
-  );
-  BIBLE get bible => core.scripturePrimary.verseSearchData;
-  bool get shrinkResult => bible.verseCount > 300;
-
-  CollectionBible get bibleInfo => core.collectionPrimary;
-  List<CollectionKeyword> get keywords => core.collection.keyword;
-  List<CollectionKeyword> get keywordSuggestion {
-    if (searchQuery.isEmpty){
-      return this.keywords;
-    } else {
-      return this.keywords.where((e)=>e.word.toLowerCase().startsWith(searchQuery.toLowerCase())).toList();
-    }
-  }
-
-  void toBible(int bookId, int chapterId) {
-    core.bookId = bookId;
-    core.chapterId = chapterId;
-    controller.master.bottom.pageChange(1);
-  }
-
-  String get searchQuery => this.textController.text??'';
-  // void showKeyboard() => FocusScope.of(context).requestFocus(focusNode);
-  void showKeyboard() => focusNode.requestFocus();
+  // void inputKeyboardShow() => FocusScope.of(context).requestFocus(focusNode);
+  // void inputKeyboardShow() => focusNode.requestFocus();
   // FocusScope.of(context).unfocus()
-  void hideKeyboard() => focusNode.unfocus();
+  void inputKeyboardHide() => focusNode.unfocus();
   void inputClear() => textController.clear();
-  void inputCancel() => hideKeyboard();
+  void inputCancel() => inputKeyboardHide();
   void inputSubmit(String word) {
-    hideKeyboard();
-    // core.searchQuery = word;
+    inputKeyboardHide();
     this.textController.text = word;
-    core.searchQuery = word;
+    // core.searchQuery = word;
     core.analyticsSearch(this.searchQuery);
   }
 
@@ -86,7 +51,9 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
       });
     });
     focusNode.addListener(() {
-      setState(() {});
+      if(focusNode.hasFocus) {
+        textController?.selection = TextSelection(baseOffset: 0, extentOffset: textController.value.text.length);
+      }
     });
   }
 
@@ -95,7 +62,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     controller.dispose();
     focusNode.dispose();
     textController.dispose();
-    // textNotifier.dispose();
     super.dispose();
   }
 
@@ -103,5 +69,4 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   void setState(fn) {
     if(mounted) super.setState(fn);
   }
-
 }
