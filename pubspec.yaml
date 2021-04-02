@@ -1,4 +1,4 @@
-name: bible
+name: scriptive
 description: the Holy Bible in languages
 
 # The following line prevents the package from being accidentally published to
@@ -30,11 +30,12 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # Custom
+  hive_flutter: ^1.0.0
   package_info: ^2.0.0
   path_provider: ^2.0.1
   http: ^0.13.1
-  firebase_core: ^1.0.1
-  firebase_analytics: ^7.1.1
+  # firebase_core: ^1.0.2
+  firebase_analytics: ^7.0.1
   share: ^2.0.1
   # flutter_reorderable_list: ^0.1.4
   flutter_reorderable_list: ^1.0.0
