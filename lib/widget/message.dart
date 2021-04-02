@@ -31,6 +31,7 @@ class WidgetMsg extends StatelessWidget {
     );
   }
 }
+
 class WidgetMessage extends StatelessWidget {
   final String message;
   WidgetMessage({this.message:'?'});
