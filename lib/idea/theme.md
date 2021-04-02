@@ -1,8 +1,5 @@
 part of 'root.dart';
 
-// https://github.com/flutter/gallery/blob/master/lib/themes/gallery_theme_data.dart
-// https://github.com/flutter/gallery/blob/master/lib/pages/settings.dart
-
 class IdeaData {
   static const _lightFillColor = Colors.black;
   static const _darkFillColor = Colors.white;
@@ -15,21 +12,41 @@ class IdeaData {
 
   static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
+      // primarySwatch: Colors.red,
       colorScheme: colorScheme,
       textTheme: _textTheme,
-      primaryColor: colorScheme.primary,
-      // accentColor: colorScheme.background,
-      accentColor: colorScheme.secondary,
-      // canvasColor: colorScheme.background,
-      canvasColor: Colors.transparent,
-      scaffoldBackgroundColor: colorScheme.secondary,
-      backgroundColor: colorScheme.background,
+      // primaryColor: colorScheme.primary,
+      // // accentColor: colorScheme.secondary,
+      // // canvasColor: colorScheme.background,
+      // canvasColor: Colors.transparent,
+      // scaffoldBackgroundColor: colorScheme.secondaryVariant,
+      // backgroundColor: colorScheme.background,
+      // highlightColor: Colors.transparent,
+      // focusColor: focusColor,
 
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      focusColor: focusColor,
+      // appBarTheme: AppBarTheme(
+      //   textTheme: _textTheme.apply(bodyColor: colorScheme.onPrimary),
+      //   color: colorScheme.background,
+      //   elevation: 0,
+      //   iconTheme: IconThemeData(color: colorScheme.primary),
+      //   brightness: colorScheme.brightness,
+      // ),
+      // iconTheme: IconThemeData(color: colorScheme.onPrimary),
+
+      // snackBarTheme: SnackBarThemeData(
+      //   behavior: SnackBarBehavior.floating,
+      //   backgroundColor: Color.alphaBlend(
+      //     _lightFillColor.withOpacity(0.80),
+      //     _darkFillColor,
+      //   ),
+      //   contentTextStyle: _textTheme.subtitle1.apply(color: _darkFillColor),
+      // ),
       // fontFamily: "Lato, Paduak, sans-serif",
+      // fontFamily: "Lato, Mm3Web",
+      // fontFamily: "Mm3Web, Lato",
       fontFamily: "Lato,Mm3Web",
+      // fontFamily: "Mm3Web",
+      // fontFamily: "Paduak",
 
       bottomSheetTheme: BottomSheetThemeData(
         shape: RoundedRectangleBorder(
@@ -39,7 +56,7 @@ class IdeaData {
         // clipBehavior: Clip.antiAlias,
         // modalBackgroundColor: colorScheme.background,
         modalElevation: 20.0,
-        // backgroundColor: colorScheme.primary,
+        backgroundColor: colorScheme.primary,
         elevation: 10.0,
         // clipBehavior: Clip.antiAlias
         // backgroundColor: Colors.red
@@ -50,47 +67,25 @@ class IdeaData {
         // primaryColor: Colors.black54
         primaryColor: colorScheme.primaryVariant
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        // fillColor: Colors.red,
-        hoverColor: Colors.red,
-        // fillColor: colorScheme.background,
-        fillColor: colorScheme.primary,
-        // fillColor: colorScheme.secondary,
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.2),
-          // borderRadius: BorderRadius.all(Radius.circular(7)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.2),
-          // borderRadius: BorderRadius.all(Radius.circular(2)),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 0.0),
-          // borderRadius: BorderRadius.all(Radius.circular(5)),
-        )
-      ),
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: colorScheme.background,
-        selectionColor: colorScheme.background,
-        selectionHandleColor: colorScheme.background,
-      )
+
+      primaryColor: colorScheme.primary,
+      // accentColor: colorScheme.secondary,
+      // canvasColor: colorScheme.background,
+      canvasColor: Colors.transparent,
+      scaffoldBackgroundColor: colorScheme.secondary,
+      backgroundColor: colorScheme.background,
+
+      // highlightColor: Colors.transparent,
+      // focusColor: focusColor,
     );
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
 
-    //NOTE: main -> 0xFFFFFFFF
-    primary: Colors.white,
-    // primary: Color(0xFFF5F5F5),
-
-    //icon -> 0x8A000000
-    primaryVariant: Colors.black54,
-
-    // NOTE: scaffold -> 0xFFF5F5F5
-    // secondary: Colors.white,
-    // secondary: Color(0xFFF5F5F5),
-    secondary: Color(0xFFf2f2f2),
+    primary: Colors.white, //main -> 0xFFFFFFFF
+    primaryVariant: Colors.black54, //icon -> 0x8A000000
+    // secondary: Color(0xFFF5F5F5), //scaffold -> 0xFFF5F5F5
+    secondary: Colors.white, //scaffold -> 0xFFF5F5F5
     // secondaryVariant: Color(0xFFFFFFFF),
     secondaryVariant: Colors.indigo,
     background: Color(0xFFD6D6D6),
@@ -101,7 +96,7 @@ class IdeaData {
     onPrimary: _lightFillColor,
     onSecondary: Color(0xFF322942),
     onSurface: Color(0xFF241E30),
-    brightness: Brightness.light
+    brightness: Brightness.light,
   );
 
   static const ColorScheme darkColorScheme = ColorScheme(
@@ -129,13 +124,13 @@ class IdeaData {
   static final _fontWeighBold = FontWeight.w700;
 
   static final TextTheme _textTheme = TextTheme(
+    headline4: TextStyle(fontWeight: _fontWeighBold, fontSize: 20.0),
     caption: TextStyle(fontWeight: _fontWeighSemiBold, fontSize: 16.0),
     subtitle1: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
-    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
     overline: TextStyle(fontWeight: _fontWeighMedium, fontSize: 12.0),
     bodyText1: TextStyle(fontWeight: _fontWeighRegular, fontSize: 14.0),
+    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
     bodyText2: TextStyle(fontWeight: _fontWeighRegular, fontSize: 16.0),
-    headline4: TextStyle(fontWeight: _fontWeighBold, fontSize: 20.0),
     headline6: TextStyle(fontWeight: _fontWeighBold, fontSize: 16.0),
     headline5: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
     button: TextStyle(fontWeight: _fontWeightThin,fontSize: 14.0,height: 1.5)

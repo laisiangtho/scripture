@@ -22,8 +22,8 @@ Locale _deviceLocale;
 Locale get deviceLocale => _deviceLocale;
 set deviceLocale(Locale locale) => _deviceLocale ??= locale;
 
-class IdeaTheme {
-  const IdeaTheme({
+class IdeaTheme{
+  IdeaTheme({
     this.themeMode,
     double textScaleFactor,
     this.customTextDirection,
@@ -34,7 +34,7 @@ class IdeaTheme {
   })  : _textScaleFactor = textScaleFactor,
         _locale = locale;
 
-  final ThemeMode themeMode;
+  ThemeMode themeMode;
   final double _textScaleFactor;
   final CustomTextDirection customTextDirection;
   final Locale _locale;
@@ -91,9 +91,7 @@ class IdeaTheme {
         brightness = WidgetsBinding.instance.window.platformBrightness;
     }
 
-    final overlayStyle = brightness == Brightness.dark
-        ? SystemUiOverlayStyle.light
-        : SystemUiOverlayStyle.dark;
+    final overlayStyle = brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
 
     return overlayStyle;
   }
@@ -131,14 +129,14 @@ class IdeaTheme {
 
   @override
   int get hashCode => hashValues(
-        themeMode,
-        _textScaleFactor,
-        customTextDirection,
-        locale,
-        timeDilation,
-        platform,
-        isTesting,
-      );
+    themeMode,
+    _textScaleFactor,
+    customTextDirection,
+    locale,
+    timeDilation,
+    platform,
+    isTesting,
+  );
 
   static IdeaTheme of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<_ModelBindingScope>();
@@ -149,11 +147,12 @@ class IdeaTheme {
     final scope = context.dependOnInheritedWidgetOfExactType<_ModelBindingScope>();
     scope.modelBindingState.updateModel(newModel);
   }
+
 }
 
 // Applies text IdeaTheme to a widget
-class IdeaTextOption extends StatelessWidget {
-  const IdeaTextOption({@required this.child});
+class ApplyTextOptions extends StatelessWidget {
+  const ApplyTextOptions({@required this.child});
 
   final Widget child;
 
@@ -169,11 +168,7 @@ class IdeaTextOption extends StatelessWidget {
       ),
       child: child,
     );
-    return textDirection == null
-        ? widget
-        : Directionality(
-            textDirection: textDirection,
-            child: widget,
-          );
+
+    return textDirection == null? widget : Directionality(textDirection: textDirection, child: widget);
   }
 }
