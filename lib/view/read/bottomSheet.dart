@@ -221,14 +221,14 @@ class _BottomSheetView extends _BottomSheetState {
         controller: controller,
         physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         slivers: <Widget>[
-          // new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar)),
-          new SliverPersistentHeader(pinned: true, delegate: new ScrollBarDelegate(_bar,minHeight: height, maxHeight: height)),
+          // new SliverPersistentHeader(pinned: true, delegate: new ScrollHeaderDelegate(_bar)),
+          new SliverPersistentHeader(pinned: true, delegate: new ScrollHeaderDelegate(_bar,minHeight: height, maxHeight: height)),
 
           // ???: somehow this prevent struggling from overscroll, need to improve but not possible flutter fixed???
           // SliverLayoutBuilder(
           //   builder: (BuildContext context, SliverConstraints constraint) {
           //     return new SliverPersistentHeader(
-          //       delegate: new ScrollBarDelegate(
+          //       delegate: new ScrollHeaderDelegate(
           //         (BuildContext context,double offset,bool overlaps, double stretch,double shrink) => TabBarView(
           //           controller: tabController,
           //           physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -341,7 +341,7 @@ class _BottomSheetView extends _BottomSheetState {
           onPressed:hasVerseSelection?widget.verseSelectionCopy:null,
           // child: Text('Compare ${verseSelectionList.length}'),
           child: Stack(
-            clipBehavior: Clip.hardEdge,
+            clipBehavior: Clip.none,
             fit: StackFit.passthrough,
             children: <Widget>[
               Icon(CustomIcon.copy, size: 22),
