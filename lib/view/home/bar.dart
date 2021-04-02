@@ -1,7 +1,3 @@
-// import 'package:bible/component.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/cupertino.dart';
-
 part of 'main.dart';
 
 mixin _Bar on _State {
@@ -9,83 +5,110 @@ mixin _Bar on _State {
     return new SliverPersistentHeader(
       pinned: true,
       floating:false,
-      delegate: new ScrollPageBarDelegate(Navigator.canPop(context)?_barPopup:_barPage,maxHeight: widget.barMaxHeight)
-      // delegate: new ScrollPageBarDelegate(_barPopup,maxHeight: widget.barMaxHeight)
+      delegate: new ScrollHeaderDelegate(
+        Navigator.canPop(context)?_barPopup:_barMain,
+        maxHeight: widget.barMaxHeight
+      )
+    );
+  }
+
+  Widget _barDecoration({double stretch, Widget child}){
+    return Container(
+      decoration: BoxDecoration(
+        // color: this.backgroundColor??Theme.of(context).primaryColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: new BorderRadius.vertical(
+          bottom: Radius.elliptical(3, 2)
+        ),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 0.0,
+            // color: Colors.black38,
+            color: Theme.of(context).backgroundColor.withOpacity(stretch >= 0.5?stretch:0.0),
+            spreadRadius: 0.7,
+            offset: Offset(0.5, .1),
+          )
+        ]
+      ),
+      child: child
     );
   }
 
   Widget _barPopup(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
-    return Stack(
-      children: <Widget>[
-        Align(
-          alignment: Alignment(-.95,0),
-          child: CupertinoButton(
-            onPressed: () => Navigator.of(context).pop(),
-            padding: EdgeInsets.zero,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                new Icon(
-                  // Icons.arrow_back_ios,
-                  CustomIcon.left_open_big,
-                  // size: 27,
-                ),
-                Text(widget.title??'Back')
-              ],
-            )
+    return _barDecoration(
+      stretch: stretch,
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment(-.95,0),
+            child: CupertinoButton(
+              onPressed: () => Navigator.of(context).pop(),
+              padding: EdgeInsets.zero,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  new Icon(
+                    // Icons.arrow_back_ios,
+                    CustomIcon.left_open_big,
+                    // size: 27,
+                  ),
+                  Text(widget.title??'Back')
+                ],
+              )
+            ),
           ),
-        ),
-        // if (widget.title != null)Align(
-        //   // alignment: Alignment.lerp(Alignment(-0.2,0.5),Alignment(-0.5,-.4), stretch),
-        //   alignment: Alignment(-.6,0),
-        //   child: _barTitle(shrink)
-        // ),
-        Align(
-          alignment: Alignment(.95,0),
-          child: _barSortButton(),
-        ),
-      ]
+          // if (widget.title != null)Align(
+          //   // alignment: Alignment.lerp(Alignment(-0.2,0.5),Alignment(-0.5,-.4), stretch),
+          //   alignment: Alignment(-.6,0),
+          //   child: _barTitle(shrink)
+          // ),
+          Align(
+            alignment: Alignment(.95,0),
+            child: _barSortButton(),
+          ),
+        ]
+      )
     );
   }
 
-
-  Widget _barPage(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
-    // double stretch = percentage;
-    // double shrink = percentage;
-    return Stack(
-      children: <Widget>[
-        // Align(
-        //   alignment: Alignment.lerp(Alignment(0.5,0),Alignment(-0.7,0), stretch),
-        //   child:Transform.rotate(
-        //     angle:6*shrink,
-        //     child: Container(
-        //       child: Text(core.version),
-        //       padding: EdgeInsets.all(2),
-        //       decoration: BoxDecoration(
-        //         color: Theme.of(context).backgroundColor,
-        //         borderRadius: new BorderRadius.all(Radius.circular(3))
-        //       )
-        //     )
-        //   )
-        // ),
-        Align(
-          alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,-.1), stretch),
-          // alignment: Alignment(-.9,0),
-          child: _barTitle(shrink)
-        ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: <Widget>[
-        //     _barSortButton()
-        //   ]
-        // ),
-        Align(
-          alignment: Alignment(.95,-1),
-          child: _barSortButton(),
-        ),
-      ]
+  Widget _barMain(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
+    return _barDecoration(
+      stretch: stretch,
+      child: Stack(
+        children: <Widget>[
+          // Align(
+          //   alignment: Alignment.lerp(Alignment(0.5,0),Alignment(-0.7,0), stretch),
+          //   child:Transform.rotate(
+          //     angle:6*shrink,
+          //     child: Container(
+          //       child: Text(core.version),
+          //       padding: EdgeInsets.all(2),
+          //       decoration: BoxDecoration(
+          //         color: Theme.of(context).backgroundColor,
+          //         borderRadius: new BorderRadius.all(Radius.circular(3))
+          //       )
+          //     )
+          //   )
+          // ),
+          Align(
+            alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,-.1), stretch),
+            // alignment: Alignment(-.9,0),
+            child: _barTitle(shrink)
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   children: <Widget>[
+          //     _barSortButton()
+          //   ]
+          // ),
+          Align(
+            alignment: Alignment(.95,-1),
+            child: _barSortButton(),
+          ),
+        ]
+      )
     );
   }
 
