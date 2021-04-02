@@ -1,7 +1,7 @@
 part of 'root.dart';
 
-class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
-  ScrollBarDelegate(
+class ScrollHeaderDelegate extends SliverPersistentHeaderDelegate {
+  ScrollHeaderDelegate(
     this.builder,
     {
       this.minHeight:kToolbarHeight, this.maxHeight:kToolbarHeight,
@@ -14,8 +14,8 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
   final Function builder;
 
   @override
-  // bool shouldRebuild(ScrollBarDelegate oldDelegate) => maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight;
-  bool shouldRebuild(ScrollBarDelegate oldDelegate) => true;
+  // bool shouldRebuild(ScrollHeaderDelegate oldDelegate) => maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight;
+  bool shouldRebuild(ScrollHeaderDelegate oldDelegate) => true;
 
   double get _min => minHeight??kToolbarHeight;
   double get _max => maxHeight??kToolbarHeight;
@@ -29,10 +29,17 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
 
+  double stretchDouble (double shrinkOffset) => (shrinkOffset/maxExtent).toDouble();
+  double shrinkDouble (double stretch) => (1.0 - stretch).toDouble();
+
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent){
-    double stretch = (shrinkOffset/maxExtent).toDouble();
-    double shrink = (1.0 - stretch).toDouble();
+    double stretch = stretchDouble(shrinkOffset);
+    double shrink = shrinkDouble(stretch);
+
+    // bool isOverlaps = kToolbarHeight <= shrinkOffset;
+    // double stretch = (shrinkOffset/maxExtent).toDouble();
+    // double shrink = (1.0 - stretch).toDouble();
     return new SizedBox.expand(
       child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
     );
@@ -40,47 +47,48 @@ class ScrollBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 
-class ScrollPageBarDelegate extends ScrollBarDelegate {
-  ScrollPageBarDelegate(
-    this.builder,
-    {
-      this.minHeight, this.maxHeight,
-      this.backgroundColor
-    }
-  ) : super(null);
-  final double minHeight;
-  final double maxHeight;
-  final Color backgroundColor;
-  final Function builder;
+// class ScrollPageBarDelegate extends ScrollHeaderDelegate {
+//   ScrollPageBarDelegate(
+//     this.builder,
+//     {
+//       this.minHeight, this.maxHeight,
+//       this.backgroundColor
+//     }
+//   ) : super(null);
+//   final double minHeight;
+//   final double maxHeight;
+//   final Color backgroundColor;
+//   final Function builder;
 
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+//   @override
+//   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
 
-    double stretch = (shrinkOffset/maxExtent).toDouble();
-    double shrink = (1.0 - stretch).toDouble();
-    return Container(
-      decoration: BoxDecoration(
-        color: this.backgroundColor??Theme.of(context).primaryColor,
-        borderRadius: new BorderRadius.vertical(
-          bottom: Radius.elliptical(3, 2)
-        ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            // color: Colors.black38,
-            color: Theme.of(context).backgroundColor,
-            spreadRadius: 0.7,
-            offset: Offset(0.5, .1),
-          )
-        ]
-      ),
-      child: new SizedBox.expand(
-        child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
-      )
-    );
-  }
+//     double stretch = stretchDouble(shrinkOffset);
+//     double shrink = shrinkDouble(stretch);
 
-}
+//     return Container(
+//       decoration: BoxDecoration(
+//         // color: this.backgroundColor??Theme.of(context).primaryColor,
+//         color: Theme.of(context).scaffoldBackgroundColor,
+//         borderRadius: new BorderRadius.vertical(
+//           bottom: Radius.elliptical(3, 2)
+//         ),
+//         boxShadow: [
+//           BoxShadow(
+//             blurRadius: 0.0,
+//             // color: Colors.black38,
+//             color: Theme.of(context).backgroundColor,
+//             spreadRadius: 0.7,
+//             offset: Offset(0.5, .1),
+//           )
+//         ]
+//       ),
+//       child: new SizedBox.expand(
+//         child: builder(context,shrinkOffset,overlapsContent,shrink,stretch)
+//       )
+//     );
+//   }
+// }
 
 // child: DecoratedBox(
 //         decoration: BoxDecoration(

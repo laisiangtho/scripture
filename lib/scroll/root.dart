@@ -8,4 +8,4 @@ import 'package:flutter/rendering.dart';
 part 'scrollExtension.dart';
 part 'scrollWidgetPage.dart';
 part 'scrollWidgetBottom.dart';
-part 'scrollWidgetBar.dart';
+part 'scrollHeader.dart';
