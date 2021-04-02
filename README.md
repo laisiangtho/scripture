@@ -107,6 +107,19 @@ git push
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
 
+## Re-Useable
+
+- [`idea`](#idea)
+- [`scroll`](#scroll)
+
+### idea
+
+... Top layer responsible for theme color and font-size
+
+### scroll
+
+... Primary view scroll gesture for bar, body bottom
+
 ## How would I clone correctly
 
 All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
