@@ -1,9 +1,10 @@
 name: bible
 description: the Holy Bible in languages
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+# Remove this line to publish to pub.dev
+publish_to: 'none'
 
-# version: 1.0.4-beta.1+44
+# Previous version: 1.0.4-beta.1+44
 version: 1.0.4+44
 
 environment:
@@ -15,7 +16,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
-  # LLocal lidea package, only in development
+  # Local lidea package, development only
   lidea:
     path: ../lidea
   # Github lidea package
@@ -26,13 +27,7 @@ dependencies:
 
   # Custom
   # hive_flutter: ^1.0.0
-  # package_info: ^2.0.0
-  # path_provider: ^2.0.1
-  # http: ^0.13.1
-  # firebase_core: ^1.0.2
-  # firebase_analytics: ^7.0.1
   share: ^2.0.1
-  # flutter_reorderable_list: ^0.1.4
   flutter_reorderable_list: ^1.0.0
   # flutter_tts: ^1.2.7
 
@@ -47,9 +42,6 @@ flutter:
     - assets/book.json
 
   fonts:
-    # - family: Mm3Web
-    #   fonts:
-    #     - asset: assets/fonts/Mm3Web_V3.000.ttf
     - family: Lato
       fonts:
         - asset: assets/fonts/Lato-Thin.ttf
