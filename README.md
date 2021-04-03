@@ -111,6 +111,7 @@ git push
 
 - [`idea`](#idea)
 - [`scroll`](#scroll)
+- [`util`](#util)
 
 ### idea
 
@@ -119,6 +120,10 @@ git push
 ### scroll
 
 ... Primary view scroll gesture for bar, body bottom
+
+### util
+
+... reading and writing file
 
 ## How would I clone correctly
 
