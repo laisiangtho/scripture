@@ -30,6 +30,17 @@ class View extends _State with _Bar, _Refresh, _Info {
 
   @override
   Widget build(BuildContext context) {
+    if (Navigator.canPop(context)){
+      return Scaffold(
+        body: SafeArea(
+          child: _body()
+        )
+      );
+    }
+    return _body();
+  }
+
+  Widget _body() {
     return ScrollPage(
       key: scaffoldKey,
       controller: controller,
@@ -42,14 +53,6 @@ class View extends _State with _Bar, _Refresh, _Info {
       )
     );
   }
-
-  // Widget _reorder() {
-  //   return ScrollPage(
-  //     controller: controller,
-  //     // depth:1,
-  //     child: _view(),
-  //   );
-  // }
 
   // Widget _nested() {
   //   return NestedScrollView(
