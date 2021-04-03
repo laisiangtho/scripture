@@ -58,7 +58,7 @@ class Scripture{
   bool get isLoaded => (bible != null && bible.info.identify == this.identify);
 
   Future<void> loader() async => UtilDocument.exists(this.fileName).then((String fileName) {
-    if (fileName == null) {
+    if (fileName.isEmpty) {
       return download();
     } else {
       return read();
@@ -95,7 +95,7 @@ class Scripture{
   });
 
   Future<void> updateAvailability() => UtilDocument.exists(this.fileName).then((String e) {
-    if (e == null) {
+    if (e.isEmpty) {
       // NOTE: bible not Available, therefore download it
       return download();
     } else {

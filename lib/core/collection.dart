@@ -8,7 +8,7 @@ abstract class _Collection with _Configuration, _Utility {
   Future<Collection> readCollection() async {
     if (collection == null) {
       await UtilDocument.exists(assetsCollection).then((String hasExists) async {
-        if (hasExists == null){
+        if (hasExists.isEmpty){
           await UtilDocument.loadBundleAsString(join(assetsFolder,assetsCollection)).then(_parseCollection);
           await writeCollection();
         } else {
@@ -23,7 +23,7 @@ abstract class _Collection with _Configuration, _Utility {
 
   Future<bool> deleteCollection() async => await UtilDocument.exists(assetsCollection).then(
     (String hasExists) async{
-      return (hasExists == null)?false:await UtilDocument.delete(assetsCollection);
+      return (hasExists.isEmpty)?false:await UtilDocument.delete(assetsCollection);
     }
   );
 
