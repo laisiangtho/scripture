@@ -8,12 +8,13 @@ import 'package:flutter/rendering.dart';
 
 import 'package:share/share.dart';
 
-import 'package:scriptive/core.dart';
-import 'package:scriptive/scroll.dart';
-import 'package:scriptive/widget.dart';
-import 'package:scriptive/icon.dart';
+import 'package:lidea/scroll.dart';
 
-import 'package:scriptive/view/home/main.dart' as Home;
+import 'package:bible/core.dart';
+import 'package:bible/widget.dart';
+import 'package:bible/icon.dart';
+
+import 'package:bible/view/home/main.dart' as Home;
 
 part 'view.dart';
 part 'bar.dart';

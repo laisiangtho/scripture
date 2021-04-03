@@ -8,10 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 
-import 'package:scriptive/util/engine.dart';
-import 'package:scriptive/util/analytics.dart';
+import 'package:lidea/engine.dart';
+import 'package:lidea/analytics.dart';
 
-import 'package:scriptive/model.dart';
+import 'package:bible/model.dart';
 
 part 'configuration.dart';
 part 'scripture.dart';

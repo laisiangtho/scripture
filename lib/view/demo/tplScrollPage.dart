@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/cupertino.dart';
 
-import 'package:scriptive/scroll.dart';
+import 'package:lidea/scroll.dart';
 // import 'package:bible/widget.dart';
 // import 'package:bible/core.dart';
 // import 'package:bible/icon.dart';

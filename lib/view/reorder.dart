@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart' hide ReorderableList;
 import 'package:flutter/material.dart' hide ReorderableList;
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
-import 'package:scriptive/scroll.dart';
+import 'package:lidea/scroll.dart';
 class MainView extends StatefulWidget {
   MainView({Key key, this.title}) : super(key: key);
 

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:scriptive/scroll.dart';
-import 'package:scriptive/widget.dart';
-import 'package:scriptive/core.dart';
-import 'package:scriptive/icon.dart';
+import 'package:lidea/scroll.dart';
+
+import 'package:bible/core.dart';
+import 'package:bible/widget.dart';
+import 'package:bible/icon.dart';
 
 part 'view.dart';
 part 'data.dart';

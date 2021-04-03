@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:scriptive/scroll.dart';
-import 'package:scriptive/core.dart';
-import 'package:scriptive/widget.dart';
+import 'package:lidea/scroll.dart';
+import 'package:bible/core.dart';
+import 'package:bible/widget.dart';
 
 class TestView extends StatefulWidget {
   @override

@@ -3,12 +3,12 @@
 import 'package:flutter/cupertino.dart' hide ReorderableList;
 import 'package:flutter/material.dart' hide ReorderableList;
 
-import 'package:scriptive/scroll.dart';
-import 'package:scriptive/core.dart';
-import 'package:scriptive/widget.dart';
-import 'package:scriptive/icon.dart';
+import 'package:lidea/scroll.dart';
+import 'package:lidea/idea.dart';
 
-import 'package:scriptive/idea/root.dart';
+import 'package:bible/core.dart';
+import 'package:bible/widget.dart';
+import 'package:bible/icon.dart';
 
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 
