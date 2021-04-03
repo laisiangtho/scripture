@@ -44,6 +44,7 @@ class Core extends _Collection with _Bible, _Bookmark, _Speech {
       debugPrint('error Parallel $e');
     });
 
+    // ????
     // await initSpeech().catchError((e){
     //   print('error speech $e');
     // });
