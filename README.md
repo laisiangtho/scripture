@@ -79,7 +79,7 @@ cd C:\dev\android-sdk\platform-tools
 adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
 ```
 
-## Directory
+### Directory
 
 - (production) android/key.properties
 - (development) android/local.properties
@@ -87,7 +87,7 @@ adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
 - android\gradle.properties
 - android\app\build.gradle
 
-## Android->release
+### Android->release
 
   versionCode android-arm
   versionCode++ android-arm64
