@@ -40,11 +40,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        checkReleaseBuilds false
-    }
-
     defaultConfig {
         applicationId "com.laisiangtho.bible"
         minSdkVersion 16
@@ -73,12 +68,6 @@ android {
             shrinkResources true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // dependencies {
-            //     implementation 'com.android.support:support-fragment:28.0.0'
-            // }
-            // debuggable false
-            // jniDebuggable false
-            // renderscriptDebuggable false
             zipAlignEnabled true
         }
     }
@@ -90,10 +79,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    // androidTestImplementation 'androidx.test:runner:1.1.1'
-    // androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
-    // implementation platform('com.google.firebase:firebase-bom:26.8.0')
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation 'com.google.firebase:firebase-analytics'
 }
