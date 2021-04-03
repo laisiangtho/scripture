@@ -2,6 +2,12 @@
 
 ## 1.0.4+44
 
+Improve
+
+- Accessibility (UI)
+- Dark mode
+- Performance (state, search query)
+
 Update
 
 - cupertino_icons: ^1.0.2
