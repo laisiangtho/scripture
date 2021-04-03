@@ -129,7 +129,25 @@ git push
 
 All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
 
-### for Android
+There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to `https://github.com/laisiangtho/lidea` as a seperated package. But they will work the same as bundle scripts.
+
+In `pubspec.yaml` remove local package `lidea` and uncomment git
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  ...
+  # Local lidea package, only in development
+  # lidea:
+  #   path: ../lidea
+  # Github lidea package, uncomments lines below
+  lidea:
+    git:
+      url: git://github.com/laisiangtho/lidea.git
+      ref: main
+  ...
+```
 
 ...you will need your own configuration in the following files
 
