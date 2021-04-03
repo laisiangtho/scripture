@@ -41,7 +41,7 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
   final readKey = UniqueKey();
   final noteKey = UniqueKey();
   final searchKey = UniqueKey();
-  final moreKey = UniqueKey();
+  // final moreKey = UniqueKey();
 
   List<Widget> pageView = [];
   List<ModelPage> pageButton = [];
@@ -126,9 +126,6 @@ class _MainState extends State<MainView> with TickerProviderStateMixin {
           case ConnectionState.none:
             return ScreenLauncher(message:'getting ready...');
             break;
-          // case ConnectionState.done:
-          //   return _start();
-          //   break;
           default:
             return _start();
         }
