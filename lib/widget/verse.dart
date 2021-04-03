@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scriptive/inherited.dart';
-import 'package:scriptive/model.dart';
+import 'package:bible/inherited.dart';
+import 'package:bible/model.dart';
 
 class WidgetVerse extends StatelessWidget {
   final VERSE verse;
