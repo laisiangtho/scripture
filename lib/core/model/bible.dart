@@ -136,7 +136,7 @@ class CHAPTER {
 }
 
 class VERSE {
-  final GlobalKey key;
+  final dynamic key;
   final int id;
   final String name;
   final String text;
@@ -153,7 +153,7 @@ class VERSE {
     this.merge,
   });
 
-  factory VERSE.fromJSON(GlobalKey key,int id,String name,Map<String, dynamic> o) {
+  factory VERSE.fromJSON(dynamic key,int id,String name,Map<String, dynamic> o) {
     return VERSE(
       key:key,
       id:id,

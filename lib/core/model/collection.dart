@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 part 'bible.dart';
 part 'setting.dart';
-part 'page.dart';
 
 // NOTE: BibleLanguage BibleBook, BibleDigit, BibleBookName, Bible BibleStory, BibleCommentary
 class Collection {
