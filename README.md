@@ -51,7 +51,7 @@ In case of wondering what "**Lai Siangtho**" is or means, I would like to give y
 
 Lai Siangtho is not just providing builded/packaged app. But opensource that you would have you own making of the holy Bible.
 
-Take a look: https://en.wikipedia.org/wiki/Zo_people
+Take a look: [https://en.wikipedia.org/wiki/Zo_people]
 
 ## Android
 
@@ -101,12 +101,6 @@ git commit -a -m "commit" (do not need commit message either)
 git push
 ```
 
-[playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
-[playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
-[Home]: https://github.com/laisiangtho/development
-
-[logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
-
 ## Re-Useable
 
 - [`idea`](#idea)
@@ -129,7 +123,7 @@ git push
 
 All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
 
-There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to `https://github.com/laisiangtho/lidea` as a seperated package. But they will work the same as bundle scripts.
+There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
 
 In `pubspec.yaml` remove local package `lidea` and uncomment git
 
@@ -174,3 +168,10 @@ dependencies:
 ### for iOS
 
 - ?
+
+[playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
+[playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
+[Home]: https://github.com/laisiangtho/development
+[lidea]: https://github.com/laisiangtho/lidea
+
+[logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"

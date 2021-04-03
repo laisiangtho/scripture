@@ -11,6 +11,8 @@ import 'package:share/share.dart';
 import 'package:lidea/scroll.dart';
 
 import 'package:bible/core.dart';
+import 'package:bible/inherited.dart';
+import 'package:bible/model.dart';
 import 'package:bible/widget.dart';
 import 'package:bible/icon.dart';
 
