@@ -7,39 +7,31 @@ abstract class _Collection with _Configuration, _Utility {
 
   Future<Collection> readCollection() async {
     if (collection == null) {
-      await docsExists(assetsCollection).then((String hasExists) async {
+      await UtilDocument.exists(assetsCollection).then((String hasExists) async {
         if (hasExists == null){
-          await loadBundleAsString(join(assetsFolder,assetsCollection)).then(_parseCollection);
+          await UtilDocument.loadBundleAsString(join(assetsFolder,assetsCollection)).then(_parseCollection);
           await writeCollection();
         } else {
-          await docsRead(assetsCollection).then(_parseCollection);
+          await UtilDocument.readAsString(assetsCollection).then(_parseCollection);
         }
       });
-      // await docsExists(assetsCollection).then((bool hasExists) async {
-      //   if (hasExists){
-      //     await docsRead(assetsCollection).then(_parseCollection);
-      //   } else {
-      //     await loadBundleAsString(join(assetsFolder,assetsCollection)).then(_parseCollection);
-      //     await writeCollection();
-      //   }
-      // });
     }
     return collection;
   }
 
-  Future<void> writeCollection() async => await docsWrite(assetsCollection, encodeJSON(collection.toJSON()));
+  Future<void> writeCollection() async => await UtilDocument.writeAsString(assetsCollection, UtilDocument.encodeJSON(collection.toJSON()));
 
-  Future<bool> deleteCollection() async => await docsExists(assetsCollection).then(
+  Future<bool> deleteCollection() async => await UtilDocument.exists(assetsCollection).then(
     (String hasExists) async{
-      return (hasExists == null)?false:await docsDelete(assetsCollection);
+      return (hasExists == null)?false:await UtilDocument.delete(assetsCollection);
     }
   );
 
   // Future<void> updateCollectionTest() async => Future.delayed(Duration(seconds: 3));
-  Future<void> updateCollection() async => requestHTTP(_liveBookJSON.split('').reversed.join()).then(
+  Future<void> updateCollection() async => UtilClient.request(_liveBookJSON.split('').reversed.join()).then(
     (res) async {
       // Map<String, dynamic> parsed = decodeJSON(res.body);
-      Map<String, dynamic> parsed = decodeJSON(res);
+      Map<String, dynamic> parsed = UtilDocument.decodeJSON(res);
       // NOTE: change of collection bible model
       parsed['bible'] = (parsed['book']??parsed['bible']);
       await parsed['bible'].forEach((e){

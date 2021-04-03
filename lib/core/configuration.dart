@@ -4,9 +4,9 @@ List<DefinitionBible> userBibleList = [];
 
 mixin _Configuration  {
   String appName = 'Lai Siangtho';
-  String packageName = '';
-  String version = '';
-  String buildNumber = '';
+  String packageName = '?';
+  String version = '1.0.4';
+  String buildNumber = '44';
   final String appDescription = 'the Holy Bible in languages';
 
   // final String appAnalytics = 'UA-18644721-1';
@@ -46,4 +46,16 @@ mixin _Configuration  {
   // );
   String digit(dynamic e) => scripturePrimary.digit(e);
   // int get uniqueIdentify => new DateTime.now().millisecondsSinceEpoch;
+}
+
+Collection parseCollectionCompute(dynamic response) {
+  Map<String, dynamic> parsed = (response is String)?UtilDocument.decodeJSON(response):response;
+  return Collection.fromJSON(parsed)..bible.sort(
+    (a, b) => a.order.compareTo(b.order)
+  );
+}
+
+DefinitionBible parseBibleCompute(String response){
+  Map<String, dynamic> parsed = UtilDocument.decodeJSON(response);
+  return DefinitionBible.fromJSON(parsed);
 }

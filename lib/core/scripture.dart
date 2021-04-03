@@ -57,7 +57,7 @@ class Scripture{
 
   bool get isLoaded => (bible != null && bible.info.identify == this.identify);
 
-  Future<void> loader() async => docsExists(this.fileName).then((String fileName) {
+  Future<void> loader() async => UtilDocument.exists(this.fileName).then((String fileName) {
     if (fileName == null) {
       return download();
     } else {
@@ -72,21 +72,21 @@ class Scripture{
     this.availability = (bible.info.version < 1)?1:bible.info.version;
   }
 
-  Future<void> download() => requestHTTP(this.url).then((body) async{
+  Future<void> download() => UtilClient.request(this.url).then((body) async{
     await _parseDefinitionBible(body);
-    await docsWrite(this.fileName,encodeJSON(bible.toJSON()));
+    await UtilDocument.writeAsString(this.fileName,UtilDocument.encodeJSON(bible.toJSON()));
     // this.identify = id;
     // this.analyticsShare('download', id);
   });
 
-  Future<void> read() => docsRead(this.fileName).then((e) async{
+  Future<void> read() => UtilDocument.readAsString(this.fileName).then((e) async{
     await _parseDefinitionBible(e);
   }).catchError((e){
     // NOTE: Future.error
     throw e;
   });
 
-  Future<void> delete() => docsDelete(this.fileName).then((_) async {
+  Future<void> delete() => UtilDocument.delete(this.fileName).then((_) async {
     this.availability = 0;
     // NOTE: since its deleted from storage, have to remove it from session
     int index = userBibleList.indexWhere((DefinitionBible e) => e.info.identify == this.identify);
@@ -94,7 +94,7 @@ class Scripture{
     // this.analyticsShare('delete', id);
   });
 
-  Future<void> updateAvailability() => docsExists(this.fileName).then((String e) {
+  Future<void> updateAvailability() => UtilDocument.exists(this.fileName).then((String e) {
     if (e == null) {
       // NOTE: bible not Available, therefore download it
       return download();

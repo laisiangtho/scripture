@@ -1,34 +1,28 @@
-import 'dart:async';
-import 'dart:convert' show json;
-import 'dart:io';
+// import 'dart:async';
 // import 'dart:math';
-import 'package:package_info/package_info.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
 
 // import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+import 'package:scriptive/util/engine.dart';
+import 'package:scriptive/util/analytics.dart';
 
 import 'package:scriptive/model.dart';
 
 part 'configuration.dart';
 part 'scripture.dart';
-part 'engine.dart';
+// part 'engine.md';
 part 'collection.dart';
 part 'bible.dart';
 part 'bookmark.dart';
-part 'mock.dart';
 part 'utility.dart';
 part 'speech.dart';
 
-class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock {
+class Core extends _Collection with _Bible, _Bookmark, _Speech {
   // Creates instance through `_internal` constructor
   static Core _instance = new Core.internal();
   Core.internal();
@@ -39,22 +33,15 @@ class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock {
   static Core get instance => _instance;
 
   Future<void> init() async {
-    await appInfo.then((PackageInfo packageInfo) {
-      this.appName = packageInfo.appName;
-      this.packageName = packageInfo.packageName;
-      this.version = packageInfo.version;
-      this.buildNumber = packageInfo.buildNumber;
-    });
-
     await readCollection();
     switchIdentifyPrimary();
     await getBiblePrimary.catchError((e){
-      print('error Primary $e');
+      debugPrint('error Primary $e');
     });
 
     switchIdentifyParallel();
     await getBibleParallel.catchError((e){
-      print('error Parallel $e');
+      debugPrint('error Parallel $e');
     });
 
     // await initSpeech().catchError((e){
@@ -80,5 +67,4 @@ class Core extends _Collection with _Bible, _Bookmark, _Speech, _Mock {
     // print('analyticsReading ${e.name} ${e.shortname} book:$bookName chapter: $chapterName');
     if (e != null) this.analyticsBook('${e.name} (${e.shortname})', this.bookName, this.chapterName);
   }
-
 }
