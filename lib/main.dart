@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:scriptive/idea/root.dart';
-import 'package:scriptive/view/laisiangtho.dart';
-// import 'package:scriptive/view/myordbok.dart';
+import 'package:lidea/idea.dart';
+import 'package:bible/view/app.dart';
 
-void main() => runApp(Scriptive());
+void main() => runApp(LaiSiangtho());
 
-class Scriptive extends StatelessWidget {
-  Scriptive({Key key, this.initialRoute}) : super(key: key);
+class LaiSiangtho extends StatelessWidget {
+  LaiSiangtho({Key key, this.initialRoute}) : super(key: key);
 
   final String initialRoute;
 
@@ -48,9 +47,6 @@ class Scriptive extends StatelessWidget {
         locale: IdeaTheme.of(context).locale,
         localeResolutionCallback: (locale, supportedLocales) => locale,
         initialRoute: initialRoute,
-        // onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<void>(
-        //   builder: (context) => MainView(key: key), settings: settings
-        // )
         onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<void>(
           builder: (context) => ApplyTextOptions(
             child: MainView(key: key),
