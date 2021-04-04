@@ -1,7 +1,6 @@
 part of 'main.dart';
 
 mixin _Suggest on _State, _Data {
-
   Widget suggest() {
     if (this.searchQuery.isEmpty) {
       return _suggestionKeyword();
@@ -249,5 +248,4 @@ mixin _Suggest on _State, _Data {
       )
     );
   }
-
 }

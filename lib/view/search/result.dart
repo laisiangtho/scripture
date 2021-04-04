@@ -1,9 +1,7 @@
 part of 'main.dart';
 
 mixin _Result on _State, _Data {
-
   Widget result() {
-
     if (this.searchQuery.isEmpty) {
       return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nin ',message:'verses');
     }
@@ -247,5 +245,4 @@ mixin _Result on _State, _Data {
       }
     );
   }
-
 }
