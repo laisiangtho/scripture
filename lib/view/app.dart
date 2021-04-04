@@ -18,13 +18,13 @@ part 'app.launcher.dart';
 final String appName = Core.instance.appName;
 // final Core appInstance = Core.instance;
 
-class MainView extends StatefulWidget {
-  MainView({Key key}) : super(key: key);
+class AppView extends StatefulWidget {
+  AppView({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _MainState();
 }
 
-class _MainState extends State<MainView> with TickerProviderStateMixin {
+class _MainState extends State<AppView> with TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   // final _navigator = GlobalKey<NavigatorState>();
   final pageController = PageController(keepPage: true);

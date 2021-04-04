@@ -49,7 +49,7 @@ class LaiSiangtho extends StatelessWidget {
         initialRoute: initialRoute,
         onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<void>(
           builder: (context) => ApplyTextOptions(
-            child: MainView(key: key),
+            child: AppView(key: key),
           ), settings: settings
         )
         // onGenerateRoute: RouteConfiguration.onGenerateRoute,
