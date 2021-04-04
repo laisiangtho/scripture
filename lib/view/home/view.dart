@@ -80,52 +80,6 @@ class View extends _State with _Bar, _Refresh, _Info {
       slivers: <Widget>[
         sliverPersistentHeader(),
         sliverRefresh(),
-        new SliverList(
-          delegate: new SliverChildListDelegate(
-            <Widget>[
-              // ElevatedButton(
-              //   child: Text("Dark"),
-              //   onPressed: () {
-
-              //     print('Dark');
-              //   }
-              // ),
-              Builder( builder: (context) {
-                return ElevatedButton(
-                  child: Text("Dark"),
-                  onPressed: () {
-                    // final abc = IdeaTheme.of(context).themeMode ==ThemeMode.dark?ThemeMode.light:ThemeMode.dark;
-                    // IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: abc));
-                    IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.dark));
-                  }
-                );
-              }),
-              Builder( builder: (context) {
-                return ElevatedButton(
-                  child: Text("Light"),
-                  onPressed: () {
-                    IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.light));
-                  }
-                );
-              }),
-              Builder( builder: (context) {
-                return ElevatedButton(
-                  child: Text("System"),
-                  onPressed: () {
-                    IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.system));
-                  }
-                );
-              }),
-              ElevatedButton(
-                child: Text("??"),
-                onPressed: () {
-                  print('Light');
-                }
-              ),
-
-            ]
-          )
-        ),
         new SliverPadding(
           padding: EdgeInsets.only(top:7.0,bottom: MediaQuery.of(context).padding.bottom+5.0),
           sliver: SliverAnimatedList(

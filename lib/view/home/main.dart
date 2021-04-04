@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart' hide ReorderableList;
 import 'package:flutter/material.dart' hide ReorderableList;
 
 import 'package:lidea/scroll.dart';
-import 'package:lidea/idea.dart';
 
 import 'package:bible/core.dart';
 import 'package:bible/model.dart';
