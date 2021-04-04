@@ -5,22 +5,28 @@ part 'setting.dart';
 // NOTE: BibleLanguage BibleBook, BibleDigit, BibleBookName, Bible BibleStory, BibleCommentary
 class Collection {
   final int version;
+  final CollectionSetting setting;
+  final List<CollectionKeyword> keyword;
   final List<CollectionBible> bible;
   final List<CollectionBookmark> bookmark;
-  final List<CollectionKeyword> keyword;
-  final CollectionSetting setting;
 
-  Collection({this.version,this.bible,this.bookmark, this.keyword,this.setting});
+  Collection({
+    this.version,
+    this.setting,
+    this.keyword,
+    this.bible,
+    this.bookmark
+  });
 
   factory Collection.fromJSON(Map<String, dynamic> o) {
     // NOTE: change of collection bible model
     return Collection(
       version: o['version'] as int,
+      setting: CollectionSetting.fromJSON(o['setting']),
+      keyword: o['keyword'].map<CollectionKeyword>((json) => CollectionKeyword.fromJSON(json)).toList(),
       // bible: o['bible'].map<CollectionBible>((json) => CollectionBible.fromJSON(json)).toList(),
       bible: (o['bible']??o['book']).map<CollectionBible>((json) => CollectionBible.fromJSON(json)).toList(),
       bookmark: o['bookmark'].map<CollectionBookmark>((json) => CollectionBookmark.fromJSON(json)).toList(),
-      keyword: o['keyword'].map<CollectionKeyword>((json) => CollectionKeyword.fromJSON(json)).toList(),
-      setting: CollectionSetting.fromJSON(o['setting'])
     );
   }
 
@@ -28,13 +34,28 @@ class Collection {
     // List bible = _collectionBook.map((e)=>e.toJSON()).toList();
     return {
       'version':this.version,
-      'bible':this.bible.map((e)=>e.toJSON()).toList(),
-      'bookmark':this.bookmark.map((e)=>e.toJSON()).toList(),
+      'setting':this.setting.toJSON(),
       'keyword':this.keyword.map((e)=>e.toJSON()).toList(),
-      'setting':this.setting.toJSON()
+      'bible':this.bible.map((e)=>e.toJSON()).toList(),
+      'bookmark':this.bookmark.map((e)=>e.toJSON()).toList()
     };
   }
 
+}
+
+class CollectionKeyword {
+  String word;
+  CollectionKeyword({this.word});
+
+  factory CollectionKeyword.fromJSON(String word) {
+    return CollectionKeyword(
+      word: word
+    );
+  }
+
+  String toJSON() {
+    return this.word;
+  }
 }
 
 class CollectionBookmark {
@@ -57,21 +78,6 @@ class CollectionBookmark {
     };
   }
 
-}
-
-class CollectionKeyword {
-  String word;
-  CollectionKeyword({this.word});
-
-  factory CollectionKeyword.fromJSON(String word) {
-    return CollectionKeyword(
-      word: word
-    );
-  }
-
-  String toJSON() {
-    return this.word;
-  }
 }
 
 // class CollectionBible<T> {
