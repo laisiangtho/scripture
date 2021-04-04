@@ -51,7 +51,7 @@ mixin _Bar on _State {
                 onPressed: inputCancel,
                 padding: EdgeInsets.zero,
                 minSize: 35.0,
-                child:Text('Cancel', maxLines: 1, style: TextStyle(color: Colors.black87,fontSize: 14))
+                child:Text('Cancel', maxLines: 1, style: TextStyle(fontSize: 14))
               ):Container()
             );
           })
