@@ -1,0 +1,1 @@
+export 'core/theme/data.dart';
