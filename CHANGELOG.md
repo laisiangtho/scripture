@@ -6,21 +6,26 @@ Improve
 
 - Accessibility (UI)
 - Dark mode
-- Performance (state, search query)
+- Performance (state, search, query)
+- Lighter (remove package)
+
+Change
+
+- redesign
 
 Update
 
 - cupertino_icons: ^1.0.2
-- package_info: ^2.0.0
 - path_provider: ^2.0.1
 - http: ^0.13.1
 - firebase_core: ^1.0.1
 - firebase_analytics: ^7.1.1
 - share: ^2.0.1
+
+Deprecated
+
 - flutter_reorderable_list: ^1.0.0
-
-deprecated
-
+- package_info: ^2.0.0
 - new list(): []
 - FlatButton: TextButton
 - RaisedButton: ElevatedButton
