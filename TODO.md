@@ -27,6 +27,9 @@
   - [x] future data before navigation, so it will not struggle the slide
   - [ ] hide bible, send to unwanted list
   - [ ] userHome
+  - [ ] agreement
+  - [ ] add custom bible
+    - [ ] share custom bible
 
 - [x] read -> chapter -> verse
   - [x] chapter list
@@ -88,3 +91,22 @@
 
 select_content
 content_type: New International Version (NIV), item_id
+
+I was looking for the answer too, it has turned out pretty easy.
+
+```dart
+void _onReorder(int oldIndex, int newIndex) {
+  if (oldIndex < newIndex) {
+    newIndex -= 1;
+  }
+  setState(() {
+    // this is required, before you modified your box;
+    final oldItem = itemsBox.getAt(oldIndex);
+    final newItem = itemsBox.getAt(newIndex);
+
+    // here you just swap this box item, oldIndex <> newIndex
+    itemsBox.putAt(oldIndex, newItem);
+    itemsBox.putAt(newIndex, oldItem);
+  });
+}
+```
