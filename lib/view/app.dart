@@ -1,7 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:lidea/scroll.dart';
+import 'package:lidea/provider.dart';
+import 'package:lidea/connectivity.dart';
+// import 'package:lidea/scroll.dart';
+import 'package:lidea/view.dart';
+
+// import 'package:bible/notifier.dart';
 import 'package:bible/core.dart';
 import 'package:bible/widget.dart';
 import 'package:bible/icon.dart';
@@ -10,78 +17,92 @@ import 'package:bible/view/home/main.dart' as Home;
 import 'package:bible/view/read/main.dart' as Read;
 import 'package:bible/view/note/main.dart' as Note;
 import 'package:bible/view/search/main.dart' as Search;
-// import 'package:lidea/view/demo/more/main.dart' as More;
-// import 'package:lidea/view/demo/myordbok/home/main.dart' as More;
+// import 'package:bible/view/more/main.dart' as more;
 
 part 'app.launcher.dart';
+part 'app.view.dart';
 
-final String appName = Core.instance.appName;
-// final Core appInstance = Core.instance;
-
-class AppView extends StatefulWidget {
-  AppView({Key key}) : super(key: key);
+class AppMain extends StatefulWidget {
+  AppMain({Key? key}) : super(key: key);
   @override
-  State<StatefulWidget> createState() => _MainState();
+  State<StatefulWidget> createState() => AppView();
 }
 
-class _MainState extends State<AppView> with TickerProviderStateMixin {
+abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  // final _navigator = GlobalKey<NavigatorState>();
   final pageController = PageController(keepPage: true);
   final _controller = ScrollController();
-  // final focusNode = FocusNode();
-  final core = Core();
+  // final core = Core();
+  final viewNotifyNavigation = NotifyNavigationButton.navigation;
 
-  final GlobalKey<Home.View> home = GlobalKey<Home.View>();
-  final GlobalKey<Read.View> read = GlobalKey<Read.View>();
-  final GlobalKey<Note.View> note = GlobalKey<Note.View>();
-  final GlobalKey<Search.View> search = GlobalKey<Search.View>();
-  // final GlobalKey<More.View> more = GlobalKey<More.View>();
-  final homeKey = UniqueKey();
-  final readKey = UniqueKey();
-  final noteKey = UniqueKey();
-  final searchKey = UniqueKey();
-  // final moreKey = UniqueKey();
+  // final GlobalKey<Home.View> _home = GlobalKey<Home.View>();
+  // final GlobalKey<Note.View> _note = GlobalKey<Note.View>();
+  // final GlobalKey<More.View> _more = GlobalKey<More.View>();
+  final _homeGlobal = GlobalKey<ScaffoldState>();
+  final _readGlobal = GlobalKey<ScaffoldState>();
+  final _noteGlobal = GlobalKey<ScaffoldState>();
+  final _searchGlobal = GlobalKey<ScaffoldState>();
 
-  List<Widget> pageView = [];
-  List<ModelPage> pageButton = [];
+  final _homeKey = UniqueKey();
+  final _readKey = UniqueKey();
+  final _noteKey = UniqueKey();
+  final _searchKey = UniqueKey();
 
-  Future<void> initiator;
+  final List<Widget> _pageView = [];
+  final List<ViewNavigationModel> _pageButton = [];
+
+  late Core core;
+  late Future<void> initiator;
+  late StreamSubscription<ConnectivityResult> connection;
 
   @override
   void initState() {
     super.initState();
+    // Provider.of<Core>(context, listen: false);
+    core = context.read<Core>();
     initiator = core.init();
-    if (pageView.length == 0){
-      pageButton = [
-        ModelPage(icon:CustomIcon.flag, name:"Home", description: "List of Holy Bible in many languages", key: home),
-        ModelPage(icon:CustomIcon.book_open, name:"Read", description: "Read bible by chapter", key: read),
-        ModelPage(icon:CustomIcon.list_nested, name:"Bookmark", description: "Bookmark list", key: note),
-        ModelPage(icon:CustomIcon.search, name:"Search", description: "Search bible", key: search),
-        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information/Working", key: more)
-      ];
-      pageView = [
-        WidgetKeepAlive(key:homeKey, child: new Home.Main(key: home,barMaxHeight:100)),
-        WidgetKeepAlive(key:readKey, child: new Read.Main(key: read)),
-        WidgetKeepAlive(key:noteKey, child: new Note.Main(key: note)),
-        WidgetKeepAlive(key:searchKey, child: new Search.Main(key: search)),
+    // initiator = new Future.delayed(new Duration(seconds: 1));
+    // connection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    //   // Got a new connectivity status!
+    //   // ConnectivityResult.mobile
+    //   // ConnectivityResult.wifi
+    //   // ConnectivityResult.none
+    //   debugPrint(result);
+    // });
+    if (_pageView.length == 0){
+      _pageButton.addAll([
+        // ViewNavigationModel(icon:MyOrdbokIcon.chapter_previous, name:"Previous", description: "Previous search", action: onPreviousHistory() ),
+
+        ViewNavigationModel(icon:LaiSiangthoIcon.flag, name:"Home", description: "List of Holy Bible in many languages", key: 0),
+        ViewNavigationModel(icon:LaiSiangthoIcon.book_open, name:"Read", description: "Read bible by chapter", key: 1),
+        ViewNavigationModel(icon:LaiSiangthoIcon.list_nested, name:"Bookmark", description: "Bookmark list", key: 2),
+        ViewNavigationModel(icon:LaiSiangthoIcon.search, name:"Search", description: "Search bible", key: 3),
+        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information/Working", key: 4)
+      ]);
+      _pageView.addAll([
+
+        WidgetKeepAlive(key:_homeKey, child: Home.Main(key: _homeGlobal)),
+        WidgetKeepAlive(key:_readKey, child: Read.Main(key: _readGlobal)),
+        WidgetKeepAlive(key:_noteKey, child: Note.Main(key: _noteGlobal)),
+        WidgetKeepAlive(key:_searchKey, child: Search.Main(key: _searchGlobal)),
         // WidgetKeepAlive(key:moreKey, child: new More.Main(key: more)),
-      ];
+      ]);
     }
 
-    _controller.master.bottom.pageListener((int index){
+    viewNotifyNavigation.addListener((){
+      final index = viewNotifyNavigation.value;
       // navigator.currentState.pushReplacementNamed(index.toString());
 
-      ModelPage page = pageButton[index];
+      ViewNavigationModel page = _pageButton.firstWhere((e) => e.key == index, orElse: () => _pageButton.first);
+      core.analyticsScreen(page.name,'${page.name}State');
       // NOTE: check State isMounted
-      if(page.key.currentState != null){
-        page.key.currentState.setState(() {});
-      }
+      // if(page.key.currentState != null){
+      //   page.key.currentState.setState(() {});
+      // }
       pageController.jumpToPage(index);
 
-      core.analyticsScreen(page.name,'${page.name}State');
-
       // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+      // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.linear);
       // navigator.currentState.pushNamed(index.toString());
       // Navigator.of(context).push(MaterialPageRoute(
       //   builder: (context) => Note(),
@@ -94,8 +115,10 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    viewNotifyNavigation.dispose();
+    super.dispose();
+    connection.cancel();
   }
 
   @override
@@ -103,133 +126,19 @@ class _MainState extends State<AppView> with TickerProviderStateMixin {
     if(mounted) super.setState(fn);
   }
 
-  void _pageClick(int index){
-    _controller.master.bottom.pageChange(index);
+  void _navView(int index){
+    // _controller.master.bottom.pageChange(index);
+    viewNotifyNavigation.value = index;
   }
 
-  // void _pageChanged(int index){
-  //   _controller.master.bottom.pageChange(index);
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initiator,
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return ScreenLauncher(message:'A moment');
-            break;
-          case ConnectionState.active:
-            return ScreenLauncher(message:'...wait');
-            break;
-          case ConnectionState.none:
-            return ScreenLauncher(message:'getting ready...');
-            break;
-          default:
-            return _start();
-        }
-      }
-    );
-    // return ScreenLauncher(message:'A moment');
+  void onSearch(String word){
+    NotifyNavigationButton.navigation.value = 0;
+    Future.delayed(const Duration(milliseconds: 200), () {
+      // core.definitionGenerate(word);
+    });
+    // Future.delayed(Duration.zero, () {
+    //   core.historyAdd(word);
+    // });
   }
-
-  Widget _start() {
-    return Scaffold(
-      key: scaffoldKey,
-      primary: true,
-      resizeToAvoidBottomInset: true,
-      // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown ),
-      body: SafeArea(
-        top: true,
-        bottom: true,
-        maintainBottomViewPadding: true,
-        // onUnknownRoute: routeUnknown,
-        child: _page()
-      ),
-      extendBody: true,
-      bottomNavigationBar: _bottom()
-    );
-  }
-
-  Widget _bottom() {
-    return ScrollPageBottom(
-      controller: _controller,
-      items: pageButton,
-      pageClick:_pageClick,
-      // child: Text('??1'),
-    );
-  }
-
-  Widget _page() {
-    // return PageView(
-    //   controller: pageController,
-    //   onPageChanged: _pageChanged,
-    //   physics:new NeverScrollableScrollPhysics(),
-    //   children: pageView
-    // );
-
-    // return PageView.custom(
-    //   controller: pageController,
-    //   onPageChanged: _pageChanged,
-    //   physics:new NeverScrollableScrollPhysics(),
-    //   childrenDelegate: SliverChildBuilderDelegate(
-    //     (BuildContext context, int index) => KeepAlive(key: UniqueKey(), child: pageView[index]),,
-    //     childCount: pageView.length,
-    //     findChildIndexCallback: (Key key) {
-    //       final ValueKey valueKey = key;
-    //       final Widget child = valueKey.value;
-    //       return pageView.indexOf(child);
-    //     }
-    //   )
-    // );
-
-    return new PageView.builder(
-      controller: pageController,
-      // onPageChanged: _pageChanged,
-      allowImplicitScrolling:false,
-      physics:new NeverScrollableScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) => pageView[index],
-      itemCount: pageView.length,
-    );
-  }
-
-
-  // Route<dynamic> _routeGenerate(RouteSettings settings) {
-  //   switch (settings.name) {
-  //     case "1":
-  //       return _routeAnimation(Bible());
-  //     case "2":
-  //       return _routeAnimation(Note());
-  //     case "3":
-  //       return _routeAnimation(Search());
-  //     case "4":
-  //       return _routeAnimation(More());
-  //     default:
-  //       return _routeAnimation(Home());
-  //   }
-  // }
-
-  // Route<dynamic> _routeAnimation(Widget page){
-  //   // MaterialPageRoute(builder: (context) => Home(),maintainState: false);
-  //   return PageRouteBuilder(
-  //     maintainState: true,
-  //     pageBuilder: (context, a, b) => page,
-  //     transitionsBuilder: (context, a, b, child) => FadeTransition(opacity: a, child: child),
-  //     transitionDuration: Duration(milliseconds: 200),
-  //   );
-  //   // Navigator.push(
-  //   //   context,
-  //   //   PageRouteBuilder(
-  //   //     pageBuilder: (c, a, b) => Bible(),
-  //   //     transitionsBuilder: (c, a, b, child) => FadeTransition(opacity: a, child: child),
-  //   //     transitionDuration: Duration(milliseconds: 200),
-  //   //   ),
-  //   // );
-  // }
-
-  // Route<dynamic> _routeUnknown(RouteSettings settings){
-  //   return MaterialPageRoute(builder: (context) => Container(color: Colors.white,child: Center(child: Text("Unknown"))));
-  // }
 
 }

@@ -1,32 +1,35 @@
 part of 'main.dart';
 
-mixin _Suggest on _State, _Data {
-  Widget suggest() {
-    if (this.searchQuery.isEmpty) {
-      return _suggestionKeyword();
-    }
-    return FutureBuilder(
-      future: getResult,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasError) {
-          return WidgetMessage(message: snapshot.error.toString());
-        }
-        if (snapshot.hasData) {
-          if (snapshot.data) {
-            return _suggestionBook();
-          } else if (this.searchQuery.isNotEmpty) {
-            return WidgetContent(atLeast: 'found no contain\nof ',enable:this.searchQuery,task: '\nin ',message:bibleInfo?.name);
-          } else {
-            return _suggestionKeyword();
-          }
+mixin _Suggest on _State {
+  Widget suggest(){
+    return Selector<Core,BIBLE>(
+      selector: (_, e) => e.scripturePrimary.verseSearch,
+      builder: (BuildContext context, BIBLE o, Widget? child) {
+        if (o.query.isEmpty){
+          return _suggestNoQuery();
+        } else if (o.verseCount > 0){
+          return _suggestBook();
         } else {
-          return _suggestionKeyword();
+          return _suggestNoMatch();
         }
       }
     );
   }
 
-  Widget _suggestionBook() {
+  Widget _suggestNoQuery(){
+    return Selector<Core,Iterable<MapEntry<dynamic, HistoryType>>>(
+      selector: (_, e) => e.collection.history(),
+      builder: (BuildContext context, Iterable<MapEntry<dynamic, HistoryType>> items, Widget? child) => _suggestHistory(items)
+    );
+  }
+
+  Widget _suggestNoMatch(){
+    return WidgetMessage(
+      message: 'suggest: not found',
+    );
+  }
+
+  Widget _suggestBook() {
     return new SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int bookIndex) {
@@ -40,7 +43,7 @@ mixin _Suggest on _State, _Data {
                 margin: EdgeInsets.symmetric(vertical:10),
                 child: Text(book.info.name.toUpperCase()),
               ),
-              _suggestionChapter(book.chapter)
+              _suggestChapter(book.chapter)
             ]
           );
         },
@@ -49,7 +52,7 @@ mixin _Suggest on _State, _Data {
     );
   }
 
-  Widget _suggestionChapter(List<CHAPTER> chapters) {
+  Widget _suggestChapter(List<CHAPTER> chapters) {
     final bool shrinkChapter = (chapters.length > 1 && shrinkResult);
     final int shrinkChapterTotal = shrinkChapter?1:chapters.length;
     return ListView.builder(
@@ -76,65 +79,6 @@ mixin _Suggest on _State, _Data {
                 ),
               ),
             ),
-
-            // if(shrinkChapter) Container(
-            //   child: RichText(
-            //     text: TextSpan(
-            //       text:'...',
-            //       children: chapters.where((e) => e.id  != chapter.id).map(
-            //         (e) => TextSpan(
-            //           text: core.digit(e.id)
-            //         )
-            //       ).toList(),
-            //       // children: <InlineSpan>[ TextSpan(text:'')]
-            //       style: TextStyle(
-            //         color:Colors.grey,
-            //         fontSize: 13.0
-            //       )
-            //     ),
-            //     textAlign: TextAlign.center,
-            //   ),
-            // ),
-
-            // if(shrinkChapter) GridView(
-            //   // children: <Widget>[],
-            //   // crossAxisCount: 7,
-            //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 10),
-            //   // childAspectRatio: 2.0,
-            //   padding: EdgeInsets.all(15.0),
-            //   shrinkWrap: true,
-            //   primary: false,
-            //   children: chapters.where(
-            //     (e) => e.id  != chapter.id).map(
-            //       (e) => RawMaterialButton(
-            //         onPressed: null,
-            //         elevation: 2.0,
-            //         fillColor: Colors.white,
-            //         child: Text(core.digit(e.id)),
-            //         // padding: EdgeInsets.all(15.0),
-            //         shape: CircleBorder(),
-            //       )
-            //     ).toList(),
-            // ),
-
-            // if(shrinkChapter) Row(
-            //   mainAxisSize: MainAxisSize.min,
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   // children: <Widget>[],
-            //   children: chapters.where(
-            //     (e) => e.id  != chapter.id).map(
-            //       (e) => RawMaterialButton(
-            //         onPressed: () {},
-            //         elevation: 2.0,
-            //         fillColor: Colors.white,
-            //         child: Text(core.digit(e.id)),
-            //         padding: EdgeInsets.all(15.0),
-            //         shape: CircleBorder(),
-            //       )
-            //     ).toList(),
-            // ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical:10),
               child: Text(
@@ -145,16 +89,14 @@ mixin _Suggest on _State, _Data {
                 ),
               ),
             ),
-
-            _suggestionVerse(chapter.verse)
-
+            _suggestVerse(chapter.verse)
           ]
         );
       }
     );
   }
 
-  Widget _suggestionVerse(List<VERSE> verses) {
+  Widget _suggestVerse(List<VERSE> verses) {
     final bool shrinkVerse = (verses.length > 1 && shrinkResult);
     final int shrinkVerseTotal = shrinkVerse?1:verses.length;
     return ListView.builder(
@@ -166,7 +108,7 @@ mixin _Suggest on _State, _Data {
         VERSE verse = verses[index];
         return new WidgetVerse(
           verse:verse,
-          keyword: this.searchQuery,
+          keyword: searchQuery,
           // alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''
           alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => e.name).join(', '):''
         );
@@ -174,78 +116,113 @@ mixin _Suggest on _State, _Data {
     );
   }
 
-
-  Widget _suggestionKeyword(){
-    return SliverPadding(
-      // padding: EdgeInsets.only(top: 2),
-      padding: EdgeInsets.symmetric(vertical: 5),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => _suggestionKeywordBuilder(context, keywordSuggestion[index],index),
-          childCount: keywordSuggestion.length,
-          // addAutomaticKeepAlives: true
-        ),
+  Widget _suggestHistory(Iterable<MapEntry<dynamic, HistoryType>> items){
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => _suggestHistoryItem(index, items.elementAt(index)),
+        childCount: items.length,
       ),
     );
   }
-  Widget _suggestionKeywordBuilder(BuildContext context, CollectionKeyword keyword, int index){
 
+  Dismissible _suggestHistoryItem(int index, MapEntry<dynamic, HistoryType> item){
     return Dismissible(
-      key: Key(keyword.word),
-      onDismissed: (direction) {
-        setState(() {
-          keywordSuggestion.removeAt(index);
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Removed"),
-            duration: Duration(milliseconds:5),
-          )
-        );
-        core.writeCollection();
-      },
-      background: Container(
-        alignment: Alignment(0.9,0),
-        // color: Colors.red,
-        child: Text('Remove',style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.red,))
-      ),
+      key: Key(item.value.date.toString()),
       direction: DismissDirection.endToStart,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal:5,vertical:2),
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: new BorderRadius.all(
-            // Radius.elliptical(3, 3)
-            Radius.elliptical(7, 100)
-          ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 0.0,
-              color: Theme.of(context).backgroundColor,
-              spreadRadius: 0.6,
-              offset: Offset(0.0, .0),
-            )
-          ]
-        ),
-        child: new ListTile(
-          leading: const Icon(Icons.subdirectory_arrow_right,color: Colors.black26,size: 18.0,),
+      child: _suggestHistoryDecoration(
+        child: ListTile(
           // contentPadding: EdgeInsets.zero,
-          title: RichText(
-            strutStyle: StrutStyle(),
-            text: TextSpan(
-              text: keyword.word.substring(0, searchQuery.length),
-              style: TextStyle(color: Colors.red,height: 1.0,fontSize: 18),
-              children: <TextSpan>[
-                TextSpan(
-                  text: keyword.word.substring(searchQuery.length),
-                  style: TextStyle(color: Colors.black)
-                )
-              ]
-            )
+          title: _suggestHistoryWord(item.value.word),
+          minLeadingWidth : 10,
+          // leading: Icon(Icons.manage_search_rounded),
+          leading: Icon(
+            CupertinoIcons.arrow_turn_down_right,
+            semanticLabel: 'Suggestion'
           ),
-          onTap: () => this.inputSubmit(keyword.word)
+          trailing:Chip(
+            avatar: CircleAvatar(
+              // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: Colors.transparent,
+              child: Icon(Icons.saved_search_outlined, color: Theme.of(context).primaryColor,),
+            ),
+            label: Text(item.value.hit.toString()),
+          ),
+          onTap: ()=>onSearch(item.value.word)
+        )
+      ),
+      background: _suggestHistoryDismissibleBackground(),
+      // secondaryBackground: _suggestHistoryDismissibleSecondaryBackground),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          return onDelete(item.value.word);
+        }
+      }
+    );
+  }
+
+  Widget _suggestHistoryWord(String word){
+    int hightlight = searchQuery.length < word.length ? searchQuery.length : word.length;
+    return RichText(
+      // strutStyle: StrutStyle(height: 1.0),
+      text: TextSpan(
+        text: word.substring(0, hightlight),
+        semanticsLabel: word,
+        style: TextStyle(
+          fontSize: 20,
+          color: Theme.of(context).textTheme.caption!.color,
+          // color: Theme.of(context).primaryTextTheme.button!.color,
+          fontWeight: FontWeight.w300
         ),
+        children: <TextSpan>[
+          TextSpan(
+            text: word.substring(hightlight),
+            style: TextStyle(
+              color: Theme.of(context).primaryTextTheme.button!.color
+            )
+          )
+        ]
       )
+    );
+  }
+
+  Widget _suggestHistoryDecoration({required Widget child}){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
+      // margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 0.0,
+            color: Theme.of(context).backgroundColor,
+            spreadRadius: 0.1,
+            offset: Offset(0.0, .0)
+          )
+        ]
+      ),
+      child:child
+    );
+  }
+
+  Widget _suggestHistoryDismissibleBackground() {
+    return Container(
+      // color: Theme.of(context).highlightColor,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Text(
+              "Remove",
+              textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerRight,
+      ),
     );
   }
 }

@@ -1,1 +1,1 @@
-export 'core/core.dart';
+export 'core/main.dart';

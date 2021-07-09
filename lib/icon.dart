@@ -51,8 +51,8 @@
 ///
 import 'package:flutter/widgets.dart';
 
-class CustomIcon {
-  CustomIcon._();
+class LaiSiangthoIcon {
+  LaiSiangthoIcon._();
 
   static const _kFontFam = 'LaiSiangtho';
   static const _kFontPkg = null;

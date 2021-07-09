@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-// https://github.com/flutter/gallery/blob/master/lib/themes/gallery_theme_data.dart
-// https://github.com/flutter/gallery/blob/master/lib/pages/settings.dart
-
 class IdeaData {
   static const _lightFillColor = Colors.black;
   static const _darkFillColor = Colors.white;
@@ -11,24 +8,24 @@ class IdeaData {
   static final Color _lightFocusColor = _lightFillColor.withOpacity(0.12);
   static final Color _darkFocusColor = _darkFillColor.withOpacity(0.12);
 
-  static ThemeData lightThemeData = themeData(lightColorScheme, _lightFocusColor);
-  static ThemeData darkThemeData = themeData(darkColorScheme, _darkFocusColor);
+  static ThemeData light = themeData(lightScheme, _lightFocusColor);
+  static ThemeData dark = themeData(darkScheme, _darkFocusColor);
 
   static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
       colorScheme: colorScheme,
       textTheme: _textTheme,
       primaryColor: colorScheme.primary,
-      // accentColor: colorScheme.background,
       accentColor: colorScheme.secondary,
-      // canvasColor: colorScheme.background,
-      canvasColor: Colors.transparent,
-      scaffoldBackgroundColor: colorScheme.secondary,
+      // canvasColor: Colors.transparent,
+      // scaffoldBackgroundColor: colorScheme.secondary,
+      // backgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: colorScheme.onBackground,
       backgroundColor: colorScheme.background,
-
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
+      // highlightColor: Colors.transparent,
+      // splashColor: Colors.transparent,
       focusColor: focusColor,
+      shadowColor: colorScheme.secondaryVariant,
       // fontFamily: "Lato, 'Paduak', sans-serif",
       // fontFamily: "Lato, Mm3Web",
       fontFamily: "Lato, sans-serif",
@@ -60,62 +57,68 @@ class IdeaData {
         fillColor: colorScheme.primary,
         // fillColor: colorScheme.secondary,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.2),
-          // borderRadius: BorderRadius.all(Radius.circular(7)),
+          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: colorScheme.background, width: 0.2),
-          // borderRadius: BorderRadius.all(Radius.circular(2)),
+          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent,width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 0.0),
-          // borderRadius: BorderRadius.all(Radius.circular(5)),
+          borderSide: BorderSide(color: Colors.transparent,width: 0.0),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         )
       ),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: colorScheme.background,
+        cursorColor: colorScheme.primaryVariant,
         selectionColor: colorScheme.background,
         selectionHandleColor: colorScheme.background,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colorScheme.secondaryVariant,
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            // top: Radius.elliptical(3, 2)
+            top: Radius.circular(7)
+          ),
+        ),
       )
     );
   }
 
-  static const ColorScheme lightColorScheme = ColorScheme(
-
-    //NOTE: main -> 0xFFFFFFFF
+  static const ColorScheme lightScheme = ColorScheme(
     primary: Colors.white,
-    // primary: Color(0xFFF5F5F5),
-
-    //icon -> 0x8A000000
     primaryVariant: Colors.black,
-
-    // NOTE: scaffold -> 0xFFF5F5F5
-    // secondary: Colors.white,
-    // secondary: Color(0xFFF5F5F5),
-    secondary: Color(0xFFf2f2f2),
-    // secondaryVariant: Color(0xFFFFFFFF),
-    secondaryVariant: Colors.indigo,
-    background: Color(0xFFD6D6D6),
+    secondary: Colors.white,
+    secondaryVariant: Colors.black45,
+    background: Colors.black38,
+    // background: Color(0xFFe0e1e6),
     surface: Color(0xFFFAFBFB),
-    onBackground: Colors.white,
+    // scaffoldBackgroundColor
+    // onBackground: Color(0xFFf2f2f2),
+    // onBackground: Color(0xFFecebeb),
+    onBackground: Color(0xFFeff0f4),
     error: _lightFillColor,
     onError: _lightFillColor,
     onPrimary: _lightFillColor,
-    onSecondary: Color(0xFF322942),
-    onSurface: Color(0xFF241E30),
+    onSecondary: _lightFillColor,
+    onSurface: _lightFillColor,
     brightness: Brightness.light
   );
 
-  static const ColorScheme darkColorScheme = ColorScheme(
-    // primary: Color(0xFF292829),
+  static const ColorScheme darkScheme = ColorScheme(
     primary: Color(0xFF3D3C3D),
     primaryVariant: Colors.white,
-    secondary: Color(0xFF5E5D5E),
-    // secondary: Colors.black,
+    secondary: Color(0xFF3D3C3D),
     secondaryVariant: Color(0xFF451B6F),
     background: Color(0xFF5E5D5E),
     surface: Color(0xFF1F1929),
-    onBackground: Color(0xFF3D3C3D), // White with 0.05 opacity
+    // scaffoldBackgroundColor
+    onBackground: Color(0xFF5E5D5E),
     error: _darkFillColor,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,
@@ -130,16 +133,23 @@ class IdeaData {
   static final _fontWeighSemiBold = FontWeight.w600;
   static final _fontWeighBold = FontWeight.w700;
 
+  // { TextStyle? body2, TextStyle? body1}
   static final TextTheme _textTheme = TextTheme(
-    caption: TextStyle(fontWeight: _fontWeighSemiBold, fontSize: 16.0),
-    subtitle1: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
-    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
-    overline: TextStyle(fontWeight: _fontWeighMedium, fontSize: 12.0),
-    bodyText1: TextStyle(fontWeight: _fontWeighRegular, fontSize: 14.0),
-    bodyText2: TextStyle(fontWeight: _fontWeighRegular, fontSize: 16.0),
+    headline1: TextStyle(fontWeight: _fontWeighBold, fontSize: 26.0),
+    headline2: TextStyle(fontWeight: _fontWeighBold, fontSize: 24.0),
+    headline3: TextStyle(fontWeight: _fontWeighBold, fontSize: 22.0),
     headline4: TextStyle(fontWeight: _fontWeighBold, fontSize: 20.0),
     headline6: TextStyle(fontWeight: _fontWeighBold, fontSize: 16.0),
-    headline5: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
-    button: TextStyle(fontWeight: _fontWeightThin,fontSize: 14.0,height: 1.5)
+    headline5: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
+
+    subtitle1: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
+    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
+
+    bodyText1: TextStyle(fontWeight: _fontWeighRegular, fontSize: 16.0),
+    bodyText2: TextStyle(fontWeight: _fontWeighRegular, fontSize: 14.0),
+
+    caption: TextStyle(fontWeight: _fontWeighSemiBold, fontSize: 16.0),
+    button: TextStyle(fontWeight: _fontWeightThin,fontSize: 14.0,height: 1.5),
+    overline: TextStyle(fontWeight: _fontWeighMedium, fontSize: 12.0)
   );
 }

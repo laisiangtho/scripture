@@ -1,54 +1,32 @@
 part of 'main.dart';
 
-mixin _Result on _State, _Data {
-  Widget result() {
-    if (this.searchQuery.isEmpty) {
-      return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nin ',message:'verses');
-    }
-
-    return FutureBuilder(
-      future: getResult,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasError) {
-          return WidgetMessage(message: snapshot.error.toString());
+mixin _Result on _State {
+  Widget result(){
+    return Selector<Core,BIBLE>(
+      selector: (_, e) => e.scripturePrimary.verseSearch,
+      builder: (BuildContext context, BIBLE o, Widget? child) {
+        if (searchQuery.isEmpty){
+          return _resultNoQuery();
+        } else if (o.verseCount > 0){
+          return _resultBook();
+        } else {
+          return _resultNoMatch();
         }
-
-        if (snapshot.hasData) {
-          if (snapshot.data && bible.verseCount > 0) {
-            core.addKeyword(this.searchQuery.trim());
-            return new SliverPadding(
-              padding: EdgeInsets.symmetric(vertical:10),
-              // sliver: _resultSingle(snapshot.data)
-              sliver: _resultBook()
-              // sliver: _resultBook()
-            );
-          } else if (this.searchQuery.isNotEmpty) {
-            // found no contain/of
-            return WidgetContent(atLeast: 'found no match\nof ',enable:this.searchQuery,task: '\nin ',message:bibleInfo.name);
-          }
-        }
-        return new WidgetContent(atLeast: 'search\na',enable:' Word ',task: 'or two\nin ',message:'verses');
       }
     );
   }
 
-  // Widget _resultSingle(BIBLE bible) {
-  //   List<VERSE> verses = bible.book.first.chapter.first.verse;
-  //   return new SliverList(
-  //     delegate: SliverChildBuilderDelegate(
-  //       (BuildContext context, int verseIndex) {
-  //         VERSE verse = verses[verseIndex];
-  //         return new Column(
-  //           children: <Widget>[
-  //             Text(verse.name),
-  //             Text(verse.text),
-  //           ]
-  //         );
-  //       },
-  //       childCount: verses.length
-  //     )
-  //   );
-  // }
+  Widget _resultNoQuery(){
+    return WidgetMessage(
+      message: 'try with a word or two',
+    );
+  }
+
+  Widget _resultNoMatch(){
+    return WidgetMessage(
+      message: 'result: not found',
+    );
+  }
 
   Widget _resultBook() {
     return new SliverList(
@@ -99,49 +77,6 @@ mixin _Result on _State, _Data {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // Container(
-            //   margin: EdgeInsets.only(top:10,bottom:5),
-            //   child: Text(chapter.name),
-            // ),
-
-            // if(shrinkChapter) GridView(
-            //   // children: <Widget>[],
-            //   // crossAxisCount: 7,
-            //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 10),
-            //   // childAspectRatio: 2.0,
-            //   padding: EdgeInsets.all(15.0),
-            //   shrinkWrap: true,
-            //   primary: false,
-            //   children: chapters.where((e) => e.id  != chapter.id).map(
-            //     (e) => Container(
-            //       alignment: Alignment.center,
-            //       child: RawMaterialButton(
-            //         onPressed: null,
-            //         elevation: 2.0,
-            //         fillColor: Colors.white,
-            //         child: Text(core.digit(e.id)),
-            //         // padding: EdgeInsets.all(15.0),
-            //         shape: CircleBorder(),
-            //       ),
-            //     )
-            //   ).toList(),
-            // ),
-            // if(shrinkChapter) SingleChildScrollView(
-            //   scrollDirection: Axis.horizontal,
-            //   padding: EdgeInsets.all(15.0),
-            //   child: Row(
-            //     children: chapters.where((e) => e.id  != chapter.id).map(
-            //       (e) => RawMaterialButton(
-            //         onPressed: (){},
-            //         elevation: 2.0,
-            //         fillColor: Colors.white,
-            //         child: Text(core.digit(e.id)),
-            //         padding: EdgeInsets.all(15.0),
-            //         shape: CircleBorder(),
-            //       )
-            //     ).toList(),
-            //   )
-            // ),
             if(shrinkChapter) SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -163,31 +98,8 @@ mixin _Result on _State, _Data {
                       padding: EdgeInsets.all(10),
                       fillColor: Colors.grey[300],
                       shape: CircleBorder(),
-                      onPressed: ()=> toBible(bookId,e.id)
+                      onPressed: ()=> onNav(bookId,e.id)
                     ),
-                    // child: FlatButton(
-                    //   child: Text(
-                    //     // core.digit(e.id),
-                    //     // e.name,
-                    //     'a?',
-                    //     semanticsLabel: 'chapter: '+e.name,
-                    //     style: TextStyle(
-                    //       fontSize: 15
-                    //     ),
-                    //   ),
-                    //   color: Colors.grey[300],
-                    //   // textColor: Colors.white,
-                    //   textColor: Colors.black45,
-                    //   padding: EdgeInsets.all(7),
-                    //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    //   shape: new CircleBorder(),
-                    //   // shape: RoundedRectangleBorder(
-                    //   //   borderRadius: BorderRadius.all(
-                    //   //     Radius.elliptical(3, 20)
-                    //   //   )
-                    //   // ),
-                    //   onPressed: () => toBible(bookId,e.id)
-                    // ),
                   )
                 ).toList(),
               )
@@ -212,7 +124,7 @@ mixin _Result on _State, _Data {
                 //     Radius.elliptical(3, 20)
                 //   )
                 // ),
-                onPressed: ()=>toBible(bookId,chapter.id)
+                onPressed: () => onNav(bookId,chapter.id)
               ),
             ),
 
@@ -245,4 +157,5 @@ mixin _Result on _State, _Data {
       }
     );
   }
+
 }

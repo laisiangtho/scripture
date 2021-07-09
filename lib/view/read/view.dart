@@ -1,135 +1,80 @@
 part of 'main.dart';
 
-class View extends _State with _Bar, _Gesture {
+class View extends _State with _Bar, _Sheet {
 
   @override
   Widget build(BuildContext context) {
+    // return FutureBuilder<DefinitionBible>(
+    //   future: initiator,
+    //   builder: (BuildContext context, AsyncSnapshot<DefinitionBible> snapshot) {
+    //     switch (snapshot.connectionState) {
+    //       case ConnectionState.done:
+    //         return reader();
+    //       default:
+    //         return WidgetMsg(message: 'A moment',);
+    //         // return Center(child: Text('A moment'));
+    //     }
+    //   }
+    // );
+    return reader();
+  }
+
+  Widget reader() {
     return Scaffold(
       key: scaffoldKey,
-      // resizeToAvoidBottomInset: true,
-      // resizeToAvoidBottomPadding: true,
-      body: ScrollPage(
-        controller: controller,
-        child: _page()
+      body: ViewPage(
+        controller: scrollController,
+        child: body()
       ),
-      bottomNavigationBar: _BottomSheet(
-        key: keyBottom,
-        nextChapter: setChapterNext,
-        previousChapter: setChapterPrevious,
-        verseSelectionList: verseSelectionList,
-        verseSelectionCopy: verseSelectionCopy,
-        scrollToIndex: scrollToIndex,
-      )
+      bottomNavigationBar: showSheet()
     );
   }
 
-  Widget _page() {
+  Widget body() {
     return CustomScrollView(
-      controller: controller,
+      controller: scrollController,
+      // primary: true,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       slivers: <Widget>[
-        sliverPersistentHeader(),
-        new SliverPadding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-          sliver: isNotReady?_readChapter:_loadChapter
+        bar(),
+        SliverToBoxAdapter(
+          child: Selector<Core, String>(
+            selector: (_, e) => e.message,
+            builder: (BuildContext context, String message, Widget? child) => message.isNotEmpty?Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Center(
+                child: Text(
+                  '...$message'
+                ),
+              ),
+            ):Container(),
+          ),
+        ),
+
+        Selector<Core,BIBLE>(
+          selector: (_, e) => e.scripturePrimary.verseChapter,
+          builder: (BuildContext context, BIBLE message, Widget? child) => new SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
+              childCount: tmpverse.length,
+              // addAutomaticKeepAlives: true
+            ),
+          ),
         )
       ]
     );
   }
 
-  Widget get _readChapter {
-    // NOTE: this method executed when identify is change
-    return FutureBuilder<bool>(
-      future: getResult,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return WidgetMessage(message: 'A moment...');
-          case ConnectionState.active:
-            return WidgetMessage(message: 'loading..');
-          case ConnectionState.none:
-            return WidgetMessage(message: 'getting ready...');
-          case ConnectionState.done:
-          default:
-            return _loadChapterBuilder(snapshot);
-        }
-      }
-    );
-  }
-
-  Widget get _loadChapter {
-    // NOTE: this method executed upon initial or when bookId and chapterId are change
-    return FutureBuilder<bool>(
-      future: getResult,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) => _loadChapterBuilder(snapshot)
-    );
-  }
-
-  Widget _loadChapterBuilder(AsyncSnapshot<bool> snapshot){
-    // // print(3);
-    // return _loadVerse();
-    if (snapshot.hasError) {
-      return WidgetMessage(message: snapshot.error.toString());
-    }
-    if (snapshot.hasData) {
-      if (snapshot.data) {
-        return _loadVerse();
-      } else {
-        // NOTE: no Book is loaded for reading
-        return WidgetMessage(message: 'Something went wrong');
-      }
-    } else {
-      return WidgetMessage(message: 'A moment');
-    }
-  }
-
-  Widget _loadVerse(){
-    // print(4);
-    // return SliverPadding(
-    //   padding: EdgeInsets.symmetric(vertical:10),
-    //   sliver: SliverList(
-    //     delegate: SliverChildBuilderDelegate(
-    //       (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
-    //       childCount: tmpverse.length,
-    //     ),
-    //   ),
-    // );
-    // return SliverList(
-    //   delegate: SliverChildBuilderDelegate(
-    //     (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
-    //     childCount: tmpverse.length,
-    //   ),
-    // );
-    return new SliverToBoxAdapter(
-      // fillOverscroll: true,
-      // hasScrollBody: true,
-      child: chapterGesture(
-        child: ListView.builder(
-          key: UniqueKey(),
-          // addAutomaticKeepAlives: true,
-          // physics: ScrollPhysics(),
-          shrinkWrap: true,
-          primary: false,
-          // controller: controller,
-          itemCount: tmpverse.length,
-          padding: EdgeInsets.symmetric(vertical: 7.0),
-          itemBuilder: (BuildContext context, int id) => _inheritedVerse(context, id, tmpverse[id]),
-        )
-      ),
-    );
-  }
-
-  Widget _inheritedVerse(BuildContext context, int index, VERSE verse){
+  Widget _inheritedVerse(VERSE verse){
     return VerseInheritedWidget(
       key: verse.key,
-      size: core.fontSize,
-      lang: core.collectionLanguagePrimary.name,
+      size: core.collection.fontSize,
+      lang: core.scripturePrimary.info.langCode,
       selected: verseSelectionList.indexWhere((id) => id == verse.id) >= 0,
       child: WidgetVerse(
         verse: verse,
-        selection: verseSelection,
+        onPressed: verseSelection,
       )
     );
   }
-
 }

@@ -5,7 +5,6 @@ showDialog(
   context: context,
   builder: (_) => WidgetPopup(),
 );
-
 Navigator.of(context).push(PageRouteBuilder(
   opaque: false,
   barrierDismissible: true,
@@ -17,9 +16,9 @@ class WidgetPopup extends StatelessWidget {
   final Widget child;
 
   final double top;
-  final double right;
-  final double left;
-  final double bottom;
+  final double? right;
+  final double? left;
+  final double? bottom;
   final double offsetPersentage;
 
   final double padding;
@@ -30,8 +29,8 @@ class WidgetPopup extends StatelessWidget {
 
   WidgetPopup(
     {
-      Key key,
-      this.child,
+      Key? key,
+      required this.child,
       this.offsetPersentage:1.0,
       this.top:75,
       this.right,
@@ -62,20 +61,23 @@ class WidgetPopup extends StatelessWidget {
           bottom: this.bottom,
           left: this.left,
           child: Material(
-            shape: ShapedArrow(arrow:this.arrow, borderRadius: BorderRadius.all( Radius.elliptical(3,3)), padding: this.padding),
+            shape: ShapedArrow(arrow:this.arrow, borderRadius: BorderRadius.all( Radius.elliptical(5,3)), padding: this.padding),
             clipBehavior: Clip.antiAlias,
-            elevation:0,
-            color: this.backgroundColor,
+            elevation:4,
+            // color: this.backgroundColor,
+            // color: Theme.of(context).backgroundColor.withOpacity(0.3),
+            color: Theme.of(context).primaryColor,
             // shadowColor: Colors.black,
             child: Container(
               // padding: EdgeInsets.all(this.padding).copyWith(bottom:this.padding * 2),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all( Radius.elliptical(3,3)),
+                borderRadius: BorderRadius.all( Radius.elliptical(5,3)),
                 boxShadow: [
                   BoxShadow(
                     blurRadius:10.0,
-                    color: Colors.white12,
+                    // color: Colors.white12,
                     // color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).primaryColor,
                     // color: this.backgroundColor,
                     spreadRadius: 2.0,
                     offset: Offset(0.0, 2.4),
@@ -162,8 +164,8 @@ class ClipperArrow extends CustomClipper<Path> {
 
 class ShapedArrow extends RoundedRectangleBorder {
   ShapedArrow({
-    @required this.padding,
-    @required this.arrow,
+    required this.padding,
+    required this.arrow,
     side = BorderSide.none,
     borderRadius = BorderRadius.zero,
   }) : super(side: side, borderRadius: borderRadius);
@@ -171,7 +173,7 @@ class ShapedArrow extends RoundedRectangleBorder {
   final double arrow;
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, { TextDirection? textDirection}) {
     return Path()
       ..moveTo(arrow , rect.top)
       ..lineTo(arrow + 8, rect.top - 4.0)
@@ -193,7 +195,6 @@ class WidgetPopupShaped extends StatelessWidget {
   final double height;
   final double arrow;
   final Color backgroundColor;
-
   @override
   Widget build(BuildContext context) {
     double maxHeight = MediaQuery.of(context).size.height/1.2;

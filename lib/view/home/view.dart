@@ -1,241 +1,308 @@
 part of 'main.dart';
 
-class View extends _State with _Bar, _Refresh, _Info {
-
-  bool reorderCallback(Key item, Key newPosition) {
-    int _draggingIndex = _indexOfKey(item);
-    int _newPositionIndex = _indexOfKey(newPosition);
-
-    // Uncomment to allow only even target reorder possition
-    // if (_newPositionIndex % 2 == 1) return false;
-
-    final _draggedItem = collectionBibleList[_draggingIndex];
-    setState(() {
-      // debugPrint("Reordering $item -> $newPosition");
-      collectionBibleList.removeAt(_draggingIndex);
-      collectionBibleList.insert(_newPositionIndex, _draggedItem);
-    });
-    return true;
-  }
-  // Returns index of item with given key
-  int _indexOfKey(Key key) {
-    return collectionBibleList.indexWhere((CollectionBible d) => ValueKey<String>(d.identify) == key);
-  }
-
-  void reorderDone(Key item) {
-    core.writeCollection();
-    // final draggedItem = collection.bible[_indexOfKey(item)];
-    // debugPrint("Reordering finished for ${draggedItem.name}}");
-  }
-
+class _View extends _State with _Bar, _Refresh, _Modal {
   @override
   Widget build(BuildContext context) {
-    if (Navigator.canPop(context)){
-      return Scaffold(
-        body: SafeArea(
-          child: _body()
-        )
-      );
-    }
-    return _body();
-  }
-
-  Widget _body() {
-    return ScrollPage(
-      key: scaffoldKey,
-      controller: controller,
-      // depth:1,
-      child: ReorderableList(
-        onReorder: this.reorderCallback,
-        onReorderDone: this.reorderDone,
-        decoratePlaceholder: (Widget item, double opacity) => DecoratedPlaceholder(widget: item, offset: opacity),
-        child: _view(),
+    debugPrint('home build');
+    return ViewPage(
+      key: widget.key,
+      controller: scrollController,
+      child: Selector<Core, bool>(
+        selector: (_, e) => e.nodeFocus,
+        builder: (BuildContext context, bool focus, Widget? child) => body()
       )
     );
   }
 
-  // Widget _nested() {
-  //   return NestedScrollView(
-  //     // physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-  //     headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-  //       return <Widget>[
-  //         new HomeBar(core: this),
-  //         // new HomeRefresh(
-  //         //   refresh: ()=>Future.delayed(Duration(seconds: 2)),
-  //         //   controller: controller
-  //         // ),
-  //         // new SliverToBoxAdapter(child: Text('???'))
-  //       ];
-  //     },
-  //     body: _view()
-  //   );
-  // }
-
-
-  Widget _view() {
+  Widget body() {
     return CustomScrollView(
-      controller: controller,
+      // primary: true,
+      controller: scrollController,
       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      semanticChildCount: 3,
+      // semanticChildCount: 3,
       slivers: <Widget>[
-        sliverPersistentHeader(),
-        sliverRefresh(),
-        new SliverPadding(
-          padding: EdgeInsets.only(top:7.0,bottom: MediaQuery.of(context).padding.bottom+5.0),
-          sliver: SliverAnimatedList(
-            key: sliverAnimatedListKey,
-            // initialItemCount: collection.bible.length,
-            initialItemCount: collectionBibleList.length,
-            itemBuilder: booksItem
-          )
+        bar(),
+        // _barContext(true),
+        refresh(),
+        // new DemoView(core: core),
+        bookListSelector(),
+        // SliverToBoxAdapter(
+        //   child: abcd(),
+        // ),
+        new SliverToBoxAdapter(
+          child: buildMode()
         )
+
       ]
     );
   }
 
-  Widget booksItem(BuildContext context, int index, Animation<double> animation){
-    CollectionBible collectionBible = collectionBibleList[index];
-    return new SlideableAnimatedList(
-      key: ValueKey<String>(collectionBible.identify),
-      animation: animation,
-      // controller: animatedListController,
-      menu: booksItemWidget(collectionBible),
+  Widget bookListSelector() {
+    // return Selector<Core,Box<BookType>>(
+    //   selector: (_, e) => e.collection.boxOfBook,
+    //   // selector: (_, e) => e.collection.boxOfBook.toMap().values.toList(),
+    //   // selector: (_, e) => e.collection.boxOfBook.toMap().entries.toList(),
+    //   builder: (BuildContext context, Box<BookType> items, Widget? child) => bookList(items)
+    // );
+
+    return ValueListenableBuilder(
+      valueListenable: core.collection.boxOfBook.listenable(),
+      builder: (BuildContext context, Box<BookType> items, Widget? child) => bookList(items)
+    );
+  }
+
+  Widget bookList(Box<BookType> box){
+    // final itemList = box.toMap().entries.toList();
+    // itemList.sort((a, b) => a.value.order.compareTo(b.value.order));
+    // debugPrint('box ${box.length}');
+    // final abc = box.getAt(1);
+    return SliverReorderableList(
+      key: _reorderablelistKey,
+      itemBuilder:(BuildContext context, int index) => bookContainer(index, box.getAt(index)!),
+      itemCount:box.length,
+      onReorder: (int oldIndex, int newIndex) {
+
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        if (oldIndex == newIndex) return;
+
+        // final oldItem = box.getAt(oldIndex)!.copyWith(order:oldIndex);
+        // final newItem = box.getAt(newIndex)!.copyWith(order:newIndex);
+        // box.putAt(oldIndex, newItem);
+        // box.putAt(newIndex, oldItem);
+
+        final itemList = box.toMap().values.toList();
+        itemList.insert(newIndex, itemList.removeAt(oldIndex));
+        box.putAll(itemList.asMap());
+      },
+    );
+    // return new SliverList(
+    //   delegate: SliverChildBuilderDelegate(
+    //     (BuildContext context, int index) => bookContainer(index, box.elementAt(index)),
+    //     childCount: box.length,
+    //     // addAutomaticKeepAlives: true
+    //   ),
+    // );
+  }
+
+  // Widget bookContainer(int index, MapEntry<dynamic, BookType> book){
+  //   return Card(
+  //     key: Key('$index'),
+  //     child: ListTile(
+  //       // title: Text('Item ${_items[index]}'),
+  //       title: Text(' $index  ${book.value.order} ${book.value.name} '),
+  //       trailing: ReorderableDragStartListener(
+  //         child: Icon(Icons.short_text_rounded),
+  //         index: index,
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget bookContainer(int index, BookType book){
+    return SlideMenu(
+      key: Key('$index'),
+      child: Card(
+        // key: Key('$index'),
+        // child: ListTile(
+        //   // title: Text('Item ${_items[index]}'),
+        //   title: Text(' ${book.update} ${book.name} '),
+        //   trailing: ReorderableDragStartListener(
+        //     child: Icon(Icons.short_text_rounded),
+        //     index: index,
+        //   ),
+        //   onTap: ()=>showModal(book),
+        // ),
+        shape: RoundedRectangleBorder(
+          // side: BorderSide(color: Colors.white70, width: 1),
+          // borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.all(Radius.circular(7.0))
+          // borderRadius: new BorderRadius.all(
+          //   Radius.elliptical(7, 100)
+          // ),
+        ),
+        child: bookItem(index, book)
+      ),
       right: <Widget>[
         Tooltip(
           message: 'More',
           child: new CupertinoButton(
             child: new Icon(
-              CustomIcon.dot_horiz,color: Colors.grey,
+              LaiSiangthoIcon.dot_horiz,color: Colors.grey,
             ),
-            onPressed: () => this.showInfo(collectionBible)
+            onPressed: () => showModal(book)
           ),
         )
       ]
     );
   }
 
-  Widget booksItemWidget(CollectionBible collectionBible){
-    bool isAvailable = collectionBible.available > 0;
-    bool isPrimary = collectionBible.identify == core.primaryId;
-    // bool isParallel = collectionBible.identify == core.parallelId;
-    return ReorderableItem(
-      key: ValueKey<String>(collectionBible.identify),
-      childBuilder: (BuildContext context, ReorderableItemState state){
-        // if (state == ReorderableItemState.dragProxy ||
-        //     state == ReorderableItemState.dragProxyFinished) {
-        //       backgroundColor = Theme.of(context).backgroundColor;
-        // }
-        Widget dragHandle = this.isSorting
-          ? ReorderableListener(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 7.0),
-              decoration: new BoxDecoration(
-                color: Color(0x08000000)
-              ),
-              child: Icon(CustomIcon.drag_handle, color: Colors.red, size: 25.0)
-            )
-          ):Container();
-        return Container(
-          // padding: EdgeInsets.symmetric(vertical:10, horizontal:10),
-          margin: EdgeInsets.symmetric(horizontal:5,vertical:2),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: new BorderRadius.all(
-              // Radius.elliptical(3, 20)
-              Radius.elliptical(7, 100)
+  Widget bookItem(int index, BookType book){
+    bool isAvailable = book.available > 0;
+    // bool isPrimary = book.identify == core.primaryId;
+    bool isPrimary = book.identify == '';
+    return new ListTile(
+      // dense: true,
+      // selected: isPrimary,
+      enabled: true,
+      title: Padding(
+        padding: EdgeInsets.only(bottom: 6, top: 0),
+        child: Text(
+          book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
+          semanticsLabel: book.name,
+          style: Theme.of(context).textTheme.headline6!.copyWith(
+            fontSize: 18,
+            fontWeight: isAvailable?FontWeight.w400:FontWeight.w300,
+            // color: isAvailable?Colors.black:Colors.grey,
+            height: book.langName=='my'?1.0:1.2
+          )
+          // style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 18,color: isAvailable?Colors.black:Colors.grey)
+        ),
+      ),
+      subtitle: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        textBaseline: TextBaseline.alphabetic,
+        children: <Widget>[
+          Container(
+            // padding: EdgeInsets.all(5),
+            // width: 50.0,
+            constraints: BoxConstraints(
+              minWidth: 40.0,
             ),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 0.0,
-                color: Theme.of(context).backgroundColor,
-                spreadRadius: 0.6,
-                offset: Offset(0.0, .0),
+            padding: EdgeInsets.symmetric(vertical:3),
+            // margin: EdgeInsets.only(top:5),
+            decoration: BoxDecoration(
+              // shape: BoxShape.circle,
+              borderRadius: BorderRadius.all(Radius.circular(3)),
+              // color: isAvailable?isCurrent?Colors.grey:Colors.grey[400]:Colors.grey[200]
+              color: isAvailable?isPrimary?Colors.black54:Colors.grey:Colors.grey[200]
+              // isCurrent?Colors.blue[300]:
+            ),
+            child: Text(
+              book.langCode.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color:isAvailable?Colors.white:Colors.grey[400],
+                fontSize: 12,
+                height: 1.4
               )
-            ]
+              // style: Theme.of(context).textTheme.caption.copyWith(
+              //   color:isAvailable?Colors.white:Colors.grey[400],
+              //   // fontSize: 10,
+              //   // height: 13
+              // )
+            )
           ),
-          child: Opacity(
-            // hide content for placeholder
-            opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
-            child: IntrinsicHeight(
-              child: new ListTile(
-                // dense: true,
-                selected: isPrimary,
-                enabled: true,
-                title: Text(
-                  collectionBible.name, maxLines: 1, overflow: TextOverflow.ellipsis,
-                  semanticsLabel: collectionBible.name,
-                  style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 20,
-                    fontWeight: isAvailable?FontWeight.w400:FontWeight.w300,
-                    // color: isAvailable?Colors.black:Colors.grey,
-                    height: collectionBible.language.name=='my'?2.0:1.2
-                  )
-                  // style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 18,color: isAvailable?Colors.black:Colors.grey)
-                ),
-                subtitle: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: <Widget>[
-                    Container(
-                      // padding: EdgeInsets.all(5),
-                      // width: 50.0,
-                      constraints: BoxConstraints(
-                        minWidth: 40.0,
-                      ),
-                      padding: EdgeInsets.symmetric(vertical:4),
-                      // margin: EdgeInsets.only(top:5),
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        // color: isAvailable?isCurrent?Colors.grey:Colors.grey[400]:Colors.grey[200]
-                        color: isAvailable?isPrimary?Colors.black54:Colors.grey:Colors.grey[200]
-                        // isCurrent?Colors.blue[300]:
-                      ),
-                      child: Text(
-                        collectionBible.language.name.toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color:isAvailable?Colors.white:Colors.grey[400],
-                          fontSize: 10,
-                        )
-                        // style: Theme.of(context).textTheme.caption.copyWith(
-                        //   color:isAvailable?Colors.white:Colors.grey[400],
-                        //   // fontSize: 10,
-                        //   // height: 13
-                        // )
-                      )
-                    ),
-                    Text(' '),
-                    Text(collectionBible.shortname,style: Theme.of(context).textTheme.subtitle2.copyWith(
-                        fontSize: 15,
-                        height: collectionBible.language.name=='my'?1.5:1.0
-                      )
-                    )
-                  ]
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(collectionBible.year.toString(),
-                      style: DefaultTextStyle.of(context).style.copyWith(
-                        fontSize: 16,color: isAvailable?Colors.black:Colors.grey[400],
-                        // fontWeight: FontWeight.w300,
-                      )
-                    ),
-                    Icon(CustomIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 22),
-                    dragHandle
-                  ]
-                ),
-                onTap:()=>isAvailable?this.toBible(collectionBible):this.showInfo(collectionBible)
-              )
+          Text(' '),
+          Text(book.shortname,style: Theme.of(context).textTheme.subtitle2!.copyWith(
+              fontSize: 15,
+              height: book.langName=='my'?1.0:1.0
             )
           )
-        );
-      }
+        ]
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Text(book.year.toString(),
+            style: DefaultTextStyle.of(context).style.copyWith(
+              fontSize: 17,color: isAvailable?Colors.black:Colors.grey[400],
+              // fontWeight: FontWeight.w300,
+            )
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 7),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds:400),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return ScaleTransition(child: child, scale: animation);
+              },
+              child: this.isSorting?ReorderableDragStartListener(
+                // child: Icon(Icons.short_text_rounded),
+                child: Icon(LaiSiangthoIcon.drag_handle, color: Colors.red, size: 25.0),
+                index: index,
+              ):Icon(LaiSiangthoIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 25),
+            ),
+          ),
+          // Icon(LaiSiangthoIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 22),
+          // if(this.isSorting)ReorderableDragStartListener(
+          //   // child: Icon(Icons.short_text_rounded),
+          //   child: Icon(LaiSiangthoIcon.drag_handle, color: Colors.red, size: 25.0),
+          //   index: index,
+          // )
+        ]
+      ),
+      onTap:()=>isAvailable?toBible(book):showModal(book)
+      // onTap:()=>showModal(book)
+    );
+
+  }
+
+  Widget buildMode() {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(7.0))
+      ),
+      elevation: 2,
+
+      // child: Text('abc'),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              child: Semantics(
+                label: "Switch theme mode",
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.lightbulb,size:20),
+                    Text('Switch theme',
+                      style: TextStyle(
+                        fontSize: 20
+                      )
+                    )
+                  ],
+                ),
+              )
+            ),
+            Divider(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: ThemeMode.values.map<Widget>((e){
+                  bool active = IdeaTheme.of(context).themeMode == e;
+                  // IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: ThemeMode.system));
+                  return Semantics(
+                    label: "Switch to",
+                    selected: active,
+                    child: CupertinoButton(
+                      borderRadius: new BorderRadius.circular(30.0),
+                      padding: EdgeInsets.symmetric(vertical:5, horizontal:10),
+                      // minSize: 20,
+                      // color: Theme.of(context).primaryColorDark,
+                      child: Text(
+                        themeName[e.index],
+                        semanticsLabel: themeName[e.index],
+                      ),
+                      onPressed: active?null:()=>IdeaTheme.update(context,IdeaTheme.of(context).copyWith(themeMode: e))
+                    ),
+                  );
+                }).toList()
+              )
+            )
+          ]
+        ),
+      )
     );
   }
 }

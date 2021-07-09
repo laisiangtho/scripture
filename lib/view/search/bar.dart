@@ -1,130 +1,142 @@
 part of 'main.dart';
 
 mixin _Bar on _State {
-  Widget sliverPersistentHeader() {
-    return new SliverPersistentHeader(
+  Widget bar() {
+    return SliverAppBar(
+      title: AnimatedOpacity(
+        duration: Duration(milliseconds: 100),
+        opacity: focusNode.hasFocus?0.0:1.0,
+        child: Text('Bring to light',),
+      ),
+      // Allows the user to reveal the app bar if they begin scrolling
+      // back up the list of items.
+      floating: true,
       pinned: true,
-      floating:true,
-      delegate: new ScrollHeaderDelegate(_bar,minHeight: 40, maxHeight: 50)
-    );
-  }
-
-  Widget _barDecoration({double stretch, Widget child}){
-    return Container(
-      decoration: BoxDecoration(
-        // color: this.backgroundColor??Theme.of(context).primaryColor,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: new BorderRadius.vertical(
-          bottom: Radius.elliptical(3, 2)
+      backgroundColor: core.nodeFocus?null:Theme.of(context).scaffoldBackgroundColor,
+      elevation: 0.7,
+      forceElevated: core.nodeFocus,
+      shape: ContinuousRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(7), bottomRight: Radius.circular(7)
+        )
+      ),
+      // Display a placeholder widget to visualize the shrinking size.
+      // flexibleSpace: Placeholder(),
+      // Make the initial height of the SliverAppBar larger than normal.
+      expandedHeight: core.nodeFocus?40:100,
+      // toolbarHeight:70,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(56.0),
+        child: Container(
+          width: double.infinity,
+          height: 35.0,
+          margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+          child: _barSearch(true),
         ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            // color: Colors.black38,
-            color: Theme.of(context).backgroundColor.withOpacity(stretch >= 0.5?stretch:0.0),
-            spreadRadius: 0.7,
-            offset: Offset(0.5, .1),
-          )
-        ]
       ),
-      child: child
     );
   }
 
-  Widget _bar(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
-    return _barDecoration(
-      stretch: overlaps?1.0:stretch,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 400),
-              margin: EdgeInsets.only(left:12,right:focusNode.hasFocus?0:12, top: 7, bottom: 7),
-              child: input(shrink,stretch)
-            ),
+  Widget _barSearch(bool innerBoxIsScrolled){
+    // BuildContext context,double offset,bool overlaps, double shrink, double stretch
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            child: Builder(builder: (BuildContext context) => _barForm(innerBoxIsScrolled))
           ),
-          LayoutBuilder(builder: (context, constraints){
-            return AnimatedContainer(
-              duration: Duration(milliseconds: 200),
-              width: focusNode.hasFocus?70:0,
-              child: focusNode.hasFocus?new CupertinoButton (
-                onPressed: inputCancel,
-                padding: EdgeInsets.zero,
-                minSize: 35.0,
-                child:Text('Cancel', maxLines: 1, style: TextStyle(fontSize: 14))
-              ):Container()
-            );
-          })
-        ]
-      ),
+        ),
+        AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          width: focusNode.hasFocus?70:0,
+          child: focusNode.hasFocus?Semantics(
+            enabled: true,
+            label: "Cancel",
+            child: new CupertinoButton(
+              onPressed: onCancel,
+              padding: EdgeInsets.zero,
+              minSize: 35.0,
+              child:Text(
+                'Cancel',
+                semanticsLabel: "search",
+                maxLines: 1
+              )
+            )
+          ):null,
+        )
+      ]
     );
   }
 
-  Widget input(double shrink,double stretch){
-    // double stretch = percentage;
-    // double shrink = percentage;
+  Widget _barForm(bool innerBoxIsScrolled){
+    // BuildContext context, double shrink, double stretch
     return TextFormField(
-      key: formKey,
       controller: textController,
       focusNode: focusNode,
+      textInputAction: TextInputAction.search,
+      keyboardType: TextInputType.text,
+      onChanged: onSuggest,
+      onFieldSubmitted: onSearch,
       // autofocus: true,
       enableInteractiveSelection: true,
       enabled: true,
-      // maxLength: 5,
-      textInputAction: TextInputAction.search,
-      keyboardType: TextInputType.text,
-      // initialValue: null,
-      // showCursor: true,
-      // cursorHeight:22.0,
       enableSuggestions: true,
-      onFieldSubmitted: inputSubmit,
-      // buildCounter: (BuildContext a, {int currentLength, bool isFocused, int maxLength}) {},
-      // textAlign: focusNode.hasFocus?TextAlign.start:TextAlign.center,
       maxLines: 1,
-      // obscureText: true,
       style: TextStyle(
         fontFamily: 'sans-serif',
         // fontSize: (10+(15-10)*stretch),
         fontWeight: FontWeight.w300,
-        height: 1,
+        // height: 1.1,
+        // fontSize: 17,
+        height: 1.1,
+        fontSize: 19,
         // fontSize: 15 + (2*stretch),
-        fontSize: 15 + (2*shrink),
+        // fontSize: 17 + (2*shrink),
+        // fontSize: 20 + (2*shrink),
+
         // color: Colors.black
+        color: Theme.of(context).colorScheme.primaryVariant
       ),
+
       decoration: InputDecoration(
-        // labelText: 'Search',
-        // isDense: true,
-        // (widget.focusNode.hasFocus && textController.text.isNotEmpty)?
-        suffixIcon: Opacity(
-          opacity: shrink,
-          child: SizedBox.shrink(
-            child: (focusNode.hasFocus && this.textController.text.isNotEmpty)?new CupertinoButton (
-              onPressed: inputClear,
-              // color: Colors.orange,
-              padding: EdgeInsets.zero,
-              // child:Icon(Icons.clear,color:Colors.grey,size: 17),
-              child:Icon(CustomIcon.cancel,color:Colors.grey,size: 10),
-            ):null
-          )
+        suffixIcon: Selector<Core, bool>(
+          selector: (BuildContext _, Core e) => e.nodeFocus && e.collection.searchQuery.isNotEmpty,
+          builder: (BuildContext _, bool word, Widget? child) {
+            return word?SizedBox.shrink(
+              child: Semantics(
+                label: "Clear",
+                child: new CupertinoButton (
+                  onPressed: onClear,
+                  // minSize: 20,
+                  padding: EdgeInsets.zero,
+                  child:Icon(
+                    CupertinoIcons.xmark_circle_fill,
+                    color:Colors.grey,
+                    size: 20,
+                    semanticLabel: "input"
+                  ),
+                )
+              )
+            ):child!;
+          },
+          child: SizedBox(),
         ),
-        // prefixIcon: Icon(CustomIcon.find,color:Colors.grey[focusNode.hasFocus?100:400],size: 20),
-        prefixIcon: Icon(CustomIcon.find,color:Theme.of(context).backgroundColor,size: 20),
-        hintText: " ...search Verse",
+        prefixIcon: Icon(
+          LaiSiangthoIcon.find,
+          color:Theme.of(context).hintColor,
+          size: 17
+        ),
+        hintText: " ... a word or two",
         hintStyle: TextStyle(color: Colors.grey),
-        contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (3*shrink)),
-        fillColor: Theme.of(context).primaryColor.withOpacity(shrink),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).backgroundColor.withOpacity(shrink),width: 0.8),
-          borderRadius: BorderRadius.all(Radius.circular(100)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).backgroundColor.withOpacity(shrink),width: 0.5),
-          borderRadius: BorderRadius.all(Radius.circular(7)),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 0.0),
-          // borderRadius: BorderRadius.all(Radius.circular(10)),
-        )
+        // contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (7*shrink)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+        // contentPadding: EdgeInsets.symmetric(horizontal: 2,vertical: (10*shrink)),
+        // fillColor: Theme.of(context).primaryColor.withOpacity(shrink),
+        // fillColor: focusNode.hasFocus?Theme.of(context).scaffoldBackgroundColor:Theme.of(context).backgroundColor,
+        fillColor: Theme.of(context).backgroundColor.withOpacity(0.1),
       )
     );
   }
