@@ -53,6 +53,9 @@ Lai Siangtho is not just providing builded/packaged app. But opensource that you
 
 Take a look: [https://en.wikipedia.org/wiki/Zo_people]
 
+![alt text][license]
+![alt text][flutterversion]
+
 ## Android
 
 ### minSdkVersion=16
@@ -175,3 +178,5 @@ dependencies:
 [lidea]: https://github.com/laisiangtho/lidea
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
+[license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
+[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.0.0-green.svg "Flutter version"
