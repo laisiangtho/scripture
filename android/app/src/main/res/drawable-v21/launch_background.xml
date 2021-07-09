@@ -13,6 +13,6 @@
   <item>
     <bitmap
       android:gravity="center"
-      android:src="@mipmap/icon" />
+      android:src="@mipmap/iconrounded" />
   </item>
 </layer-list>
