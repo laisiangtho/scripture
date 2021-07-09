@@ -1,12 +1,19 @@
 **/*v[0-9].dart
-**/*v[0-9].md
+**/*v[0-9]*.md
 **/*v[0-9].rar
 **/*v[0-9].json
-# lib/**/*v[0-9].dart
-# lib/**/*v[0-9].md
-assets/delete
+tmp/
+# assets/**
+# !assets/fonts
+# !assets/psd
+# !assets/*-mock.*
+assets/env.json
+assets/bible.json
+
 android/key.properties
 android/app/google-services.json
+
+ios/Runner/GoogleService-Info.plist
 
 # Miscellaneous
 *.class
