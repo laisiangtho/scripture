@@ -224,10 +224,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: c0b8ce4b388879c59caba0799ee555adf9b78ae9
+      resolved-ref: f1fb24a943f6ef685b3c7e761469843184d796c6
       url: "git://github.com/laisiangtho/lidea.git"
     source: git
-    version: "0.0.9"
+    version: "0.1.1"
   matcher:
     dependency: transitive
     description:
