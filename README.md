@@ -170,6 +170,10 @@ dependencies:
 
 ### for iOS
 
+flutter clean && flutter pub get
+rm ios/Podfile && install pod
+cd .. && flutter build ios
+
 - ?
 
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
