@@ -1,5 +1,9 @@
 # Todo
 
+zotune.willsol.zo.laisiangtho
+version: 1.1.9
+build: 44
+
 - initial
   - [x] default bibleIdentify
   - [x] read local resource

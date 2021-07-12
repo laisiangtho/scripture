@@ -67,7 +67,7 @@ mixin _Bar on _State {
         // maxHeight: widget.barMaxHeight
         // maxHeight: 80,
         // minHeight: 55
-        minHeight: 40
+        minHeight: 30 //40
       )
     );
   }
