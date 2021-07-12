@@ -25,7 +25,7 @@ class AppView extends _State {
       resizeToAvoidBottomInset: true,
       // body: Navigator(key: navigator, onGenerateRoute: _routeGenerate, onUnknownRoute: _routeUnknown),
       body: SafeArea(
-        top: true,
+        top: false,
         bottom: true,
         maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,

@@ -8,8 +8,8 @@ mixin _Bar on _State {
       delegate: new ViewHeaderDelegate(
         Navigator.canPop(context)?_barPopup:_barMain,
         // maxHeight: widget.barMaxHeight
-        maxHeight: 120,
-        minHeight: 56
+        maxHeight: 116,
+        minHeight: 56 + MediaQuery.of(context).padding.top,
       )
     );
   }

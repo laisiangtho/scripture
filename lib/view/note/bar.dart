@@ -11,7 +11,7 @@ mixin _Bar on _State {
         _barMain,
         // maxHeight: widget.barMaxHeight
         // maxHeight: 80,
-        // minHeight: 80
+        minHeight: 56+MediaQuery.of(context).padding.top
       )
     );
   }

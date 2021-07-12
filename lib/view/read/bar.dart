@@ -67,16 +67,16 @@ mixin _Bar on _State {
         // maxHeight: widget.barMaxHeight
         // maxHeight: 80,
         // minHeight: 55
-        minHeight: 30 //40
+        // minHeight: 30 //40
+        minHeight: 36+MediaQuery.of(context).padding.top
       )
     );
   }
 
   Widget _barMain(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
     double width = MediaQuery.of(context).size.width/2;
-
     return ViewHeaderDecoration(
-      overlaps: stretch > 0.3,
+      overlaps: stretch > 0.2,
       child: Stack(
         children: <Widget>[
           Align(
