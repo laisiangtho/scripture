@@ -28,7 +28,8 @@ class AppMain extends StatefulWidget {
   State<StatefulWidget> createState() => AppView();
 }
 
-abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin {
+abstract class _State extends State<AppMain>
+    with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final pageController = PageController(keepPage: true);
   final _controller = ScrollController();
@@ -61,6 +62,7 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
     // Provider.of<Core>(context, listen: false);
     core = context.read<Core>();
     initiator = core.init();
+
     // initiator = new Future.delayed(new Duration(seconds: 1));
     // connection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
     //   // Got a new connectivity status!
@@ -69,32 +71,49 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
     //   // ConnectivityResult.none
     //   debugPrint(result);
     // });
-    if (_pageView.length == 0){
+    if (_pageView.length == 0) {
       _pageButton.addAll([
         // ViewNavigationModel(icon:MyOrdbokIcon.chapter_previous, name:"Previous", description: "Previous search", action: onPreviousHistory() ),
 
-        ViewNavigationModel(icon:LaiSiangthoIcon.flag, name:"Home", description: "List of Holy Bible in many languages", key: 0),
-        ViewNavigationModel(icon:LaiSiangthoIcon.book_open, name:"Read", description: "Read bible by chapter", key: 1),
-        ViewNavigationModel(icon:LaiSiangthoIcon.list_nested, name:"Bookmark", description: "Bookmark list", key: 2),
-        ViewNavigationModel(icon:LaiSiangthoIcon.search, name:"Search", description: "Search bible", key: 3),
+        ViewNavigationModel(
+            icon: LaiSiangthoIcon.flag,
+            name: "Home",
+            description: "List of Holy Bible in many languages",
+            key: 0),
+        ViewNavigationModel(
+            icon: LaiSiangthoIcon.book_open,
+            name: "Read",
+            description: "Read bible by chapter",
+            key: 1),
+        ViewNavigationModel(
+            icon: LaiSiangthoIcon.list_nested,
+            name: "Bookmark",
+            description: "Bookmark list",
+            key: 2),
+        ViewNavigationModel(
+            icon: LaiSiangthoIcon.search,
+            name: "Search",
+            description: "Search bible",
+            key: 3),
         // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information/Working", key: 4)
       ]);
       _pageView.addAll([
-
-        WidgetKeepAlive(key:_homeKey, child: Home.Main(key: _homeGlobal)),
-        WidgetKeepAlive(key:_readKey, child: Read.Main(key: _readGlobal)),
-        WidgetKeepAlive(key:_noteKey, child: Note.Main(key: _noteGlobal)),
-        WidgetKeepAlive(key:_searchKey, child: Search.Main(key: _searchGlobal)),
+        WidgetKeepAlive(key: _homeKey, child: Home.Main(key: _homeGlobal)),
+        WidgetKeepAlive(key: _readKey, child: Read.Main(key: _readGlobal)),
+        WidgetKeepAlive(key: _noteKey, child: Note.Main(key: _noteGlobal)),
+        WidgetKeepAlive(
+            key: _searchKey, child: Search.Main(key: _searchGlobal)),
         // WidgetKeepAlive(key:moreKey, child: new More.Main(key: more)),
       ]);
     }
 
-    viewNotifyNavigation.addListener((){
+    viewNotifyNavigation.addListener(() {
       final index = viewNotifyNavigation.value;
       // navigator.currentState.pushReplacementNamed(index.toString());
 
-      ViewNavigationModel page = _pageButton.firstWhere((e) => e.key == index, orElse: () => _pageButton.first);
-      core.analyticsScreen(page.name,'${page.name}State');
+      ViewNavigationModel page = _pageButton.firstWhere((e) => e.key == index,
+          orElse: () => _pageButton.first);
+      core.analyticsScreen(page.name, '${page.name}State');
       // NOTE: check State isMounted
       // if(page.key.currentState != null){
       //   page.key.currentState.setState(() {});
@@ -123,15 +142,15 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
 
   @override
   void setState(fn) {
-    if(mounted) super.setState(fn);
+    if (mounted) super.setState(fn);
   }
 
-  void _navView(int index){
+  void _navView(int index) {
     // _controller.master.bottom.pageChange(index);
     viewNotifyNavigation.value = index;
   }
 
-  void onSearch(String word){
+  void onSearch(String word) {
     NotifyNavigationButton.navigation.value = 0;
     Future.delayed(const Duration(milliseconds: 200), () {
       // core.definitionGenerate(word);
@@ -140,5 +159,4 @@ abstract class _State extends State<AppMain> with SingleTickerProviderStateMixin
     //   core.historyAdd(word);
     // });
   }
-
 }
