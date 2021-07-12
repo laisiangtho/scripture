@@ -10,8 +10,8 @@ mixin _Bar on _State {
       delegate: new ViewHeaderDelegate(
         _barMain,
         // maxHeight: widget.barMaxHeight
-        maxHeight: 80,
-        minHeight: 80
+        // maxHeight: 80,
+        // minHeight: 80
       )
     );
   }

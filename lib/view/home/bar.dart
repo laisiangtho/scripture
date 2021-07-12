@@ -9,7 +9,7 @@ mixin _Bar on _State {
         Navigator.canPop(context)?_barPopup:_barMain,
         // maxHeight: widget.barMaxHeight
         maxHeight: 120,
-        minHeight: 80
+        minHeight: 56
       )
     );
   }
