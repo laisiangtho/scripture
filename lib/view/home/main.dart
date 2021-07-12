@@ -137,12 +137,15 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     // }
     // controller.master.bottom.pageChange(1);
     if (Navigator.canPop(context)){
-      viewNotifyNavigation.value = 1;
-      core.message ='a momment plase';
+
       if (core.collection.parallelId != bible.identify){
         core.collection.parallelId = bible.identify;
-        // core.writeCollection();
+        core.notify();
       }
+      if (!core.scripturePrimary.isReady) {
+        core.message ='a momment please';
+      }
+      viewNotifyNavigation.value = 1;
       core.scriptureParallel.init().whenComplete(
         (){
           core.message ='';
@@ -152,9 +155,10 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     } else {
       if (core.collection.primaryId != bible.identify){
         core.collection.primaryId = bible.identify;
+        core.notify();
       }
       if (!core.scripturePrimary.isReady) {
-        core.message ='a momment plase';
+        core.message ='a momment please';
       }
       viewNotifyNavigation.value = 1;
       core.scripturePrimary.init().whenComplete(
