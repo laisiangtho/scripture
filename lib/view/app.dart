@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
-import 'package:lidea/connectivity.dart';
+// import 'package:lidea/connectivity.dart';
 // import 'package:lidea/scroll.dart';
 import 'package:lidea/view.dart';
 
@@ -54,7 +54,7 @@ abstract class _State extends State<AppMain>
 
   late Core core;
   late Future<void> initiator;
-  late StreamSubscription<ConnectivityResult> connection;
+  // late StreamSubscription<ConnectivityResult> connection;
 
   @override
   void initState() {
@@ -137,7 +137,7 @@ abstract class _State extends State<AppMain>
     _controller.dispose();
     viewNotifyNavigation.dispose();
     super.dispose();
-    connection.cancel();
+    // connection.cancel();
   }
 
   @override
