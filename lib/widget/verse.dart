@@ -77,7 +77,8 @@ class WidgetVerse extends StatelessWidget {
               TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: '\t',
+                    // text: '\t',
+                    // text:verse.name,
                     children: <TextSpan>[
                       TextSpan(
                         text: verse.name,
