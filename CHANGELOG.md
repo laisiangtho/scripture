@@ -1,5 +1,12 @@
 # Change log
 
+## 1.0.4+46
+
+Improve
+
+- Navigation bottom padding (iOS)
+- statusBarBrightness (iOS)
+
 ## 1.0.4+45
 
 Improve
