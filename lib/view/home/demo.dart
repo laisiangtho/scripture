@@ -35,11 +35,10 @@ class DemoView extends StatelessWidget {
             child: Text("mockTest"),
             onPressed: () {
               core.mockTest().then((value) {
-                print(value);
+                debugPrint(value);
               }).catchError((e){
-                print(e.toString());
+                debugPrint(e.toString());
               });
-             print('catchError');
             },
           ),
           ElevatedButton(
