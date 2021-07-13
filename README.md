@@ -4,8 +4,8 @@
 
 Lai Siangtho is 'the Holy Bible' app, and the continuous version of what we have released in 2008 that was saying "somehow we wanna serve resource which may seem any sense with you". There has been a huge improvement, and one of the biggest was developed using Flutter, which mean running on Multi-platform.
 
-...at [Google play][playStore],
-[Join][playStore Join],
+...at [App Store][appstore],
+[Google play][playStore],
 or [readme][Home]!
 
 Lai Siangtho has currently:
@@ -24,7 +24,7 @@ Lai Siangtho has currently:
 - Baibal Thiang (Hakha)
 - Khazopa Chabu Pathaipa (Mara)
 - Jinghpaw Common Language Bible
-- သမ္မာကျမ်း (ခေတ်သုံ)
+- သမ္မာကျမ်း (ခေတ်သုံး)
 - Matu Bible
 - Pathen Thutheng BU (Thadou)
 - Lai Siengthou (Zou)
@@ -178,6 +178,7 @@ cd .. && flutter build ios
 
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
 [playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
+[appstore]: https://apps.apple.com/au/app/lai-siangtho/id600127635
 [Home]: https://github.com/laisiangtho/development
 [lidea]: https://github.com/laisiangtho/lidea
 
