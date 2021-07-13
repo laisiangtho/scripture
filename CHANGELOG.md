@@ -4,8 +4,9 @@
 
 Improve
 
-- Navigation bottom padding (iOS)
-- statusBarBrightness (iOS)
+- Navigation bottom padding (Accessibility)
+- statusBarBrightness (Brightness)
+- Switch Animation
 
 ## 1.0.4+45
 
