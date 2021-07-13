@@ -3,7 +3,6 @@ part of 'main.dart';
 class _View extends _State with _Bar, _Refresh, _Modal {
   @override
   Widget build(BuildContext context) {
-    debugPrint('home build');
     return ViewPage(
       key: widget.key,
       controller: scrollController,
@@ -128,6 +127,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
         Tooltip(
           message: 'More',
           child: new CupertinoButton(
+            // color: Colors.blue,
             child: new Icon(
               LaiSiangthoIcon.dot_horiz,color: Colors.grey,
             ),
@@ -151,8 +151,8 @@ class _View extends _State with _Bar, _Refresh, _Modal {
         child: Text(
           book.name, maxLines: 1, overflow: TextOverflow.ellipsis,
           semanticsLabel: book.name,
-          style: Theme.of(context).textTheme.headline6!.copyWith(
-            fontSize: 18,
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+            fontSize: 20,
             fontWeight: isAvailable?FontWeight.w400:FontWeight.w300,
             // color: isAvailable?Colors.black:Colors.grey,
             height: book.langName=='my'?1.0:1.2
@@ -170,9 +170,9 @@ class _View extends _State with _Bar, _Refresh, _Modal {
             // padding: EdgeInsets.all(5),
             // width: 50.0,
             constraints: BoxConstraints(
-              minWidth: 40.0,
+              minWidth: 35.0,
             ),
-            padding: EdgeInsets.symmetric(vertical:3),
+            padding: EdgeInsets.symmetric(vertical:2),
             // margin: EdgeInsets.only(top:5),
             decoration: BoxDecoration(
               // shape: BoxShape.circle,
@@ -196,46 +196,54 @@ class _View extends _State with _Bar, _Refresh, _Modal {
               // )
             )
           ),
-          Text(' '),
-          Text(book.shortname,style: Theme.of(context).textTheme.subtitle2!.copyWith(
-              fontSize: 15,
+          Divider(),
+          Text(' '+book.shortname,style: Theme.of(context).textTheme.subtitle2!.copyWith(
+              fontSize: 14,
               height: book.langName=='my'?1.0:1.0
             )
           )
         ]
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Text(book.year.toString(),
+      trailing: AnimatedSwitcher(
+        duration: const Duration(milliseconds:400),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return ScaleTransition(child: child, scale: animation);
+        },
+        child: this.isSorting?ReorderableDragStartListener(
+          // child: Icon(Icons.short_text_rounded),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+            child: Icon(
+              LaiSiangthoIcon.drag_handle,
+              color: Colors.red,
+              size: 25.0
+            ),
+          ),
+          index: index,
+        ):
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 7, horizontal: 3),
+          child: Text(book.year.toString(),
             style: DefaultTextStyle.of(context).style.copyWith(
-              fontSize: 17,color: isAvailable?Colors.black:Colors.grey[400],
+              fontSize: 18,color: isAvailable?Colors.black:Colors.grey[400],
               // fontWeight: FontWeight.w300,
             )
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 7),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds:400),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(child: child, scale: animation);
-              },
-              child: this.isSorting?ReorderableDragStartListener(
-                // child: Icon(Icons.short_text_rounded),
-                child: Icon(LaiSiangthoIcon.drag_handle, color: Colors.red, size: 25.0),
-                index: index,
-              ):Icon(LaiSiangthoIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 25),
-            ),
-          ),
-          // Icon(LaiSiangthoIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 22),
-          // if(this.isSorting)ReorderableDragStartListener(
-          //   // child: Icon(Icons.short_text_rounded),
-          //   child: Icon(LaiSiangthoIcon.drag_handle, color: Colors.red, size: 25.0),
-          //   index: index,
-          // )
-        ]
+        )
+        // Row(
+        //   mainAxisSize: MainAxisSize.min,
+        //   // crossAxisAlignment: CrossAxisAlignment.center,
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget>[
+        //     Text(book.year.toString(),
+        //       style: DefaultTextStyle.of(context).style.copyWith(
+        //         fontSize: 17,color: isAvailable?Colors.black:Colors.grey[400],
+        //         // fontWeight: FontWeight.w300,
+        //       )
+        //     ),
+        //     // Icon(LaiSiangthoIcon.right_open,color: isAvailable?Colors.grey:Colors.grey[200], size: 25),
+        //   ]
+        // )
       ),
       onTap:()=>isAvailable?toBible(book):showModal(book)
       // onTap:()=>showModal(book)

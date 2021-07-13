@@ -21,14 +21,14 @@ class SlideMenu extends StatefulWidget {
 class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMixin {
 
   late AnimationController controller;
-  late Animation<Offset>  animationOffset;
+  late Animation<Offset> animationOffset;
   late Animation<double> animationDouble;
 
   @override
   initState() {
     super.initState();
 
-    double offsetWidth = -0.18* widget.right.length;
+    double offsetWidth = -0.25 * widget.right.length;
 
     controller = new AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
 
@@ -37,7 +37,7 @@ class _SlideMenuState extends State<SlideMenu> with SingleTickerProviderStateMix
     ).animate(new CurveTween(curve: Curves.decelerate).animate(controller));
 
     animationDouble = new Tween<double>(
-      begin: 0.0,  end: 1.0
+      begin: 0.0, end: 1.0
     ).animate(new CurveTween(curve: Curves.decelerate).animate(controller));
   }
 
