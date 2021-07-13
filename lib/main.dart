@@ -88,7 +88,7 @@ class LaiSiangtho extends StatelessWidget {
   Widget app(){
     return Builder(
       builder: (context) => uiOverlayStyle(
-        has: IdeaTheme.of(context).resolvedSystemBrightness == Brightness.light,
+        isBrightness: IdeaTheme.of(context).resolvedSystemBrightness == Brightness.light,
         brightness: IdeaTheme.of(context).resolvedSystemBrightness,
         child: MaterialApp(
           title: "Lai Siangtho",
@@ -124,14 +124,13 @@ class LaiSiangtho extends StatelessWidget {
     );
   }
 
-  // Widget uiOverlayStyle({Brightness brightness, bool has, Widget child}){
-  Widget uiOverlayStyle({required Brightness brightness, required bool has, required Widget child}){
+  Widget uiOverlayStyle({required Brightness brightness, required bool isBrightness, required Widget child}){
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: brightness,
-        statusBarBrightness: brightness,
-        systemNavigationBarColor: has?IdeaData.darkScheme.primary:IdeaData.lightScheme.primary,
+        statusBarBrightness: isBrightness?Brightness.dark:Brightness.light,
+        systemNavigationBarColor: isBrightness?IdeaData.darkScheme.primary:IdeaData.lightScheme.primary,
         systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: brightness
       ),
