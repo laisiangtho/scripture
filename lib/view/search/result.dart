@@ -69,6 +69,7 @@ mixin _Result on _State {
       key: UniqueKey(),
       shrinkWrap: true,
       primary: false,
+      padding: EdgeInsets.zero,
       // itemCount: chapters.length,
       itemCount: shrinkChapterTotal,
       itemBuilder: (context, chapterIndex){
