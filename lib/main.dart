@@ -75,9 +75,9 @@ class LaiSiangtho extends StatelessWidget {
         ChangeNotifierProvider<NotifyViewScroll>(
           create: (context) => NotifyViewScroll(),
         ),
-        ChangeNotifierProvider<NotifyNavigationScroll>(
-          create: (context) => NotifyNavigationScroll(),
-        ),
+        // ChangeNotifierProvider<NotifyNavigationScroll>(
+        //   create: (context) => NotifyNavigationScroll(),
+        // ),
         ChangeNotifierProvider<Core>(
           create: (context) => Core(),
         ),
