@@ -41,7 +41,7 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
 
   late ScrollController scrollController;
   late BuildContext contextDraggable;
-  late NotifyNavigationScroll nav;
+  late NotifyViewScroll nav;
 
   final keyParallel = UniqueKey();
   final scaffoldParallel = GlobalKey<ScaffoldState>();
@@ -49,7 +49,7 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
   @override
   void initState() {
     super.initState();
-    nav = Provider.of<NotifyNavigationScroll>(context, listen: false);
+    nav = Provider.of<NotifyViewScroll>(context, listen: false);
   }
 
   List<int> get verseSelectionList => widget.verseSelectionList;
