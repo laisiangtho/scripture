@@ -153,13 +153,14 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
     }
     scrollController.animateTo(pos, duration: new Duration(milliseconds: 700), curve: Curves.ease);
   }
+
   Future scrollToIndex(int id,{bool isId:false}) async {
-    double scrollTo = 22.0;
+    double scrollTo = 0.0;
     if (id > 0) {
       final offsetList = tmpverse.where(
         // (e) => tmpverse.indexOf(e) < index
-        // (e) => isId?e.id < id:tmpverse.indexOf(e) < id
-        (e) => e.id < id
+        (e) => isId?e.id < id:tmpverse.indexOf(e) < id
+        // (e) => e.id < id
       ).map<double>((e) {
         final key = e.key as GlobalKey;
         if (key.currentContext != null){
@@ -171,8 +172,6 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
       if (offsetList.length > 0){
         scrollTo = offsetList.reduce((a,b )=>a+b) + scrollTo;
       }
-
-      debugPrint('scrollTo: $scrollTo');
     }
 
     scrollToPosition(scrollTo);
