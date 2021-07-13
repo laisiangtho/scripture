@@ -70,7 +70,7 @@ class AppView extends _State {
   Widget bottom() {
     return Consumer<NotifyNavigationScroll>(
       builder: (context, scrollNavigation, child) {
-        scrollNavigation.bottomPadding = MediaQuery.of(context).padding.bottom/3;
+        scrollNavigation.bottomPadding = MediaQuery.of(context).padding.bottom;
         return AnimatedContainer(
           duration: Duration(milliseconds: scrollNavigation.milliseconds),
           height: scrollNavigation.height,
