@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:lidea/notify.dart';
 import 'package:lidea/engine.dart';
 import 'package:lidea/analytics.dart';
 

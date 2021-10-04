@@ -16,7 +16,7 @@ class IdeaData {
       colorScheme: colorScheme,
       textTheme: _textTheme,
       primaryColor: colorScheme.primary,
-      accentColor: colorScheme.secondary,
+      // accentColor: colorScheme.secondary,
       // canvasColor: Colors.transparent,
       // scaffoldBackgroundColor: colorScheme.secondary,
       // backgroundColor: colorScheme.background,

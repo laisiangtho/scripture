@@ -1,7 +1,7 @@
 
 part of 'main.dart';
 
-class CoreNotifier extends _NodeNotifier with _CoreNotifiable {
+class CoreNotifier extends Notify with _CoreNotifiable {
   double? _progressPercentage;
   double? get progressPercentage => _progressPercentage;
   set progressPercentage(double? value) => notifyIf<double?>(_progressPercentage, _progressPercentage = value);
@@ -21,18 +21,6 @@ class CoreNotifier extends _NodeNotifier with _CoreNotifiable {
   // String _searchQuery = '';
   // String get searchQuery => _searchQuery;
   // set searchQuery(String value) => notifyIf<String>(_searchQuery, _searchQuery = value);
-}
-
-abstract class _NodeNotifier with ChangeNotifier {
-  void notifyIf<T>(T element, T value) {
-    if (value != element){
-      notify();
-    }
-  }
-
-  void notify() {
-    notifyListeners();
-  }
 }
 
 mixin _CoreNotifiable{}
