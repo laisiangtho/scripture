@@ -1,155 +1,265 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lidea/idea.dart';
 
 class IdeaData {
-  static const _lightFillColor = Colors.black;
-  static const _darkFillColor = Colors.white;
+  static const IdeaColor _lightColor = IdeaColor(
+    brightness: Brightness.light,
+    focus: Colors.black,
+    primaryScheme: Colors.black,
+    // primaryScheme: Color(0xFFdbdbdb),
+    primary: Color(0xFFffffff),
+    dark: Colors.grey,
+    scaffold: Color(0xFFf7f7f7),
+    highlight: Colors.orange,
+    // background: Color(0xFFbdbdbd),
+    // background: Color(0xFFd9d9d9),
+    background: Color(0xFFdbdbdb),
+    // shadow: Colors.grey[400]!,
+    // shadow: Colors.grey.shade400,
+    shadow: Color(0xFFbdbdbd),
+    button: Color(0xFFdedcdc),
+    disable: Colors.black12,
+  );
 
-  static final Color _lightFocusColor = _lightFillColor.withOpacity(0.12);
-  static final Color _darkFocusColor = _darkFillColor.withOpacity(0.12);
+  static const IdeaColor _darkColor = IdeaColor(
+    brightness: Brightness.dark,
+    focus: Colors.white,
+    primaryScheme: Colors.white,
+    primary: Color(0xFF9c9c9c),
 
-  static ThemeData light = themeData(lightScheme, _lightFocusColor);
-  static ThemeData dark = themeData(darkScheme, _darkFocusColor);
+    // primary: Color(0xFF737373),
+    scaffold: Color(0xFFa6a6a6),
+    highlight: Colors.orange,
+    background: Color(0xFFbdbdbd),
+    // shadow: Colors.grey[600]!,
+    shadow: Color(0xFF8f8f8f),
+    button: Color(0xFFd9d9d9),
+    disable: Colors.white30,
+  );
 
-  static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
+  static ThemeData light(BuildContext context) => theme(context, _lightColor);
+  static ThemeData dark(BuildContext context) => theme(context, _darkColor);
+
+  static ThemeData theme(BuildContext context, IdeaColor color) {
+    final TextTheme textTheme = Theme.of(context).textTheme.merge(_textTheme);
+    // final TextTheme textTheme = _textTheme.merge(Theme.of(context).textTheme);
+
     return ThemeData(
-      colorScheme: colorScheme,
-      textTheme: _textTheme,
-      primaryColor: colorScheme.primary,
-      // accentColor: colorScheme.secondary,
-      // canvasColor: Colors.transparent,
-      // scaffoldBackgroundColor: colorScheme.secondary,
-      // backgroundColor: colorScheme.background,
-      scaffoldBackgroundColor: colorScheme.onBackground,
-      backgroundColor: colorScheme.background,
-      // highlightColor: Colors.transparent,
-      // splashColor: Colors.transparent,
-      focusColor: focusColor,
-      shadowColor: colorScheme.secondaryVariant,
-      // fontFamily: "Lato, 'Paduak', sans-serif",
-      // fontFamily: "Lato, Mm3Web",
-      fontFamily: "Lato, sans-serif",
+      colorScheme: color.scheme,
+      brightness: color.brightness,
 
-      bottomSheetTheme: BottomSheetThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(5)),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        // clipBehavior: Clip.antiAlias,
-        // modalBackgroundColor: colorScheme.background,
-        modalElevation: 20.0,
-        // backgroundColor: colorScheme.primary,
-        elevation: 10.0,
-        // clipBehavior: Clip.antiAlias
-        // backgroundColor: Colors.red
+      // fontFamily: "Lato, Lato, Mm3Web",
+      fontFamily: "Lato, 'Mm3Web', sans-serif",
+      primaryColor: color.primary,
+      primaryColorLight: color.light,
+      primaryColorDark: color.dark,
+      shadowColor: color.shadow,
+      canvasColor: color.canvas,
+      scaffoldBackgroundColor: color.scaffold,
+      backgroundColor: color.background,
+      highlightColor: color.highlight,
+      disabledColor: color.disable,
+      errorColor: color.error,
+
+      textTheme: textTheme.apply(
+        bodyColor: color.focus,
+        displayColor: color.highlight,
+        decorationColor: Colors.red,
       ),
-      // tooltipTheme: TooltipThemeData()
-      cupertinoOverrideTheme: CupertinoThemeData(
-        // textTheme: CupertinoTextThemeData(),
-        // primaryColor: Colors.black54
-        primaryColor: colorScheme.primaryVariant
+      primaryTextTheme: textTheme,
+      appBarTheme: AppBarTheme(backgroundColor: color.primary, foregroundColor: color.focus),
+
+      iconTheme: IconThemeData(color: color.focus, size: 23),
+      cardTheme: CardTheme(
+        color: color.primary,
+        elevation: 0.5,
+        shadowColor: color.shadow,
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 0.2, color: color.shadow),
+          // BorderRadius.circular(5)
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
+      ),
+      dialogTheme: DialogTheme(
+        // Color? backgroundColor,
+        // double? elevation,
+        // ShapeBorder? shape,
+        // TextStyle? titleTextStyle,
+        // TextStyle? contentTextStyle,
+        // backgroundColor: Colors.red,
+        titleTextStyle: TextStyle(fontSize: 19, height: 1.0, color: color.focus),
+        contentTextStyle: TextStyle(fontSize: 14, height: 1.0, color: color.focus),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12.0),
+          ),
+        ),
+        elevation: 3,
+      ),
+      cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
+        brightness: color.brightness,
+        textTheme: const CupertinoTextThemeData(
+          primaryColor: Colors.red,
+          actionTextStyle: TextStyle(color: Colors.orange),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        // fillColor: Colors.red,
-        hoverColor: Colors.red,
-        // fillColor: colorScheme.background,
-        fillColor: colorScheme.primary,
-        // fillColor: colorScheme.secondary,
+        fillColor: color.shadow.withOpacity(0.7),
+        // hoverColor: Colors.green,
+        // focusColor: Colors.red,
+        hintStyle: TextStyle(color: color.focus.withOpacity(0.7)),
+        // labelStyle: const TextStyle(height: 1.3),
+        // alignLabelWithHint: true,
+        suffixStyle: const TextStyle(color: Colors.red),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
-          borderRadius: BorderRadius.all(Radius.circular(7)),
+          borderSide: BorderSide(color: color.background, width: 0.3),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent, width: 0.0),
-          borderRadius: BorderRadius.all(Radius.circular(7)),
+          borderSide: BorderSide(color: color.shadow, width: 0.2),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
         disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent,width: 0.0),
-          borderRadius: BorderRadius.all(Radius.circular(7)),
+          borderSide: BorderSide(color: color.shadow.withOpacity(0.8), width: 0.2),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent,width: 0.0),
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-        )
+          borderSide: BorderSide(color: color.shadow, width: 0.2),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
       ),
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: colorScheme.primaryVariant,
-        selectionColor: colorScheme.background,
-        selectionHandleColor: colorScheme.background,
+      bottomSheetTheme: BottomSheetThemeData(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(3.5)),
+        ),
+        clipBehavior: Clip.hardEdge,
+        // clipBehavior: Clip.antiAlias,
+        // clipBehavior: Clip.antiAliasWithSaveLayer,
+        // modalBackgroundColor: color.background,
+        modalBackgroundColor: color.primary,
+        modalElevation: 2.0,
+        // backgroundColor: color.primary,
+        backgroundColor: color.background,
+        // backgroundColor: Colors.red,
+        elevation: 0.0,
       ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: colorScheme.secondaryVariant,
-        shape: ContinuousRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            // top: Radius.elliptical(3, 2)
-            top: Radius.circular(7)
+      bottomAppBarTheme: const BottomAppBarTheme(color: Colors.cyan),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(backgroundColor: Colors.red),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          textStyle: const TextStyle(fontSize: 19),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(color.focus),
+          backgroundColor: MaterialStateProperty.all<Color>(color.primary),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(color.focus),
+          backgroundColor: MaterialStateProperty.all<Color>(color.primary),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+            ),
           ),
         ),
-      )
+      ),
     );
   }
 
-  static const ColorScheme lightScheme = ColorScheme(
-    primary: Colors.white,
-    primaryVariant: Colors.black,
-    secondary: Colors.white,
-    secondaryVariant: Colors.black45,
-    background: Colors.black38,
-    // background: Color(0xFFe0e1e6),
-    surface: Color(0xFFFAFBFB),
-    // scaffoldBackgroundColor
-    // onBackground: Color(0xFFf2f2f2),
-    // onBackground: Color(0xFFecebeb),
-    onBackground: Color(0xFFeff0f4),
-    error: _lightFillColor,
-    onError: _lightFillColor,
-    onPrimary: _lightFillColor,
-    onSecondary: _lightFillColor,
-    onSurface: _lightFillColor,
-    brightness: Brightness.light
-  );
+  static ColorScheme lightScheme = _lightColor.scheme;
+  static ColorScheme darkScheme = _darkColor.scheme;
 
-  static const ColorScheme darkScheme = ColorScheme(
-    primary: Color(0xFF3D3C3D),
-    primaryVariant: Colors.white,
-    secondary: Color(0xFF3D3C3D),
-    secondaryVariant: Color(0xFF451B6F),
-    background: Color(0xFF5E5D5E),
-    surface: Color(0xFF1F1929),
-    // scaffoldBackgroundColor
-    onBackground: Color(0xFF5E5D5E),
-    error: _darkFillColor,
-    onError: _darkFillColor,
-    onPrimary: _darkFillColor,
-    onSecondary: _darkFillColor,
-    onSurface: _darkFillColor,
-    brightness: Brightness.dark
-  );
+  static const _fontWeightSemiThin = FontWeight.w100;
+  static const _fontWeightThin = FontWeight.w100;
+  static const _fontWeighRegular = FontWeight.w300;
+  static const _fontWeighMedium = FontWeight.w400;
+  static const _fontWeighSemiBold = FontWeight.w500;
+  // static const _fontWeighBold = FontWeight.w700;
 
-  static final _fontWeightThin = FontWeight.w300;
-  static final _fontWeighRegular = FontWeight.w400;
-  static final _fontWeighMedium = FontWeight.w500;
-  static final _fontWeighSemiBold = FontWeight.w600;
-  static final _fontWeighBold = FontWeight.w700;
-
-  // { TextStyle? body2, TextStyle? body1}
-  static final TextTheme _textTheme = TextTheme(
-    headline1: TextStyle(fontWeight: _fontWeighBold, fontSize: 26.0),
-    headline2: TextStyle(fontWeight: _fontWeighBold, fontSize: 24.0),
-    headline3: TextStyle(fontWeight: _fontWeighBold, fontSize: 22.0),
-    headline4: TextStyle(fontWeight: _fontWeighBold, fontSize: 20.0),
-    headline6: TextStyle(fontWeight: _fontWeighBold, fontSize: 16.0),
-    headline5: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
-
-    subtitle1: TextStyle(fontWeight: _fontWeighMedium, fontSize: 16.0),
-    subtitle2: TextStyle(fontWeight: _fontWeighMedium, fontSize: 14.0),
-
-    bodyText1: TextStyle(fontWeight: _fontWeighRegular, fontSize: 16.0),
-    bodyText2: TextStyle(fontWeight: _fontWeighRegular, fontSize: 14.0),
-
-    caption: TextStyle(fontWeight: _fontWeighSemiBold, fontSize: 16.0),
-    button: TextStyle(fontWeight: _fontWeightThin,fontSize: 14.0,height: 1.5),
-    overline: TextStyle(fontWeight: _fontWeighMedium, fontSize: 12.0)
+  static const TextTheme _textTheme = TextTheme(
+    headline1: TextStyle(
+      fontWeight: _fontWeightSemiThin,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    headline2: TextStyle(
+      fontWeight: _fontWeightThin,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    headline3: TextStyle(
+      fontWeight: _fontWeighRegular,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    headline4: TextStyle(
+      fontWeight: _fontWeighRegular,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    headline5: TextStyle(
+      fontWeight: _fontWeighRegular,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    headline6: TextStyle(
+      fontWeight: _fontWeighRegular,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.2,
+    ),
+    subtitle1: TextStyle(
+      fontWeight: _fontWeighRegular,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.4,
+    ),
+    subtitle2: TextStyle(
+      fontWeight: _fontWeighMedium,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    bodyText1: TextStyle(
+      fontWeight: _fontWeighRegular,
+      fontFamilyFallback: [
+        "sans-serif",
+        "Mm3Web",
+      ],
+      fontSize: 20,
+      height: 1.2,
+    ),
+    bodyText2: TextStyle(
+      fontWeight: _fontWeighMedium,
+      fontFamilyFallback: [
+        "sans-serif",
+        "Mm3Web",
+      ],
+      fontSize: 20,
+      height: 1.2,
+    ),
+    caption: TextStyle(
+      fontWeight: _fontWeighSemiBold,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    button: TextStyle(
+      fontWeight: _fontWeightThin,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
+    overline: TextStyle(
+      fontWeight: _fontWeighMedium,
+      fontFamilyFallback: ["Mm3Web", "Lato"],
+      height: 1.0,
+    ),
   );
 }

@@ -1,0 +1,8 @@
+arb-dir: ../lidea/assets/locale
+untranslated-messages-file: ../lidea/assets/locale/untranslated.json
+
+# arb-dir: assets/locale
+# untranslated-messages-file: assets/locale/untranslated.json
+
+template-arb-file: locale_en.arb
+output-localization-file: app_localizations.dart

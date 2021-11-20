@@ -1,280 +1,300 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 
-// import 'package:in_app_purchase/in_app_purchase.dart';
-// import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:hive/hive.dart';
+// import 'package:intl/intl.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/view.dart';
+import 'package:lidea/authentication.dart';
+import 'package:lidea/icon.dart';
 
 import 'package:bible/core.dart';
+import 'package:bible/settings.dart';
 import 'package:bible/widget.dart';
-import 'package:bible/icon.dart';
 import 'package:bible/type.dart';
 
 part 'bar.dart';
 
 class Main extends StatefulWidget {
-  Main({Key? key}) : super(key: key);
+  const Main({Key? key, this.settings, this.navigatorKey}) : super(key: key);
+  final SettingsController? settings;
+  final GlobalKey<NavigatorState>? navigatorKey;
+
+  static const route = '/note';
+  static const icon = LideaIcon.listNested;
+  static const name = 'Note';
+  static const description = 'Note';
+  static final uniqueKey = UniqueKey();
+  // static final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
-  State<StatefulWidget> createState() => View();
+  State<StatefulWidget> createState() => _View();
 }
 
 abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
-  late Core core;
-  late FutureOr<DefinitionBible> initiator;
+  late final Core core = context.read<Core>();
+  late final SettingsController settings = context.read<SettingsController>();
+  // late final AppLocalizations translate = AppLocalizations.of(context)!;
+  late final Authentication authenticate = context.read<Authentication>();
+  late final scrollController = ScrollController();
+  // late final Future<DefinitionBible> _initiator = core.scripturePrimary.init();
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final scrollController = ScrollController();
+  // SettingsController get settings => context.read<SettingsController>();
+  AppLocalizations get translate => AppLocalizations.of(context)!;
+  // Authentication get authenticate => context.read<Authentication>();
 
   @override
   void initState() {
     super.initState();
-    core = context.read<Core>();
-    initiator = core.scripturePrimary.init();
+    // Future.microtask((){});
   }
 
   @override
-  dispose() {
-    super.dispose();
+  void dispose() {
     scrollController.dispose();
+    super.dispose();
   }
 
   @override
   void setState(fn) {
-    if(mounted) super.setState(fn);
+    if (mounted) super.setState(fn);
   }
 
-  void onClearAll(){
-    // Future.microtask((){
-    //   core.bookmarkClearNotify();
-    // });
-    // final bool? confirmation = await doConfirmWithDialog(
-    //   context: context,
-    //   message: 'Do you want to delete this Bookmark?'
-    // );
-    // if (confirmation != null && confirmation){
-    //   onDelete(index);
-    //   return true;
-    // }
+  void onDeleteAll() {
     doConfirmWithDialog(
       context: context,
-      message: 'Do you want to delete all Bookmarks?'
+      message: translate.confirmToDelete('all'),
+      title: translate.confirmation,
+      cancel: translate.cancel,
+      confirm: translate.confirm,
     ).then((confirmation) {
-      if (confirmation != null && confirmation){
-        core.bookmarkClearNotify();
+      if (confirmation != null && confirmation) {
+        core.clearBookmarkWithNotify();
       }
     });
   }
 
-  void onNav(int book, int chapter){
-    NotifyNavigationButton.navigation.value = 1;
+  void onSearch(String word) {}
+
+  void onNav(int book, int chapter) {
+    // NotifyNavigationButton.navigation.value = 1;
+    core.chapterChange(bookId: book, chapterId: chapter);
     Future.delayed(const Duration(milliseconds: 150), () {
       // core.definitionGenerate(word);
-      core.chapterChange(bookId: book, chapterId: chapter);
+      core.navigate(at: 1);
     });
     // Future.delayed(Duration.zero, () {
     //   core.historyAdd(word);
     // });
   }
 
-  void onDelete(int index){
+  Future<bool> onDelete(int index) {
     // Future.microtask((){});
-    Future.delayed(Duration.zero, () {
-      core.collection.bookmarkDelete(index);
+    // Future.delayed(Duration.zero, () {
+    //   core.collection.bookmarkDelete(index);
+    // });
+    // Do you want to delete this Bookmark?
+    // Do you want to delete all the Bookmarks?
+    return doConfirmWithDialog(
+      context: context,
+      // message: 'Do you want to delete this Bookmark?',
+      message: translate.confirmToDelete(''),
+      title: translate.confirmation,
+      cancel: translate.cancel,
+      confirm: translate.confirm,
+    ).then((confirmation) {
+      if (confirmation != null && confirmation) {
+        core.deleteBookmarkWithNotify(index);
+        return true;
+      }
+      return false;
     });
   }
 }
 
-class View extends _State with _Bar {
-
+class _View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
     // return FutureBuilder<DefinitionBible>(
-    //   future: initiator,
+    //   future: _initiator,
     //   builder: (BuildContext context, AsyncSnapshot<DefinitionBible> snapshot) {
     //     switch (snapshot.connectionState) {
     //       case ConnectionState.done:
-    //         return reader();
+    //         // return reader();
+    //         return messageContainer('Done');
     //       default:
-    //         return WidgetMsg(message: 'A moment',);
+    //         return messageContainer('A moment');
     //     }
-    //   }
+    //   },
     // );
-    return reader();
-  }
-
-  Widget reader() {
     return ViewPage(
       key: widget.key,
-      // controller: scrollController,
-      child: body()
+      controller: scrollController,
+      child: body(),
     );
   }
 
-  Widget body() {
+  CustomScrollView body() {
     return CustomScrollView(
-      // controller: scrollController,
-      primary: true,
-      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      // primary: true,
+      controller: scrollController,
       slivers: <Widget>[
         bar(),
-        // new SliverToBoxAdapter(
-        //   child: Text('abc')
+        // SliverList(
+        //   delegate: SliverChildListDelegate(
+        //     <Widget>[
+        //       CupertinoContextMenu(
+        //         child: Container(
+        //           color: Colors.red,
+        //           child: const Text('asdf'),
+        //         ),
+        //         actions: <Widget>[
+        //           CupertinoContextMenuAction(
+        //             child: const Text('Action one'),
+        //             onPressed: () {
+        //               Navigator.pop(context);
+        //             },
+        //           ),
+        //           CupertinoContextMenuAction(
+        //             child: const Text('Action two'),
+        //             onPressed: () {
+        //               Navigator.pop(context);
+        //             },
+        //           ),
+        //         ],
+        //       ),
+        //       Text(translate.bookmarkPlural(0)),
+        //       Text(translate.bookmarkPlural(1)),
+        //       Text(translate.bookmarkPlural(2)),
+        //       Text(translate.bookmarkCount(0)),
+        //       Text(translate.bookmarkCount(1)),
+        //       Text(translate.bookmarkCount(2)),
+        //     ],
+        //   ),
         // ),
-        // Selector<Core,String>(
-        //   selector: (_, e) => e.store.message,
-        //   builder: (BuildContext context, String message, Widget? child) {
-        //     return ElevatedButton(
-        //        child: Text('Message: $message'),
-        //        onPressed: (){
-        //          context.read<Core>().store.testUpdate('Yes');
-        //        }
-        //     );
-        //   }
-        // )
-        Selector<Core,List<MapEntry<dynamic, BookmarkType>>>(
+        Selector<Core, List<MapEntry<dynamic, BookmarkType>>>(
           selector: (_, e) => e.collection.boxOfBookmark.toMap().entries.toList(),
-          builder: (BuildContext context, List<MapEntry<dynamic, BookmarkType>> items, Widget? child) {
-            if (items.length > 0){
+          builder: (BuildContext _, List<MapEntry<dynamic, BookmarkType>> items, Widget? child) {
+            if (items.isNotEmpty) {
               return listContainer(items);
             }
-            return messageContainer();
-          }
+            return child!;
+            // return listContainer(items);
+          },
+          child: messageContainer(translate.bookmarkCount(0)),
         ),
-      ]
+      ],
     );
   }
 
-  Widget messageContainer(){
-    return new SliverFillRemaining(
-      child: WidgetMsg(message: 'No Bookmarks',),
+  Widget messageContainer(String message) {
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: Center(
+        child: Text(message),
+      ),
     );
   }
 
-  SliverList listContainer(Iterable<MapEntry<dynamic, BookmarkType>> box){
-    return new SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) => itemContainer(index, box.elementAt(index)),
-        childCount: box.length>30?30:box.length
-      )
+  Widget listContainer(Iterable<MapEntry<dynamic, BookmarkType>> box) {
+    // return SliverList(
+    //   delegate: SliverChildBuilderDelegate(
+    //     (BuildContext context, int index) => itemContainer(index, box.elementAt(index)),
+    //     childCount: box.length > 30 ? 30 : box.length,
+    //   ),
+    // );
+    return SliverToBoxAdapter(
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        child: ListView.separated(
+          shrinkWrap: true,
+          primary: false,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (_, index) {
+            return itemContainer(index, box.elementAt(index));
+          },
+          separatorBuilder: (_, index) {
+            return const Divider(
+              height: 0,
+            );
+          },
+          itemCount: box.length,
+        ),
+      ),
     );
   }
 
-  // Widget itemContainer(int index,MapEntry<dynamic, BookmarkType> history){
-  //   return Card(
-  //     child: Text('index $index'),
-  //   );
-  // }
-
-  Dismissible itemContainer(int index,MapEntry<dynamic, BookmarkType> bookmark){
+  Dismissible itemContainer(int index, MapEntry<dynamic, BookmarkType> bookmark) {
     final abc = core.scripturePrimary.bookById(bookmark.value.bookId);
     return Dismissible(
       // key: Key(index.toString()),
       key: Key(bookmark.value.date.toString()),
       direction: DismissDirection.endToStart,
-      child: decoration(
-        child: ListTile(
-          // contentPadding: EdgeInsets.zero,
-          title: Text(
-            // history.value.word,
-            abc.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 20,
-              // color: Theme.of(context).textTheme.caption!.color,
-              color: Theme.of(context).primaryTextTheme.button!.color,
-
-              fontWeight: FontWeight.w300
-            ),
-          ),
-          minLeadingWidth : 10,
-          leading: Icon(Icons.bookmark_added),
-          // leading: CircleAvatar(
-          //   // radius:10.0,
-          //   // backgroundColor: Colors.grey.shade800,
-          //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          //   child: Text(NumberFormat.compact().format(history.value.hit),textAlign: TextAlign.center,),
+      child: ListTile(
+        // contentPadding: EdgeInsets.zero,
+        title: Text(
+          // history.value.word,
+          abc.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          // style: TextStyle(
+          //   fontSize: 20,
+          //   // color: Theme.of(context).textTheme.caption!.color,
+          //   color: Theme.of(context).primaryTextTheme.button!.color,
+          //   fontWeight: FontWeight.w300,
           // ),
-          trailing:Chip(
-            // avatar: CircleAvatar(
-            //   // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            //   backgroundColor: Colors.transparent,
-            //   // child: Icon(Icons.sticky_note_2_outlined, color: Theme.of(context).primaryColor,),
-            //   child: Text('#',style: TextStyle(color: Theme.of(context).primaryColor,),),
-            // ),
-            avatar: Text(core.scripturePrimary.digit(bookmark.value.chapterId)),
-            label: Text(core.scripturePrimary.digit(abc.chapterCount)),
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+        minLeadingWidth: 10,
+        leading: const Icon(Icons.bookmark_added),
+        trailing: Chip(
+          avatar: Text(
+            core.scripturePrimary.digit(bookmark.value.chapterId),
+            style: const TextStyle(fontSize: 18),
           ),
-          onTap: ()=> onNav(bookmark.value.bookId,bookmark.value.chapterId)
-        )
+          label: Text(
+            core.scripturePrimary.digit(abc.chapterCount),
+            style: const TextStyle(fontSize: 18),
+          ),
+        ),
+        onTap: () => onNav(
+          bookmark.value.bookId,
+          bookmark.value.chapterId,
+        ),
       ),
       background: dismissiblesFromRight(),
       // secondaryBackground: dismissiblesFromLeft(),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          // Do you want to delete "${history.value.word}"?
-          final bool? confirmation = await doConfirmWithDialog(
-            context: context,
-            message: 'Do you want to delete this Bookmark?'
-          );
-          if (confirmation != null && confirmation){
-            onDelete(index);
-            return true;
-          }
-          return false;
+          return await onDelete(index);
         } else {
           // Navigate to edit page;
         }
-      }
-    );
-  }
-
-  Widget decoration({required Widget child}){
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
-      // margin: EdgeInsets.symmetric(horizontal:0,vertical:0.2),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 0.0,
-            color: Theme.of(context).backgroundColor,
-            spreadRadius: 0.1,
-            offset: Offset(0.0, .0)
-          )
-        ]
-      ),
-      child:child
+      },
     );
   }
 
   Widget dismissiblesFromRight() {
     return Container(
-      // color: Theme.of(context).highlightColor,
-      child: Align(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            // Icon(
-            //   Icons.delete,
-            //   color: Colors.white,
-            // ),
-            Text(
-              "Delete",
+      // padding: const EdgeInsets.symmetric(vertical: 0),
+      color: Theme.of(context).errorColor,
+      alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            child: Text(
+              translate.delete,
               textAlign: TextAlign.right,
-              style: TextStyle(fontSize: 18),
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    color: Theme.of(context).primaryColor,
+                  ),
             ),
-            SizedBox(
-              width: 20,
-            ),
-          ],
-        ),
-        alignment: Alignment.centerRight,
+          ),
+        ],
       ),
     );
   }

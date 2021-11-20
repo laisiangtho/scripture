@@ -4,7 +4,7 @@ class PopOptionList extends StatefulWidget {
   final RenderBox render;
   final void Function(bool) setFontSize;
 
-  PopOptionList({
+  const PopOptionList({
     Key? key,
     required this.render,
     required this.setFontSize,
@@ -31,87 +31,120 @@ class _PopOptionListState extends State<PopOptionList> with TickerProviderStateM
     core = context.read<Core>();
   }
 
-  // void setFontSize(bool increase) {
-  //   double tmp = core.collection.fontSize;
-  //   if (increase){
-  //     tmp++;
-  //   } else {
-  //     tmp--;
-  //   }
-  //   setState(() {
-  //     core.collection.fontSize = tmp.clamp(10.0, 40.0);
-  //   });
-  // }
+  void setFontSize(bool increase) {
+    setState(() {
+      widget.setFontSize(increase);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    double halfWidth = (MediaQuery.of(context).size.width/2) - 50;
+    double halfWidth = (MediaQuery.of(context).size.width / 2) - 50;
 
     return WidgetPopup(
-      left:halfWidth,
+      left: halfWidth,
       right: 10,
-      height: 80,
-      top: targetPosition.dy + targetSize.height + 7,
-      arrow: targetPosition.dx - halfWidth + (targetSize.width/2)-7,
-      // backgroundColor: Colors.grey[300],
-      child: view()
-    );
-  }
-  Widget view () {
-    return new Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: fontSizeOptions(),
-        ),
-      ],
+      height: 60,
+      top: targetPosition.dy + targetSize.height + 1,
+      // arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 7,
+      arrow: targetPosition.dx - halfWidth + (targetSize.width / 4),
+      // backgroundColor: const Color(0xFFdbdbdb),
+      backgroundColor: Theme.of(context).backgroundColor,
+      child: view(),
     );
   }
 
-  List<Widget> fontSizeOptions () {
-    return <Widget>[
-      CupertinoButton(
-        color: Colors.grey[400],
-        borderRadius: BorderRadius.all(Radius.circular(3)),
-        // padding: EdgeInsets.zero,
-        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
-        minSize: 40,
-        child: Text('A',
-          style: new TextStyle(fontSize: 14),
+  Widget view() {
+    // return Column(
+    //   mainAxisSize: MainAxisSize.max,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: <Widget>[
+    //     Row(
+    //       mainAxisSize: MainAxisSize.max,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //       children: fontSizeOptions(),
+    //     ),
+    //   ],
+    // );
+    // return Row(
+    //   mainAxisSize: MainAxisSize.max,
+    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //   children: fontSizeOptions(),
+    // );
+    return GridTile(
+      header: DecoratedBox(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).backgroundColor,
+              blurRadius: 9,
+              spreadRadius: 15,
+              offset: const Offset(0, 0),
+            ),
+          ],
         ),
-        onPressed: ()=>widget.setFontSize(false)
-        // onPressed: ()=> setFontSize(false)
       ),
-      // new RichText(
-      //   textAlign: TextAlign.center,
-      //   text: new TextSpan(
-      //     text: 'Fontsize\n',
-      //     style: new TextStyle(
-      //       fontSize: 13,
-      //     ),
-      //     children: <TextSpan>[
-      //       new TextSpan(
-      //         text: '100%',
-      //         style: new TextStyle(fontWeight: FontWeight.bold)),
-      //     ],
-      //   ),
-      // ),
-      CupertinoButton(
-        color: Colors.grey[400],
-        borderRadius: BorderRadius.all(Radius.circular(3)),
-        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
-        minSize: 40,
-        child: Text('A',
-          style: new TextStyle(fontSize: 25),
+      footer: DecoratedBox(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).backgroundColor,
+              blurRadius: 9,
+              spreadRadius: 15,
+              offset: const Offset(0, 0),
+            ),
+          ],
         ),
-        // onPressed: ()=> setFontSize(true)
-        onPressed: ()=> widget.setFontSize(true)
       ),
-    ];
+      child: GridView(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          // mainAxisSpacing: 0.2,
+          // crossAxisSpacing: 25.0,
+          crossAxisCount: 3,
+          childAspectRatio: 1.3,
+          // mainAxisExtent: 1,
+        ),
+        children: <Widget>[
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Text(
+              'A',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            onPressed: () => setFontSize(false),
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.symmetric(
+                vertical: BorderSide(
+                  width: 1,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                '${core.collection.fontSize}',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+          ),
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Text(
+              'A',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 27,
+                  ),
+            ),
+            onPressed: () => setFontSize(true),
+          ),
+        ],
+      ),
+    );
   }
 }

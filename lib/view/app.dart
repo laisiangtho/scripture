@@ -4,141 +4,75 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
-// import 'package:lidea/connectivity.dart';
-// import 'package:lidea/scroll.dart';
+import 'package:lidea/connectivity.dart';
 import 'package:lidea/view.dart';
-import 'package:lidea/keepAlive.dart';
 
-// import 'package:bible/notifier.dart';
 import 'package:bible/core.dart';
-// import 'package:bible/widget.dart';
-import 'package:bible/icon.dart';
+import 'package:bible/settings.dart';
 
-import 'package:bible/view/home/main.dart' as Home;
-import 'package:bible/view/read/main.dart' as Read;
-import 'package:bible/view/note/main.dart' as Note;
-import 'package:bible/view/search/main.dart' as Search;
-// import 'package:bible/view/more/main.dart' as more;
+// import 'package:bible/view/home/main.dart' as home;
+// import 'package:bible/view/read/main.dart' as read;
+// import 'package:bible/view/note/main.dart' as note;
+// import 'package:bible/view/search/main.dart' as search;
+import 'app.routes.dart';
 
-part 'app.launcher.dart';
 part 'app.view.dart';
+part 'app.launcher.dart';
+part 'app.other.dart';
 
-class AppMain extends StatefulWidget {
-  AppMain({Key? key}) : super(key: key);
+class Main extends StatefulWidget {
+  const Main({Key? key, this.settings}) : super(key: key);
+  final SettingsController? settings;
+
+  static const route = '/root';
+
   @override
-  State<StatefulWidget> createState() => AppView();
+  _State createState() => AppView();
 }
 
-abstract class _State extends State<AppMain>
-    with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final pageController = PageController(keepPage: true);
+abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _pageController = PageController(keepPage: true);
   final _controller = ScrollController();
-  // final core = Core();
-  final viewNotifyNavigation = NotifyNavigationButton.navigation;
+  // final _homeNavigator = GlobalKey<NavigatorState>();
+  // final _searchNavigator = GlobalKey<NavigatorState>();
 
-  // final GlobalKey<Home.View> _home = GlobalKey<Home.View>();
-  // final GlobalKey<Note.View> _note = GlobalKey<Note.View>();
-  // final GlobalKey<More.View> _more = GlobalKey<More.View>();
-  final _homeGlobal = GlobalKey<ScaffoldState>();
-  final _readGlobal = GlobalKey<ScaffoldState>();
-  final _noteGlobal = GlobalKey<ScaffoldState>();
-  final _searchGlobal = GlobalKey<ScaffoldState>();
+  // late Core core;
+  late StreamSubscription<ConnectivityResult> _connection;
 
-  final _homeKey = UniqueKey();
-  final _readKey = UniqueKey();
-  final _noteKey = UniqueKey();
-  final _searchKey = UniqueKey();
+  // late final Core core = Provider.of<Core>(context, listen: false);
+  late final Core core = context.read<Core>();
+  late final NavigatorNotify _navigatorNotify = context.read<NavigatorNotify>();
+  // late final AppLocalizations translate = AppLocalizations.of(context)!;
+  AppLocalizations get translate => AppLocalizations.of(context)!;
 
-  final List<Widget> _pageView = [];
-  final List<ViewNavigationModel> _pageButton = [];
+  late final Future<void> initiator = core.init();
+  // late final initiator = Future.delayed(const Duration(milliseconds: 300));
+  // late final GlobalKey<NavigatorState> _tmp123 = AppRoutes.pageRouteNavigator;
 
-  late Core core;
-  late Future<void> initiator;
-  // late StreamSubscription<ConnectivityResult> connection;
+  List<ViewNavigationModel> get _pageButton => AppPageNavigation.button(translate);
+
+  late final List<Widget> _pageView = AppPageNavigation.page;
 
   @override
   void initState() {
     super.initState();
-    // Provider.of<Core>(context, listen: false);
-    core = context.read<Core>();
-    initiator = core.init();
+    core.navigate = navigate;
 
-    // initiator = new Future.delayed(new Duration(seconds: 1));
-    // connection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-    //   // Got a new connectivity status!
-    //   // ConnectivityResult.mobile
-    //   // ConnectivityResult.wifi
-    //   // ConnectivityResult.none
-    //   debugPrint(result);
-    // });
-    if (_pageView.length == 0) {
-      _pageButton.addAll([
-        // ViewNavigationModel(icon:MyOrdbokIcon.chapter_previous, name:"Previous", description: "Previous search", action: onPreviousHistory() ),
-
-        ViewNavigationModel(
-            icon: LaiSiangthoIcon.flag,
-            name: "Home",
-            description: "List of Holy Bible in many languages",
-            key: 0),
-        ViewNavigationModel(
-            icon: LaiSiangthoIcon.book_open,
-            name: "Read",
-            description: "Read bible by chapter",
-            key: 1),
-        ViewNavigationModel(
-            icon: LaiSiangthoIcon.list_nested,
-            name: "Bookmark",
-            description: "Bookmark list",
-            key: 2),
-        ViewNavigationModel(
-            icon: LaiSiangthoIcon.search,
-            name: "Search",
-            description: "Search bible",
-            key: 3),
-        // ModelPage(icon:Icons.more_horiz, name:"More",description: "More information/Working", key: 4)
-      ]);
-      _pageView.addAll([
-        WidgetKeepAlive(key: _homeKey, child: Home.Main(key: _homeGlobal)),
-        WidgetKeepAlive(key: _readKey, child: Read.Main(key: _readGlobal)),
-        WidgetKeepAlive(key: _noteKey, child: Note.Main(key: _noteGlobal)),
-        WidgetKeepAlive(
-            key: _searchKey, child: Search.Main(key: _searchGlobal)),
-        // WidgetKeepAlive(key:moreKey, child: new More.Main(key: more)),
-      ]);
-    }
-
-    viewNotifyNavigation.addListener(() {
-      final index = viewNotifyNavigation.value;
-      // navigator.currentState.pushReplacementNamed(index.toString());
-
-      ViewNavigationModel page = _pageButton.firstWhere((e) => e.key == index,
-          orElse: () => _pageButton.first);
-      core.analyticsScreen(page.name, '${page.name}State');
-      // NOTE: check State isMounted
-      // if(page.key.currentState != null){
-      //   page.key.currentState.setState(() {});
-      // }
-      pageController.jumpToPage(index);
-
-      // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
-      // pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.linear);
-      // navigator.currentState.pushNamed(index.toString());
-      // Navigator.of(context).push(MaterialPageRoute(
-      //   builder: (context) => Note(),
-      // ));
-      // Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => Bible(), maintainState: false));
-      // Navigator.of(context, rootNavigator: false).pushNamed(index.toString());
-      // Navigator.of(context, rootNavigator: false).pushReplacementNamed(index.toString());
+    _connection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      // Got a new connectivity status!
+      // ConnectivityResult.mobile
+      // ConnectivityResult.wifi
+      // ConnectivityResult.none
     });
   }
 
   @override
   void dispose() {
+    // core.store?.subscription?.cancel();
     _controller.dispose();
-    viewNotifyNavigation.dispose();
     super.dispose();
-    // connection.cancel();
+    _connection.cancel();
   }
 
   @override
@@ -146,18 +80,53 @@ abstract class _State extends State<AppMain>
     if (mounted) super.setState(fn);
   }
 
-  void _navView(int index) {
-    // _controller.master.bottom.pageChange(index);
-    viewNotifyNavigation.value = index;
+  void Function()? _navButtonAction(ViewNavigationModel item, bool disable) {
+    if (disable) {
+      return null;
+    } else if (item.action == null) {
+      return () => _navPageViewAction(item.key);
+    } else {
+      return item.action;
+    }
   }
 
-  void onSearch(String word) {
-    NotifyNavigationButton.navigation.value = 0;
-    Future.delayed(const Duration(milliseconds: 200), () {
-      // core.definitionGenerate(word);
-    });
-    // Future.delayed(Duration.zero, () {
-    //   core.historyAdd(word);
-    // });
+  void _navPageViewAction(int index) {
+    _navigatorNotify.index = index;
+    ViewNavigationModel page = _pageButton.firstWhere(
+      (e) => e.key == index,
+      orElse: () => _pageButton.first,
+    );
+    core.analyticsScreen('${page.name}', '${page.name}State');
+    // NOTE: check State isMounted
+    // if(page.key.currentState != null){
+    //   page.key.currentState.setState(() {});
+    // }
+    _pageController.jumpToPage(index);
+    // _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeOutQuart);
+    // _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.linear);
+  }
+
+  void navigate({int at = 0, String? to, Object? args, bool routePush = true}) {
+    _navPageViewAction(at);
+    final _tmp123 = AppRoutes.homeNavigator;
+    // final _tmp123 = AppNavigatorState.home;
+    // final _tmp123 = _homeNavigator;
+    final state = _tmp123.currentState;
+    if (to != null && state != null) {
+      final canPop = state.canPop();
+      // final canPop = Navigator.canPop(context);
+      final arguments = ViewNavigationArguments(
+        navigator: _tmp123,
+        args: args,
+        canPop: canPop,
+      );
+      if (routePush) {
+        state.pushNamed(to, arguments: arguments);
+        // Navigator.of(context).pushNamed(to, arguments: arguments);
+      } else {
+        state.pushReplacementNamed(to, arguments: arguments);
+        // Navigator.of(context).pushReplacementNamed(to, arguments: arguments);
+      }
+    }
   }
 }

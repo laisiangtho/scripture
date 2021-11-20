@@ -1,152 +1,133 @@
-
 part of 'main.dart';
 
-abstract class _Abstract extends CoreNotifier with _Configuration, _Utility {
-  Future<void> initEnvironment() async {
-    collection.env = EnvironmentType.fromJSON(UtilDocument.decodeJSON(await UtilDocument.loadBundleAsString('env.json')));
+abstract class _Abstract extends UtilEngine with _Configuration, _Utility {
+  final Authentication authentication;
+
+  _Abstract(this.authentication);
+
+  Future<void> ensureInitialized() async {
+    Stopwatch initWatch = Stopwatch()..start();
+
+    await collection.ensureInitialized(() {
+      Hive.registerAdapter(BookmarkAdapter());
+      Hive.registerAdapter(BookAdapter());
+    });
+
+    await collection.prepareInitialized(() async {
+      collection.boxOfBookmark = await Hive.openBox<BookmarkType>('bookmark');
+      collection.boxOfBook = await Hive.openBox<BookType>('book');
+    });
+
+    // if (authentication.id.isNotEmpty && authentication.id != collection.setting.userId) {
+    //   final ou = collection.setting.copyWith(userId: authentication.id);
+    //   await collection.settingUpdate(ou);
+    // }
+
+    debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
   }
 
-  Future<void> initSetting() async {
-    // Box<SettingType> box = await Hive.openBox<SettingType>(collection.env.settingName);
-    // SettingType active = collection.boxOfSetting.get(collection.env.settingKey,defaultValue: collection.env.setting)!;
-    collection.boxOfSetting = await Hive.openBox<SettingType>(collection.env.settingName);
-    SettingType active = collection.setting;
-
-    if (collection.boxOfSetting.isEmpty){
-      collection.boxOfSetting.put(collection.env.settingKey,collection.env.setting);
-    } else if (active.version != collection.env.setting.version){
-      collection.boxOfSetting.put(collection.env.settingKey,active.merge(collection.env.setting));
+  Future<void> _initData() async {
+    if (collection.requireInitialized) {
+      APIType api = collection.env.api.firstWhere(
+        (e) => e.asset.isNotEmpty,
+      );
+      await UtilArchive.extractBundle(api.asset);
     }
 
-    collection.boxOfPurchase = await Hive.openBox<PurchaseType>('purchase');
-    // collection.boxOfSetting.clear();
-
-    collection.boxOfHistory = await Hive.openBox<HistoryType>('history');
-    // collection.boxOfHistory.clear();
-
-    collection.boxOfBookmark = await Hive.openBox<BookmarkType>('bookmark');
-    // collection.boxOfBookmark.clear();
-
-    collection.boxOfBook = await Hive.openBox<BookType>('book');
-    // await collection.boxOfBook.clear();
-    if (collection.boxOfBook.isEmpty){
-      String file = collection.env.bibleAPI.archive;
-      await loadArchive(file).then((value) {
-        for (var o in value) {
-          int index = collection.env.books.indexWhere((e) => e.identify == o.replaceFirst('.json', ''));
-          if (index >= 0){
-            collection.env.books[index].available = 1;
-          }
-        }
-      }).catchError((e){
-        debugPrint('? $e');
+    if (collection.boxOfBook.isEmpty) {
+      String file = collection.env.url('book').local;
+      await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
+        await _importBookMeta(ob);
+      }).catchError((e) {
+        debugPrint('task? $file $e ');
       });
-      // final item = collection.env.api.firstWhere((e) => e.uid =='book').url;
-      // collection.env.book.forEach((e) {
-      //   debugPrint(item.replaceAll('book', e.identify));
-      // });
-
-      // for (var e in collection.env.book) {
-      //   // debugPrint(item.replaceAll('book', e.identify));
-      //   String file = item.replaceAll('book', e.identify);
-      //   UtilDocument.exists(file).then((String fileName) {
-      //     // if (fileName.isEmpty) {
-      //     //   return download();
-      //     // } else {
-      //     //   return read();
-      //     // }
-      //     debugPrint('${e.identify} is ${fileName.isEmpty}');
-      //   });
-      // }
-
-      await collection.boxOfBook.addAll(collection.env.books);
     }
-    // Clear cache
-    collection.env.books.clear();
   }
 
-  Future<void> updateBookMeta() {
-    final envBook = collection.boxOfBook.values.toList();
-    APIType item = collection.env.bookAPI;
-    return UtilClient(item.url).get<String>().then((value) async{
-      final parsed = UtilDocument.decodeJSON(value);
-      await parsed['book'].forEach((e){
-        BookType meta = BookType.fromJSON(e);
-        int index = envBook.indexWhere((o)=>o.identify==meta.identify);
-        if (index >= 0){
-          BookType old = envBook.elementAt(index);
-          // Check if Bible has a new version
-          meta.update = (old.available > 0 && old.version != meta.version)?1:old.update;
-          meta.available = old.available;
-          collection.boxOfBook.put(index, meta);
-        } else {
-          collection.boxOfBook.add(meta);
-        }
-      });
-    }).catchError((e) {
-      throw "Bible is not loaded";
+  Future<void> updateBookMeta() async {
+    final url = collection.env.url('book').uri();
+    return UtilClient(url).get<String>().then((e) async {
+      final parsed = UtilDocument.decodeJSON(e);
+      await _importBookMeta(parsed['book']);
     });
   }
-  // Future<void> updateBookMeta() async {
 
-  //   final envBook = collection.boxOfBook.values.toList();
-  //   APIType item = collection.env.bookAPI;
-  //   final parsed = UtilDocument.decodeJSON(await UtilClient(item.url).get<String>().catchError((e) => '{}'));
+  Future<void> _importBookMeta(List<dynamic> bookList) async {
+    final books = collection.boxOfBook.values.toList();
+    for (var item in bookList) {
+      BookType meta = BookType.fromJSON(item);
+      int index = books.indexWhere((o) => o.identify == meta.identify);
 
-  //   await parsed['book'].forEach((e){
-  //     BookType meta = BookType.fromJSON(e);
-  //     int index = envBook.indexWhere((o)=>o.identify==meta.identify);
-  //     if (index >= 0){
-  //       BookType old = envBook.elementAt(index);
-  //       // Check if Bible has a new version
-  //       meta.update = (old.available > 0 && old.version != meta.version)?1:old.update;
-  //       meta.available = old.available;
-  //       collection.boxOfBook.put(index, meta);
-  //     } else {
-  //       collection.boxOfBook.add(meta);
-  //     }
-  //   });
-  // }
+      String file = collection.env.url('bible').cache(meta.identify);
+      meta.available = await UtilDocument.exists(file).then((e) {
+        return e.isNotEmpty ? 1 : 0;
+      }).catchError((_) {
+        return 0;
+      });
 
-  void switchIdentifyPrimary({bool force=false}) {
+      if (index >= 0) {
+        BookType old = books.elementAt(index);
+        // Check if Bible has a new version
+        meta.update = (meta.available > 0 && old.version != meta.version) ? 1 : old.update;
+        meta.selected = old.selected;
+        collection.boxOfBook.put(index, meta);
+        debugPrint('update ${meta.identify} ${meta.available}');
+      } else {
+        collection.boxOfBook.add(meta);
+        debugPrint('add ${meta.identify} ');
+      }
+    }
+  }
+
+  void switchIdentifyPrimary({bool force = false}) {
+    final val = collection.boxOfBook.values;
     if (collection.primaryId.isEmpty) {
-      collection.primaryId = collection.boxOfBook.values.firstWhere(
-        (e) => e.available > 0,
-        // NOTE: when no available just get the first
-        orElse: () => collection.boxOfBook.values.first
-      ).identify;
+      collection.primaryId = val
+          .firstWhere(
+            (e) => e.available > 0,
+            // NOTE: when no available just get the first
+            orElse: () => val.first,
+          )
+          .identify;
     }
 
     // NOTE: check is available
-    int index = collection.boxOfBook.values.toList().indexWhere(
-      (e) => e.identify == collection.primaryId && e.available > 0
-    );
-    if (index < 0){
-      collection.primaryId = collection.boxOfBook.values.firstWhere(
-        (e) => e.available > 0,
-        orElse: () => collection.boxOfBook.values.first
-      ).identify;
+    int index = val.toList().indexWhere(
+          (e) => e.identify == collection.primaryId && e.available > 0,
+        );
+    if (index < 0) {
+      collection.primaryId = val
+          .firstWhere(
+            (e) => e.available > 0,
+            orElse: () => val.first,
+          )
+          .identify;
     }
   }
 
   void switchIdentifyParallel() {
+    final val = collection.boxOfBook.values;
     if (collection.parallelId.isEmpty) {
-      collection.parallelId = collection.boxOfBook.values.firstWhere(
-        (e) => e.identify != collection.primaryId && e.available > 0,
-        // NOTE: when no available just get next to primaryId
-        orElse: () => collection.boxOfBook.values.firstWhere((i) => i.identify != collection.primaryId)
-      ).identify;
+      collection.parallelId = val
+          .firstWhere(
+            (e) => e.identify != collection.primaryId && e.available > 0,
+            // NOTE: when no available just get next to primaryId
+            orElse: () => val.firstWhere((i) => i.identify != collection.primaryId),
+          )
+          .identify;
     }
 
     // NOTE: check is available
-    int index = collection.boxOfBook.values.toList().indexWhere(
-      (e) => e.identify == collection.parallelId && e.available > 0
-    );
-    if (index < 0){
-      collection.parallelId = collection.boxOfBook.values.firstWhere(
-        (e) => e.identify != collection.primaryId && e.available > 0,
-        orElse: () => collection.boxOfBook.values.first
-      ).identify;
+    int index = val.toList().indexWhere(
+          (e) => e.identify == collection.parallelId && e.available > 0,
+        );
+    if (index < 0) {
+      collection.parallelId = collection.boxOfBook.values
+          .firstWhere(
+            (e) => e.identify != collection.primaryId && e.available > 0,
+            orElse: () => val.first,
+          )
+          .identify;
     }
   }
 
@@ -155,44 +136,138 @@ abstract class _Abstract extends CoreNotifier with _Configuration, _Utility {
     try {
       collection.primaryId = identify;
       switchIdentifyParallel();
-      Scripture scripture = new Scripture(collection:collection);
-      return scripture.switchAvailability(deleteIfExists:true);
+      Scripture scripture = Scripture(collection: collection);
+      return scripture.switchAvailability(deleteIfExists: true);
     } catch (e) {
       return Future.error(e);
     }
   }
 
-
   // NOTE: Bookmark
-  void bookmarkSwitchNotify() {
-    collection.bookmarkSwitch();
-    notify();
+  void switchBookmarkWithNotify() {
+    collection.bookmarkSwitch().whenComplete(notify);
   }
 
-  void bookmarkClearNotify() => collection.boxOfBookmark.clear().whenComplete(notify);
+  void clearBookmarkWithNotify() {
+    collection.boxOfBookmark.clear().whenComplete(notify);
+  }
 
-  // NOTE: Archive extract File
-  Future<List<String>> loadArchive(file) async{
-    List<int>? bytes = await UtilDocument.loadBundleAsByte(file).then(
-      (data) => UtilDocument.byteToListInt(data).catchError((_) => null)
-    ).catchError((e) => null);
-    if (bytes != null && bytes.isNotEmpty) {
-      final res = await UtilArchive().extract(bytes).catchError((_) => null);
-      if (res != null) {
-        int index = collection.env.books.indexWhere((e) => e.identify == file.replaceFirst('.json', ''));
-        if (index >= 0){
-          collection.env.books[index].available = 1;
-        }
-        return res;
-      }
+  void deleteBookmarkWithNotify(int index) {
+    collection.bookmarkDelete(index).whenComplete(notify);
+  }
+
+  /// init scripturePrimary and seed analytics
+  Future<void> get primaryInit {
+    return scripturePrimary.init().then((o) {
+      analyticsBook(
+        '${o.info.name} (${o.info.shortname})',
+        scripturePrimary.bookName,
+        scripturePrimary.chapterName,
+      );
+    }).catchError((e) {
+      throw e;
+    });
+  }
+
+  Future<void> get chapterPrevious {
+    return primaryInit.then((_) {
+      return scripturePrimary.chapterPrevious();
+    }).catchError((e) {
+      debugPrint('10: $e');
+    }).whenComplete(() {
+      notify();
+    });
+  }
+
+  Future<void> get chapterNext {
+    return primaryInit.then((_) {
+      return scripturePrimary.chapterNext();
+    }).catchError((e) {
+      debugPrint('10: $e');
+    }).whenComplete(() {
+      notify();
+    });
+  }
+
+  Future<void> chapterChange({int? bookId, int? chapterId}) {
+    return primaryInit.then((_) {
+      return scripturePrimary.chapterBook(bId: bookId, cId: chapterId);
+    }).catchError((e) {
+      debugPrint('10: $e');
+    }).whenComplete(() {
+      notify();
+    });
+  }
+
+  /*
+  Future<void> initBible() async {
+    if (collection.requireInitialized) {
+      APIType api = collection.env.api.firstWhere(
+        (e) => e.asset.isNotEmpty,
+      );
+      await UtilArchive.extractBundle(api.asset);
     }
-    return Future.error("Failed to load");
+    // if (requireInitialized) {
+    //   final localData = collection.env.api.where((e) => e.asset.isNotEmpty);
+    //   for (APIType api in localData) {
+    //     await UtilArchive.extractBundle(api.assetName).then((_) {
+    //       debugPrint('Ok ${api.uid}');
+    //     }).catchError((e) {
+    //       debugPrint('Error ${api.uid} $e');
+    //     });
+    //   }
+    // }
   }
 
-  // NOTE: Analytics
-  // ignore: todo
-  // TODO: analytics
-  Future<void> analyticsFromCollection() async{
-    this.analyticsSearch('keyword goes here');
+  Future<void> initDictionary() async {
+    if (collection.requireInitialized) {
+      APIType api = collection.env.api.firstWhere(
+        (e) => e.asset.isNotEmpty,
+      );
+      await UtilArchive.extractBundle(api.asset);
+    }
+  }
+
+  Future<void> initMusic() async {
+    final localData = collection.env.api.where(
+      (e) => e.local.isNotEmpty && !e.local.contains('!'),
+    );
+    if (collection.requireInitialized) {
+      APIType api = collection.env.api.firstWhere((e) => e.asset.isNotEmpty);
+      await UtilArchive.extractBundle(api.asset);
+    }
+    collection.cacheBucket = AudioBucketType.fromJSON(
+      Map.fromEntries(
+        await Future.wait(
+          localData.map(
+            (e) async => MapEntry(
+              e.uid,
+              await UtilDocument.readAsJSON<List<dynamic>>(e.localName),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  */
+
+  // Future<void> deleteOldLocalData(Iterable<APIType> localData) async {
+  //   if (requireInitialized) {
+  //     for (APIType api in localData) {
+  //       await UtilDocument.exists(api.localName).then((String e) {
+  //         if (e.isNotEmpty) {
+  //           UtilDocument.delete(e);
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
+
+  void userObserver(User? user) {
+    debugPrint('userObserver begin');
+  }
+
+  Future<void> analyticsFromCollection() async {
+    analyticsSearch('keyword goes here');
   }
 }

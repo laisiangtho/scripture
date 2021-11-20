@@ -4,18 +4,18 @@ description: the Holy Bible in languages
 # Remove this line to publish to pub.dev
 publish_to: 'none'
 
-# Previous version: 1.0.4-beta.1+44
 version: 1.2.0+47
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.2
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
+  cupertino_icons: ^1.0.4
 
   # Local lidea package, development only
   lidea:
@@ -25,32 +25,37 @@ dependencies:
     #   ref: main
 
   # Custom
-  hive_flutter: ^1.1.0
-  share: ^2.0.4
-  # flutter_tts: ^1.2.7
+  in_app_purchase: ^1.0.9
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.0
 
 flutter:
   uses-material-design: true
 
+  # Enable generation of localized Strings from arb files.
+  generate: true
+
+  # Add assets
   assets:
     - assets/env.json
     - assets/bible.json
 
+  # Add fonts from package
   fonts:
     - family: Lato
       fonts:
-        - asset: assets/fonts/Lato-Regular.ttf
-        # - asset: assets/fonts/Lato-Thin.ttf
-        # - asset: assets/fonts/Lato-Light.ttf
-        # - asset: assets/fonts/Lato-Italic.ttf
-        # - asset: assets/fonts/Lato-Bold.ttf
-    - family: LaiSiangtho
+        - asset: packages/lidea/fonts/Lato-Regular.ttf
+        - asset: packages/lidea/fonts/Lato-Thin.ttf
+        - asset: packages/lidea/fonts/Lato-Light.ttf
+        - asset: packages/lidea/fonts/Lato-Bold.ttf
+
+    - family: Lidea
       fonts:
-        - asset: assets/fonts/LaiSiangtho.ttf
-    # - family: Mm3Web
-    #   fonts:
-    #     - asset: assets/fonts/Mm3Web.ttf
+        - asset: packages/lidea/fonts/Lidea.ttf
+
+    - family: Mm3Web
+      fonts:
+        - asset: packages/lidea/fonts/Mm3Web.ttf

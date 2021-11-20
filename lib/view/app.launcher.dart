@@ -1,29 +1,14 @@
 part of 'app.dart';
 
 class ScreenLauncher extends StatelessWidget {
+  const ScreenLauncher({Key? key}) : super(key: key);
 
-  // the Holy Bible in languages
-
+  // a comprehensive myanmar online dictionary
+  // more at Zaideih Music Station
   @override
   Widget build(BuildContext context) {
-    debugPrint('state build called: root');
-    // final _message = context.watch<Core>().message;
-    // final state = Provider.of<Core>(context);
-    // final state = Provider.of<Core>(context, listen: false);
-    // final message = Provider.of<Core>(context).message;
-    // final progress = Provider.of<Core>(context).progressPercentage;
-    // Consumer<Core>(
-    //   builder: (BuildContext _, Core a, Widget? child) => null
-    //   child: null,
-    // );
-    // Selector<Core, double?>(
-    //   selector: (BuildContext _, Core core) => core.progressPercentage,
-    //   builder: (BuildContext _, double? name, Widget? child) {
-    //     return Center(child: Text('$name'));
-    //   },
-    // );
-    // final focus = context.select((Core core) => core.nodeFocus && core.suggestionQuery.isNotEmpty);
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -77,71 +62,63 @@ class ScreenLauncher extends StatelessWidget {
                   semanticsLabel: "open quotation mark",
                   style: TextStyle(
                     color: Theme.of(context).primaryTextTheme.button!.color,
-                    fontSize: 25
+                    fontSize: 30,
+                    fontWeight: FontWeight.w200,
                   ),
                   children: <TextSpan>[
-                    TextSpan(
-                      text:'the',
+                    const TextSpan(
+                      text: 'the',
                       semanticsLabel: "the",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w300,
-                      )
+                      style: TextStyle(fontSize: 45),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: ' Holy\n',
                       semanticsLabel: "Holy",
                       style: TextStyle(
-                        fontSize: 32
-                      )
+                        fontSize: 45,
+                      ),
                     ),
                     TextSpan(
-                      text: 'Bible\n',
+                      text: 'Bible\n'.toUpperCase(),
                       semanticsLabel: "Bible",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        fontSize: 60
-                      )
+                      style: const TextStyle(
+                        fontSize: 65,
+                      ),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: 'in ',
                       semanticsLabel: "in",
-                      style: TextStyle(
-                        fontSize: 21
-                      )
+                      // style: TextStyle(fontSize: 30),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: 'languages',
                       semanticsLabel: "languages",
-                      style: TextStyle(
-                        fontSize: 20
-                      )
+                      // style: TextStyle(fontSize: 30),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: '"',
                       semanticsLabel: "close quotation mark",
-                      style: TextStyle(
-                        fontSize: 25
-                      )
-                    )
-                  ]
-                )
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ],
+                ),
               ),
             ),
             Semantics(
               label: "Progress",
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical:50),
-                child: Selector<Core, double?>(
-                  selector: (_, core) => core.progressPercentage,
-                  builder: (BuildContext context, double? percentage, Widget? child) => CircularProgressIndicator(
-                    semanticsLabel: 'percentage',
-                    semanticsValue: percentage.toString(),
-                    strokeWidth: 2.0,
-                    value: percentage,
-                    valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryTextTheme.button!.color!),
-                  )
-                )
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 50),
+                child: Text('...'),
+                // child: Selector<Core, double?>(
+                //   selector: (_, core) => core.progressPercentage,
+                //   builder: (BuildContext context, double? percentage, Widget? child) => CircularProgressIndicator(
+                //     semanticsLabel: 'percentage',
+                //     semanticsValue: percentage.toString(),
+                //     strokeWidth: 2.0,
+                //     value: percentage,
+                //     valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryTextTheme.button!.color!),
+                //   )
+                // )
                 // child: CircularProgressIndicator(
                 //   semanticsLabel: 'percentage',
                 //   semanticsValue: state.progressPercentage.toString(),
@@ -168,20 +145,18 @@ class ScreenLauncher extends StatelessWidget {
                 //     valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryTextTheme.button!.color!),
                 //   )
                 // )
-              )
+              ),
             ),
             Semantics(
               label: "Message",
               child: Selector<Core, String>(
                 selector: (_, core) => core.message,
-                builder: (BuildContext _, String message, Widget? child) => Text(message,
+                builder: (BuildContext _, String message, Widget? child) => Text(
+                  message,
                   semanticsLabel: message,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 30
-                  )
-                )
-              )
+                  style: const TextStyle(fontSize: 30),
+                ),
+              ),
             )
             // Semantics(
             //   label: "Message",
@@ -205,9 +180,9 @@ class ScreenLauncher extends StatelessWidget {
             //     )
             //   )
             // )
-          ]
-        )
-      )
+          ],
+        ),
+      ),
     );
   }
 

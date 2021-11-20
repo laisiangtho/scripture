@@ -1,4 +1,3 @@
-
 part of 'main.dart';
 
 // NOTE: adapter/bookmark.dart
@@ -15,12 +14,11 @@ class BookmarkType {
   @HiveField(3)
   int chapterId;
 
-
   BookmarkType({
-    this.identify:'',
+    this.identify = '',
     this.date,
-    this.bookId:1,
-    this.chapterId:1,
+    this.bookId = 1,
+    this.chapterId = 1,
   });
 
   factory BookmarkType.fromJSON(Map<String, dynamic> o) {
@@ -33,11 +31,6 @@ class BookmarkType {
   }
 
   Map<String, dynamic> toJSON() {
-    return {
-      "identify":identify,
-      "date":date,
-      "bookId":bookId,
-      "chapterId":chapterId
-    };
+    return {"identify": identify, "date": date, "bookId": bookId, "chapterId": chapterId};
   }
 }

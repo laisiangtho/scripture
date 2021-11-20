@@ -1,274 +1,284 @@
 part of 'main.dart';
 
 mixin _Bar on _State {
-
-  void showBookList(){
-    // if (isNotReady) return null;
-    // if(keyBookButton.currentContext!=null) return;
-
-    Navigator.of(context).push(PageRouteBuilder<Map<String?, int?>>(
-      opaque: false,
-      barrierDismissible: true,
-      transitionsBuilder: (BuildContext _, Animation<double> x, Animation<double> y, Widget child) => new FadeTransition(opacity: x, child: child),
-      // barrierColor: Colors.white.withOpacity(0.4),
-      barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
-      pageBuilder: (BuildContext context,x, y) => PopBookList(
-        render: keyBookButton.currentContext!.findRenderObject() as RenderBox
-
-      )
-    )).then((e){
-      // debugPrint(e);
-      if (e != null){
-      core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
-      }
-      // setBook(e);
-    });
-  }
-
-  void showChapterList(){
-    // if (isNotReady) return null;
-    Navigator.of(context).push(PageRouteBuilder<int>(
-      opaque: false,
-      barrierDismissible: true,
-      transitionsBuilder: (BuildContext _, Animation<double> x, Animation<double> y, Widget child) => new FadeTransition(opacity: x, child: child),
-      // barrierColor: Colors.white.withOpacity(0.4),
-      barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
-      pageBuilder: (BuildContext context,x, y) => PopChapterList(
-        render: keyChapterButton.currentContext!.findRenderObject() as RenderBox
-      )
-    )).then((e){
-      setChapter(e);
-    });
-  }
-
-  void showOptionList(){
-    // if (isNotReady) return null;
-    Navigator.of(context).push(PageRouteBuilder<int>(
-      opaque: false,
-      barrierDismissible: true,
-      transitionsBuilder: (BuildContext _, Animation<double> x, Animation<double> y, Widget child) => new FadeTransition(opacity: x, child: child),
-      pageBuilder: (BuildContext _,x, y) => PopOptionList(
-        render: keyOptionButton.currentContext!.findRenderObject() as RenderBox,
-        setFontSize: setFontSize
-      )
-    )).whenComplete((){
-      // core.writeCollection();
-    });
-  }
+  final double minHeight = kBottomNavigationBarHeight - 20;
+  // final double maxHeight = kBottomNavigationBarHeight-minHeight;
 
   Widget bar() {
-    // debugPrint(kToolbarHeight);
-    // debugPrint(MediaQuery.of(context).padding.top);
-    return new SliverPersistentHeader(
+    return ViewHeaderSliverSnap(
       pinned: true,
-      floating:false,
-      delegate: new ViewHeaderDelegate(
-        _barMain,
-        // maxHeight: widget.barMaxHeight
-        // maxHeight: 80,
-        // minHeight: 55
-        // minHeight: 30 //40
-        minHeight: 36+MediaQuery.of(context).padding.top
-      )
-    );
-  }
-
-  Widget _barMain(BuildContext context,double offset,bool overlaps, double shrink, double stretch){
-    double width = MediaQuery.of(context).size.width/2;
-    return ViewHeaderDecoration(
-      overlaps: stretch > 0.2,
-      child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment(-1,0),
-            child: Padding(
-              padding: EdgeInsets.only(top: 5, left: 2),
-              child: Tooltip(
-                message: 'bookmark toggle',
+      floating: false,
+      reservedPadding: MediaQuery.of(context).padding.top,
+      heights: [minHeight, kBottomNavigationBarHeight - minHeight],
+      // overlapsBackgroundColor: Theme.of(context).primaryColor,
+      overlapsBorderColor: Theme.of(context).shadowColor,
+      builder: (BuildContext context, ViewHeaderData org, ViewHeaderData snap) {
+        double width = MediaQuery.of(context).size.width / 2;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Align(
+              alignment: const Alignment(-1, 0),
+              child: Hero(
+                tag: 'appbar-left-2',
                 child: CupertinoButton(
-                  padding: EdgeInsets.symmetric(vertical: 0,horizontal: 7),
+                  // padding: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
+                  // padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   minSize: 30,
-                  // child: Icon(
-                  //   LaiSiangthoIcon.bookmark,
-                  //   // color:hasBookmark?Colors.red:Colors.grey,
-                  //   size: (20*shrink).clamp(15, 20).toDouble()
+                  // child: WidgetLabel(
+                  //   icon: Icons.bookmark_add,
+                  //   iconSize: (org.shrink * 23).clamp(18, 23).toDouble(),
+                  //   message: translate.back,
                   // ),
                   child: Selector<Core, bool>(
-                    selector: (_, e) => e.scripturePrimary.bookmarked,
-                    builder: (BuildContext context, bool hasBookmark, Widget? child) => Icon(
-                      // LaiSiangthoIcon.bookmark,
-                      hasBookmark?Icons.bookmark_added:Icons.bookmark_add,
-                      color:hasBookmark?Colors.red:Colors.grey,
-                      size: (28*shrink).clamp(20, 28).toDouble()
-                    )
+                      selector: (_, e) => e.scripturePrimary.bookmarked,
+                      builder: (BuildContext context, bool hasBookmark, Widget? child) {
+                        // return Icon(
+                        //   // LaiSiangthoIcon.bookmark,
+                        //   hasBookmark ? Icons.bookmark_added : Icons.bookmark_add,
+                        //   // color: hasBookmark ? Colors.red : Colors.grey,
+                        //   // color: Theme.of(context).primaryColorDark,
+                        //   color: hasBookmark
+                        //       ? Theme.of(context).highlightColor
+                        //       : Theme.of(context).primaryColorDark,
+                        //   size: (org.shrink * 23).clamp(18, 23).toDouble(),
+                        // );
+                        return WidgetLabel(
+                          icon: hasBookmark ? Icons.bookmark_added : Icons.bookmark_add,
+                          iconColor: hasBookmark
+                              ? Theme.of(context).highlightColor
+                              : Theme.of(context).primaryColorDark,
+                          iconSize: (org.shrink * 23).clamp(18, 23).toDouble(),
+                          message: translate.bookmark,
+                        );
+                      }),
+                  onPressed: core.switchBookmarkWithNotify,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Hero(
+                tag: 'appbar-center-2',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      child: AnimatedContainer(
+                        key: kBookButton,
+                        duration: const Duration(milliseconds: 100),
+                        constraints: BoxConstraints(maxWidth: width, minWidth: 30.0),
+                        padding: EdgeInsets.symmetric(vertical: org.shrink * 12),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor.withOpacity(snap.shrink),
+                            borderRadius: const BorderRadius.horizontal(
+                              left: Radius.elliptical(20, 50),
+                            ),
+                          ),
+                          // child: _barButton(
+                          //   label: translate.headline,
+                          //   padding: const EdgeInsets.symmetric(horizontal: 7),
+                          //   message: 'Book',
+                          //   shrink: org.shrink,
+                          //   onPressed: showBookList,
+                          // ),
+                          child: Selector<Core, String>(
+                            selector: (_, e) => e.scripturePrimary.bookName,
+                            builder: (BuildContext context, String bookName, Widget? child) {
+                              return _barButton(
+                                label: bookName,
+                                message: translate.book,
+                                shrink: org.shrink,
+                                onPressed: showBookList,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 1,
+                      height: 10,
+                      color: Theme.of(context).backgroundColor.withOpacity(org.stretch),
+                    ),
+                    Align(
+                      child: AnimatedContainer(
+                        key: kChapterButton,
+                        duration: const Duration(milliseconds: 100),
+                        constraints: BoxConstraints(maxWidth: width, minWidth: 30.0),
+                        padding: EdgeInsets.symmetric(vertical: org.shrink * 12),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor.withOpacity(snap.shrink),
+                            borderRadius: const BorderRadius.horizontal(
+                              right: Radius.elliptical(20, 50),
+                            ),
+                          ),
+                          // child: CupertinoButton(
+                          //   padding: EdgeInsets.zero,
+                          //   child: Text(
+                          //     '150',
+                          //     style: Theme.of(context)
+                          //         .textTheme
+                          //         .bodyText1!
+                          //         .copyWith(fontSize: (org.shrink * 19).clamp(15, 19)),
+                          //   ),
+                          //   onPressed: () => true,
+                          // ),
+                          child: Selector<Core, String>(
+                            selector: (_, e) => e.scripturePrimary.chapterName,
+                            builder: (BuildContext context, String chapterName, Widget? child) {
+                              return _barButton(
+                                label: chapterName,
+                                message: translate.chapter,
+                                shrink: org.shrink,
+                                onPressed: showChapterList,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: const Alignment(1, 0),
+              child: Hero(
+                tag: 'appbar-right-2',
+                child: AnimatedContainer(
+                  key: kOptionButton,
+                  duration: const Duration(milliseconds: 0),
+                  constraints: BoxConstraints(maxWidth: width, minWidth: 30.0),
+                  padding: EdgeInsets.symmetric(vertical: snap.shrink * 12),
+                  child: CupertinoButton(
+                    // padding: const EdgeInsets.symmetric(horizontal: 3),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                    minSize: 30,
+                    child: WidgetLabel(
+                      icon: LideaIcon.textSize,
+                      iconSize: (org.shrink * 23).clamp(18, 23).toDouble(),
+                      message: translate.fontSize,
+                    ),
+                    onPressed: showOptionList,
                   ),
-                  onPressed: core.bookmarkSwitchNotify
                 ),
-              )
-            )
-          ),
-          // Align(
-          //   // alignment: Alignment.lerp(Alignment(-0.5,0.5),Alignment(-0.7,-.1), stretch)!,
-          //   // alignment: Alignment(-.8,0),
-          //   alignment: Alignment(0,0),
-          //   child: _barTitle(shrink)
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: <Widget>[
-          //     _barSortButton()
-          //   ]
-          // ),
-          Align(
-            alignment: Alignment.center,
-            child: Row(
-              // mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  // key:Key('book-button'),
-                  key:keyBookButton,
-                  constraints: BoxConstraints(maxWidth: width, minWidth:30.0),
-                  child: Selector<Core, String>(
-                    selector: (_, e) => e.scripturePrimary.bookName,
-                    builder: (BuildContext context, String bookName, Widget? child) => _barButton(
-                      label: "select Book",
-                      // value: '#',
-                      value: bookName,
-                      radius: new BorderRadius.horizontal(left:Radius.circular(30)),
-                      padding: EdgeInsets.only(left: 8*shrink, right:3),
-                      shrink: shrink,
-                      stretch: stretch,
-                      onPressed: showBookList
-                    )
-                  )
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: 1,
-                  child:Opacity(
-                    opacity: stretch,
-                    child:  Text('|')
-                  )
-                ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  key:keyChapterButton,
-                  constraints: BoxConstraints(maxWidth: 100.0, minWidth:30.0),
-                  child: Selector<Core, String>(
-                    selector: (_, e) => e.scripturePrimary.chapterName,
-                    builder: (BuildContext context, String chapterName, Widget? child) => _barButton(
-                      label: "select Chapter",
-                      // value: '#',
-                      value: chapterName,
-                      radius: new BorderRadius.horizontal(right:Radius.circular(30)),
-                      // padding: EdgeInsets.symmetric(horizontal:7*shrink),
-                      padding: EdgeInsets.only(left: 0,right: 3*shrink),
-                      shrink: shrink,
-                      stretch: stretch,
-                      onPressed: showChapterList
-                    )
-                  )
-                )
-              ]
-            )
-          ),
-          Align(
-            // alignment: Alignment(.95,-1),
-            alignment: Alignment(1,0),
-            child: Padding(
-              padding: EdgeInsets.only(top: 5, right: 2),
-              child: Tooltip(
-                message: 'Sort available Bible list',
-                child: CupertinoButton(
-                  key:keyOptionButton,
-                  padding: EdgeInsets.zero,
-                  // padding: EdgeInsets.symmetric(vertical:10,horizontal:10),
-                  // color: Colors.blue,
-                  child: new Icon(
-                    // Icons.home,
-                    LaiSiangthoIcon.text_size,
-                    // color: this.isSorting?Colors.red:null,
-                    // size: 18,
-                    size: (20*shrink).clamp(18, 20).toDouble()
-                  ),
-                  onPressed: showOptionList
-                ),
-              )
-            )
-          ),
-        ]
-      )
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
   Widget _barButton({
-    required double stretch,
+    Key? key,
     required double shrink,
-    required BorderRadius radius,
-    required EdgeInsets padding,
     required String label,
-    required String value,
-    required void Function()? onPressed
-    }){
+    required String message,
+    // EdgeInsetsGeometry? padding = EdgeInsets.zero,
+    required void Function()? onPressed,
+  }) {
     return Tooltip(
-      message: label,
+      message: message,
       child: CupertinoButton(
-        // color: (stretch<=0.5)?null:Colors.grey[400].withOpacity(stretch),
-        // color: (shrink>1.0)?null:Theme.of(context).backgroundColor.withOpacity(stretch),
-        // color: (shrink<1.0)?null:Theme.of(context).backgroundColor.withOpacity(shrink.clamp(0.0, 0.3)),
-        color: Theme.of(context).backgroundColor.withOpacity((shrink-0.7).clamp(0.0, 0.3)),
+        key: key,
         minSize: 33,
-        // minSize: (33*stretch).clamp(25.0, 33.0),
-        padding: padding,
-        // padding: EdgeInsets.symmetric(horizontal:7*shrink),
-        // padding: EdgeInsets.zero,
-        borderRadius: radius,
-        // borderRadius: new BorderRadius.horizontal(left:Radius.circular(30)),
+        padding: const EdgeInsets.symmetric(horizontal: 7),
         child: Text(
-          // localChapter?.name?.bookName??'....',
-          // key:ValueKey<int>(localChapter?.name?.bookId??0),
-          // tmpbook?.name??'....',
-          value,
-          // key:ValueKey<int>(tmpbook?.id??0),
-          // semanticsLabel: tmpbook?.name,
+          label,
           maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          // textScaleFactor: max(0.7, stretch),
+          softWrap: false,
+          overflow: TextOverflow.fade,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            // color: Color.lerp(Theme.of(context).backgroundColor, Theme.of(context).primaryColor, shrink),
-            // color: Color.lerp(null, Theme.of(context).primaryColor, shrink),
-            // color: Color.lerp(Colors.black87, Colors.black54, shrink),
-            fontSize: 16,
-            height: 1.33
-          )
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                fontSize: (shrink * 18).clamp(15, 18),
+              ),
         ),
-        onPressed: onPressed
+        onPressed: onPressed,
       ),
     );
   }
 
-  // Widget _barTitle(double shrink){
-  //   return Text(
-  //     '...read',
-  //     style: TextStyle(
-  //       fontFamily: "sans-serif",
-  //       // color: Color.lerp(Colors.white, Colors.white24, stretch),
-  //       // color: Colors.black,
-  //       fontWeight: FontWeight.w400,
-  //       // fontWeight: FontWeight.lerp(FontWeight.w200, FontWeight.w300, stretch),
-  //       // fontSize:35 - (16*stretch),
-  //       // fontSize:(25*shrink).clamp(25.0, 35.0),
-  //       fontSize:20,
-  //       // shadows: <Shadow>[
-  //       //   Shadow(offset: Offset(0, 1),blurRadius:1,color: Colors.black87)
-  //       // ]
-  //     )
-  //   );
-  // }
+  void showBookList() {
+    // if (isNotReady) return null;
+    // if(kBookButton.currentContext!=null) return;
 
+    Navigator.of(context)
+        .push(
+      PageRouteBuilder<Map<String?, int?>>(
+        opaque: false,
+        barrierDismissible: true,
+        transitionsBuilder: (BuildContext _, Animation<double> x, _y, Widget child) {
+          return FadeTransition(opacity: x, child: child);
+        },
+        // barrierColor: Colors.white.withOpacity(0.4),
+        // barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+        pageBuilder: (BuildContext _, _x, _y) {
+          return PopBookList(
+            render: kBookButton.currentContext!.findRenderObject() as RenderBox,
+          );
+        },
+      ),
+    )
+        .then((e) {
+      if (e != null) {
+        // debugPrint(e);
+        core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+        // setBook(e);
+      }
+    });
+  }
+
+  void showChapterList() {
+    // if (isNotReady) return null;
+    Navigator.of(context)
+        .push(
+      PageRouteBuilder<int>(
+        opaque: false,
+        barrierDismissible: true,
+        transitionsBuilder: (BuildContext _, Animation<double> x, _y, Widget child) {
+          return FadeTransition(opacity: x, child: child);
+        },
+        // barrierColor: Colors.white.withOpacity(0.4),
+        // barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+        pageBuilder: (BuildContext _, _x, _y) {
+          return PopChapterList(
+            render: kChapterButton.currentContext!.findRenderObject() as RenderBox,
+          );
+        },
+      ),
+    )
+        .then((e) {
+      setChapter(e);
+    });
+  }
+
+  void showOptionList() {
+    Navigator.of(context)
+        .push(
+      PageRouteBuilder<int>(
+        opaque: false,
+        barrierDismissible: true,
+        transitionsBuilder: (BuildContext _, Animation<double> x, _y, Widget child) {
+          return FadeTransition(
+            opacity: x,
+            child: child,
+          );
+        },
+        pageBuilder: (BuildContext _, _x, _y) {
+          return PopOptionList(
+            render: kOptionButton.currentContext!.findRenderObject() as RenderBox,
+            setFontSize: setFontSize,
+          );
+        },
+      ),
+    )
+        .whenComplete(() {
+      // core.writeCollection();
+    });
+  }
 }

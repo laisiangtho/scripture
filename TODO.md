@@ -93,6 +93,12 @@ build: 44
 
 ## temporary
 
+- [ ] search nav to reading
+- [ ] note nav to reading
+- [ ] parallel
+- [ ] sync
+- [ ] home current status of reading and search
+
 select_content
 content_type: New International Version (NIV), item_id
 

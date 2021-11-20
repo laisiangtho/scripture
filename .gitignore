@@ -7,12 +7,25 @@ tmp/
 # !assets/fonts
 # !assets/psd
 # !assets/*-mock.*
-assets/env.json
-assets/bible.json
+# assets/env.json
+# assets/bucket.json
+assets/*.json
+assets/*.db
+!assets/env-mock.json
+assets/*.zip
 
+# Android
 android/key.properties
 android/app/google-services.json
 
+# iOS
+ios/Runner/GoogleService-Info.plist
+
+# Android
+android/key.properties
+android/app/google-services.json
+
+# iOS
 ios/Runner/GoogleService-Info.plist
 
 # Miscellaneous
@@ -39,6 +52,7 @@ ios/Runner/GoogleService-Info.plist
 
 # Flutter/Dart/Pub related
 **/doc/api/
+**/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -56,5 +70,7 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Exceptions to above rules.
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release

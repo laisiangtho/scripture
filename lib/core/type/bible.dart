@@ -1,4 +1,3 @@
-
 part of 'main.dart';
 
 class DefinitionBible {
@@ -96,10 +95,10 @@ class BIBLE {
   BIBLE({
     required this.info,
     required this.book,
-    this.query:'',
-    this.bookCount:0,
-    this.chapterCount:0,
-    this.verseCount:0
+    this.query = '',
+    this.bookCount = 0,
+    this.chapterCount = 0,
+    this.verseCount = 0,
   });
 }
 
@@ -154,16 +153,15 @@ class VERSE {
     required this.merge,
   });
 
-  factory VERSE.fromJSON(dynamic key,int id,String name,Map<String, dynamic> o) {
+  factory VERSE.fromJSON(dynamic key, int id, String name, Map<String, dynamic> o) {
     return VERSE(
-      key:key,
-      id:id,
+      key: key,
+      id: id,
       name: name,
-      text:o['text'],
-      title:o['title']??'',
-      reference:o['text']??'',
-      merge:o['title']??'',
+      text: o['text'],
+      title: o['title'] ?? '',
+      reference: o['text'] ?? '',
+      merge: o['merge'] ?? '',
     );
   }
-
 }

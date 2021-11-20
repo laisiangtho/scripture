@@ -1,18 +1,28 @@
 part of 'main.dart';
 
 mixin _Utility {
-  final UtilAnalytics utilAnalytics = new UtilAnalytics();
+  late final UtilAnalytics utilAnalytics = UtilAnalytics();
 
   Future<void> analyticsSearch(String searchTerm) async {
-    // debugPrint('analyticsSearch $searchTerm');
-    if (searchTerm.isNotEmpty) await utilAnalytics.send.logSearch(searchTerm:searchTerm);
+    if (searchTerm.isNotEmpty) await utilAnalytics.search(searchTerm);
   }
 
   Future<void> analyticsScreen(String name, String classes) async {
     // await new FirebaseAnalytics().setCurrentScreen(creenName: 'home',screenClassOverride: 'HomeState');
     // debugPrint('analyticsScreen $name $classes');
-    await utilAnalytics.send.setCurrentScreen(screenName: name,screenClassOverride: classes);
+    await utilAnalytics.send.setCurrentScreen(screenName: name, screenClassOverride: classes);
   }
+
+  // Future<void> analyticsSearch(String searchTerm) async {
+  //   // debugPrint('analyticsSearch $searchTerm');
+  //   if (searchTerm.isNotEmpty) await utilAnalytics.send.logSearch(searchTerm:searchTerm);
+  // }
+
+  // Future<void> analyticsScreen(String name, String classes) async {
+  //   // await new FirebaseAnalytics().setCurrentScreen(creenName: 'home',screenClassOverride: 'HomeState');
+  //   // debugPrint('analyticsScreen $name $classes');
+  //   await utilAnalytics.send.setCurrentScreen(screenName: name,screenClassOverride: classes);
+  // }
 
   // Future<void> analyticsShare(String contentType, String itemId) async {
   //   await utilAnalytics.send.logEvent(
@@ -37,14 +47,11 @@ mixin _Utility {
 
   Future<void> analyticsBook(String bibleName, String bookName, String chapterName) async {
     // debugPrint('analyticsBook $bibleName book:$bookName chapter: $chapterName');
-    await utilAnalytics.send.logEvent(
-      name: 'select_book',
-      parameters: <String, dynamic>{
-        'content_name': bibleName,
-        'book_name': bookName,
-        'chapter_id': chapterName,
-        // 'item_id': itemId
-      }
-    );
+    await utilAnalytics.send.logEvent(name: 'select_book', parameters: <String, dynamic>{
+      'content_name': bibleName,
+      'book_name': bookName,
+      'chapter_id': chapterName,
+      // 'item_id': itemId
+    });
   }
 }

@@ -1,110 +1,137 @@
 part of 'main.dart';
 
-class Scripture{
+class Scripture {
   late Collection collection;
   // NOTE 0: primary, 1: parallel :2
   final int collectionType;
 
   BIBLE? cacheVerseChapter;
   BIBLE? cacheVerseSearch;
+  // String searchQuery = '';
   int? _identifyIndexPrevious;
 
   Scripture({
     required this.collection,
-    this.collectionType:0
+    this.collectionType = 0,
   });
 
   String get identify {
     switch (collectionType) {
-      case(0) :
+      case (0):
         return collection.primaryId;
       default:
         return collection.parallelId;
     }
   }
-  APIType get api => collection.env.bibleAPI;
-  String get url => api.url.replaceAll('?', this.identify);
-  String get file => api.file.replaceAll('?', this.identify);
 
-  int get _identifyIndex => collection.cacheBible.indexWhere((DefinitionBible e) => e.info.identify == this.identify);
-  int get _bookIndex => collection.boxOfBook.values.toList().indexWhere((BookType e) => e.identify == this.identify);
-  BookType? get _bookMeta => collection.boxOfBook.getAt(_bookIndex);
-  bool get isReady => _identifyIndex >= 0;
-  DefinitionBible get bible => collection.cacheBible.elementAt(isReady?_identifyIndex:_identifyIndexPrevious!);
+  APIType get api => collection.env.url('bible');
+  Uri get url => api.uri(name: identify);
+  String get file => api.cache(identify);
 
-  Future<DefinitionBible> init() async{
+  int get _identifyIndex {
+    return collection.cacheBible.indexWhere((DefinitionBible e) => e.info.identify == identify);
+  }
+
+  int get _bookIndex {
+    return collection.boxOfBook.values.toList().indexWhere((BookType e) => e.identify == identify);
+  }
+
+  BookType? get _bookMeta {
+    return collection.boxOfBook.getAt(_bookIndex);
+  }
+
+  bool get isReady {
+    return _identifyIndex >= 0;
+  }
+
+  DefinitionBible get bible {
+    return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
+  }
+
+  Future<DefinitionBible> init() async {
+    // searchQuery = collection.searchQuery;
+    debugPrint('scripture: $identify');
     if (isReady) {
-      return this.bible;
+      return bible;
     }
     await switchAvailability();
     _identifyIndexPrevious = _identifyIndex;
-    if (isReady){
-      return this.bible;
+    if (isReady) {
+      return bible;
     }
-    throw "Bible is not loaded";
+    // throw "Bible is not loaded";
+    return Future.error('Bible is not loaded');
   }
 
-  Future<void> switchAvailability({bool deleteIfExists = false}) => UtilDocument.exists(file).then((String e) {
-    if (e.isEmpty) {
-      // NOTE: Not Available, therefore download it
-      debugPrint('not Available, therefore download it');
-      return _download();
-    } else if (deleteIfExists && _bookMeta != null && _bookMeta!.available == 1){
-      // NOTE: Available, therefore delete it
-      debugPrint('Available, therefore delete it');
-      return _delete();
-    } else {
-      // NOTE: Available, and meta need to update
-      debugPrint('Available, and meta need to update');
-      return _read();
-    }
-  }).catchError((e){
-    // NOTE: Future.error
-    throw e;
-  });
+  Future<void> switchAvailability({bool deleteIfExists = false}) {
+    return UtilDocument.exists(file).then((String e) {
+      if (e.isEmpty) {
+        // NOTE: Not Available, therefore download it
+        debugPrint('Unavailable, therefore download it');
+        return _download();
+      } else if (deleteIfExists && _bookMeta != null && _bookMeta!.available == 1) {
+        // NOTE: Available, therefore delete it
+        debugPrint('Available, therefore delete it');
+        return _delete();
+      } else {
+        // NOTE: Available, and meta need to update
+        debugPrint('Available, and meta need to update');
+        return _read();
+      }
+    }).catchError((e) {
+      // NOTE: Future.error
+      throw e;
+    });
+  }
 
-  Future<void> switchAvailabilityOfBox(int available) async{
+  Future<void> switchAvailabilityOfBox(int available) async {
     final box = _bookMeta;
-    if (box != null && available != box.available){
-      box.available=available;
+    if (box != null && available != box.available) {
+      box.available = available;
       await collection.boxOfBook.putAt(_bookIndex, box);
     }
   }
 
-  Future<void> _download() => UtilClient(url).get<String>().then((body) async{
-    await _parseDefinitionBible(body);
-    await UtilDocument.writeAsString(file,body);
-    await switchAvailabilityOfBox(1);
-  }).catchError((e) {
-    throw e;
-  });
+  Future<void> _download() {
+    return UtilClient(url).get<String>().then((body) async {
+      await _parseDefinitionBible(body);
+      await UtilDocument.writeAsString(file, body);
+      await switchAvailabilityOfBox(1);
+    }).catchError((e) {
+      throw e;
+    });
+  }
 
-  Future<void> _read() => UtilDocument.readAsString(file).then((e) async{
-    await _parseDefinitionBible(e);
-    await switchAvailabilityOfBox(1);
-  }).catchError((e){
-    // NOTE: Future.error
-    throw e;
-  });
+  Future<void> _read() {
+    return UtilDocument.readAsString(file).then((e) async {
+      await _parseDefinitionBible(e);
+      await switchAvailabilityOfBox(1);
+    }).catchError((e) {
+      // NOTE: Future.error
+      throw e;
+    });
+  }
 
-  Future<void> _delete() => UtilDocument.delete(file).then((_) async {
-    // NOTE: since its deleted from storage, have to remove it from session/cache
-    if (isReady){
-      collection.cacheBible.removeAt(_identifyIndex);
-    }
-    return switchAvailabilityOfBox(0);
-  });
+  Future<void> _delete() {
+    return UtilDocument.delete(file).then((_) async {
+      // NOTE: since its deleted from storage, have to remove it from session/cache
+      if (isReady) {
+        collection.cacheBible.removeAt(_identifyIndex);
+      }
+      return switchAvailabilityOfBox(0);
+    });
+  }
 
-  Future<void> _parseDefinitionBible(String response) async{
-    DefinitionBible parsed = await compute(parseDefinitionBibleCompute,response);
+  Future<void> _parseDefinitionBible(String response) async {
+    DefinitionBible parsed = await compute(parseDefinitionBibleCompute, response);
     collection.cacheBible.add(parsed);
     await _prepareName();
   }
 
-  Future<void> _prepareName() async{
+  Future<void> _prepareName() async {
     bible.book.forEach((id, v) {
       int bookId = int.parse(id);
-      int testamentId = (bookId >= 40)?2:1;
+      int testamentId = (bookId >= 40) ? 2 : 1;
 
       bible.bookInfo.add(DefinitionBook(
         id: bookId,
@@ -119,38 +146,70 @@ class Scripture{
       bible.testamentInfo.add(DefinitionTestament(
         id: int.parse(id),
         name: o['info']['name'],
-        shortName:o['info']['shortname'],
+        shortName: o['info']['shortname'],
       ));
     });
   }
 
   /// convert (Int or Number of String), chapterId, verseId into it's written language
-  String digit(dynamic e) => (e is String?e:e.toString()).replaceAllMapped(
-    new RegExp(r'[0-9]'), (i) {
+  String digit(dynamic e) {
+    return (e is String ? e : e.toString()).replaceAllMapped(RegExp(r'[0-9]'), (i) {
       if (isReady) {
         return bible.digit[int.parse(i.group(0)!)];
       }
       return i.group(0)!;
-    }
-  );
+    });
+  }
 
-  BookType get info => bible.info;
-  List<DefinitionBook> get bookList => bible.bookInfo;
-  DefinitionBook bookById(int bookId) => bookList.firstWhere(
-    (DefinitionBook e) => e.id == bookId, orElse: () => bookList.first
-  );
-  DefinitionBook get bookCurrent => bookById(collection.bookId);
+  BookType get info {
+    return bible.info;
+  }
 
-  List<DefinitionTestament> get testamentList => bible.testamentInfo;
-  DefinitionTestament testamentById(int testamentId) => testamentList.firstWhere(
-    (DefinitionTestament e) => e.id == testamentId, orElse: () => testamentList.first
-  );
-  DefinitionTestament get testamentCurrent => this.testamentById(collection.testamentId);
+  List<DefinitionBook> get bookList {
+    return bible.bookInfo;
+  }
 
-  String get bookName => bookCurrent.name;
-  int get chapterCount => bookCurrent.chapterCount;
-  String get chapterName => digit(collection.chapterId);
-  bool isCurrentChapter(int id) => (collection.chapterId == id);
+  DefinitionBook bookById(int bookId) {
+    return bookList.firstWhere(
+      (DefinitionBook e) => e.id == bookId,
+      orElse: () => bookList.first,
+    );
+  }
+
+  DefinitionBook get bookCurrent {
+    return bookById(collection.bookId);
+  }
+
+  List<DefinitionTestament> get testamentList {
+    return bible.testamentInfo;
+  }
+
+  DefinitionTestament testamentById(int testamentId) {
+    return testamentList.firstWhere(
+      (DefinitionTestament e) => e.id == testamentId,
+      orElse: () => testamentList.first,
+    );
+  }
+
+  DefinitionTestament get testamentCurrent {
+    return testamentById(collection.testamentId);
+  }
+
+  String get bookName {
+    return bookCurrent.name;
+  }
+
+  int get chapterCount {
+    return bookCurrent.chapterCount;
+  }
+
+  String get chapterName {
+    return digit(collection.chapterId);
+  }
+
+  bool isCurrentChapter(int id) {
+    return (collection.chapterId == id);
+  }
 
   /// Update previous chapterId, if require its update bookId too
   // Future<void> get chapterPrevious => init().then((o){
@@ -169,7 +228,7 @@ class Scripture{
   //     collection.chapterId = totalChapter;
   //   }
   // });
-  void chapterPrevious(){
+  void chapterPrevious() {
     int totalBook = bible.book.keys.length;
     int cId = collection.chapterId - 1;
     if (cId > 0) {
@@ -254,7 +313,9 @@ class Scripture{
     }
   }
 
-  bool get bookmarked => collection.bookmarkIndex >= 0;
+  bool get bookmarked {
+    return collection.bookmarkIndex >= 0;
+  }
 
   bool verseSearchCacheIsEmpty() {
     // {String id, int testament, int book, int chapter, String query}
@@ -268,110 +329,108 @@ class Scripture{
     //   verseSearchCache.query != searchQuery ||
     //   verseSearchCache.info.identify != this.identify
     // );
-    return (
-      cacheVerseSearch == null ||
-      cacheVerseSearch!.info.identify != this.identify ||
-      cacheVerseSearch!.query != collection.searchQuery
-      // cacheVerseSearch!.book.first.info.id  != collection.bookId ||
-      // cacheVerseSearch!.book.first.chapter.first.id  != collection.chapterId
-    );
+    return (cacheVerseSearch == null ||
+            cacheVerseSearch!.info.identify != identify ||
+            cacheVerseSearch!.query != collection.suggestQuery
+        // cacheVerseSearch!.book.first.info.id  != collection.bookId ||
+        // cacheVerseSearch!.book.first.chapter.first.id  != collection.chapterId
+        );
   }
 
   BIBLE get verseSearch {
-    if (verseSearchCacheIsEmpty()){
-      cacheVerseSearch = new BIBLE(
+    // final searchQuery = (query == null) ? collection.searchQuery : query;
+    if (verseSearchCacheIsEmpty()) {
+      cacheVerseSearch = BIBLE(
         info: bible.info,
         book: [],
-
-        query:collection.searchQuery,
-
-        bookCount:0,
-        chapterCount:0,
-        verseCount:0
+        query: collection.suggestQuery,
+        bookCount: 0,
+        chapterCount: 0,
+        verseCount: 0,
       );
+      if (collection.suggestQuery.isEmpty) {
+        return cacheVerseSearch!;
+      }
 
       bible.book.forEach((bId, bO) {
         List<CHAPTER> chapterBlock = [];
         bO['chapter'].forEach((cId, cO) {
           List<VERSE> verseBlock = [];
           cO['verse'].forEach((vId, v) {
-            if (new RegExp(collection.searchQuery,caseSensitive: false).hasMatch(v['text'])){
+            if (RegExp(collection.suggestQuery, caseSensitive: false).hasMatch(v['text'])) {
               cacheVerseSearch!.verseCount++;
-              verseBlock.add(new VERSE.fromJSON(new GlobalKey(),int.parse(vId), this.digit(vId), v));
+              verseBlock.add(
+                VERSE.fromJSON(GlobalKey(), int.parse(vId), digit(vId), v),
+              );
             }
           });
 
-          if (verseBlock.length > 0) {
+          if (verseBlock.isNotEmpty) {
             cacheVerseSearch!.chapterCount++;
-            chapterBlock.add(new CHAPTER(
-              id:int.parse(cId),
-              name:this.digit(cId),
-              verse: verseBlock
-            ));
+            chapterBlock.add(
+              CHAPTER(
+                id: int.parse(cId),
+                name: digit(cId),
+                verse: verseBlock,
+              ),
+            );
           }
         });
 
-        if (chapterBlock.length > 0) {
+        if (chapterBlock.isNotEmpty) {
           cacheVerseSearch!.bookCount++;
-          cacheVerseSearch!.book.add(new BOOK(
-            info: bookById(int.parse(bId)),
-            chapter: chapterBlock
-          ));
+          cacheVerseSearch!.book.add(
+            BOOK(
+              info: bookById(int.parse(bId)),
+              chapter: chapterBlock,
+            ),
+          );
         }
       });
 
-      // debugPrint('+ verseSearch: Ok (${collection.searchQuery})');
+      debugPrint('+ verseSearch: (${collection.suggestQuery})');
     }
     // debugPrint('- verseSearch: log ($searchQuery) book:${verseSearchCache.bookCount} chapter:${verseSearchCache.chapterCount} verse:${verseSearchCache.verseCount}');
     return cacheVerseSearch!;
   }
 
   bool get verseChapterCacheIsEmpty {
-    return (
-      cacheVerseChapter == null ||
-      cacheVerseChapter!.info.identify != this.identify ||
-      cacheVerseChapter!.book.first.info.id  != collection.bookId ||
-      cacheVerseChapter!.book.first.chapter.first.id  != collection.chapterId
-    );
+    return (cacheVerseChapter == null ||
+        cacheVerseChapter!.info.identify != identify ||
+        cacheVerseChapter!.book.first.info.id != collection.bookId ||
+        cacheVerseChapter!.book.first.chapter.first.id != collection.chapterId);
   }
 
   BIBLE get verseChapter {
-    if (verseChapterCacheIsEmpty){
-      cacheVerseChapter = new BIBLE(
+    if (verseChapterCacheIsEmpty) {
+      cacheVerseChapter = BIBLE(
         info: bible.info,
         book: [],
-
-        query:collection.searchQuery,
-
-        bookCount:0,
-        chapterCount:0,
-        verseCount:0
+        query: collection.searchQuery,
+        bookCount: 0,
+        chapterCount: 0,
+        verseCount: 0,
       );
       // final tId = this.testamentId.toString();
       final bId = collection.bookId.toString();
       final cId = collection.chapterId.toString();
 
-      CHAPTER chapterBlock = new CHAPTER(
-        id: collection.chapterId,
-        name: this.chapterName,
-        verse: []
-      );
+      CHAPTER chapterBlock = CHAPTER(id: collection.chapterId, name: chapterName, verse: []);
 
       bible.book[bId]['chapter'][cId]['verse'].forEach((vId, v) {
         cacheVerseChapter!.verseCount++;
-        chapterBlock.verse.add(new VERSE.fromJSON(new GlobalKey(),int.parse(vId), this.digit(vId), v));
+        chapterBlock.verse.add(
+          VERSE.fromJSON(GlobalKey(), int.parse(vId), digit(vId), v),
+        );
       });
 
-      BOOK bookBlock = new BOOK(
+      BOOK bookBlock = BOOK(
         info: bookCurrent,
-        chapter: [
-          chapterBlock
-        ]
+        chapter: [chapterBlock],
       );
       cacheVerseChapter!.book.add(bookBlock);
       // debugPrint('+ verseChapter: Ok');
     }
     return cacheVerseChapter!;
   }
-
 }
