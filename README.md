@@ -146,13 +146,21 @@ dependencies:
   ...
 ```
 
-...you will need your own configuration in the following files
+...you will need your own configuration in the following files, for more info please check `flutter doctor`.
 
 - `android/local.properties`
 
   ```Shell
   sdk.dir=pathOf-android-sdk
   flutter.sdk=pathOf-flutter-sdk
+  ```
+
+  with `flutter config --android-sdk <?>`
+
+  ```sh
+  flutter config --android-sdk <android-sdk-path>
+  flutter config --android-sdk %USERPROFILE%/.dev/sdk
+  flutter config --android-sdk="$ANDROID_SDK"
   ```
 
 - `android/key.properties`
