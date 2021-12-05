@@ -254,19 +254,20 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         button(
-          message: "Previous chapter",
+          message: translate.previousTo(translate.chapter(false)),
           child: const Icon(LideaIcon.chapterPrevious, size: 25),
           onPressed: widget.previousChapter,
         ),
 
         button(
-          message: "Next chapter",
+          message: translate.nextTo(translate.chapter(false)),
           child: const Icon(LideaIcon.chapterNext, size: 25),
           onPressed: widget.nextChapter,
         ),
 
         button(
-          message: "Compare selected verse Parallel",
+          // message: "Compare selected verse Parallel",
+          message: translate.compareTo(translate.parallel),
           child: const Icon(LideaIcon.language, size: 22),
           // onPressed:showParallelIf?showParallel:null
           onPressed: showParallel,
@@ -297,7 +298,8 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
         //   )
         // ),
         button(
-          message: "Copy/Share selected verse",
+          // message: "Copy/Share selected verse",
+          message: translate.share,
           // onPressed:hasVerseSelection?widget.verseSelectionCopy:null,
           onPressed: hasVerseSelection ? widget.verseSelectionCopy : null,
           child: Stack(
