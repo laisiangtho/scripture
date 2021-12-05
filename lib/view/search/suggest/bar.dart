@@ -75,11 +75,11 @@ mixin _Bar on _State {
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: const BorderRadius.all(
-              Radius.circular(2),
+              Radius.circular(4),
             ),
             boxShadow: [
               BoxShadow(
-                blurRadius: 0.2,
+                blurRadius: 0.1,
                 color: Theme.of(context).shadowColor,
                 // spreadRadius: 0.1,
                 offset: const Offset(0, 0),
