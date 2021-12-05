@@ -149,7 +149,7 @@ cd .. && flutter build ios
     - [Android](TOOL.md#flutter-build-android)
     - [iOS](TOOL.md#flutter-build-ios)
 - Path
-  - [JAVA_HOME](TOOL.md#path-javahome)
+  - [JAVA_HOME](TOOL.md#path-java_home)
   - [keytool](TOOL.md#path-keytool)
   - [flutter](TOOL.md#path-flutter)
 - [gradlew](TOOL.md#gradlew)
