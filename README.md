@@ -1,4 +1,4 @@
-# Bible@Lai Siangtho
+# Bible@Scripture
 
 ![alt text][logo]
 
@@ -46,6 +46,8 @@ Feature:
 - Free
 
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Bible app.
+
+## Lai Siangtho
 
 In case of wondering what "**Lai Siangtho**" is or means, I would like to give you a hint. Of course it means "_the Holy Bible_" in _zolai_. But what is zolai then? Well its a name of written language using by some folks from Myanmar and India, called themselve as zomi, and their spoken language is zopau/zokam. You may know them as _Chin, Tedim, Falam, Hakha, Paite, Mizo, Kuki_ and many more. Each one of them has their own dialect and tradition like swedish and norwegian, with no country but border seperation. Many of its people speak and understand other dialect. This is where Lai Siangtho app is needed. I have no economic profit on making this app. If you like this particular application and its experience you are much welcome to support in anyway you would like.
 
