@@ -177,13 +177,13 @@ class AppPageNavigation {
         key: 2,
         icon: note.Main.icon,
         name: note.Main.name,
-        description: translate.note,
+        description: translate.note(false),
       ),
       ViewNavigationModel(
         key: 3,
         icon: search_page.Main.icon,
         name: search_page.Main.name,
-        description: translate.search,
+        description: translate.search(false),
       ),
     ];
   }
