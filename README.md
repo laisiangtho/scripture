@@ -82,7 +82,7 @@ dependencies:
   ...
 ```
 
-...you will need your own configuration in the following files, for more info please run `flutter doctor` or see [flutter config cli](tool#Flutter-config).
+...you will need your own configuration in the following files, for more info please run `flutter doctor` or see [flutter config cli](TOOL.md#Flutter-config).
 
 - `android/local.properties`
 
@@ -114,7 +114,7 @@ This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN
 
 ## Android
 
-- [build](tool#flutter-build-android)
+- [build](TOOL.md#flutter-build-android)
 
 ```sh
 flutter build appbundle --release
@@ -133,7 +133,7 @@ adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
 
 ## iOS
 
-- [build](tool#flutter-build-ios)
+- [build](TOOL.md#flutter-build-ios)
 
 ```sh
 flutter clean && flutter pub get
@@ -143,38 +143,38 @@ cd .. && flutter build ios
 
 ## CLI
 
-- [Flutter](tool#flutter)
-  - [config](tool#flutter-config)
-  - [build](tool#flutter-config)
-    - [Android](tool#flutter-build-android)
-    - [iOS](tool#flutter-build-ios)
+- [Flutter](TOOL.md#flutter)
+  - [config](TOOL.md#flutter-config)
+  - [build](TOOL.md#flutter-config)
+    - [Android](TOOL.md#flutter-build-android)
+    - [iOS](TOOL.md#flutter-build-ios)
 - Path
-  - [JAVA_HOME](tool#path-javahome)
-  - [keytool](tool#path-keytool)
-  - [flutter](tool#path-flutter)
-- [gradlew](tool#gradlew)
-  
+  - [JAVA_HOME](TOOL.md#path-javahome)
+  - [keytool](TOOL.md#path-keytool)
+  - [flutter](TOOL.md#path-flutter)
+- [gradlew](TOOL.md#gradlew)
+
 ```sh
 cd android
 ./gradlew signingReport
 ./gradlew installDebug
 ```
 
-See [Path configuration](tool#path-keytool) and [keytool](tool#keytool) cli.
+See [Path configuration](TOOL.md#path-keytool) and [keytool](TOOL.md#keytool) cli.
 
-- [keytool](tool#keytool)
-  - [Generate](tool#keytool-generate)
-  - [List](tool#keytool-list)
-  - [Export](tool#keytool-export)
-- [git](tool#git)
+- [keytool](TOOL.md#keytool)
+  - [Generate](TOOL.md#keytool-generate)
+  - [List](TOOL.md#keytool-list)
+  - [Export](TOOL.md#keytool-export)
+- [git](TOOL.md#git)
 
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
 [playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
 [appstore]: https://apps.apple.com/au/app/lai-siangtho/id600127635
-[Home]: https://github.com/laisiangtho/development
+[Home]: https://github.com/laisiangtho/scripture
 [lidea]: https://github.com/laisiangtho/lidea
-[tool]: ./TOOL.md
+[tool]: /TOOL.md
 
-[logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
+[logo]: https://raw.githubusercontent.com/laisiangtho/scripture/master/bible.png "Lai Siangtho"
 [license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
 [flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.12.0%20%3C3.0.0-green.svg "Flutter version"
