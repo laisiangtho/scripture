@@ -145,19 +145,19 @@ class AppView extends _State with _Other {
                   width: 0.3,
                 ),
               ),
-              // boxShadow: [
-              //   BoxShadow(
-              //     // blurRadius: scrollNavigation.height == 0 ? 2 : 0.2,
-              //     blurRadius: 0.2,
-              //     spreadRadius: 0.5,
-              //     // color: Theme.of(context).backgroundColor.withOpacity(0.3),
-              //     color: Theme.of(context).shadowColor,
-              //     // color: Colors.black,
-              //     // spreadRadius: scrollNavigation.heightFactor==0?0.2:0,
-              //     // spreadRadius: scrollNavigation.height == 0 ? 0.2 : 0.5,
-              //     offset: const Offset(0, 0),
-              //   )
-              // ],
+              boxShadow: [
+                BoxShadow(
+                  // blurRadius: scrollNavigation.height == 0 ? 2 : 0.2,
+                  blurRadius: 0.2,
+                  // spreadRadius: 0.2,
+                  // color: Theme.of(context).backgroundColor.withOpacity(0.3),
+                  color: Theme.of(context).shadowColor,
+                  // color: Colors.black,
+                  // spreadRadius: scrollNavigation.heightFactor==0?0.2:0,
+                  // spreadRadius: scrollNavigation.height == 0 ? 0.2 : 0.5,
+                  offset: const Offset(0, 0),
+                )
+              ],
             ),
             child: Padding(
               padding: EdgeInsets.only(
