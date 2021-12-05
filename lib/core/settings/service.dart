@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:lidea/intl.dart';
 
 // import 'package:bible/core.dart';
 import 'package:bible/type.dart';
