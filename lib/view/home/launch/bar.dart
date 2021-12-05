@@ -70,11 +70,14 @@ mixin _Bar on _State {
                     // padding: const EdgeInsets.symmetric(horizontal: 15),
                     padding: EdgeInsets.zero,
                     minSize: 30,
-                    child: Selector<Authentication, bool>(
-                      selector: (_, e) => e.hasUser,
-                      builder: (BuildContext context, bool hasUser, Widget? child) {
-                        return userPhoto();
-                      },
+                    child: Tooltip(
+                      message: translate.option(true),
+                      child: Selector<Authentication, bool>(
+                        selector: (_, e) => e.hasUser,
+                        builder: (BuildContext context, bool hasUser, Widget? child) {
+                          return userPhoto();
+                        },
+                      ),
                     ),
                     onPressed: () => core.navigate(to: '/user'),
                   ),
