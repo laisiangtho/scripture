@@ -173,7 +173,7 @@ See [Path configuration](tool#path-keytool) and [keytool](tool#keytool) cli.
 [appstore]: https://apps.apple.com/au/app/lai-siangtho/id600127635
 [Home]: https://github.com/laisiangtho/development
 [lidea]: https://github.com/laisiangtho/lidea
-[tool]: TOOL.md
+[tool]: ./TOOL.md
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
 [license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
