@@ -6,7 +6,7 @@ Lai Siangtho is 'the Holy Bible' app, and the continuous version of what we have
 
 ...at [App Store][appstore],
 [Google play][playStore],
-or [readme][Home]!
+or [clone](#how-would-i-clone-correctly)!
 
 Lai Siangtho has currently:
 
@@ -56,72 +56,6 @@ Take a look: [https://en.wikipedia.org/wiki/Zo_people]
 ![alt text][license]
 ![alt text][flutterversion]
 
-## Android
-
-### minSdkVersion=16
-
-- [x] `flutter build appbundle --release`
-- [ ] `flutter build appbundle --target-platform android-arm,android-arm64`
-- [ ] `flutter build apk --release --target-platform=android-arm`
-- [ ] `flutter build appbundle --release --target-platform=android-arm`
-- [ ] `flutter run --release --target-platform=android-arm`
-
-### minSdkVersion=21
-
-- [ ] `flutter build appbundle --release --target-platform=android-arm64`
-- [ ] `flutter build apk --release --target-platform=android-arm64`
-- [ ] `flutter run --target-platform=android-arm64`
-- [ ] `flutter run --enable-software-rendering --target-platform=android-arm64`
-- [ ] `flutter build appbundle --release --target-platform=android-arm64`
-- [ ] `flutter build apk --split-per-abi --release`
-
-### analytics (debug on windows)
-
-```Shell
-cd C:\dev\android-sdk\platform-tools
-adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
-```
-
-### Directory
-
-- (production) android/key.properties
-- (development) android/local.properties
-- build/app/outputs/apk/release/app-release.apk
-- android\gradle.properties
-- android\app\build.gradle
-
-### Android->release
-
-  versionCode android-arm
-  versionCode++ android-arm64
-
-```Shell
-git commit -m "Update docs to wiki"
-git push origin master
-
-git add .
-git commit -a -m "commit" (do not need commit message either)
-git push
-```
-
-## Re-Useable
-
-- [`idea`](#idea)
-- [`scroll`](#scroll)
-- [`util`](#util)
-
-### idea
-
-... Top layer responsible for theme color and font-size
-
-### scroll
-
-... Primary view scroll gesture for bar, body bottom
-
-### util
-
-... reading and writing file
-
 ## How would I clone correctly
 
 All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
@@ -134,11 +68,13 @@ In `pubspec.yaml` remove local package `lidea` and uncomment git
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   ...
-  # Local lidea package, only in development
+  # Local lidea package, development only
   # lidea:
   #   path: ../lidea
-  # Github lidea package, uncomments lines below
+  # uncomments lines below
   lidea:
     git:
       url: git://github.com/laisiangtho/lidea.git
@@ -146,50 +82,99 @@ dependencies:
   ...
 ```
 
-...you will need your own configuration in the following files, for more info please check `flutter doctor`.
+...you will need your own configuration in the following files, for more info please run `flutter doctor` or see [flutter config cli](tool#Flutter-config).
 
 - `android/local.properties`
 
-  ```Shell
-  sdk.dir=pathOf-android-sdk
-  flutter.sdk=pathOf-flutter-sdk
-  ```
-
-  with `flutter config --android-sdk <?>`
-
-  ```sh
-  flutter config --android-sdk <android-sdk-path>
-  flutter config --android-sdk %USERPROFILE%/.dev/sdk
-  flutter config --android-sdk="$ANDROID_SDK"
-  ```
+```sh
+sdk.dir       = <android-sdk-path>
+flutter.sdk   = <flutter-sdk-path>
+```
 
 - `android/key.properties`
 
-  ```Shell
-  storePassword = STORE-FIILE-PASSWORD
-  keyPassword = KEY-FIILE-PASSWORD
-  keyAlias = KEY-ALIAS-NAME
-  storeFile = PATH-OF-JKS
-  ```
+```sh
+storePassword = <store-file-password>
+keyPassword   = <key-file-password>
+keyAlias      = <key-alias-name>
+storeFile     = <path-of-jks>
+```
 
 - `android/app/google-services.json`
 
-  This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts`
+This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts`
 
-### for iOS
+- Re-Useable
+  - [`idea`](#idea)
+    - Top layer responsible for theme color and font-size
+  - [`scroll`](#scroll)
+    - Primary view scroll gesture for bar, body bottom
+  - [`util`](#util)
+    - reading and writing file
 
+## Android
+
+- [build](tool#flutter-build-android)
+
+```sh
+flutter build appbundle --release
+```
+
+- analytics (debug on windows)
+
+```sh
+# Powershell
+cd $env:UserProfile/.dev/sdk/platform-tools
+# Command Prompt
+cd %UserProfile%/.dev/sdk/platform-tools
+
+adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
+```
+
+## iOS
+
+- [build](tool#flutter-build-ios)
+
+```sh
 flutter clean && flutter pub get
 rm ios/Podfile && install pod
 cd .. && flutter build ios
+```
 
-- ?
+## CLI
+
+- [Flutter](tool#flutter)
+  - [config](tool#flutter-config)
+  - [build](tool#flutter-config)
+    - [Android](tool#flutter-build-android)
+    - [iOS](tool#flutter-build-ios)
+- Path
+  - [JAVA_HOME](tool#path-javahome)
+  - [keytool](tool#path-keytool)
+  - [flutter](tool#path-flutter)
+- [gradlew](tool#gradlew)
+  
+```sh
+cd android
+./gradlew signingReport
+./gradlew installDebug
+```
+
+See [Path configuration](tool#path-keytool) and [keytool](tool#keytool) cli.
+
+- [keytool](tool#keytool)
+  - [Generate](tool#keytool-generate)
+  - [List](tool#keytool-list)
+  - [Export](tool#keytool-export)
+- [git](tool#git)
 
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
 [playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
 [appstore]: https://apps.apple.com/au/app/lai-siangtho/id600127635
 [Home]: https://github.com/laisiangtho/development
 [lidea]: https://github.com/laisiangtho/lidea
+[tool]: TOOL.md
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/development/master/bible.png "Lai Siangtho"
 [license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
-[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.0.0-green.svg "Flutter version"
+[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.12.0%20%3C3.0.0-green.svg "Flutter version"
