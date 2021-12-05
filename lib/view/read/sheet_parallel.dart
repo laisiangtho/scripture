@@ -27,6 +27,8 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
   CHAPTER get tmpchapter => bible.book.first.chapter.first;
   List<VERSE> get tmpverse => tmpchapter.verse;
 
+  AppLocalizations get translate => AppLocalizations.of(context)!;
+
   // @override
   // bool get wantKeepAlive => true;
 
@@ -109,8 +111,12 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                   ),
                   CupertinoButton(
                     // onPressed: _showBible, //() => Navigator.of(context).push(_showHome()),
+                    // child: const Icon(Icons.linear_scale),
+                    child: WidgetLabel(
+                      icon: Icons.linear_scale,
+                      message: translate.chooseTo(translate.bible(false)),
+                    ),
                     onPressed: () => _showParallelList(),
-                    child: const Icon(Icons.linear_scale),
                   )
                 ],
               ),
