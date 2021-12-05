@@ -82,7 +82,7 @@ dependencies:
   ...
 ```
 
-...you will need your own configuration in the following files, for more info please run `flutter doctor` or see [flutter config cli](TOOL.md#Flutter-config).
+...you will need your own configuration in the following files, for more info please run `flutter doctor` or see [flutter config cli](TOOL.md#flutter-config).
 
 - `android/local.properties`
 
