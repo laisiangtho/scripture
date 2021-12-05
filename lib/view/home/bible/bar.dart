@@ -73,7 +73,7 @@ mixin _Bar on _State {
                 child: Material(
                   type: MaterialType.transparency,
                   child: Text(
-                    translate.bible,
+                    translate.bible(false),
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                     style: Theme.of(context).textTheme.headline6,
@@ -108,6 +108,7 @@ mixin _Bar on _State {
                           return WidgetLabel(
                             icon: Icons.sort,
                             iconColor: colorAnimation.value,
+                            message: translate.sort,
                           );
                         },
                       ),

@@ -107,7 +107,7 @@ mixin _Bar on _State {
                               // icon: Icons.tune,
                               icon: CupertinoIcons.slider_horizontal_3,
                               // icon: LideaIcon.sliders,
-                              label: translate.filter,
+                              label: translate.filter(false),
                             ),
                           ),
                         ),

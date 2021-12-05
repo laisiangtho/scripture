@@ -50,7 +50,8 @@ mixin _Bar on _State {
                               ? Theme.of(context).highlightColor
                               : Theme.of(context).primaryColorDark,
                           iconSize: (org.shrink * 23).clamp(18, 23).toDouble(),
-                          message: translate.bookmark,
+                          // message: translate.bookmark(false),
+                          message: translate.addTo(translate.bookmark(true)),
                         );
                       }),
                   onPressed: core.switchBookmarkWithNotify,
@@ -89,7 +90,7 @@ mixin _Bar on _State {
                             builder: (BuildContext context, String bookName, Widget? child) {
                               return _barButton(
                                 label: bookName,
-                                message: translate.book,
+                                message: translate.book(true),
                                 shrink: org.shrink,
                                 onPressed: showBookList,
                               );
@@ -132,7 +133,7 @@ mixin _Bar on _State {
                             builder: (BuildContext context, String chapterName, Widget? child) {
                               return _barButton(
                                 label: chapterName,
-                                message: translate.chapter,
+                                message: translate.chapter(true),
                                 shrink: org.shrink,
                                 onPressed: showChapterList,
                               );

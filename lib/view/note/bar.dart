@@ -40,10 +40,11 @@ mixin _Bar on _State {
 
   Widget barTitle() {
     return Semantics(
-      label: translate.page,
+      label: translate.page(false),
+      // label: translate.page,
       child: Text(
-        translate.note,
-        semanticsLabel: translate.note,
+        translate.note(false),
+        semanticsLabel: translate.note(false),
       ),
     );
   }

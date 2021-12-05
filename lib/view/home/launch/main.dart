@@ -172,7 +172,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  translate.favorites,
+                  translate.favorite(true),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 CupertinoButton(
@@ -183,6 +183,8 @@ class _View extends _State with _Bar, _Refresh, _Modal {
                   child: WidgetLabel(
                     icon: Icons.more_horiz,
                     iconColor: Theme.of(context).hintColor,
+                    // message: translate.addfavorites,
+                    message: translate.addTo(translate.favorite(true)),
                   ),
                   // child: const Text('more'),
                   onPressed: () {
@@ -192,13 +194,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
               ],
             ),
           ),
-          if (items.isEmpty)
-            const Card(
-              clipBehavior: Clip.hardEdge,
-              child: Center(
-                child: Text('\n\n'),
-              ),
-            ),
+          if (items.isEmpty) addFavorites(),
           Card(
             clipBehavior: Clip.hardEdge,
             child: ListView.separated(
@@ -220,6 +216,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
               itemCount: items.length,
             ),
           ),
+          if (items.isNotEmpty) moreFavorites(),
         ],
       ),
     );
@@ -295,6 +292,55 @@ class _View extends _State with _Bar, _Refresh, _Modal {
         ],
       ),
       onTap: () => isAvailable ? toBible(book) : showModal(book),
+    );
+  }
+
+  Widget addFavorites() {
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          minSize: 30,
+          // child: WidgetLabel(
+          //   // icon: Icons.add,
+          //   // iconColor: Theme.of(context).hintColor,
+          //   label: translate.addfavorites,
+          // ),
+          child: Text(
+            // translate.addfavorites,
+            // translate.addTo(translate.favorites),
+            // translate.pluralFavorites(false),
+            translate.addTo(translate.favorite(true)),
+            style: const TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          onPressed: () {
+            core.navigate(to: '/home/bible');
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget moreFavorites() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 30),
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        minSize: 30,
+        child: Text(
+          translate.addMore(translate.favorite(true)),
+          style: const TextStyle(
+            fontSize: 14,
+          ),
+        ),
+        onPressed: () {
+          core.navigate(to: '/home/bible');
+        },
+      ),
     );
   }
 }
