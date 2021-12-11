@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:lidea/provider.dart';
@@ -84,6 +84,7 @@ class LaiSiangtho extends StatelessWidget {
     return AnimatedBuilder(
       animation: settings,
       builder: (BuildContext context, Widget? child) {
+        // debugPrint('${settings.themeMode}');
         return MaterialApp(
           showSemanticsDebugger: false,
           // debugShowCheckedModeBanner: false,
@@ -123,13 +124,27 @@ class LaiSiangtho extends StatelessWidget {
             return AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
                 systemNavigationBarColor: Theme.of(context).primaryColor,
-                systemNavigationBarDividerColor: Colors.transparent,
+                // systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
-                systemNavigationBarContrastEnforced: true,
+                systemNavigationBarContrastEnforced: false,
+
                 statusBarColor: Colors.transparent,
                 statusBarBrightness: settings.resolvedSystemBrightness,
                 statusBarIconBrightness: settings.resolvedSystemBrightness,
-                systemStatusBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: false,
+
+                // systemNavigationBarColor: Theme.of(context).primaryColor,
+                // // systemNavigationBarColor: Colors.transparent,
+                // systemNavigationBarDividerColor: Colors.transparent,
+                // systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
+                // systemNavigationBarContrastEnforced: true,
+
+                // statusBarColor: Colors.transparent,
+                // // statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+                // statusBarBrightness: settings.systemBrightness,
+                // statusBarIconBrightness: settings.resolvedSystemBrightness,
+                // // statusBarIconBrightness: settings.systemBrightness,
+                // // systemStatusBarContrastEnforced: true,
               ),
               child: view!,
             );
