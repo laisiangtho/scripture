@@ -61,9 +61,12 @@ class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).backgroundColor,
-              blurRadius: 9,
-              spreadRadius: 15,
+              blurRadius: 5,
+              spreadRadius: 7,
               offset: const Offset(0, 0),
+              // blurRadius: 9,
+              // spreadRadius: 15,
+              // offset: const Offset(0, 0),
             ),
           ],
         ),
@@ -126,17 +129,21 @@ class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin
       // dividerColor: Colors.red,
       elevation: 0,
       // expandedHeaderPadding: EdgeInsets.zero,
-      expandedHeaderPadding: const EdgeInsets.all(3),
+      expandedHeaderPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+      // dividerColor: Colors.red,
       children: [
         ExpansionPanel(
           body: chapterList(isExpanded, book),
-          backgroundColor: isCurrentBook ? Theme.of(context).disabledColor : Colors.transparent,
+          // backgroundColor: isCurrentBook ? Theme.of(context).disabledColor : Colors.transparent,
+          // backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context).backgroundColor,
           // backgroundColor: Colors.red,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return CupertinoButton(
               // color: Colors.blue,
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 20),
+              // borderRadius: const BorderRadius.all(Radius.circular(0)),
+              padding: const EdgeInsets.only(left: 25),
               child: Text(
                 book.name,
                 overflow: TextOverflow.ellipsis,

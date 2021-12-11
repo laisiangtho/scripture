@@ -19,12 +19,12 @@ class AppView extends _State with _Other {
   Widget launched() {
     return Scaffold(
       key: _scaffoldKey,
-      primary: true,
-      resizeToAvoidBottomInset: true,
+      // primary: true,
+      // resizeToAvoidBottomInset: true,
       body: SafeArea(
         top: false,
         bottom: true,
-        maintainBottomViewPadding: true,
+        // maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,
         child: PageView.builder(
           controller: _pageController,
@@ -87,7 +87,7 @@ class AppView extends _State with _Other {
       //
       // bottomSheet: BottomSheet(
       //   onClosing: (){
-      //     print('close');
+      //     debugPrint('close');
       //   }, builder: (b){
       //     return Container(
       //       height: 30,

@@ -2,12 +2,13 @@
 import 'package:bible/view/app.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
+// import 'package:flutter/rendering.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/view.dart';
 import 'package:lidea/authentication.dart';
 import 'package:lidea/icon.dart';
+import 'package:lidea/share.dart';
 
 import 'package:bible/core.dart';
 import 'package:bible/settings.dart';
@@ -146,7 +147,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     // Clipboard.setData(new ClipboardData(text: list.join("\n"))).whenComplete((){
     //   showSnack('Copied to Clipboard');
     // });
-    // Share.share(list.join("\n"), subject: subject);
+    Share.share(list.join("\n"), subject: subject);
     debugPrint('share???');
   }
 

@@ -120,6 +120,26 @@ mixin _Mock on _Abstract {
     // debugPrint('repoName ${bible.repoName}');
   }
 
+  Future<dynamic> mockGistUpdate() async {
+    // collection.env.client.updateFile();
+    // debugPrint('userFile $userFile');
+    //
+    return await collection.env.client.updateFile(
+      file: userFile,
+      content: UtilDocument.encodeJSON({"update": true}),
+    );
+  }
+
+  Future<dynamic> mockGistCreateComment() async {
+    // collection.env.client.updateFile();
+    // debugPrint('userFile $userFile');
+    //
+    return await collection.env.client.comment(
+      file: 'userFile',
+      content: UtilDocument.encodeJSON({"new": true}),
+    );
+  }
+
   String get userFile => authentication.id.isNotEmpty ? '${authentication.id}.json' : '';
 
   // Future<bool> initArchive() async{

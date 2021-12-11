@@ -107,11 +107,18 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                 children: [
                   Selector<Core, BIBLE>(
                     selector: (_, e) => e.scriptureParallel.verseChapter,
-                    builder: (BuildContext _, BIBLE i, Widget? child) => Text(i.info.name),
+                    builder: (BuildContext _, BIBLE i, Widget? child) => Text(
+                      i.info.name,
+                      // style: const TextStyle(
+                      //   fontSize: 16,
+                      // ),
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
                   ),
                   CupertinoButton(
                     // onPressed: _showBible, //() => Navigator.of(context).push(_showHome()),
                     // child: const Icon(Icons.linear_scale),
+                    padding: EdgeInsets.zero,
                     child: WidgetLabel(
                       icon: Icons.linear_scale,
                       message: translate.chooseTo(translate.bible(false)),

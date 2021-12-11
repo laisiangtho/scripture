@@ -272,12 +272,12 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
           // onPressed:showParallelIf?showParallel:null
           onPressed: showParallel,
         ),
-        Selector<ViewScrollNotify, bool>(
-          selector: (_, e) => e.isUpdating,
-          builder: (BuildContext context, bool message, Widget? child) {
-            return Text('$message');
-          },
-        ),
+        // Selector<ViewScrollNotify, bool>(
+        //   selector: (_, e) => e.isUpdating,
+        //   builder: (BuildContext context, bool message, Widget? child) {
+        //     return Text('$message');
+        //   },
+        // ),
         // button(
         //   message: "Listen audio",
         //   child: Icon(
