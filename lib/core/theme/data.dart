@@ -1,4 +1,4 @@
-import 'dart:ui';
+// import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +9,7 @@ class IdeaData {
     brightness: Brightness.light,
     focus: Colors.black,
     primaryScheme: Colors.black,
-    // primaryScheme: Color(0xFFdbdbdb),
+
     primary: Color(0xFFffffff),
     dark: Colors.grey,
     scaffold: Color(0xFFf7f7f7),
@@ -28,9 +28,8 @@ class IdeaData {
     brightness: Brightness.dark,
     focus: Colors.white,
     primaryScheme: Colors.white,
-    primary: Color(0xFF9c9c9c),
 
-    // primary: Color(0xFF737373),
+    primary: Color(0xFF9c9c9c),
     scaffold: Color(0xFFa6a6a6),
     highlight: Colors.orange,
     background: Color(0xFFbdbdbd),
@@ -50,6 +49,7 @@ class IdeaData {
     return ThemeData(
       colorScheme: color.scheme,
       brightness: color.brightness,
+      // primarySwatch: color.primarySwatch,
 
       // fontFamily: "Lato, Lato, Mm3Web",
       fontFamily: "Lato, 'Mm3Web', sans-serif",
@@ -70,7 +70,12 @@ class IdeaData {
         decorationColor: Colors.red,
       ),
       primaryTextTheme: textTheme,
-      appBarTheme: AppBarTheme(backgroundColor: color.primary, foregroundColor: color.focus),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.red,
+        // backgroundColor: color.primary,
+        // foregroundColor: color.focus,
+      ),
 
       iconTheme: IconThemeData(color: color.focus, size: 23),
       cardTheme: CardTheme(
