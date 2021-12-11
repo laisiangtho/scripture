@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
+// import 'package:flutter/rendering.dart';
 
 import 'package:lidea/intl.dart';
 import 'package:lidea/provider.dart';
@@ -225,6 +225,34 @@ class _View extends _State with _Bar {
                       )
                     ],
                   ),
+                ),
+              ),
+              Card(
+                child: Column(
+                  children: [
+                    CupertinoButton(
+                      child: const Text('mockGistUpdate'),
+                      onPressed: () {
+                        // mockPush();
+                        core.mockGistUpdate().then((value) {
+                          debugPrint('Done');
+                        }).catchError((e) {
+                          debugPrint('Error: $e');
+                        });
+                      },
+                    ),
+                    CupertinoButton(
+                      child: const Text('comment'),
+                      onPressed: () {
+                        // mockPush();
+                        core.mockGistCreateComment().then((value) {
+                          debugPrint('Done');
+                        }).catchError((e) {
+                          debugPrint('Error: $e');
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],
