@@ -63,7 +63,7 @@ mixin _Bar on _State {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).scaffoldBackgroundColor,
                                 borderRadius: const BorderRadius.all(
-                                  Radius.circular(4),
+                                  Radius.circular(10),
                                 ),
                                 boxShadow: [
                                   BoxShadow(
@@ -83,7 +83,7 @@ mixin _Bar on _State {
                                     langCode.toUpperCase(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).hintColor,
                                     ),

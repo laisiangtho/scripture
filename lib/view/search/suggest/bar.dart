@@ -51,6 +51,7 @@ mixin _Bar on _State {
       focusNode: focusNode,
       textInputAction: TextInputAction.search,
       keyboardType: TextInputType.text,
+      // keyboardAppearance: Brightness.dark,
       onChanged: onSuggest,
       onFieldSubmitted: onSearch,
       // autofocus: true,
@@ -75,7 +76,7 @@ mixin _Bar on _State {
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: const BorderRadius.all(
-              Radius.circular(4),
+              Radius.circular(10),
             ),
             boxShadow: [
               BoxShadow(
@@ -95,7 +96,7 @@ mixin _Bar on _State {
                 langCode.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).hintColor,
                 ),
