@@ -86,7 +86,7 @@ class LaiSiangtho extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         // debugPrint('${settings.themeMode}');
         return MaterialApp(
-          showSemanticsDebugger: false,
+          // showSemanticsDebugger: false,
           // debugShowCheckedModeBanner: false,
 
           restorationScopeId: 'lidea',
@@ -123,6 +123,10 @@ class LaiSiangtho extends StatelessWidget {
           builder: (BuildContext context, Widget? view) {
             return AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
+                // systemNavigationBarColor: Theme.of(context).primaryColor,
+                // // systemNavigationBarDividerColor: Colors.transparent,
+                // systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
+                // systemNavigationBarContrastEnforced: false,
                 systemNavigationBarColor: Theme.of(context).primaryColor,
                 // systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
