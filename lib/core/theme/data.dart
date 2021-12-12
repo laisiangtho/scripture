@@ -49,6 +49,7 @@ class IdeaData {
     return ThemeData(
       colorScheme: color.scheme,
       brightness: color.brightness,
+      // primaryColorBrightness: Brightness.light,
       // primarySwatch: color.primarySwatch,
 
       // fontFamily: "Lato, Lato, Mm3Web",
@@ -123,20 +124,20 @@ class IdeaData {
         suffixStyle: const TextStyle(color: Colors.red),
         contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: color.background, width: 0.3),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderSide: BorderSide(color: color.shadow, width: 0.3),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: color.shadow, width: 0.2),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
         disabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: color.shadow.withOpacity(0.8), width: 0.2),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: color.shadow, width: 0.2),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
