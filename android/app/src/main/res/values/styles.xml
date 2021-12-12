@@ -27,5 +27,5 @@
         <item name="android:navigationBarColor">@color/primary</item>
     </style>
     <color name="background">#ffffff</color>
-    <color name="primary">#f5f5f5</color>
+    <color name="primary">#ffffff</color>
 </resources>
