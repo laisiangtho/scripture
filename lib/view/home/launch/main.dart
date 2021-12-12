@@ -66,6 +66,17 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   }
 
   void toBible(BookType bible) async {
+    if (core.collection.primaryId != bible.identify) {
+      core.collection.primaryId = bible.identify;
+      core.message = 'a momment please';
+    }
+    core.navigate(at: 1);
+    core.scripturePrimary.init().whenComplete(() {
+      if (core.message.isNotEmpty) {
+        core.message = '';
+      }
+    });
+    /*
     if (Navigator.canPop(context)) {
       if (core.collection.parallelId != bible.identify) {
         core.collection.parallelId = bible.identify;
@@ -80,6 +91,8 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       });
       Navigator.of(context).pop();
     } else {
+
+
       if (core.collection.primaryId != bible.identify) {
         core.collection.primaryId = bible.identify;
         core.notify();
@@ -90,6 +103,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       core.navigate(at: 1);
       core.scripturePrimary.init().whenComplete(() {
         core.message = '';
+        // core.notify();
       });
 
       // Scripture scripture = core.scripturePrimary;
@@ -113,6 +127,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       //   }
       // );
     }
+    */
   }
 
   // void onClearAll() {
@@ -162,8 +177,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          // if items.isEmpty
-          // if items.isNotEmpty
           Padding(
             padding: const EdgeInsets.fromLTRB(17, 15, 5, 0),
             child: Row(
