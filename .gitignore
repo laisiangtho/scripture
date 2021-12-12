@@ -3,6 +3,7 @@
 **/*v[0-9].rar
 **/*v[0-9].json
 tmp/
+tmp.md
 # assets/**
 # !assets/fonts
 # !assets/psd
