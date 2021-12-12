@@ -89,11 +89,16 @@ class _SwipeForMoreState extends State<SwipeForMore> with SingleTickerProviderSt
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: widget.menu.map((item) {
-                                return Expanded(
-                                  child: FadeTransition(opacity: double, child: item),
-                                );
-                              }).toList(),
+                              children: widget.menu.map(
+                                (item) {
+                                  return Expanded(
+                                    child: FadeTransition(
+                                      opacity: double,
+                                      child: item,
+                                    ),
+                                  );
+                                },
+                              ).toList(),
                             ),
                           ),
                         ),
