@@ -39,11 +39,11 @@ class _PopOptionListState extends State<PopOptionList> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    double halfWidth = (MediaQuery.of(context).size.width / 2) - 50;
+    double halfWidth = (MediaQuery.of(context).size.width / 2) - 45;
 
     return WidgetPopup(
       left: halfWidth,
-      right: 10,
+      right: 5,
       height: 60,
       top: targetPosition.dy + targetSize.height + 1,
       // arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 7,
