@@ -238,14 +238,16 @@ class _View extends _State with _Bar, _Refresh, _Modal {
             borderRadius: const BorderRadius.horizontal(
               left: Radius.circular(5),
             ),
-            color: Theme.of(context).primaryColorLight,
+            // color: Theme.of(context).primaryColorLight,
+            color: Theme.of(context).focusColor,
           ),
           child: Tooltip(
             message: translate.more,
             child: CupertinoButton(
-              child: Icon(
+              child: const Icon(
                 LideaIcon.dotHoriz,
-                color: Theme.of(context).primaryColor,
+                // color: Theme.of(context).primaryColor,
+                // color: Theme.of(context).hintColor,
               ),
               onPressed: () => showModal(book),
             ),
