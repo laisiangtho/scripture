@@ -2,7 +2,7 @@ part of 'main.dart';
 
 class Scripture {
   late Collection collection;
-  // NOTE 0: primary, 1: parallel :2
+  // NOTE [0: primary, 1: parallel]
   final int collectionType;
 
   BIBLE? cacheVerseChapter;
@@ -45,6 +45,7 @@ class Scripture {
   }
 
   DefinitionBible get bible {
+    // return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
     return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
   }
 
