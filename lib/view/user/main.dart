@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:flutter/rendering.dart';
 
-import 'package:lidea/intl.dart';
+// import 'package:lidea/intl.dart';
 import 'package:lidea/provider.dart';
 import 'package:lidea/view.dart';
 import 'package:lidea/authentication.dart';
 import 'package:lidea/cached_network_image.dart';
 import 'package:lidea/icon.dart';
+import 'package:lidea/extension.dart';
 
 import 'package:bible/widget.dart';
 
@@ -152,7 +153,7 @@ class _View extends _State with _Bar {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -165,20 +166,51 @@ class _View extends _State with _Bar {
                       const Divider(),
                       Selector<SettingsController, ThemeMode>(
                         selector: (_, e) => e.themeMode,
-                        builder: (BuildContext context, ThemeMode theme, Widget? child) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: ThemeMode.values.map<Widget>((e) {
-                            bool active = theme == e;
-                            return CupertinoButton(
-                              padding: const EdgeInsets.all(0),
-                              child: WidgetLabel(
-                                enable: !active,
-                                label: themeName[e.index],
-                              ),
-                              onPressed: active ? null : () => settings.updateThemeMode(e),
-                            );
-                          }).toList(),
-                        ),
+                        // builder: (BuildContext context, ThemeMode theme, Widget? child) => Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: ThemeMode.values.map<Widget>(
+                        //     (mode) {
+                        //       bool active = theme == mode;
+                        //       return CupertinoButton(
+                        //         padding: const EdgeInsets.all(0),
+                        //         child: WidgetLabel(
+                        //           enable: !active,
+                        //           label: themeName[mode.index],
+                        //         ),
+                        //         onPressed: active ? null : () => settings.updateThemeMode(mode),
+                        //       );
+                        //     },
+                        //   ).toList(),
+                        // ),
+                        builder: (BuildContext context, ThemeMode theme, Widget? child) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: ThemeMode.values.length,
+                            // itemCount: Localizations.localeOf(context).,
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (_, index) {
+                              ThemeMode mode = ThemeMode.values[index];
+                              bool active = theme == mode;
+                              return ListTile(
+                                selected: active,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                ),
+                                leading: Icon(active
+                                    ? Icons.radio_button_checked
+                                    : Icons.radio_button_unchecked),
+                                title: Text(themeName[index]),
+                                onTap: active
+                                    ? null
+                                    : () {
+                                        settings.updateThemeMode(mode);
+                                      },
+                              );
+                            },
+                          );
+                        },
                       )
                     ],
                   ),
@@ -207,19 +239,25 @@ class _View extends _State with _Bar {
                         // itemCount: Localizations.localeOf(context).,
                         padding: EdgeInsets.zero,
                         itemBuilder: (_, index) {
-                          final lang = AppLocalizations.supportedLocales[index];
+                          final locale = AppLocalizations.supportedLocales[index];
 
-                          Locale locale = Localizations.localeOf(context);
-                          final String localeName = Intl.canonicalizedLocale(lang.languageCode);
-                          final bool isCurrent = locale.languageCode == lang.languageCode;
+                          Locale localeCurrent = Localizations.localeOf(context);
+                          // final String localeName = Intl.canonicalizedLocale(lang.languageCode);
+                          final String localeName = Locale(locale.languageCode).nativeName;
+                          final bool active = localeCurrent.languageCode == locale.languageCode;
 
                           return ListTile(
-                            selected: isCurrent,
-                            leading: Icon(isCurrent
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_unchecked),
+                            selected: active,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            leading: Icon(
+                              active ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                            ),
                             title: Text(localeName),
-                            onTap: () => settings.updateLocale(lang),
+                            onTap: () {
+                              settings.updateLocale(locale);
+                            },
                           );
                         },
                       )
