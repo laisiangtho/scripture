@@ -3,7 +3,7 @@
 **/*v[0-9].rar
 **/*v[0-9].json
 tmp/
-tmp.md
+tmp.*
 # assets/**
 # !assets/fonts
 # !assets/psd
@@ -20,6 +20,7 @@ android/key.properties
 android/app/google-services.json
 
 # iOS
+ios/Runner/Info.plist
 ios/Runner/GoogleService-Info.plist
 
 # Android
