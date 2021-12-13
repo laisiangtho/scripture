@@ -133,7 +133,7 @@ class LaiSiangtho extends StatelessWidget {
                 systemNavigationBarContrastEnforced: false,
 
                 statusBarColor: Colors.transparent,
-                statusBarBrightness: settings.resolvedSystemBrightness,
+                statusBarBrightness: settings.systemBrightness,
                 statusBarIconBrightness: settings.resolvedSystemBrightness,
                 systemStatusBarContrastEnforced: false,
 
