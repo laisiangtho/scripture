@@ -265,34 +265,34 @@ class _View extends _State with _Bar {
                   ),
                 ),
               ),
-              Card(
-                child: Column(
-                  children: [
-                    CupertinoButton(
-                      child: const Text('mockGistUpdate'),
-                      onPressed: () {
-                        // mockPush();
-                        core.mockGistUpdate().then((value) {
-                          debugPrint('Done');
-                        }).catchError((e) {
-                          debugPrint('Error: $e');
-                        });
-                      },
-                    ),
-                    CupertinoButton(
-                      child: const Text('comment'),
-                      onPressed: () {
-                        // mockPush();
-                        core.mockGistCreateComment().then((value) {
-                          debugPrint('Done');
-                        }).catchError((e) {
-                          debugPrint('Error: $e');
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              // Card(
+              //   child: Column(
+              //     children: [
+              //       CupertinoButton(
+              //         child: const Text('mockGistUpdate'),
+              //         onPressed: () {
+              //           // mockPush();
+              //           core.mockGistUpdate().then((value) {
+              //             debugPrint('Done');
+              //           }).catchError((e) {
+              //             debugPrint('Error: $e');
+              //           });
+              //         },
+              //       ),
+              //       CupertinoButton(
+              //         child: const Text('comment'),
+              //         onPressed: () {
+              //           // mockPush();
+              //           core.mockGistCreateComment().then((value) {
+              //             debugPrint('Done');
+              //           }).catchError((e) {
+              //             debugPrint('Error: $e');
+              //           });
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
