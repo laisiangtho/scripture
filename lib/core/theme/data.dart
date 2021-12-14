@@ -241,7 +241,7 @@ class IdeaData {
         "Mm3Web",
       ],
       fontSize: 20,
-      height: 1.2,
+      height: 1.25,
     ),
     bodyText2: TextStyle(
       fontWeight: _fontWeighMedium,
@@ -250,7 +250,7 @@ class IdeaData {
         "Mm3Web",
       ],
       fontSize: 20,
-      height: 1.2,
+      height: 1.25,
     ),
     caption: TextStyle(
       fontWeight: _fontWeighSemiBold,
