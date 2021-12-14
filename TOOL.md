@@ -57,6 +57,26 @@ flutter build apk --split-per-abi --release
 
 ## flutter: build iOS
 
+As of firebase `platform :ios, '10.0'` need to set in *Podfile*.
+
+- Runner->Project->Configurations
+
+```sh
+Debug
+  Runner: Generated
+    Runner: Pods-Runner.debug
+Release
+  Runner: Generated
+    Runner: Pods-Runner.Release
+Profile
+  Runner: Generated
+    Runner: Pods-Runner.Profile
+```
+
+- Runner->Project->Localizations
+
+Add English, Burmese and Norwegian
+
 ```sh
 ...
 ```
