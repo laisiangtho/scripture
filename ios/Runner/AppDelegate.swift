@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import Firebase
+// import Firebase
 // import FacebookCore
 
 @UIApplicationMain
