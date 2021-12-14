@@ -87,7 +87,7 @@ class LaiSiangtho extends StatelessWidget {
         // debugPrint('${settings.themeMode}');
         return MaterialApp(
           // showSemanticsDebugger: false,
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
 
           restorationScopeId: 'lidea',
           localizationsDelegates: const [
