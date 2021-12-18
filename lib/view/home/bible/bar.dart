@@ -19,7 +19,7 @@ mixin _Bar on _State {
             //   top: 0,
             //   child: Padding(
             //     // padding: const EdgeInsets.symmetric(horizontal: 0),
-            //     padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 13),
+            //     padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
             //     child: Hero(
             //       tag: 'appbar-left',
             //       child: CupertinoButton(
@@ -45,7 +45,7 @@ mixin _Bar on _State {
                   left: align,
                   top: 0,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 13),
+                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
                     child: Hero(
                       tag: 'appbar-left-5',
                       child: CupertinoButton(
@@ -78,11 +78,6 @@ mixin _Bar on _State {
                     overflow: TextOverflow.fade,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  // child: Container(
-                  //   color: Colors.red,
-                  //   width: 50,
-                  //   child: const Text('abc'),
-                  // ),
                 ),
               ),
             ),
@@ -90,10 +85,8 @@ mixin _Bar on _State {
             Positioned(
               right: 0,
               top: 0,
-              // top: 6,
               child: Padding(
-                // padding: const EdgeInsets.symmetric(horizontal: 7),
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 13),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 12),
                 child: Hero(
                   tag: 'appbar-right-4',
                   child: Material(

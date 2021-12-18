@@ -64,7 +64,7 @@ mixin _Bar on _State {
               top: 0,
               child: Padding(
                 // padding: const EdgeInsets.symmetric(horizontal: 7),
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 13),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 12),
                 child: Hero(
                   tag: 'appbar-right',
                   child: CupertinoButton(
