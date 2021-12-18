@@ -13,15 +13,13 @@ mixin _Bar on _State {
         return Stack(
           alignment: const Alignment(0, 0),
           children: [
-            // This make the return "appbar-left" Hero animation smooth
             const Positioned(
               left: 0,
               top: 0,
               child: Hero(
                 tag: 'appbar-left',
                 child: Padding(
-                  // padding: EdgeInsets.symmetric(horizontal: 0),
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 13),
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
                   child: Material(
                     type: MaterialType.transparency,
                     child: SizedBox(),
@@ -35,11 +33,10 @@ mixin _Bar on _State {
                 ),
               ),
             ),
-
             Align(
               alignment: Alignment.lerp(
                 const Alignment(0, 0),
-                const Alignment(0, .5),
+                const Alignment(0, .7),
                 snap.shrink,
               )!,
               child: Hero(
@@ -50,25 +47,23 @@ mixin _Bar on _State {
                     translate.holyBible,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6!
-                        .copyWith(fontSize: (30 * org.shrink).clamp(24.0, 30.0).toDouble()),
+                        .headline5!
+                        .copyWith(fontSize: (30 * org.shrink).clamp(22.0, 30.0).toDouble()),
                     maxLines: 1,
-                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
             ),
-
             Positioned(
               right: 0,
               top: 0,
               child: Padding(
-                // padding: const EdgeInsets.symmetric(horizontal: 7),
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 12),
                 child: Hero(
                   tag: 'appbar-right',
                   child: CupertinoButton(
-                    // padding: const EdgeInsets.symmetric(horizontal: 15),
                     padding: EdgeInsets.zero,
                     minSize: 30,
                     child: Tooltip(
