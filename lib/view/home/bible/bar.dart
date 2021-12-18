@@ -75,8 +75,9 @@ mixin _Bar on _State {
                   child: Text(
                     translate.bible(false),
                     maxLines: 1,
+                    softWrap: false,
                     overflow: TextOverflow.fade,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                 ),
               ),
