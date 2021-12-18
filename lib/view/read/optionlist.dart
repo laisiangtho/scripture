@@ -46,7 +46,7 @@ class _PopOptionListState extends State<PopOptionList> with TickerProviderStateM
       right: 5,
       height: 60,
       top: targetPosition.dy + targetSize.height + 1,
-      arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 15,
+      arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 12,
       // arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 7,
       // arrow: targetPosition.dx - halfWidth + (targetSize.width / 4),
       // backgroundColor: const Color(0xFFdbdbdb),
