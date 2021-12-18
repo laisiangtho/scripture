@@ -236,6 +236,7 @@ class IdeaData {
     headline5: TextStyle(
       fontWeight: _fontWeighRegular,
       fontFamilyFallback: ["Mm3Web", "Lato"],
+      fontSize: 22,
       height: 1.0,
     ),
     headline6: TextStyle(
