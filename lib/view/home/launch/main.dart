@@ -195,7 +195,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
                   // alignment: Alignment.centerRight,
                   child: WidgetLabel(
                     icon: Icons.more_horiz,
-                    iconColor: Theme.of(context).hintColor,
+                    // iconColor: Theme.of(context).hintColor,
                     // message: translate.addfavorites,
                     message: translate.addTo(translate.favorite(true)),
                   ),
@@ -346,9 +346,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
         minSize: 30,
         child: Text(
           translate.addMore(translate.favorite(true)),
-          style: const TextStyle(
-            fontSize: 14,
-          ),
         ),
         onPressed: () {
           core.navigate(to: '/home/bible');
