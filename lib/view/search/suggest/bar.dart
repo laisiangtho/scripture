@@ -32,8 +32,10 @@ mixin _Bar on _State {
                 child: CupertinoButton(
                   padding: const EdgeInsets.fromLTRB(0, 10, 7, 10),
                   onPressed: onCancel,
-                  child: WidgetLabel(
-                    label: translate.cancel,
+                  child: Text(
+                    translate.cancel,
+                    maxLines: 1,
+                    softWrap: false,
                   ),
                 ),
               ),
@@ -59,6 +61,7 @@ mixin _Bar on _State {
       // enableInteractiveSelection: true,
       // enableSuggestions: true,
       maxLines: 1,
+      strutStyle: const StrutStyle(height: 1.4),
       decoration: InputDecoration(
         // prefixIcon: const Icon(LideaIcon.find, size: 17),
         prefixIcon: Container(
@@ -96,8 +99,8 @@ mixin _Bar on _State {
                 langCode.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  // fontWeight: FontWeight.bold,
                   color: Theme.of(context).hintColor,
                 ),
               );

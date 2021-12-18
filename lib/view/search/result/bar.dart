@@ -44,57 +44,12 @@ mixin _Bar on _State {
                 //   );
                 // },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.5),
                   child: GestureDetector(
                     child: Selector<Core, String>(
                       selector: (BuildContext _, Core e) => e.collection.searchQuery,
                       builder: (BuildContext _, String initialValue, Widget? child) {
-                        return TextFormField(
-                          readOnly: true,
-                          enabled: false,
-                          maxLines: 1,
-                          initialValue: initialValue,
-                          decoration: InputDecoration(
-                            hintText: translate.aWordOrTwo,
-                            // prefixIcon: const Icon(LideaIcon.find, size: 17),
-                            prefixIcon: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-                              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).scaffoldBackgroundColor,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 0.1,
-                                    color: Theme.of(context).shadowColor,
-                                    // spreadRadius: 0.1,
-                                    offset: const Offset(0, 0),
-                                  )
-                                ],
-                              ),
-                              child: Selector<Core, String>(
-                                selector: (BuildContext _, Core e) {
-                                  return e.scripturePrimary.bible.info.langCode;
-                                },
-                                builder: (BuildContext _, String langCode, Widget? child) {
-                                  return Text(
-                                    langCode.toUpperCase(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).hintColor,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            fillColor:
-                                Theme.of(context).inputDecorationTheme.fillColor!.withOpacity(0.4),
-                          ),
-                        );
+                        return _barForm(initialValue);
                       },
                     ),
                     onTap: () {
@@ -152,6 +107,58 @@ mixin _Bar on _State {
           ],
         );
       },
+    );
+  }
+
+  Widget _barForm(String initialValue) {
+    return TextFormField(
+      readOnly: true,
+      enabled: false,
+      maxLines: 1,
+      initialValue: initialValue,
+      // textInputAction: TextInputAction.search,
+      // keyboardType: TextInputType.text,
+      strutStyle: const StrutStyle(height: 1.4),
+      decoration: InputDecoration(
+        hintText: translate.aWordOrTwo,
+        // hintStyle: const TextStyle(height: 1.3),
+        // prefixIcon: const Icon(LideaIcon.find, size: 17),
+        prefixIcon: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 0.1,
+                color: Theme.of(context).shadowColor,
+                // spreadRadius: 0.1,
+                offset: const Offset(0, 0),
+              )
+            ],
+          ),
+          child: Selector<Core, String>(
+            selector: (BuildContext _, Core e) {
+              return e.scripturePrimary.bible.info.langCode;
+            },
+            builder: (BuildContext _, String langCode, Widget? child) {
+              return Text(
+                langCode.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  // fontWeight: FontWeight.bold,
+                  color: Theme.of(context).hintColor,
+                ),
+              );
+            },
+          ),
+        ),
+        fillColor: Theme.of(context).inputDecorationTheme.fillColor!.withOpacity(0.4),
+      ),
     );
   }
 }
