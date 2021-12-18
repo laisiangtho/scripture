@@ -177,9 +177,15 @@ class ShapedArrow extends RoundedRectangleBorder {
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     return Path()
       ..moveTo(arrow, rect.top)
-      ..lineTo(arrow + 8, rect.top - 4.0)
+      ..lineTo(arrow + 10, rect.top - 7.0)
+      // ..quadraticBezierTo(0.0, rect.height, 20.0, rect.height)
+      ..lineTo(arrow + 20, rect.top)
+      // ..lineTo(arrow + 20, rect.top - 10.0)
+      // ..lineTo(arrow + 40, rect.top)
+
       // ..lineTo(arrow + 8, rect.top - 4.0)
-      ..lineTo(arrow + 15, rect.top)
+      // ..lineTo(arrow + 15, rect.top)
+
       // ..moveTo(rect.width - 65.0 , rect.top)
       // ..lineTo(rect.width - 75.0, rect.top - 5.0)
       // ..lineTo(rect.width - 85.0, rect.top)
