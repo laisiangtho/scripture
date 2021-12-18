@@ -20,7 +20,7 @@ mixin _Bar on _State {
                 alignment: Alignment.center,
                 children: [
                   TweenAnimationBuilder<double>(
-                    tween: Tween<double>(begin: 50, end: 0),
+                    tween: Tween<double>(begin: 30, end: 0),
                     duration: const Duration(milliseconds: 300),
                     builder: (BuildContext context, double align, Widget? child) {
                       return Positioned(
@@ -82,7 +82,7 @@ mixin _Bar on _State {
                         type: MaterialType.transparency,
                         child: Text(
                           'Blog',
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.headline5,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                         ),

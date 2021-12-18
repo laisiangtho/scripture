@@ -14,7 +14,7 @@ mixin _Bar on _State {
           alignment: const Alignment(0, 0),
           children: [
             TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: arguments.canPop ? 0 : 50, end: 0),
+              tween: Tween<double>(begin: arguments.canPop ? 0 : 30, end: 0),
               duration: const Duration(milliseconds: 300),
               builder: (BuildContext context, double align, Widget? child) {
                 return Positioned(
@@ -57,8 +57,8 @@ mixin _Bar on _State {
                     'Reorderable',
                     style: Theme.of(context)
                         .textTheme
-                        .headline6!
-                        .copyWith(fontSize: (30 * org.shrink).clamp(20, 30).toDouble()),
+                        .headline5!
+                        .copyWith(fontSize: (30 * org.shrink).clamp(22, 30).toDouble()),
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                   ),
