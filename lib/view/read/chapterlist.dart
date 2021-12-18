@@ -49,7 +49,7 @@ class _PopChapterListState extends State<PopChapterList> with TickerProviderStat
       right: 10,
       height: height,
       top: targetPosition.dy + targetSize.height + 1,
-      arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 7,
+      arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 10,
       backgroundColor: Theme.of(context).backgroundColor,
       child: view(),
     );
