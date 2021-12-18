@@ -45,6 +45,8 @@ class IdeaData {
   static ThemeData theme(BuildContext context, IdeaColor color) {
     final TextTheme textTheme = Theme.of(context).textTheme.merge(_textTheme);
     // final TextTheme textTheme = _textTheme.merge(Theme.of(context).textTheme);
+    // final Brightness resolveBrightness =
+    //     color.brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
     return ThemeData(
       colorScheme: color.scheme,
@@ -71,14 +73,15 @@ class IdeaData {
         decorationColor: Colors.red,
       ),
       primaryTextTheme: textTheme,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.red,
-        // backgroundColor: color.primary,
-        // foregroundColor: color.focus,
+      appBarTheme: AppBarTheme(
+        // backgroundColor: Colors.blue,
+        // foregroundColor: Colors.red,
+        backgroundColor: color.primary,
+        foregroundColor: color.focus,
       ),
 
-      iconTheme: IconThemeData(color: color.focus, size: 23),
+      // iconTheme: IconThemeData(color: color.focus, size: 23),
+      iconTheme: IconThemeData(color: color.focus, size: 26),
       cardTheme: CardTheme(
         color: color.primary,
         elevation: 0.5,
@@ -87,7 +90,7 @@ class IdeaData {
         shape: RoundedRectangleBorder(
           side: BorderSide(width: 0.2, color: color.shadow),
           // BorderRadius.circular(5)
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderRadius: const BorderRadius.all(Radius.circular(7)),
         ),
       ),
       dialogTheme: DialogTheme(
@@ -106,6 +109,17 @@ class IdeaData {
         ),
         elevation: 3,
       ),
+      chipTheme: ChipThemeData(
+        backgroundColor: Colors.transparent,
+        disabledColor: Colors.grey,
+        selectedColor: Colors.amber,
+        secondarySelectedColor: Colors.blueAccent,
+        padding: EdgeInsets.zero,
+        labelStyle: TextStyle(color: color.focus),
+        secondaryLabelStyle: TextStyle(color: color.focus),
+        brightness: color.brightness,
+        // brightness: resolveBrightness,
+      ),
       cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
         brightness: color.brightness,
         textTheme: const CupertinoTextThemeData(
@@ -118,9 +132,14 @@ class IdeaData {
         fillColor: color.shadow.withOpacity(0.7),
         // hoverColor: Colors.green,
         // focusColor: Colors.red,
-        hintStyle: TextStyle(color: color.focus.withOpacity(0.7)),
-        // labelStyle: const TextStyle(height: 1.3),
+        hintStyle: TextStyle(
+          color: color.focus.withOpacity(0.7),
+          height: 1.3,
+          fontSize: 15,
+        ),
+        // labelStyle: const TextStyle(height: 1.7),
         // alignLabelWithHint: true,
+
         suffixStyle: const TextStyle(color: Colors.red),
         contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         focusedBorder: OutlineInputBorder(
@@ -224,10 +243,14 @@ class IdeaData {
       fontFamilyFallback: ["Mm3Web", "Lato"],
       height: 1.2,
     ),
+
+    /// default: ListTile.title
     subtitle1: TextStyle(
       fontWeight: _fontWeighRegular,
       fontFamilyFallback: ["Mm3Web", "Lato"],
-      height: 1.4,
+      // height: 1.4,
+      height: 1.0,
+      fontSize: 20,
     ),
     subtitle2: TextStyle(
       fontWeight: _fontWeighMedium,
