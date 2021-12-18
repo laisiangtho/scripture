@@ -121,10 +121,6 @@ class LaiSiangtho extends StatelessWidget {
           builder: (BuildContext context, Widget? view) {
             return AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
-                // systemNavigationBarColor: Theme.of(context).primaryColor,
-                // // systemNavigationBarDividerColor: Colors.transparent,
-                // systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
-                // systemNavigationBarContrastEnforced: false,
                 systemNavigationBarColor: Theme.of(context).primaryColor,
                 // systemNavigationBarDividerColor: Colors.transparent,
                 systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
@@ -134,19 +130,6 @@ class LaiSiangtho extends StatelessWidget {
                 statusBarBrightness: settings.systemBrightness,
                 statusBarIconBrightness: settings.resolvedSystemBrightness,
                 systemStatusBarContrastEnforced: false,
-
-                // systemNavigationBarColor: Theme.of(context).primaryColor,
-                // // systemNavigationBarColor: Colors.transparent,
-                // systemNavigationBarDividerColor: Colors.transparent,
-                // systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
-                // systemNavigationBarContrastEnforced: true,
-
-                // statusBarColor: Colors.transparent,
-                // // statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-                // statusBarBrightness: settings.systemBrightness,
-                // statusBarIconBrightness: settings.resolvedSystemBrightness,
-                // // statusBarIconBrightness: settings.systemBrightness,
-                // // systemStatusBarContrastEnforced: true,
               ),
               child: view!,
             );
