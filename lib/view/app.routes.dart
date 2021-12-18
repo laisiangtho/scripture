@@ -8,11 +8,6 @@ import 'app.dart' as root;
 import 'home/main.dart' as home;
 import 'home/launch/main.dart' as launch;
 import 'home/bible/main.dart' as bible;
-import 'home/blog/main.dart' as blog;
-import 'home/article/main.dart' as article;
-import 'home/reorderable/main.dart' as reorderable;
-import 'home/dismissible/main.dart' as dismissible;
-import 'home/recent_search/main.dart' as recent_search;
 
 import 'read/main.dart' as read;
 import 'note/main.dart' as note;
@@ -79,16 +74,6 @@ class AppRoutes {
         return user.Main(arguments: route.arguments);
       case reader.Main.route:
         return reader.Main(arguments: route.arguments);
-      case recent_search.Main.route:
-        return recent_search.Main(arguments: route.arguments);
-      case blog.Main.route:
-        return blog.Main(arguments: route.arguments);
-      case article.Main.route:
-        return article.Main(arguments: route.arguments);
-      case reorderable.Main.route:
-        return reorderable.Main(arguments: route.arguments);
-      case dismissible.Main.route:
-        return dismissible.Main(arguments: route.arguments);
       case bible.Main.route:
         return bible.Main(arguments: route.arguments);
       case launch.Main.route:
