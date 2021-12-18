@@ -24,12 +24,13 @@ mixin _Bar on _State {
                   padding: EdgeInsets.symmetric(horizontal: 0, vertical: 13),
                   child: Material(
                     type: MaterialType.transparency,
-                    child: CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      minSize: 30,
-                      onPressed: null,
-                      child: SizedBox(),
-                    ),
+                    child: SizedBox(),
+                    // child: CupertinoButton(
+                    //   padding: EdgeInsets.zero,
+                    //   minSize: 30,
+                    //   onPressed: null,
+                    //   child: SizedBox(),
+                    // ),
                   ),
                 ),
               ),
@@ -50,7 +51,7 @@ mixin _Bar on _State {
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
-                        .copyWith(fontSize: (30 * org.shrink).clamp(20.0, 30.0).toDouble()),
+                        .copyWith(fontSize: (30 * org.shrink).clamp(24.0, 30.0).toDouble()),
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                   ),
