@@ -38,7 +38,7 @@ mixin _Bar on _State {
             //   ),
             // ),
             TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: 50, end: 0),
+              tween: Tween<double>(begin: 30, end: 0),
               duration: const Duration(milliseconds: 300),
               builder: (BuildContext context, double align, Widget? child) {
                 return Positioned(

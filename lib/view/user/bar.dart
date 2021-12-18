@@ -14,7 +14,7 @@ mixin _Bar on _State {
           alignment: const Alignment(0, 0),
           children: [
             TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: canPop ? 50 : 0, end: 0),
+              tween: Tween<double>(begin: canPop ? 30 : 0, end: 0),
               duration: const Duration(milliseconds: 300),
               builder: (BuildContext context, double align, Widget? child) {
                 return Positioned(
