@@ -86,9 +86,8 @@ class LaiSiangtho extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         // debugPrint('${settings.themeMode}');
         return MaterialApp(
-          // showSemanticsDebugger: false,
+          showSemanticsDebugger: false,
           debugShowCheckedModeBanner: false,
-
           restorationScopeId: 'lidea',
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -109,7 +108,6 @@ class LaiSiangtho extends StatelessWidget {
           theme: IdeaData.light(context),
           themeMode: settings.themeMode,
           onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appLaiSiangtho,
-
           initialRoute: AppRoutes.rootInitial,
           routes: AppRoutes.rootMap,
           navigatorObservers: [
