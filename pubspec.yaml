@@ -41,7 +41,7 @@ flutter:
     - assets/env.json
     - assets/bible.json
 
-  # Add fonts from lidea
+  # fonts from lidea
   fonts:
     - family: Lato
       fonts:
