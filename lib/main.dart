@@ -13,7 +13,7 @@ import 'package:lidea/view/main.dart';
 import '/core/main.dart';
 import '/coloration.dart';
 
-import 'view/routes.dart';
+import '/view/routes.dart';
 
 // const bool isProduction = bool.fromEnvironment('dart.vm.product');
 
