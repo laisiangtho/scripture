@@ -51,7 +51,7 @@ mixin _Bar on _State {
                               : Theme.of(context).primaryColorDark,
                           iconSize: (org.shrink * 23).clamp(18, 23).toDouble(),
                           // message: translate.bookmark(false),
-                          message: translate.addTo(translate.bookmark(true)),
+                          message: preference.text.addTo(preference.text.bookmark(true)),
                         );
                       }),
                   onPressed: core.switchBookmarkWithNotify,
@@ -90,7 +90,7 @@ mixin _Bar on _State {
                             builder: (BuildContext context, String bookName, Widget? child) {
                               return _barButton(
                                 label: bookName,
-                                message: translate.book(true),
+                                message: preference.text.book(true),
                                 shrink: org.shrink,
                                 onPressed: showBookList,
                               );
@@ -133,7 +133,7 @@ mixin _Bar on _State {
                             builder: (BuildContext context, String chapterName, Widget? child) {
                               return _barButton(
                                 label: chapterName,
-                                message: translate.chapter(true),
+                                message: preference.text.chapter(true),
                                 shrink: org.shrink,
                                 onPressed: showChapterList,
                               );
@@ -162,7 +162,7 @@ mixin _Bar on _State {
                     child: WidgetLabel(
                       icon: LideaIcon.textSize,
                       iconSize: (org.shrink * 23).clamp(18, 23).toDouble(),
-                      message: translate.fontSize,
+                      message: preference.text.fontSize,
                     ),
                     onPressed: showOptionList,
                   ),

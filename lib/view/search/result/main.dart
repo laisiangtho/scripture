@@ -4,13 +4,12 @@ import 'package:flutter/cupertino.dart';
 // import 'package:flutter/rendering.dart';
 
 import 'package:lidea/provider.dart';
-import 'package:lidea/view.dart';
+import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
 
-import 'package:bible/core.dart';
-import 'package:bible/settings.dart';
-import 'package:bible/widget.dart';
-import 'package:bible/type.dart';
+import '/core/main.dart';
+import '/widget/main.dart';
+import '/type/main.dart';
 
 part 'bar.dart';
 
@@ -45,7 +44,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   // bool get canPop => navigator.currentState!.canPop();
   // bool get canPop => Navigator.of(context).canPop();
 
-  AppLocalizations get translate => AppLocalizations.of(context)!;
+  Preference get preference => core.preference;
 
   @override
   void initState() {
@@ -123,7 +122,7 @@ class _View extends _State with _Bar {
             switch (snap.connectionState) {
               case ConnectionState.waiting:
               case ConnectionState.none:
-                return _msg(translate.aMoment);
+                return _msg(preference.text.aMoment);
               default:
                 // return Selector<Core, ConclusionType>(
                 //   selector: (_, e) => e.collection.cacheConclusion,
@@ -141,11 +140,11 @@ class _View extends _State with _Bar {
                   selector: (_, e) => e.scripturePrimary.verseSearch,
                   builder: (BuildContext context, BIBLE o, Widget? child) {
                     if (o.query.isEmpty) {
-                      return _msg(translate.aWordOrTwo);
+                      return _msg(preference.text.aWordOrTwo);
                     } else if (o.verseCount > 0) {
                       return _resultView();
                     } else {
-                      return _msg(translate.searchNoMatch);
+                      return _msg(preference.text.searchNoMatch);
                     }
                   },
                 );

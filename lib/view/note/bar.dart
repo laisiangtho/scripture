@@ -40,11 +40,11 @@ mixin _Bar on _State {
 
   Widget barTitle() {
     return Semantics(
-      label: translate.page(false),
+      label: preference.text.page(false),
       // label: translate.page,
       child: Text(
-        translate.note(false),
-        semanticsLabel: translate.note(false),
+        preference.text.note(false),
+        semanticsLabel: preference.text.note(false),
       ),
     );
   }
@@ -53,7 +53,7 @@ mixin _Bar on _State {
     return CupertinoButton(
       padding: EdgeInsets.zero,
       child: WidgetLabel(
-        message: translate.clear,
+        message: preference.text.clear,
         icon: LideaIcon.trash,
         iconSize: 18,
       ),

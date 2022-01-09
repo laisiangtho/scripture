@@ -5,20 +5,17 @@ import 'package:flutter/cupertino.dart';
 // import 'package:lidea/intl.dart';
 
 import 'package:lidea/provider.dart';
-import 'package:lidea/view.dart';
-import 'package:lidea/authentication.dart';
+import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
 
-import 'package:bible/core.dart';
-import 'package:bible/settings.dart';
-import 'package:bible/widget.dart';
-import 'package:bible/type.dart';
+import '/core/main.dart';
+import '/widget/main.dart';
+import '/type/main.dart';
 
 part 'bar.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.settings, this.navigatorKey}) : super(key: key);
-  final SettingsController? settings;
+  const Main({Key? key, this.navigatorKey}) : super(key: key);
   final GlobalKey<NavigatorState>? navigatorKey;
 
   static const route = '/note';
@@ -34,14 +31,15 @@ class Main extends StatefulWidget {
 
 abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   late final Core core = context.read<Core>();
-  late final SettingsController settings = context.read<SettingsController>();
+  // late final SettingsController settings = context.read<SettingsController>();
   // late final AppLocalizations translate = AppLocalizations.of(context)!;
   late final Authentication authenticate = context.read<Authentication>();
   late final scrollController = ScrollController();
   // late final Future<DefinitionBible> _initiator = core.scripturePrimary.init();
 
   // SettingsController get settings => context.read<SettingsController>();
-  AppLocalizations get translate => AppLocalizations.of(context)!;
+  // AppLocalizations get translate => AppLocalizations.of(context)!;
+  Preference get preference => core.preference;
   // Authentication get authenticate => context.read<Authentication>();
 
   @override
@@ -64,10 +62,10 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   void onDeleteAll() {
     doConfirmWithDialog(
       context: context,
-      message: translate.confirmToDelete('all'),
-      title: translate.confirmation,
-      cancel: translate.cancel,
-      confirm: translate.confirm,
+      message: preference.text.confirmToDelete('all'),
+      title: preference.text.confirmation,
+      cancel: preference.text.cancel,
+      confirm: preference.text.confirm,
     ).then((confirmation) {
       if (confirmation != null && confirmation) {
         core.clearBookmarkWithNotify();
@@ -99,10 +97,10 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
     return doConfirmWithDialog(
       context: context,
       // message: 'Do you want to delete this Bookmark?',
-      message: translate.confirmToDelete(''),
-      title: translate.confirmation,
-      cancel: translate.cancel,
-      confirm: translate.confirm,
+      message: preference.text.confirmToDelete(''),
+      title: preference.text.confirmation,
+      cancel: preference.text.cancel,
+      confirm: preference.text.confirm,
     ).then((confirmation) {
       if (confirmation != null && confirmation) {
         core.deleteBookmarkWithNotify(index);
@@ -182,7 +180,7 @@ class _View extends _State with _Bar {
             return child!;
             // return listContainer(items);
           },
-          child: messageContainer(translate.bookmarkCount(0)),
+          child: messageContainer(preference.text.bookmarkCount(0)),
         ),
       ],
     );
@@ -287,7 +285,7 @@ class _View extends _State with _Bar {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Text(
-              translate.delete,
+              preference.text.delete,
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: Theme.of(context).primaryColor,

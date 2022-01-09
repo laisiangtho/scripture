@@ -120,7 +120,7 @@ mixin _Bar on _State {
       // keyboardType: TextInputType.text,
       strutStyle: const StrutStyle(height: 1.4),
       decoration: InputDecoration(
-        hintText: translate.aWordOrTwo,
+        hintText: preference.text.aWordOrTwo,
         // hintStyle: const TextStyle(height: 1.3),
         // prefixIcon: const Icon(LideaIcon.find, size: 17),
         prefixIcon: Container(

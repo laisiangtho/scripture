@@ -27,7 +27,7 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
   CHAPTER get tmpchapter => bible.book.first.chapter.first;
   List<VERSE> get tmpverse => tmpchapter.verse;
 
-  AppLocalizations get translate => AppLocalizations.of(context)!;
+  Preference get preference => core.preference;
 
   // @override
   // bool get wantKeepAlive => true;
@@ -121,7 +121,7 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                     padding: EdgeInsets.zero,
                     child: WidgetLabel(
                       icon: Icons.linear_scale,
-                      message: translate.chooseTo(translate.bible(false)),
+                      message: preference.text.chooseTo(preference.text.bible(false)),
                     ),
                     onPressed: () => _showParallelList(),
                   )

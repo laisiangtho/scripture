@@ -33,7 +33,7 @@ mixin _Bar on _State {
                   padding: const EdgeInsets.fromLTRB(0, 10, 7, 10),
                   onPressed: onCancel,
                   child: Text(
-                    translate.cancel,
+                    preference.text.cancel,
                     maxLines: 1,
                     softWrap: false,
                   ),
@@ -118,7 +118,7 @@ mixin _Bar on _State {
               // axisAlignment: 1,
               child: Semantics(
                 enabled: true,
-                label: translate.clear,
+                label: preference.text.clear,
                 child: CupertinoButton(
                   onPressed: onClear,
                   padding: const EdgeInsets.all(0),
@@ -133,7 +133,7 @@ mixin _Bar on _State {
             ),
           ],
         ),
-        hintText: translate.aWordOrTwo,
+        hintText: preference.text.aWordOrTwo,
         fillColor: Theme.of(context)
             .inputDecorationTheme
             .fillColor!

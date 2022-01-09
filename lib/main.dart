@@ -1,19 +1,19 @@
+// NOTE: Flutter: material
 import 'package:flutter/material.dart';
-// import 'package:flutter/foundation.dart';
+// NOTE: SystemUiOverlayStyle
 import 'package:flutter/services.dart';
-
+// NOTE: Locale delegation
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// NOTE: Privider: state management
 import 'package:lidea/provider.dart';
-import 'package:lidea/view.dart';
-import 'package:lidea/authentication.dart';
+// NOTE: Scroll
+import 'package:lidea/view/main.dart';
 
-// import 'package:in_app_purchase/in_app_purchase.dart';
-// import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import '/core/main.dart';
+import '/coloration.dart';
 
-import 'package:bible/core.dart';
-import 'package:bible/settings.dart';
-
-import 'core/theme/data.dart';
-import 'view/app.routes.dart';
+import 'view/routes.dart';
 
 // const bool isProduction = bool.fromEnvironment('dart.vm.product');
 
@@ -25,53 +25,37 @@ void main() async {
   //   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
   // }
 
-  final authentication = Authentication();
-  await authentication.ensureInitialized();
-
-  final core = Core(authentication);
+  final core = Core();
   await core.ensureInitialized();
-  authentication.stateObserver(core.userObserver);
+  // authentication.stateObserver(core.userObserver);
 
-  final settings = SettingsController(SettingsService(core.collection));
-  await settings.ensureInitialized();
-
-  runApp(LaiSiangtho(
-    core: core,
-    settings: settings,
-    authentication: authentication,
-  ));
+  runApp(LaiSiangtho(core: core));
 }
 
 class LaiSiangtho extends StatelessWidget {
-  const LaiSiangtho({
-    Key? key,
-    required this.core,
-    required this.settings,
-    required this.authentication,
-  }) : super(key: key);
-
-  final Authentication authentication;
   final Core core;
-  final SettingsController settings;
+
+  const LaiSiangtho({Key? key, required this.core}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ViewScrollNotify>(
-          create: (context) => ViewScrollNotify(),
-        ),
         ChangeNotifierProvider<Core>(
           create: (context) => core,
         ),
-        ChangeNotifierProvider<SettingsController>(
-          create: (context) => settings,
+        ChangeNotifierProvider<Preference>(
+          create: (context) => core.preference,
         ),
         ChangeNotifierProvider<Authentication>(
-          create: (context) => authentication,
+          create: (context) => core.authentication,
         ),
-        ChangeNotifierProvider<NavigatorNotify>(
-          create: (context) => NavigatorNotify(),
+        ChangeNotifierProvider<NavigationNotify>(
+          create: (context) => core.navigation,
+          // create: (context) => NavigationNotify(),
+        ),
+        ChangeNotifierProvider<ViewScrollNotify>(
+          create: (context) => ViewScrollNotify(),
         ),
       ],
       child: start(),
@@ -82,7 +66,7 @@ class LaiSiangtho extends StatelessWidget {
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return AnimatedBuilder(
-      animation: settings,
+      animation: core.preference,
       builder: (BuildContext context, Widget? child) {
         // debugPrint('${settings.themeMode}');
         return MaterialApp(
@@ -95,7 +79,8 @@ class LaiSiangtho extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          locale: settings.locale,
+          locale: core.preference.locale,
+          // locale: Localizations.localeOf(context),
           supportedLocales: const [
             // English
             Locale('en', 'GB'),
@@ -104,31 +89,31 @@ class LaiSiangtho extends StatelessWidget {
             // Myanmar
             Locale('my', ''),
           ],
-          darkTheme: IdeaData.dark(context),
-          theme: IdeaData.light(context),
-          themeMode: settings.themeMode,
-          onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appLaiSiangtho,
+          darkTheme: Coloration.dark(context),
+          theme: Coloration.light(context),
+          themeMode: core.preference.themeMode,
+          onGenerateTitle: (BuildContext context) => core.collection.env.name,
           initialRoute: AppRoutes.rootInitial,
           routes: AppRoutes.rootMap,
           navigatorObservers: [
-            NavigatorNotifyObserver(
-              Provider.of<NavigatorNotify>(
-                context,
-                listen: false,
-              ),
-            ),
+            NavigationObserver(
+                // Provider.of<NavigationNotify>(
+                //   context,
+                //   listen: false,
+                // ),
+                core.navigation),
           ],
           builder: (BuildContext context, Widget? view) {
             return AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
                 systemNavigationBarColor: Theme.of(context).primaryColor,
                 // systemNavigationBarDividerColor: Colors.transparent,
-                systemNavigationBarIconBrightness: settings.resolvedSystemBrightness,
+                systemNavigationBarIconBrightness: core.preference.resolvedSystemBrightness,
                 systemNavigationBarContrastEnforced: false,
 
                 statusBarColor: Colors.transparent,
-                statusBarBrightness: settings.systemBrightness,
-                statusBarIconBrightness: settings.resolvedSystemBrightness,
+                statusBarBrightness: core.preference.systemBrightness,
+                statusBarIconBrightness: core.preference.resolvedSystemBrightness,
                 systemStatusBarContrastEnforced: false,
               ),
               child: view!,

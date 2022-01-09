@@ -22,21 +22,28 @@ mixin _Bar on _State {
                   top: 0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
-                    child: Hero(
-                      tag: 'appbar-left-$canPop',
-                      child: CupertinoButton(
-                        padding: EdgeInsets.zero,
-                        minSize: 30,
-                        onPressed: () {
-                          arguments.navigator!.currentState!.maybePop();
-                        },
-                        child: WidgetLabel(
-                          icon: CupertinoIcons.left_chevron,
-                          label: translate.back,
-                          // label: AppLocalizations.of(context)!.back,
-                        ),
-                      ),
-                    ),
+                    child: canPop
+                        ? (align == 0)
+                            ? Hero(
+                                tag: 'appbar-left-$canPop',
+                                child: CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  minSize: 30,
+                                  onPressed: () {
+                                    arguments.navigator!.currentState!.maybePop();
+                                  },
+                                  child: WidgetLabel(
+                                    icon: CupertinoIcons.left_chevron,
+                                    label: preference.text.back,
+                                    // label: AppLocalizations.of(context)!.back,
+                                  ),
+                                ),
+                              )
+                            : WidgetLabel(
+                                icon: CupertinoIcons.left_chevron,
+                                label: preference.text.back,
+                              )
+                        : const SizedBox(),
                   ),
                 );
               },
@@ -52,18 +59,17 @@ mixin _Bar on _State {
               right: 0,
               top: 0,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 13),
                 child: Hero(
                   tag: 'appbar-right-$canPop',
                   child: CupertinoButton(
                     padding: EdgeInsets.zero,
                     minSize: 30,
-                    // color: Colors.red,
                     onPressed:
                         authenticate.hasUser ? () async => await authenticate.signOut() : null,
                     child: WidgetLabel(
                       icon: Icons.logout_rounded,
-                      message: translate.signOut,
+                      message: preference.text.signOut,
                     ),
                   ),
                 ),

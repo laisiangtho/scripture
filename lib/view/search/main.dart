@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/view.dart';
-import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
+import 'package:lidea/view/main.dart';
+import 'package:lidea/icon.dart';
 
-import 'package:bible/settings.dart';
-
-import '../app.routes.dart';
-// import 'result/main.dart' as result;
-// import 'suggest/main.dart' as suggest;
+import '/core/main.dart';
+import '../routes.dart';
 
 class Main extends StatefulWidget {
   const Main({
@@ -39,8 +36,9 @@ class _State extends State<Main> {
   // ViewNavigationArguments get arguments => widget.arguments as ViewNavigationArguments;
   // GlobalKey<NavigatorState> get navigator => GlobalKey<NavigatorState>();
   late final navigator = GlobalKey<NavigatorState>();
-  late final NavigatorNotifyObserver obs = NavigatorNotifyObserver(
-    Provider.of<NavigatorNotify>(
+
+  late final NavigationObserver obs = NavigationObserver(
+    Provider.of<NavigationNotify>(
       context,
       listen: false,
     ),
@@ -70,7 +68,7 @@ class _State extends State<Main> {
         controller: MaterialApp.createMaterialHeroController(),
         child: Navigator(
           key: navigator,
-          // observers: [obs],
+          observers: [obs],
           restorationScopeId: 'search',
           initialRoute: AppRoutes.searchInitial(name: widget.defaultRouteName),
           onGenerateRoute: (RouteSettings route) {

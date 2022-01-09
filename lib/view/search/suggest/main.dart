@@ -4,16 +4,13 @@ import 'package:flutter/cupertino.dart';
 // import 'package:flutter/gestures.dart';
 // import 'package:flutter/services.dart';
 
-// import 'package:lidea/hive.dart';
 import 'package:lidea/provider.dart';
-// import 'package:lidea/intl.dart';
-import 'package:lidea/view.dart';
+import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
 
-import 'package:bible/core.dart';
-import 'package:bible/settings.dart';
-import 'package:bible/widget.dart';
-import 'package:bible/type.dart';
+import '/core/main.dart';
+import '/widget/main.dart';
+import '/type/main.dart';
 
 part 'bar.dart';
 
@@ -73,7 +70,7 @@ abstract class _State extends State<Main> with TickerProviderStateMixin {
   //   begin: Colors.red, end: Colors.green
   // ).animate(clearController);
 
-  AppLocalizations get translate => AppLocalizations.of(context)!;
+  Preference get preference => core.preference;
 
   @override
   void initState() {
@@ -343,7 +340,7 @@ class _View extends _State with _Bar {
             child: _recentList(items),
           );
         }
-        return _msg(translate.aWordOrTwo);
+        return _msg(preference.text.aWordOrTwo);
       },
     );
   }
@@ -559,7 +556,7 @@ class _View extends _State with _Bar {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Text(
-              translate.delete,
+              preference.text.delete,
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: Theme.of(context).primaryColor,

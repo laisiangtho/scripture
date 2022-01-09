@@ -1,22 +1,28 @@
 part of 'main.dart';
 
-abstract class _Abstract extends UtilEngine with _Configuration, _Utility {
-  final Authentication authentication;
+abstract class _Abstract extends UnitEngine with _Utility {
+  final Collection collection = Collection.internal();
 
-  _Abstract(this.authentication);
+  late final Preference preference = Preference(collection);
+  late final Authentication authentication = Authentication();
+  late final NavigationNotify navigation = NavigationNotify();
+  late final Analytics analytics = Analytics();
+
+  late final store = Store();
+  late final sql = SQLite();
+  // late final store = Store(notify: notify, collection: collection);
+  // late final sql = SQLite(collection: collection);
+
+  late final scripturePrimary = Scripture(collection: collection);
+  late final scriptureParallel = Scripture(collection: collection, collectionType: 1);
 
   Future<void> ensureInitialized() async {
     Stopwatch initWatch = Stopwatch()..start();
 
-    await collection.ensureInitialized(() {
-      Hive.registerAdapter(BookmarkAdapter());
-      Hive.registerAdapter(BookAdapter());
-    });
-
-    await collection.prepareInitialized(() async {
-      collection.boxOfBookmark = await Hive.openBox<BookmarkType>('bookmark');
-      collection.boxOfBook = await Hive.openBox<BookType>('book');
-    });
+    await collection.ensureInitialized();
+    await collection.prepareInitialized();
+    await preference.ensureInitialized();
+    await authentication.ensureInitialized();
 
     // if (authentication.id.isNotEmpty && authentication.id != collection.setting.userId) {
     //   final ou = collection.setting.copyWith(userId: authentication.id);
@@ -26,7 +32,7 @@ abstract class _Abstract extends UtilEngine with _Configuration, _Utility {
     debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
   }
 
-  Future<void> _initData() async {
+  Future<void> initData() async {
     if (collection.requireInitialized) {
       APIType api = collection.env.api.firstWhere(
         (e) => e.asset.isNotEmpty,
@@ -159,7 +165,7 @@ abstract class _Abstract extends UtilEngine with _Configuration, _Utility {
   /// init scripturePrimary and seed analytics
   Future<void> get primaryInit {
     return scripturePrimary.init().then((o) {
-      analyticsBook(
+      analytics.book(
         '${o.info.name} (${o.info.shortname})',
         scripturePrimary.bookName,
         scripturePrimary.chapterName,
@@ -267,7 +273,12 @@ abstract class _Abstract extends UtilEngine with _Configuration, _Utility {
     debugPrint('userObserver begin');
   }
 
-  Future<void> analyticsFromCollection() async {
-    analyticsSearch('keyword goes here');
-  }
+  // Future<void> analyticsFromCollection() async {
+  //   analyticsSearch('keyword goes here');
+  // }
+}
+
+DefinitionBible parseDefinitionBibleCompute(String response) {
+  Map<String, dynamic> parsed = UtilDocument.decodeJSON(response);
+  return DefinitionBible.fromJSON(parsed);
 }

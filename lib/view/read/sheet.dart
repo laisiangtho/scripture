@@ -39,11 +39,15 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
   bool isDownloading = false;
   String message = '';
 
+  // late final Core core = context.read<Core>();
+
   // late ScrollController scrollController;
   late BuildContext contextDraggable;
   // late final ViewScrollNotify scrollNotify = context.read<ViewScrollNotify>();
   late final ViewScrollNotify scrollNotify = Provider.of<ViewScrollNotify>(context, listen: false);
-  AppLocalizations get translate => AppLocalizations.of(context)!;
+  // AppLocalizations get translate => AppLocalizations.of(context)!;
+
+  late final Preference preference = context.read<Preference>();
 
   // final keyParallel = UniqueKey();
   // final scaffoldParallel = GlobalKey<ScaffoldState>();
@@ -254,20 +258,20 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         button(
-          message: translate.previousTo(translate.chapter(false)),
+          message: preference.text.previousTo(preference.text.chapter(false)),
           child: const Icon(LideaIcon.chapterPrevious, size: 25),
           onPressed: widget.previousChapter,
         ),
 
         button(
-          message: translate.nextTo(translate.chapter(false)),
+          message: preference.text.nextTo(preference.text.chapter(false)),
           child: const Icon(LideaIcon.chapterNext, size: 25),
           onPressed: widget.nextChapter,
         ),
 
         button(
           // message: "Compare selected verse Parallel",
-          message: translate.compareTo(translate.parallel),
+          message: preference.text.compareTo(preference.text.parallel),
           child: const Icon(LideaIcon.language, size: 22),
           // onPressed:showParallelIf?showParallel:null
           onPressed: showParallel,
@@ -299,7 +303,7 @@ class _SheetWidgetState extends State<_SheetWidget> with TickerProviderStateMixi
         // ),
         button(
           // message: "Copy/Share selected verse",
-          message: translate.share,
+          message: preference.text.share,
           // onPressed:hasVerseSelection?widget.verseSelectionCopy:null,
           onPressed: hasVerseSelection ? widget.verseSelectionCopy : null,
           child: Stack(

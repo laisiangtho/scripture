@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:bible/inherited.dart';
-import 'package:bible/type.dart';
+
+import '/type/main.dart';
 
 class VerseWidgetInherited extends InheritedWidget {
   final Color? fontColor;

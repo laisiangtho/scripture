@@ -2,28 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:flutter/rendering.dart';
 
-// import 'package:lidea/intl.dart';
 import 'package:lidea/provider.dart';
-import 'package:lidea/view.dart';
-import 'package:lidea/authentication.dart';
+import 'package:lidea/view/main.dart';
 import 'package:lidea/cached_network_image.dart';
 import 'package:lidea/icon.dart';
 import 'package:lidea/extension.dart';
 
-import 'package:bible/widget.dart';
-
-import 'package:bible/core.dart';
-import 'package:bible/settings.dart';
-// import 'package:bible/widget.dart';
-// import 'package:bible/type.dart';
+import '/core/main.dart';
+import '/widget/main.dart';
+// import '/type/main.dart';
 
 part 'bar.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.settings, this.navigatorKey, this.arguments}) : super(key: key);
-  final SettingsController? settings;
+  const Main({Key? key, this.arguments}) : super(key: key);
   final Object? arguments;
-  final GlobalKey<NavigatorState>? navigatorKey;
+  // final GlobalKey<NavigatorState>? navigatorKey;
 
   static const route = '/user';
   static const icon = Icons.person;
@@ -38,19 +32,20 @@ class Main extends StatefulWidget {
 
 abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   late final Core core = context.read<Core>();
-  late final SettingsController settings = context.read<SettingsController>();
   // late final AppLocalizations translate = AppLocalizations.of(context)!;
   late final Authentication authenticate = context.read<Authentication>();
   late final scrollController = ScrollController();
 
+  Preference get preference => core.preference;
+
   // SettingsController get settings => context.read<SettingsController>();
-  AppLocalizations get translate => AppLocalizations.of(context)!;
+  // AppLocalizations get translate => AppLocalizations.of(context)!;
   // Authentication get authenticate => context.read<Authentication>();
 
   List<String> get themeName => [
-        translate.automatic,
-        translate.light,
-        translate.dark,
+        preference.text.automatic,
+        preference.text.light,
+        preference.text.dark,
       ];
 
   late final ViewNavigationArguments arguments = widget.arguments as ViewNavigationArguments;
@@ -78,7 +73,7 @@ class _View extends _State with _Bar {
   Widget build(BuildContext context) {
     return ViewPage(
       key: widget.key,
-      controller: scrollController,
+      // controller: scrollController,
       child: Consumer<Authentication>(
         builder: (_, __, ___) => body(),
       ),
@@ -124,7 +119,7 @@ class _View extends _State with _Bar {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          translate.wouldYouLiketoSignIn,
+                          preference.text.wouldYouLiketoSignIn,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -137,7 +132,7 @@ class _View extends _State with _Bar {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          translate.bySigningIn,
+                          preference.text.bySigningIn,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -153,35 +148,36 @@ class _View extends _State with _Bar {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: WidgetLabel(
                           icon: Icons.lightbulb,
-                          label: translate.themeMode,
+                          label: preference.text.themeMode,
                         ),
                       ),
                       const Divider(),
-                      Selector<SettingsController, ThemeMode>(
+                      // Selector<SettingsController, ThemeMode>(
+                      //   selector: (_, e) => e.themeMode,
+                      //   builder: (BuildContext context, ThemeMode theme, Widget? child) => Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //     children: ThemeMode.values.map<Widget>((e) {
+                      //       bool active = theme == e;
+                      //       return CupertinoButton(
+                      //         padding: const EdgeInsets.all(0),
+                      //         child: WidgetLabel(
+                      //           enable: !active,
+                      //           label: themeName[e.index],
+                      //         ),
+                      //         onPressed: active ? null : () => settings.updateThemeMode(e),
+                      //       );
+                      //     }).toList(),
+                      //   ),
+                      // )
+                      Selector<Preference, ThemeMode>(
                         selector: (_, e) => e.themeMode,
-                        // builder: (BuildContext context, ThemeMode theme, Widget? child) => Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   children: ThemeMode.values.map<Widget>(
-                        //     (mode) {
-                        //       bool active = theme == mode;
-                        //       return CupertinoButton(
-                        //         padding: const EdgeInsets.all(0),
-                        //         child: WidgetLabel(
-                        //           enable: !active,
-                        //           label: themeName[mode.index],
-                        //         ),
-                        //         onPressed: active ? null : () => settings.updateThemeMode(mode),
-                        //       );
-                        //     },
-                        //   ).toList(),
-                        // ),
                         builder: (BuildContext context, ThemeMode theme, Widget? child) {
                           return ListView.builder(
                             shrinkWrap: true,
@@ -205,7 +201,7 @@ class _View extends _State with _Bar {
                                 onTap: active
                                     ? null
                                     : () {
-                                        settings.updateThemeMode(mode);
+                                        preference.updateThemeMode(mode);
                                       },
                               );
                             },
@@ -227,19 +223,43 @@ class _View extends _State with _Bar {
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: WidgetLabel(
                           icon: Icons.translate,
-                          label: translate.locale,
+                          label: preference.text.locale,
                         ),
                       ),
                       const Divider(),
+                      // ListView.builder(
+                      //   shrinkWrap: true,
+                      //   primary: false,
+                      //   physics: const NeverScrollableScrollPhysics(),
+                      //   itemCount: AppLocalizations.supportedLocales.length,
+                      //   // itemCount: Localizations.localeOf(context).,
+                      //   padding: EdgeInsets.zero,
+                      //   itemBuilder: (_, index) {
+                      //     final lang = AppLocalizations.supportedLocales[index];
+
+                      //     Locale locale = Localizations.localeOf(context);
+                      //     final String localeName = Intl.canonicalizedLocale(lang.languageCode);
+                      //     final bool isCurrent = locale.languageCode == lang.languageCode;
+
+                      //     return ListTile(
+                      //       selected: isCurrent,
+                      //       leading: Icon(isCurrent
+                      //           ? Icons.radio_button_checked
+                      //           : Icons.radio_button_unchecked),
+                      //       title: Text(localeName),
+                      //       onTap: () => settings.updateLocale(lang),
+                      //     );
+                      //   },
+                      // )
                       ListView.builder(
                         shrinkWrap: true,
                         primary: false,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: AppLocalizations.supportedLocales.length,
+                        itemCount: preference.supportedLocales.length,
                         // itemCount: Localizations.localeOf(context).,
                         padding: EdgeInsets.zero,
                         itemBuilder: (_, index) {
-                          final locale = AppLocalizations.supportedLocales[index];
+                          final locale = preference.supportedLocales[index];
 
                           Locale localeCurrent = Localizations.localeOf(context);
                           // final String localeName = Intl.canonicalizedLocale(lang.languageCode);
@@ -256,7 +276,7 @@ class _View extends _State with _Bar {
                             ),
                             title: Text(localeName),
                             onTap: () {
-                              settings.updateLocale(locale);
+                              preference.updateLocale(locale);
                             },
                           );
                         },
@@ -265,34 +285,6 @@ class _View extends _State with _Bar {
                   ),
                 ),
               ),
-              // Card(
-              //   child: Column(
-              //     children: [
-              //       CupertinoButton(
-              //         child: const Text('mockGistUpdate'),
-              //         onPressed: () {
-              //           // mockPush();
-              //           core.mockGistUpdate().then((value) {
-              //             debugPrint('Done');
-              //           }).catchError((e) {
-              //             debugPrint('Error: $e');
-              //           });
-              //         },
-              //       ),
-              //       CupertinoButton(
-              //         child: const Text('comment'),
-              //         onPressed: () {
-              //           // mockPush();
-              //           core.mockGistCreateComment().then((value) {
-              //             debugPrint('Done');
-              //           }).catchError((e) {
-              //             debugPrint('Error: $e');
-              //           });
-              //         },
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),
