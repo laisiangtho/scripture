@@ -4,7 +4,7 @@ description: the Holy Bible in languages
 # Remove this line to publish to pub.dev
 publish_to: 'none'
 
-version: 1.2.2+49
+version: 1.2.2+50
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -23,7 +23,7 @@ dependencies:
     #   ref: main
 
   # Custom
-  in_app_purchase: ^2.0.0
+  # in_app_purchase: ^2.0.0
 
 dev_dependencies:
   flutter_test:
