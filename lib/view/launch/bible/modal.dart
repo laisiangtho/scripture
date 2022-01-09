@@ -150,7 +150,7 @@ class _ModalSheetState extends State<_ModalSheet> {
             widget.book.name,
             textAlign: TextAlign.center,
             semanticsLabel: widget.book.name,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
         RichText(
@@ -212,8 +212,15 @@ class _ModalSheetState extends State<_ModalSheet> {
           ),
           */
           child: CupertinoButton(
+            color: Theme.of(context).highlightColor,
+            padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 15),
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
             child: Chip(
-              backgroundColor: isAvailable ? null : Theme.of(context).backgroundColor,
+              // backgroundColor: isAvailable ? null : Theme.of(context).backgroundColor,
+              // backgroundColor: isAvailable ? null : Theme.of(context).backgroundColor,
+              // backgroundColor: Theme.of(context).primaryColor,
+              padding: EdgeInsets.zero,
+              // labelPadding: EdgeInsets.zero,
               // avatar: Icon(
               //   isAvailable ? Icons.remove_circle : Icons.add_circle,
               // ),
@@ -237,9 +244,14 @@ class _ModalSheetState extends State<_ModalSheet> {
                     )
                   : Icon(
                       isAvailable ? Icons.remove_circle : Icons.add_circle,
+                      size: 30,
+                      color: Theme.of(context).primaryColor,
                     ),
               label: Text(
                 isAvailable ? preference.text.delete : preference.text.download,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: Theme.of(context).primaryColor,
+                    ),
               ),
             ),
             onPressed: isDownloading ? null : updateAvailableAction,
