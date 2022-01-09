@@ -2,8 +2,8 @@
   "name":"Lai Siangtho",
   "description":"the Holy Bible in languages",
   "package":"",
-  "version":"1.0.4",
-  "buildNumber":"44",
+  "version":"1.2.2",
+  "buildNumber":"50",
   "settingName": "",
   "settingKey": "",
   "setting":{
@@ -20,6 +20,14 @@
     "parallel": ""
   },
   "products":[],
+  "language":{
+    "en":{
+    },
+    "my":{
+    },
+    "no":{
+    }
+  },
   "token": [
     {
       "id": "configure",
@@ -59,5 +67,6 @@
         "[repo]<nosj.!>"
       ]
     }
-  ]
+  ],
+  "attach":{}
 }
