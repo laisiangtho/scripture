@@ -32,6 +32,17 @@ abstract class _Abstract extends UnitEngine with _Utility {
     debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
   }
 
+  String get searchQuery => collection.searchQuery;
+  set searchQuery(String ord) {
+    notifyIf<String>(searchQuery, collection.searchQuery = ord);
+  }
+
+  String get suggestQuery => collection.suggestQuery;
+  set suggestQuery(String ord) {
+    final word = ord.replaceAll(RegExp(' +'), ' ').trim();
+    notifyIf<String>(suggestQuery, collection.suggestQuery = word);
+  }
+
   Future<void> initData() async {
     if (collection.requireInitialized) {
       APIType api = collection.env.api.firstWhere(

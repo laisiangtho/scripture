@@ -22,9 +22,6 @@ dependencies:
     #   url: git://github.com/laisiangtho/lidea.git
     #   ref: main
 
-  # Custom
-  # in_app_purchase: ^2.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

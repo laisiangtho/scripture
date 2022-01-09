@@ -1,9 +1,9 @@
 export "package:lidea/type/main.dart";
+// import "package:lidea/type/main.dart";
 
 import "package:lidea/hive.dart";
 // import "package:lidea/unit/notify.dart";
 import "package:lidea/cluster/docket.dart";
-// import "package:lidea/type/main.dart";
 
 part "audio.dart";
 part "collection.dart";
