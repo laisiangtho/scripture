@@ -1,8 +1,8 @@
 # Ignore assets except mock data
 *.v[0-9].*
-tmp.*
-assets/*
-!assets/mock-*.*
+/tmp.*
+/assets/*
+/!assets/mock-*.*
 
 # Android
 */key.properties
