@@ -183,7 +183,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
               children: [
                 Text(
                   preference.text.favorite(true),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 CupertinoButton(
                   padding: EdgeInsets.zero,
@@ -206,7 +206,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
           ),
           if (items.isEmpty) addFavorites(),
           Card(
-            clipBehavior: Clip.hardEdge,
             child: ListView.separated(
               shrinkWrap: true,
               primary: false,

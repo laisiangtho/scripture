@@ -150,14 +150,14 @@ class _ModalSheetState extends State<_ModalSheet> {
             widget.book.name,
             textAlign: TextAlign.center,
             semanticsLabel: widget.book.name,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             text: widget.book.year.toString(),
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             children: <TextSpan>[
               const TextSpan(text: '/'),
               TextSpan(text: widget.book.langName.toUpperCase()),

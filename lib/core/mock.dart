@@ -105,9 +105,9 @@ mixin _Mock on _Abstract {
     // final cache = collection.env.url('word').cache('4354');
     // debugPrint('\n live $uriFirst \n cache $cache \n second $uriSecond');
 
-    final uriFs = collection.env.url('bible').uri(name: '4354');
-    final uriSd = collection.env.url('bible').uri(name: '4354', index: 1);
-    final uriTh = collection.env.url('bible').uri(name: '4354', index: 2, scheme: 'http');
+    final uriFs = collection.env.url('bible').uri('4354');
+    final uriSd = collection.env.url('bible').uri('4354', index: 1);
+    final uriTh = collection.env.url('bible').uri('4354', index: 2, scheme: 'http');
     final cache = collection.env.url('book').localName;
     debugPrint('\n 1 $uriFs \n 2 $uriSd \n 3 $uriTh \n cache $cache');
 

@@ -300,14 +300,14 @@ class _View extends _State with _Bar {
           semanticsLabel: word,
           style: TextStyle(
             fontSize: 20,
-            color: Theme.of(context).textTheme.caption!.color,
+            color: Theme.of(context).textTheme.bodySmall!.color,
             // fontWeight: FontWeight.w500
           ),
           children: <TextSpan>[
             TextSpan(
               text: word.substring(hightlight),
               style: TextStyle(
-                color: Theme.of(context).primaryTextTheme.button!.color,
+                color: Theme.of(context).primaryTextTheme.labelLarge!.color,
                 // fontWeight: FontWeight.w300
               ),
             ),
@@ -438,7 +438,6 @@ class _View extends _State with _Bar {
 
   Widget _recentList(Iterable<MapEntry<dynamic, RecentSearchType>> items) {
     return Card(
-      clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: ListView.separated(
         shrinkWrap: true,
@@ -515,6 +514,7 @@ class _View extends _State with _Bar {
         if (direction == DismissDirection.endToStart) {
           return onDelete(item.value.word);
         }
+        return null;
       },
     );
   }
@@ -529,15 +529,15 @@ class _View extends _State with _Bar {
         semanticsLabel: word,
         style: TextStyle(
           fontSize: 20,
-          color: Theme.of(context).textTheme.caption!.color,
-          // color: Theme.of(context).primaryTextTheme.button!.color,
+          color: Theme.of(context).textTheme.bodySmall!.color,
+          // color: Theme.of(context).primaryTextTheme.labelLarge!.color,
           fontWeight: FontWeight.w300,
         ),
         children: <TextSpan>[
           TextSpan(
             text: word.substring(hightlight),
             style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.button!.color,
+              color: Theme.of(context).primaryTextTheme.labelLarge!.color,
             ),
           )
         ],
@@ -558,7 +558,7 @@ class _View extends _State with _Bar {
             child: Text(
               preference.text.delete,
               textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Theme.of(context).primaryColor,
                   ),
             ),

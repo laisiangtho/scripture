@@ -25,7 +25,7 @@ class Scripture {
   }
 
   APIType get api => collection.env.url('bible');
-  Uri get url => api.uri(name: identify);
+  Uri get url => api.uri(identify);
   String get file => api.cache(identify);
 
   int get _identifyIndex {

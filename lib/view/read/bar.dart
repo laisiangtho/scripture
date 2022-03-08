@@ -8,7 +8,8 @@ mixin _Bar on _State {
     return ViewHeaderSliverSnap(
       pinned: true,
       floating: false,
-      reservedPadding: MediaQuery.of(context).padding.top,
+      // reservedPadding: MediaQuery.of(context).padding.top,
+      padding: MediaQuery.of(context).viewPadding,
       heights: [minHeight, kBottomNavigationBarHeight - minHeight],
       // overlapsBackgroundColor: Theme.of(context).primaryColor,
       overlapsBorderColor: Theme.of(context).shadowColor,
@@ -123,7 +124,7 @@ mixin _Bar on _State {
                           //     '150',
                           //     style: Theme.of(context)
                           //         .textTheme
-                          //         .bodyText1!
+                          //         .bodyLarge!
                           //         .copyWith(fontSize: (org.shrink * 19).clamp(15, 19)),
                           //   ),
                           //   onPressed: () => true,
@@ -195,7 +196,7 @@ mixin _Bar on _State {
           softWrap: false,
           overflow: TextOverflow.fade,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: (shrink * 18).clamp(15, 18),
               ),
         ),

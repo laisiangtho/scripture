@@ -150,14 +150,14 @@ class _ModalSheetState extends State<_ModalSheet> {
             widget.book.name,
             textAlign: TextAlign.center,
             semanticsLabel: widget.book.name,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             text: widget.book.year.toString(),
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             children: <TextSpan>[
               const TextSpan(text: '/'),
               TextSpan(text: widget.book.langName.toUpperCase()),
@@ -249,7 +249,7 @@ class _ModalSheetState extends State<_ModalSheet> {
                     ),
               label: Text(
                 isAvailable ? preference.text.delete : preference.text.download,
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: Theme.of(context).primaryColor,
                     ),
               ),

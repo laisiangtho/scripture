@@ -98,12 +98,12 @@ class _View extends _State with _Bar {
                       Text(
                         authenticate.user!.displayName!,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
                         authenticate.user!.email!,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.overline,
+                        style: Theme.of(context).textTheme.labelSmall,
                       ),
                       // Text(
                       //   authenticate.id,

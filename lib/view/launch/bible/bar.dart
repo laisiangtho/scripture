@@ -5,7 +5,8 @@ mixin _Bar on _State {
     return ViewHeaderSliverSnap(
       pinned: true,
       floating: false,
-      reservedPadding: MediaQuery.of(context).padding.top,
+      // reservedPadding: MediaQuery.of(context).padding.top,
+      padding: MediaQuery.of(context).viewPadding,
       heights: const [kBottomNavigationBarHeight],
       // overlapsBackgroundColor: Theme.of(context).primaryColor,
       overlapsBorderColor: Theme.of(context).shadowColor,
@@ -77,7 +78,7 @@ mixin _Bar on _State {
                     maxLines: 1,
                     softWrap: false,
                     overflow: TextOverflow.fade,
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
               ),

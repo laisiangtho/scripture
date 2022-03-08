@@ -204,7 +204,6 @@ class _View extends _State with _Bar {
     // );
     return SliverToBoxAdapter(
       child: Card(
-        clipBehavior: Clip.hardEdge,
         child: ListView.separated(
           shrinkWrap: true,
           primary: false,
@@ -239,11 +238,11 @@ class _View extends _State with _Bar {
           overflow: TextOverflow.ellipsis,
           // style: TextStyle(
           //   fontSize: 20,
-          //   // color: Theme.of(context).textTheme.caption!.color,
-          //   color: Theme.of(context).primaryTextTheme.button!.color,
+          //   // color: Theme.of(context).textTheme.bodySmall!.color,
+          //   color: Theme.of(context).primaryTextTheme.labelLarge!.color,
           //   fontWeight: FontWeight.w300,
           // ),
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         minLeadingWidth: 10,
         leading: const Icon(Icons.bookmark_added),
@@ -270,6 +269,7 @@ class _View extends _State with _Bar {
         } else {
           // Navigate to edit page;
         }
+        return null;
       },
     );
   }
@@ -287,7 +287,7 @@ class _View extends _State with _Bar {
             child: Text(
               preference.text.delete,
               textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Theme.of(context).primaryColor,
                   ),
             ),

@@ -227,7 +227,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
       key: Key('$index'),
       child: Card(
         elevation: 0.5,
-        clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: bookItem(index, book),
       ),
@@ -299,7 +298,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
           child: Text(book.name),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: isAvailable ? FontWeight.w400 : FontWeight.w300,
                 // color: isAvailable?Colors.black:Colors.grey,
@@ -383,7 +382,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
             child: Text(
               book.langCode.toUpperCase(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontSize: 12,
                     color: isAvailable ? Theme.of(context).primaryColor : null,
                   ),
@@ -393,7 +392,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
             padding: const EdgeInsets.only(left: 0),
             child: Text(
               book.shortname,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 14),
             ),
           ),
         ],
@@ -415,7 +414,7 @@ class _View extends _State with _Bar, _Refresh, _Modal {
             },
             child: Text(
               book.year.toString(),
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontSize: 16,
                     color: isAvailable ? null : Theme.of(context).hintColor,
                   ),

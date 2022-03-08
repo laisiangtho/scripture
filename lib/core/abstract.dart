@@ -43,7 +43,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
     notifyIf<String>(suggestQuery, collection.suggestQuery = word);
   }
 
-  Future<void> initData() async {
+  Future<void> dataInitialized() async {
     if (collection.requireInitialized) {
       APIType api = collection.env.api.firstWhere(
         (e) => e.asset.isNotEmpty,
@@ -62,7 +62,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
   }
 
   Future<void> updateBookMeta() async {
-    final url = collection.env.url('book').uri();
+    final url = collection.env.url('book').uri(null);
     return UtilClient(url).get<String>().then((e) async {
       final parsed = UtilDocument.decodeJSON(e);
       await _importBookMeta(parsed['book']);

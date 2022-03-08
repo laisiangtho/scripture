@@ -114,7 +114,7 @@ class _PopOptionListState extends State<PopOptionList> with TickerProviderStateM
             padding: EdgeInsets.zero,
             child: Text(
               'A',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onPressed: () => setFontSize(false),
           ),
@@ -130,7 +130,7 @@ class _PopOptionListState extends State<PopOptionList> with TickerProviderStateM
             child: Center(
               child: Text(
                 '${core.collection.fontSize}',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ),
@@ -138,7 +138,7 @@ class _PopOptionListState extends State<PopOptionList> with TickerProviderStateM
             padding: EdgeInsets.zero,
             child: Text(
               'A',
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontSize: 27,
                   ),
             ),

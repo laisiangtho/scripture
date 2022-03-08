@@ -109,10 +109,7 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                     selector: (_, e) => e.scriptureParallel.verseChapter,
                     builder: (BuildContext _, BIBLE i, Widget? child) => Text(
                       i.info.name,
-                      // style: const TextStyle(
-                      //   fontSize: 16,
-                      // ),
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
                   CupertinoButton(
