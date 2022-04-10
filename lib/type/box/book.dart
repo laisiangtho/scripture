@@ -1,8 +1,9 @@
-part of 'main.dart';
+part of data.type;
 
-// NOTE: adapter/book.dart
+class BoxOfBooks<E> extends BoxOfAbstract<BooksType> {}
+
 @HiveType(typeId: 9)
-class BookType {
+class BooksType {
   @HiveField(0)
   String identify;
   @HiveField(1)
@@ -39,7 +40,7 @@ class BookType {
   @HiveField(14)
   bool selected;
 
-  BookType({
+  BooksType({
     this.identify = '',
     this.name = '',
     this.shortname = '',
@@ -57,7 +58,7 @@ class BookType {
     this.selected = false,
   });
 
-  factory BookType.fromJSON(Map<String, dynamic> o) {
+  factory BooksType.fromJSON(Map<String, dynamic> o) {
     String stringProperty(String key) {
       // NOTE: required for some of the previous version
       if (o.containsKey(key)) {
@@ -82,7 +83,7 @@ class BookType {
       return 0;
     }
 
-    return BookType(
+    return BooksType(
       identify: o['identify'],
       name: o['name'],
       shortname: o['shortname'],
@@ -132,7 +133,7 @@ class BookType {
     };
   }
 
-  BookType copyWith({
+  BooksType copyWith({
     String? identify,
     String? name,
     String? shortname,
@@ -149,7 +150,7 @@ class BookType {
     String? langDirection,
     bool? selected,
   }) {
-    return BookType(
+    return BooksType(
       identify: identify ?? this.identify,
       name: name ?? this.name,
       shortname: shortname ?? this.shortname,
@@ -168,8 +169,8 @@ class BookType {
     );
   }
 
-  // BookType userSetting() {
-  //   return BookType(
+  // BooksType userSetting() {
+  //   return BooksType(
   //     available:this.available,
   //     update:this.update
   //   );
@@ -178,7 +179,7 @@ class BookType {
   //   //   order:this.order
   //   // };
   // }
-  // BookType copyWith({
+  // BooksType copyWith({
   //   int? version,
   //   int? mode,
   //   double? fontSize,
@@ -189,7 +190,7 @@ class BookType {
   //   int? chapterId,
   //   int? verseId,
   // }) {
-  //   return BookType(
+  //   return BooksType(
   //     version: version??this.version,
   //     mode: mode??this.mode,
   //     fontSize: fontSize??this.fontSize,
@@ -201,4 +202,77 @@ class BookType {
   //     verseId: verseId??this.verseId
   //   );
   // }
+}
+
+class BooksAdapter extends TypeAdapter<BooksType> {
+  @override
+  final int typeId = 9;
+
+  @override
+  BooksType read(BinaryReader reader) {
+    final int numOfFields = reader.readByte();
+    final Map<int, dynamic> fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return BooksType()
+      ..identify = fields[0] as String
+      ..name = fields[1] as String
+      ..shortname = fields[2] as String
+      ..year = fields[3] as int
+      ..version = fields[4] as int
+      ..description = fields[5] as String
+      ..publisher = fields[6] as String
+      ..contributors = fields[7] as String
+      ..copyright = fields[8] as String
+      ..available = fields[9] as int
+      ..update = fields[10] as int
+      ..langName = fields[11] as String
+      ..langCode = fields[12] as String
+      ..langDirection = fields[13] as String
+      ..selected = (fields[14] ?? false) as bool;
+  }
+
+  @override
+  void write(BinaryWriter writer, BooksType obj) {
+    writer
+      ..writeByte(15)
+      ..writeByte(0)
+      ..write(obj.identify)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.shortname)
+      ..writeByte(3)
+      ..write(obj.year)
+      ..writeByte(4)
+      ..write(obj.version)
+      ..writeByte(5)
+      ..write(obj.description)
+      ..writeByte(6)
+      ..write(obj.publisher)
+      ..writeByte(7)
+      ..write(obj.contributors)
+      ..writeByte(8)
+      ..write(obj.copyright)
+      ..writeByte(9)
+      ..write(obj.available)
+      ..writeByte(10)
+      ..write(obj.update)
+      ..writeByte(11)
+      ..write(obj.langName)
+      ..writeByte(12)
+      ..write(obj.langCode)
+      ..writeByte(13)
+      ..write(obj.langDirection)
+      ..writeByte(14)
+      ..write(obj.selected);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BooksAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
