@@ -12,16 +12,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:scripture/main.dart';
-import 'package:scripture/core/main.dart';
 
 void main() async {
-  final core = Core();
   await core.ensureInitialized();
 
   group('MyWidgets', () {
     testWidgets('Counter increments smoke test', (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      await tester.pumpWidget(LaiSiangtho(core: core));
+      await tester.pumpWidget(const LaiSiangtho());
 
       // Verify that our counter starts at 0.
       expect(find.text('0'), findsOneWidget);

@@ -1,78 +1,52 @@
-part of "main.dart";
+part of data.type;
 
 class Collection extends ClusterDocket {
-  late Box<BookmarkType> boxOfBookmark;
-  late Box<BookType> boxOfBook;
+  late final boxOfBookmarks = BoxOfBookmarks<BookmarksType>();
+  late final boxOfBooks = BoxOfBooks<BooksType>();
+
   List<DefinitionBible> cacheBible = [];
 
   // retrieve the instance through the app
   Collection.internal();
+  // Collection.internal() : super.internal();
 
   @override
   Future<void> ensureInitialized() async {
     await super.ensureInitialized();
-    Hive.registerAdapter(BookmarkAdapter());
-    Hive.registerAdapter(BookAdapter());
+    boxOfBookmarks.registerAdapter(BookmarksAdapter());
+    boxOfBooks.registerAdapter(BooksAdapter());
   }
 
   @override
   Future<void> prepareInitialized() async {
     await super.prepareInitialized();
-    boxOfBookmark = await Hive.openBox<BookmarkType>('bookmark');
-    boxOfBook = await Hive.openBox<BookType>('book');
+
+    await boxOfBookmarks.open('bookmark');
+    await boxOfBooks.open('book');
   }
 
-  String get primaryId => setting.identify;
+  String get primaryId => boxOfSettings.identify().asString;
   set primaryId(String id) {
-    if (setting.identify != id) {
-      settingUpdate(setting.copyWith(identify: id));
-    }
+    boxOfSettings.identify(value: id);
   }
 
-  String get parallelId => setting.parallel;
+  String get parallelId => boxOfSettings.parallel().asString;
   set parallelId(String id) {
-    if (setting.parallel != id) {
-      settingUpdate(setting.copyWith(parallel: id));
-    }
+    boxOfSettings.parallel(value: id);
   }
 
   int get testamentId => bookId > 39 ? 2 : 1;
 
-  int get bookId => setting.bookId;
+  int get bookId => boxOfSettings.bookId().asInt;
   set bookId(int id) {
-    if (setting.bookId != id) {
-      settingUpdate(setting.copyWith(bookId: id));
-    }
+    boxOfSettings.bookId(value: id);
   }
 
-  int get chapterId => setting.chapterId;
+  int get chapterId => boxOfSettings.chapterId().asInt;
   set chapterId(int id) {
-    if (setting.chapterId != id) {
-      settingUpdate(setting.copyWith(chapterId: id));
-    }
+    boxOfSettings.chapterId(value: id);
   }
 
   // NOTE: Bookmark
-  int get bookmarkIndex => boxOfBookmark
-      .toMap()
-      .values
-      .toList()
-      .indexWhere((e) => e.bookId == bookId && e.chapterId == chapterId);
-
-  Future<void> bookmarkDelete(int index) => boxOfBookmark.deleteAt(index);
-
-  Future<void> bookmarkSwitch() {
-    if (bookmarkIndex >= 0) {
-      return bookmarkDelete(bookmarkIndex);
-    } else {
-      return boxOfBookmark.add(
-        BookmarkType(
-          identify: primaryId,
-          date: DateTime.now(),
-          bookId: bookId,
-          chapterId: chapterId,
-        ),
-      );
-    }
-  }
+  int get bookmarkIndex => boxOfBookmarks.index(bookId, chapterId);
 }

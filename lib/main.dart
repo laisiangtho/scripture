@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 // NOTE: SystemUiOverlayStyle
 import 'package:flutter/services.dart';
-// NOTE: Locale delegation
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // NOTE: Privider: state management
 import 'package:lidea/provider.dart';
 // NOTE: Scroll
@@ -16,7 +13,7 @@ import '/coloration.dart';
 import '/view/routes.dart';
 
 // const bool isProduction = bool.fromEnvironment('dart.vm.product');
-
+final core = Core();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
@@ -24,18 +21,14 @@ void main() async {
   // if (defaultTargetPlatform == TargetPlatform.android) {
   //   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
   // }
-
-  final core = Core();
   await core.ensureInitialized();
   // authentication.stateObserver(core.userObserver);
 
-  runApp(LaiSiangtho(core: core));
+  runApp(const LaiSiangtho());
 }
 
 class LaiSiangtho extends StatelessWidget {
-  final Core core;
-
-  const LaiSiangtho({Key? key, required this.core}) : super(key: key);
+  const LaiSiangtho({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,22 +66,10 @@ class LaiSiangtho extends StatelessWidget {
           showSemanticsDebugger: false,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'lidea',
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: core.preference.locale,
           // locale: Localizations.localeOf(context),
-          supportedLocales: const [
-            // English
-            Locale('en', 'GB'),
-            // Norwegian
-            Locale('no', 'NO'),
-            // Myanmar
-            Locale('my', ''),
-          ],
+          locale: core.preference.locale,
+          localizationsDelegates: core.preference.localeDelegates,
+          supportedLocales: core.preference.localeSupports,
           darkTheme: Coloration.dark(context),
           theme: Coloration.light(context),
           themeMode: core.preference.themeMode,
@@ -96,21 +77,25 @@ class LaiSiangtho extends StatelessWidget {
           initialRoute: AppRoutes.rootInitial,
           routes: AppRoutes.rootMap,
           navigatorObservers: [
+            // NavigationObserver(
+            //   Provider.of<NavigationNotify>(
+            //     context,
+            //     listen: false,
+            //   ),
+            // ),
             NavigationObserver(
-                // Provider.of<NavigationNotify>(
-                //   context,
-                //   listen: false,
-                // ),
-                core.navigation),
+              core.navigation,
+            ),
           ],
+
           builder: (BuildContext context, Widget? view) {
             return AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle(
                 systemNavigationBarColor: Theme.of(context).primaryColor,
                 // systemNavigationBarDividerColor: Colors.transparent,
+                // systemNavigationBarDividerColor: Colors.red,
                 systemNavigationBarIconBrightness: core.preference.resolvedSystemBrightness,
                 systemNavigationBarContrastEnforced: false,
-
                 statusBarColor: Colors.transparent,
                 statusBarBrightness: core.preference.systemBrightness,
                 statusBarIconBrightness: core.preference.resolvedSystemBrightness,

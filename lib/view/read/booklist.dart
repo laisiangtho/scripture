@@ -12,7 +12,8 @@ class PopBookList extends StatefulWidget {
   State<StatefulWidget> createState() => _PopBookListState();
 }
 
-class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin {
+class _PopBookListState extends State<PopBookList> {
+  /*
   late final Core core = context.read<Core>();
 
   Scripture get scripture => core.scripturePrimary;
@@ -31,7 +32,27 @@ class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin
   // List<DefinitionBook> get getBookList => Core.instance.getBookList;
   // @override
   // bool get wantKeepAlive => true;
+  */
 
+  final double arrowWidth = 10;
+  final double arrowHeight = 12;
+
+  late final Size mediaSize = MediaQuery.of(context).size;
+
+  late final Size widgetSize = widget.render.size;
+  late final Offset widgetPosition = widget.render.localToGlobal(Offset.zero);
+
+  late final double bottomOfWidget = widgetPosition.dy + widgetSize.height + 15;
+
+  late final Core core = context.read<Core>();
+  Scripture get scripture => core.scripturePrimary;
+  // BIBLE get bible => scripture.cacheVerseChapter;
+  // BOOK get book => bible.book.first;
+  // CHAPTER get chapter => book.chapter.first;
+
+  // List<DefinitionBook> get books => scripture.bookList;
+
+  List<DefinitionBook> get books => scripture.bookList;
   final List<int> expandedList = [];
 
   @override
@@ -43,12 +64,21 @@ class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     // double halfWidth = (MediaQuery.of(context).size.width/2) - 50;
     // double halfWidth = MediaQuery.of(context).size.width - 10;
-    return WidgetPopup(
-      right: 20,
+    // return WidgetPopupShapedArrow(
+    //   right: 20,
+    //   left: 20,
+    //   height: MediaQuery.of(context).size.height,
+    //   top: targetPosition.dy + targetSize.height + 3,
+    //   arrow: targetPosition.dx + (targetSize.width / 2) - 25,
+    //   backgroundColor: Theme.of(context).backgroundColor,
+    //   child: view(),
+    // );
+    return WidgetPopupShapedArrow(
       left: 20,
-      height: MediaQuery.of(context).size.height,
-      top: targetPosition.dy + targetSize.height + 1,
-      arrow: targetPosition.dx + (targetSize.width / 2) - 25,
+      right: 20,
+      height: mediaSize.height,
+      top: bottomOfWidget,
+      arrow: widgetPosition.dx + (widgetSize.width * 0.5) - 27,
       backgroundColor: Theme.of(context).backgroundColor,
       child: view(),
     );
@@ -139,17 +169,14 @@ class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin
           backgroundColor: Theme.of(context).backgroundColor,
           // backgroundColor: Colors.red,
           headerBuilder: (BuildContext context, bool isExpanded) {
-            return CupertinoButton(
-              // color: Colors.blue,
-              alignment: Alignment.centerLeft,
-              // borderRadius: const BorderRadius.all(Radius.circular(0)),
+            return WidgetButton(
               padding: const EdgeInsets.only(left: 25),
-              child: Text(
-                book.name,
+              child: WidgetLabel(
+                label: book.name,
+                alignment: Alignment.centerLeft,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
-                maxLines: 1,
-                style: TextStyle(
+                labelStyle: TextStyle(
                   color: isCurrentBook ? Theme.of(context).highlightColor : null,
                 ),
               ),
@@ -201,13 +228,13 @@ class _PopBookListState extends State<PopBookList> with TickerProviderStateMixin
   Widget chapterButton(int bookId, int chapterId) {
     // bool isCurrentChapter = 2 == index;
     bool isCurrentChapter = core.collection.chapterId == chapterId;
-    return CupertinoButton(
-      minSize: 55,
-      borderRadius: const BorderRadius.all(Radius.circular(2.0)),
+
+    return WidgetButton(
+      // borderRadius: const BorderRadius.all(Radius.circular(2.0)),
       padding: const EdgeInsets.all(5),
-      child: Text(
-        scripture.digit(chapterId),
-        style: TextStyle(
+      child: WidgetMark(
+        label: scripture.digit(chapterId),
+        labelStyle: TextStyle(
           color: isCurrentChapter ? Theme.of(context).highlightColor : null,
         ),
       ),

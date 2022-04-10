@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '/type/main.dart';
+part of ui.widget;
 
 class VerseWidgetInherited extends InheritedWidget {
   final Color? fontColor;
@@ -141,7 +139,7 @@ class WidgetVerse extends StatelessWidget {
                 fontSize: userVerse.fontSize,
                 // height: userVerse.fontHeight,
               ),
-              onTap: onPressed != null ? () => onPressed!(verse.id) : null,
+              onTap: onPressed == null ? null : () => onPressed!(verse.id),
             ),
           ),
         ),

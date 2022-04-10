@@ -12,44 +12,44 @@ class PopChapterList extends StatefulWidget {
   State<StatefulWidget> createState() => _PopChapterListState();
 }
 
-class _PopChapterListState extends State<PopChapterList> with TickerProviderStateMixin {
-  late Core core;
+class _PopChapterListState extends State<PopChapterList> {
+  final double arrowWidth = 10;
+  final double arrowHeight = 12;
 
+  late final Size mediaSize = MediaQuery.of(context).size;
+  late final double mediaWidthHaft = mediaSize.width * 0.4;
+
+  late final Size widgetSize = widget.render.size;
+  late final Offset widgetPosition = widget.render.localToGlobal(Offset.zero);
+
+  late final double bottomOfWidget = widgetPosition.dy + widgetSize.height + 15;
+
+  late final Core core = context.read<Core>();
   Scripture get scripture => core.scripturePrimary;
   // BIBLE get bible => scripture.verseChapter;
   // BOOK get book => bible.book.first;
   // CHAPTER get chapter => book.chapter.first;
 
-  Size get targetSize => widget.render.size;
-  Offset get targetPosition => widget.render.localToGlobal(Offset.zero);
-
+  // int get chapterCount => 150;
   int get chapterCount => scripture.chapterCount;
-  // int get chapterCount => book.info.chapterCount;
   int get perItem => chapterCount > 4 ? 4 : chapterCount;
-  // double get height => (chapterCount < 4)?(250 / chapterCount).toDouble():(chapterCount/perItem).ceilToDouble()*62;
   double get height => (chapterCount < 4)
-      ? (250 / chapterCount).toDouble()
-      : (chapterCount / perItem).ceilToDouble() * 60;
-
-  // @override
-  // bool get wantKeepAlive => true;
+      ? (200 / chapterCount).toDouble()
+      : (chapterCount / perItem).ceilToDouble() * 50;
 
   @override
   void initState() {
     super.initState();
-    core = context.read<Core>();
   }
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
-    double halfWidth = (MediaQuery.of(context).size.width / 2) - 50;
-    return WidgetPopup(
-      left: halfWidth,
-      right: 10,
+    return WidgetPopupShapedArrow(
+      left: mediaWidthHaft,
+      right: 30,
+      top: bottomOfWidget,
       height: height,
-      top: targetPosition.dy + targetSize.height + 1,
-      arrow: targetPosition.dx - halfWidth + (targetSize.width / 2) - 10,
+      arrow: widgetPosition.dx - mediaWidthHaft + (widgetSize.width * 0.2),
       backgroundColor: Theme.of(context).backgroundColor,
       child: view(),
     );
@@ -81,7 +81,6 @@ class _PopChapterListState extends State<PopChapterList> with TickerProviderStat
           ],
         ),
       ),
-      // footer: Text('...'),
       child: GridView.count(
         padding: const EdgeInsets.all(3),
         mainAxisSpacing: 0,
@@ -101,21 +100,32 @@ class _PopChapterListState extends State<PopChapterList> with TickerProviderStat
     // bool isCurrentChapter = false;
     bool isCurrentChapter = core.collection.chapterId == index;
     // bool isCurrentChapter = chapter.id == index;
-    return Padding(
-      padding: const EdgeInsets.all(3.0),
-      child: CupertinoButton(
-        minSize: 55,
-        // borderRadius: BorderRadius.all(Radius.circular(2.0)),
-        padding: EdgeInsets.zero,
-        // color: Theme.of(context).scaffoldBackgroundColor,
-        child: Text(
-          scripture.digit(index),
-          style: TextStyle(
-            color: isCurrentChapter ? Theme.of(context).highlightColor : null,
-          ),
+    return WidgetButton(
+      child: WidgetMark(
+        label: scripture.digit(index),
+        labelStyle: TextStyle(
+          color: isCurrentChapter ? Theme.of(context).highlightColor : null,
         ),
-        onPressed: () => Navigator.pop<int>(context, index),
       ),
+      onPressed: () {
+        Navigator.pop<int>(context, index);
+      },
     );
+    // return Padding(
+    //   padding: const EdgeInsets.all(3.0),
+    //   child: WidgetButton(
+    //     // minSize: 55,
+    //     // borderRadius: BorderRadius.all(Radius.circular(2.0)),
+    //     padding: EdgeInsets.zero,
+    //     // color: Theme.of(context).scaffoldBackgroundColor,
+    //     child: Text(
+    //       scripture.digit(index),
+    //       style: TextStyle(
+    //         color: isCurrentChapter ? Theme.of(context).highlightColor : null,
+    //       ),
+    //     ),
+    //     onPressed: () => Navigator.pop<int>(context, index),
+    //   ),
+    // );
   }
 }

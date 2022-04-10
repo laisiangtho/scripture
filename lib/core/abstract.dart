@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 
 abstract class _Abstract extends UnitEngine with _Utility {
   final Collection collection = Collection.internal();
@@ -32,12 +32,12 @@ abstract class _Abstract extends UnitEngine with _Utility {
     debugPrint('ensureInitialized in ${initWatch.elapsedMilliseconds} ms');
   }
 
-  String get searchQuery => collection.searchQuery;
+  String get searchQuery => collection.searchQuery.asString;
   set searchQuery(String ord) {
     notifyIf<String>(searchQuery, collection.searchQuery = ord);
   }
 
-  String get suggestQuery => collection.suggestQuery;
+  String get suggestQuery => collection.suggestQuery.asString;
   set suggestQuery(String ord) {
     final word = ord.replaceAll(RegExp(' +'), ' ').trim();
     notifyIf<String>(suggestQuery, collection.suggestQuery = word);
@@ -51,7 +51,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
       await UtilArchive.extractBundle(api.asset);
     }
 
-    if (collection.boxOfBook.isEmpty) {
+    if (collection.boxOfBooks.box.isEmpty) {
       String file = collection.env.url('book').local;
       await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
         await _importBookMeta(ob);
@@ -70,9 +70,9 @@ abstract class _Abstract extends UnitEngine with _Utility {
   }
 
   Future<void> _importBookMeta(List<dynamic> bookList) async {
-    final books = collection.boxOfBook.values.toList();
+    final books = collection.boxOfBooks.values.toList();
     for (var item in bookList) {
-      BookType meta = BookType.fromJSON(item);
+      BooksType meta = BooksType.fromJSON(item);
       int index = books.indexWhere((o) => o.identify == meta.identify);
 
       String file = collection.env.url('bible').cache(meta.identify);
@@ -83,21 +83,21 @@ abstract class _Abstract extends UnitEngine with _Utility {
       });
 
       if (index >= 0) {
-        BookType old = books.elementAt(index);
+        BooksType old = books.elementAt(index);
         // Check if Bible has a new version
         meta.update = (meta.available > 0 && old.version != meta.version) ? 1 : old.update;
         meta.selected = old.selected;
-        collection.boxOfBook.put(index, meta);
+        collection.boxOfBooks.box.put(index, meta);
         debugPrint('update ${meta.identify} ${meta.available}');
       } else {
-        collection.boxOfBook.add(meta);
+        collection.boxOfBooks.box.add(meta);
         debugPrint('add ${meta.identify} ');
       }
     }
   }
 
   void switchIdentifyPrimary({bool force = false}) {
-    final val = collection.boxOfBook.values;
+    final val = collection.boxOfBooks.values;
     if (collection.primaryId.isEmpty) {
       collection.primaryId = val
           .firstWhere(
@@ -123,7 +123,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
   }
 
   void switchIdentifyParallel() {
-    final val = collection.boxOfBook.values;
+    final val = collection.boxOfBooks.values;
     if (collection.parallelId.isEmpty) {
       collection.parallelId = val
           .firstWhere(
@@ -139,7 +139,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
           (e) => e.identify == collection.parallelId && e.available > 0,
         );
     if (index < 0) {
-      collection.parallelId = collection.boxOfBook.values
+      collection.parallelId = collection.boxOfBooks.values
           .firstWhere(
             (e) => e.identify != collection.primaryId && e.available > 0,
             orElse: () => val.first,
@@ -161,16 +161,26 @@ abstract class _Abstract extends UnitEngine with _Utility {
   }
 
   // NOTE: Bookmark
+  // TODO: notify may not require
   void switchBookmarkWithNotify() {
-    collection.bookmarkSwitch().whenComplete(notify);
+    collection.boxOfBookmarks
+        .userSwitch(
+          collection.bookmarkIndex,
+          collection.primaryId,
+          collection.bookId,
+          collection.chapterId,
+        )
+        .whenComplete(notify);
   }
 
+  // TODO: notify may not require
   void clearBookmarkWithNotify() {
-    collection.boxOfBookmark.clear().whenComplete(notify);
+    collection.boxOfBookmarks.clearAll().whenComplete(notify);
   }
 
+  // TODO: notify may not require
   void deleteBookmarkWithNotify(int index) {
-    collection.bookmarkDelete(index).whenComplete(notify);
+    collection.boxOfBookmarks.deleteAtIndex(index).whenComplete(notify);
   }
 
   /// init scripturePrimary and seed analytics
@@ -215,6 +225,41 @@ abstract class _Abstract extends UnitEngine with _Utility {
       notify();
     });
   }
+
+  // void verseSelectionWithNotify(int id) {
+  //   // scripturePrimary.init().then((o) {
+
+  //   // }).catchError((e) {
+  //   //   debugPrint('10: $e');
+  //   // }).whenComplete(() {
+  //   //   debugPrint('verseSelectionWithNotify ${scripturePrimary.verseSelectionWorking}');
+  //   //   notify();
+  //   // });
+  //   final tmp = scripturePrimary.verseSelectionWorking;
+  //   int index = tmp.indexWhere((i) => i == id);
+  //   if (index >= 0) {
+  //     tmp.removeAt(index);
+  //   } else {
+  //     tmp.add(id);
+  //   }
+  //   scripturePrimary.verseSelectionWorking = tmp;
+  //   Future.microtask(() {
+  //     notify();
+  //   });
+  // }
+
+  // String _testQuery = '';
+
+  // String get testQuery => _testQuery;
+  // set testQuery(String ord) {
+  //   // notifyIf<String>(_testQuery, _testQuery = ord);
+  //   int index = scripturePrimary.verseSelectionWorking.indexWhere((i) => i == id);
+  //     if (index >= 0) {
+  //       scripturePrimary.verseSelectionWorking.removeAt(index);
+  //     } else {
+  //       scripturePrimary.verseSelectionWorking.add(id);
+  //     }
+  // }
 
   /*
   Future<void> initBible() async {

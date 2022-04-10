@@ -1,3 +1,3 @@
-part of 'main.dart';
+part of data.type;
 
 class AudioBucketType {}

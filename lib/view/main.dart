@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/cupertino.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/connectivity.dart';
+import 'package:lidea/cluster/main.dart';
 import 'package:lidea/view/main.dart';
-// import 'package:lidea/icon.dart';
-// import 'package:lidea/extension.dart';
 
 import '/core/main.dart';
 // import '/type/main.dart';
@@ -78,9 +76,8 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       (e) => e.key == index,
       orElse: () => _pageButton.first,
     );
-    final screenName = core.collection.screenName(page.name);
-    // final screenClass = core.collection.screenClass(page.name);
-    final screenClass = core.collection.screenClass(core.navigation.name);
+    final screenName = UtilString.screenName(page.name);
+    final screenClass = UtilString.screenClass(core.navigation.name);
 
     core.analytics.screen(screenName, screenClass);
 
@@ -103,7 +100,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
       final canPop = state.canPop();
       // final canPop = Navigator.canPop(context);
       final arguments = ViewNavigationArguments(
-        navigator: _vi,
+        key: _vi,
         args: args,
         canPop: canPop,
       );
@@ -114,8 +111,8 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
         state.pushReplacementNamed(to, arguments: arguments);
         // Navigator.of(context).pushReplacementNamed(to, arguments: arguments);
       }
-      final screenName = core.collection.screenName(to);
-      final screenClass = core.collection.screenClass(core.navigation.name);
+      final screenName = UtilString.screenName(to);
+      final screenClass = UtilString.screenClass(core.navigation.name);
       core.analytics.screen(screenName, screenClass);
     }
   }

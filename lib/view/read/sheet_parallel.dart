@@ -2,13 +2,12 @@ part of 'main.dart';
 
 class SheetParallel extends StatefulWidget {
   final ScrollController controller;
-  final List<int> verseSelectionList;
+
   final Future<void> Function(int, {bool isId}) scrollToIndex;
 
   const SheetParallel({
     Key? key,
     required this.controller,
-    required this.verseSelectionList,
     required this.scrollToIndex,
   }) : super(key: key);
 
@@ -18,19 +17,15 @@ class SheetParallel extends StatefulWidget {
 
 class _SheetParallelState extends State<SheetParallel> with TickerProviderStateMixin {
   late final Core core = context.read<Core>();
+  late final Preference preference = context.read<Preference>();
   late final Future<DefinitionBible> initiator = core.scriptureParallel.init();
 
   // DefinitionBible get bibleInfo => core.collectionPrimary;
   BIBLE get bible => core.scriptureParallel.verseChapter;
-  // BookType get tmpbible => bible.info;
+  // BooksType get tmpbible => bible.info;
   // DefinitionBook get tmpbook => bible.book.first.info;
   CHAPTER get tmpchapter => bible.book.first.chapter.first;
   List<VERSE> get tmpverse => tmpchapter.verse;
-
-  Preference get preference => core.preference;
-
-  // @override
-  // bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -42,7 +37,9 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
   }
 
   void _showParallelList() {
-    AppRoutes.showParallelList(context);
+    // AppRoutes.showParallelList(context);
+    Navigator.of(context, rootNavigator: true).pushNamed('/launch/bible');
+    // core.navigate();
   }
 
   @override
@@ -57,8 +54,8 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
             case ConnectionState.done:
               return body();
             default:
-              return const Center(
-                child: Text('A moment'),
+              return Center(
+                child: Text(preference.text.aMoment),
               );
           }
         },
@@ -95,13 +92,10 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
         ViewHeaderSliverSnap(
           pinned: false,
           floating: false,
-          heights: const [kBottomNavigationBarHeight],
-          // overlapsBackgroundColor: Theme.of(context).primaryColor,
-          overlapsBorderColor: Theme.of(context).shadowColor,
-          // overlapsForce: true,
-          builder: (BuildContext _, ViewHeaderData org, ViewHeaderData snap) {
+          heights: const [kToolbarHeight],
+          builder: (BuildContext _, ViewHeaderData org) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -112,50 +106,44 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
-                  CupertinoButton(
-                    // onPressed: _showBible, //() => Navigator.of(context).push(_showHome()),
-                    // child: const Icon(Icons.linear_scale),
-                    padding: EdgeInsets.zero,
-                    child: WidgetLabel(
+                  WidgetButton(
+                    child: const WidgetLabel(
                       icon: Icons.linear_scale,
-                      message: preference.text.chooseTo(preference.text.bible(false)),
                     ),
-                    onPressed: () => _showParallelList(),
+                    message: preference.text.chooseTo(preference.text.bible(false)),
+                    onPressed: _showParallelList,
                   )
                 ],
               ),
             );
           },
         ),
-        Selector<Core, BIBLE>(
-          selector: (_, e) => e.scriptureParallel.verseChapter,
-          builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
-              childCount: tmpverse.length,
-              // addAutomaticKeepAlives: true
-            ),
-          ),
-        ),
-        // new SliverList(
-        //   delegate: SliverChildBuilderDelegate(
-        //     (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
-        //     childCount: tmpverse.length,
-        //     // addAutomaticKeepAlives: true
-        //   ),
-        // )
-        // new SliverList(
-        //   delegate: SliverChildBuilderDelegate(
-        //     (BuildContext context, int index) => Card(
-        //       child: Padding(
-        //         padding: EdgeInsets.all(30),
-        //         child: Text('index $index'),
-        //       ),
+        // Selector<Core, BIBLE>(
+        //   selector: (_, e) => e.scriptureParallel.verseChapter,
+        //   builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
+        //     delegate: SliverChildBuilderDelegate(
+        //       (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
+        //       childCount: tmpverse.length,
+        //       // addAutomaticKeepAlives: true
         //     ),
-        //     childCount: 40,
-        //     // addAutomaticKeepAlives: true
         //   ),
         // ),
+        StreamBuilder(
+          initialData: core.collection.boxOfSettings.fontSize(),
+          stream: core.collection.boxOfSettings.watch(key: 'fontSize'),
+          builder: (BuildContext _, e) {
+            return Selector<Core, BIBLE>(
+              selector: (_, e) => e.scriptureParallel.verseChapter,
+              builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
+                  childCount: tmpverse.length,
+                  // addAutomaticKeepAlives: true
+                ),
+              ),
+            );
+          },
+        ),
       ],
     );
   }
@@ -163,7 +151,7 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
   Widget bodyTmp() {
     return Scaffold(
       body: NestedScrollView(
-        controller: widget.controller,
+        // controller: widget.controller,
         // physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
@@ -180,7 +168,7 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                 actions: <Widget>[
                   Tooltip(
                     message: 'Select Parallel',
-                    child: CupertinoButton(
+                    child: WidgetButton(
                       // onPressed: () => Navigator.of(context).push(_showHome()),
                       onPressed: () => false,
                       child: const Icon(Icons.linear_scale),
@@ -199,17 +187,35 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               slivers: <Widget>[
                 SliverOverlapInjector(
-                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
-                Selector<Core, BIBLE>(
-                  selector: (_, e) => e.scriptureParallel.verseChapter,
-                  builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
-                      childCount: tmpverse.length,
-                      // addAutomaticKeepAlives: true
-                    ),
-                  ),
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
+                StreamBuilder(
+                  initialData: core.collection.boxOfSettings.fontSize(),
+                  stream: core.collection.boxOfSettings.watch(key: 'fontSize'),
+                  builder: (BuildContext _, e) {
+                    return Selector<Core, BIBLE>(
+                      selector: (_, e) => e.scriptureParallel.verseChapter,
+                      builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
+                          childCount: tmpverse.length,
+                          // addAutomaticKeepAlives: true
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                // Selector<Core, BIBLE>(
+                //   selector: (_, e) => e.scriptureParallel.verseChapter,
+                //   builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
+                //     delegate: SliverChildBuilderDelegate(
+                //       (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
+                //       childCount: tmpverse.length,
+                //       // addAutomaticKeepAlives: true
+                //     ),
+                //   ),
+                // ),
                 // new SliverList(
                 //   delegate: SliverChildBuilderDelegate(
                 //     (BuildContext context, int index) => _inheritedVerse(tmpverse[index]),
@@ -240,7 +246,8 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
   Widget _inheritedVerse(VERSE verse) {
     return VerseWidgetInherited(
       // key: verse.key,
-      size: core.collection.setting.fontSize,
+      // size: core.collection.setting.fontSize,
+      size: core.collection.boxOfSettings.fontSize().asDouble,
       lang: core.scriptureParallel.info.langCode,
       selected: false,
       child: WidgetVerse(verse: verse, onPressed: verseScroll),

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/gestures.dart';
-import 'package:flutter/cupertino.dart';
-// import 'package:flutter/rendering.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/view/main.dart';
@@ -12,151 +9,89 @@ import '/widget/main.dart';
 import '/type/main.dart';
 
 part 'bar.dart';
+part 'state.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key, this.arguments}) : super(key: key);
 
   final Object? arguments;
 
-  static const route = '/search/result';
+  static const route = '/search-result';
   static const icon = LideaIcon.search;
   static const name = 'Result';
   static const description = '...';
-  // static final uniqueKey = UniqueKey();
-  // static final navigatorKey = GlobalKey<NavigatorState>();
-  // static final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   State<StatefulWidget> createState() => _View();
 }
 
-abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
-  late Core core;
-
-  late final scrollController = ScrollController();
-  late final Future<void> initiator = core.conclusionGenerate(init: true);
-
-  ViewNavigationArguments get _arguments => widget.arguments as ViewNavigationArguments;
-  GlobalKey<NavigatorState> get navigator => _arguments.navigator!;
-  ViewNavigationArguments get _parent => _arguments.args as ViewNavigationArguments;
-  bool get canPop => _arguments.args != null;
-  // bool get canPop => _arguments.canPop;
-  // bool get canPop => navigator.currentState!.canPop();
-  // bool get canPop => Navigator.of(context).canPop();
-
-  Preference get preference => core.preference;
-
-  @override
-  void initState() {
-    super.initState();
-    core = context.read<Core>();
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
-  }
-
-  void onSearch(bool status) {
-    if (status) {
-      // Future.microtask(() {
-      //   core.conclusionGenerate().whenComplete(() {
-      //     if (scrollController.hasClients && scrollController.position.hasContentDimensions) {
-      //       scrollController.animateTo(
-      //         scrollController.position.minScrollExtent,
-      //         curve: Curves.fastOutSlowIn,
-      //         duration: const Duration(milliseconds: 500),
-      //       );
-      //     }
-      //   });
-      // });
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (scrollController.hasClients && scrollController.position.hasContentDimensions) {
-          scrollController.animateTo(
-            scrollController.position.minScrollExtent,
-            curve: Curves.fastOutSlowIn,
-            duration: const Duration(milliseconds: 500),
-          );
-        }
-      });
-    }
-  }
-
-  void onNav(int book, int chapter) {
-    // debugPrint('TODO: book $book chapter $chapter');
-    // NotifyNavigationButton.navigation.value = 1;
-    core.chapterChange(bookId: book, chapterId: chapter);
-    Future.delayed(const Duration(milliseconds: 150), () {
-      core.navigate(at: 1);
-    });
-  }
-
-  BIBLE get bible => core.scripturePrimary.verseSearch;
-  bool get shrinkResult => bible.verseCount > 300;
-  String get searchQueryCurrent => core.collection.suggestQuery;
-}
-
 class _View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
-    return ViewPage(
-      // controller: scrollController,
-      child: body(),
+    return Scaffold(
+      body: ViewPage(
+        // controller: scrollController,
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: sliverWidgets(),
+        ),
+      ),
     );
   }
 
-  CustomScrollView body() {
-    return CustomScrollView(
-      controller: scrollController,
-      slivers: <Widget>[
-        bar(),
-        FutureBuilder(
-          future: initiator,
-          builder: (BuildContext _, AsyncSnapshot<void> snap) {
-            switch (snap.connectionState) {
-              case ConnectionState.waiting:
-              case ConnectionState.none:
-                return _msg(preference.text.aMoment);
-              default:
-                // return Selector<Core, ConclusionType>(
-                //   selector: (_, e) => e.collection.cacheConclusion,
-                //   builder: (BuildContext context, ConclusionType o, Widget? child) {
-                //     if (o.query.isEmpty) {
-                //       return _msg('no query');
-                //     } else if (o.raw.isNotEmpty) {
-                //       return _listView(o);
-                //     } else {
-                //       return _msg('no match');
-                //     }
-                //   },
-                // );
-                return Selector<Core, BIBLE>(
-                  selector: (_, e) => e.scripturePrimary.verseSearch,
-                  builder: (BuildContext context, BIBLE o, Widget? child) {
-                    if (o.query.isEmpty) {
-                      return _msg(preference.text.aWordOrTwo);
-                    } else if (o.verseCount > 0) {
-                      return _resultView();
-                    } else {
-                      return _msg(preference.text.searchNoMatch);
-                    }
-                  },
-                );
-            }
-          },
-        ),
-      ],
-    );
+  List<Widget> sliverWidgets() {
+    return [
+      ViewHeaderSliverSnap(
+        pinned: true,
+        floating: false,
+        padding: MediaQuery.of(context).viewPadding,
+        heights: const [kToolbarHeight],
+        // overlapsBackgroundColor: Theme.of(context).primaryColor,
+        overlapsBorderColor: Theme.of(context).shadowColor,
+        // overlapsForce: true,
+        builder: bar,
+      ),
+      FutureBuilder(
+        future: initiator,
+        builder: (BuildContext _, AsyncSnapshot<void> snap) {
+          switch (snap.connectionState) {
+            case ConnectionState.waiting:
+            case ConnectionState.none:
+              return _msg(preference.text.aMoment);
+            default:
+              // return Selector<Core, ConclusionType>(
+              //   selector: (_, e) => e.collection.cacheConclusion,
+              //   builder: (BuildContext context, ConclusionType o, Widget? child) {
+              //     if (o.query.isEmpty) {
+              //       return _msg('no query');
+              //     } else if (o.raw.isNotEmpty) {
+              //       return _listView(o);
+              //     } else {
+              //       return _msg('no match');
+              //     }
+              //   },
+              // );
+              return Selector<Core, BIBLE>(
+                selector: (_, e) => e.scripturePrimary.verseSearch,
+                builder: (BuildContext context, BIBLE o, Widget? child) {
+                  if (o.query.isEmpty) {
+                    return _msg(preference.text.aWordOrTwo);
+                  } else if (o.verseCount > 0) {
+                    return _resultView();
+                  } else {
+                    return _msg(preference.text.searchNoMatch);
+                  }
+                },
+              );
+          }
+        },
+      ),
+    ];
   }
 
   Widget _msg(String msg) {
     return SliverFillRemaining(
+      hasScrollBody: false,
       child: Center(
         child: Text(msg),
       ),
@@ -291,7 +226,7 @@ class _View extends _State with _Bar {
         VERSE verse = verses[index];
         return VerseWidgetInherited(
           // key: verse.key,
-          size: core.collection.fontSize,
+          size: collection.boxOfSettings.fontSize().asDouble,
           lang: core.scripturePrimary.info.langCode,
           child: WidgetVerse(
             verse: verse,

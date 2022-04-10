@@ -1,7 +1,7 @@
-part of 'main.dart';
+part of data.type;
 
 class DefinitionBible {
-  final BookType info;
+  final BooksType info;
   final Map note;
   final Map language;
   final List digit;
@@ -27,7 +27,7 @@ class DefinitionBible {
 
   factory DefinitionBible.fromJSON(Map<String, dynamic> o) {
     return DefinitionBible(
-      info: BookType.fromJSON(o['info']),
+      info: BooksType.fromJSON(o['info']),
       note: o['note'],
       language: o['language'],
       digit: o['digit'] as List,
@@ -83,7 +83,7 @@ class DefinitionBook {
 }
 
 class BIBLE {
-  final BookType info;
+  final BooksType info;
   final List<BOOK> book;
 
   // NOTE: used in search result

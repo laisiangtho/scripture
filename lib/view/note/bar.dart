@@ -1,76 +1,44 @@
 part of 'main.dart';
 
 mixin _Bar on _State {
-  Widget bar() {
-    return SliverAppBar(
-      pinned: true,
-      floating: false,
-      // snap: false,
-      centerTitle: true,
-      elevation: 0.2,
-      forceElevated: false,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      title: barTitle(),
-      // expandedHeight: 120,
-      // backgroundColor: innerBoxIsScrolled?Theme.of(context).primaryColor:Theme.of(context).scaffoldBackgroundColor,
-      // backgroundColor: Theme.of(context).primaryColor,
-      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      shape: const ContinuousRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.elliptical(3, 2)),
+  Widget bar(BuildContext context, ViewHeaderData org) {
+    return ViewHeaderLayoutStack(
+      leftAction: [
+        WidgetButton(
+          child: WidgetMark(
+            icon: Icons.arrow_back_ios_new_rounded,
+            label: preference.text.back,
+          ),
+          show: hasArguments,
+          onPressed: args?.currentState!.maybePop,
+        ),
+      ],
+      primary: WidgetAppbarTitle(
+        alignment: Alignment.lerp(
+          const Alignment(0, 0),
+          const Alignment(0, .5),
+          org.snapShrink,
+        ),
+        label: preference.text.note(false),
+        shrink: org.shrink,
       ),
-      automaticallyImplyLeading: false,
-      // leading: CupertinoButton(
-      //   padding: EdgeInsets.zero,
-      //   child: WidgetLabel(
-      //     icon: CupertinoIcons.left_chevron,
-      //     label: translate.back,
-      //   ),
-      //   onPressed: () => true,
-      // ),
-      actions: [
+      rightAction: [
         Selector<Core, bool>(
-          selector: (_, e) => e.collection.boxOfBookmark.length > 0,
-          builder: (BuildContext context, bool hasBookmark, Widget? child) {
-            return _barSortButton(hasBookmark);
-          },
+          selector: (_, e) => e.collection.boxOfBookmarks.box.isNotEmpty,
+          builder: _barSortButton,
+          child: const WidgetMark(
+            icon: Icons.clear_all_rounded,
+          ),
         ),
       ],
     );
   }
 
-  Widget barTitle() {
-    return Semantics(
-      label: preference.text.page(false),
-      // label: translate.page,
-      child: Text(
-        preference.text.note(false),
-        semanticsLabel: preference.text.note(false),
-      ),
+  Widget _barSortButton(BuildContext context, bool hasBookmark, Widget? child) {
+    return WidgetButton(
+      child: child,
+      enable: hasBookmark,
+      onPressed: onDeleteAllConfirmWithDialog,
     );
-  }
-
-  Widget _barSortButton(bool hasBookmark) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      child: WidgetLabel(
-        message: preference.text.clear,
-        icon: LideaIcon.trash,
-        iconSize: 18,
-      ),
-      onPressed: hasBookmark ? onDeleteAll : null,
-    );
-    /*
-    return Tooltip(
-      message: 'Clear all',
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        child: const Icon(
-          LideaIcon.trash,
-          size: 18,
-        ),
-        onPressed: hasBookmark ? onDeleteAll : null,
-      ),
-    );
-    */
   }
 }

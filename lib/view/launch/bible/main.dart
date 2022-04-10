@@ -1,209 +1,74 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/gestures.dart';
-import 'package:flutter/cupertino.dart';
-// import 'package:flutter/rendering.dart';
-// import 'package:lidea/keepAlive.dart';
 
-import 'package:lidea/provider.dart';
+// import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
 
-import '/core/main.dart';
+// import '/core/main.dart';
 import '/widget/main.dart';
 import '/type/main.dart';
 
 part 'bar.dart';
-part 'refresh.dart';
+part 'state.dart';
 part 'swipe.dart';
-part 'modal.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key, this.arguments}) : super(key: key);
 
   final Object? arguments;
 
-  static const route = '/home/bible';
+  static const route = '/launch/bible';
   static const icon = LideaIcon.book;
   static const name = 'Bible';
   static const description = '...';
-  // static final uniqueKey = UniqueKey();
-  // static final navigatorKey = GlobalKey<NavigatorState>();
-  // static late final scaffoldKey = GlobalKey<ScaffoldState>();
-  // static const scaffoldKey = Key('launch-adfeeppergt');
 
   @override
   State<StatefulWidget> createState() => _View();
 }
 
-abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
-  late Core core;
-
-  final scrollController = ScrollController();
-  final GlobalKey<SliverReorderableListState> _kList = GlobalKey<SliverReorderableListState>();
-
-  Preference get preference => core.preference;
-
-  late final AnimationController dragController = AnimationController(
-    duration: const Duration(milliseconds: 100),
-    vsync: this,
-  );
-  late final Animation<double> dragAnimation = Tween(
-    begin: 0.0,
-    end: 1.0,
-  ).animate(dragController);
-  late final Animation<Color?> colorAnimation = ColorTween(
-    begin: null,
-    end: Theme.of(context).highlightColor,
-  ).animate(dragController);
-
-  @override
-  void initState() {
-    super.initState();
-    core = context.read<Core>();
-    // Future.microtask((){});
-  }
-
-  @override
-  void dispose() {
-    dragController.dispose();
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void setState(fn) {
-    if (mounted) super.setState(fn);
-  }
-
-  void onSort() {
-    if (dragController.isCompleted) {
-      dragController.reverse();
-    } else {
-      dragController.forward();
-    }
-  }
-
-  void toBible(int index, BookType bible) async {
-    // bible.selected = !bible.selected;
-    // core.collection.boxOfBook.putAt(index, bible);
-
-    // if (Navigator.canPop(context)) {
-    //   if (core.collection.parallelId != bible.identify) {
-    //     core.collection.parallelId = bible.identify;
-    //     core.notify();
-    //   }
-    //   if (!core.scripturePrimary.isReady) {
-    //     core.message = 'a momment please';
-    //   }
-    //   core.navigate(at: 1);
-    //   core.scriptureParallel.init().whenComplete(() {
-    //     core.message = '';
-    //   });
-    //   Navigator.of(context).pop();
-    // } else {
-    //   if (core.collection.primaryId != bible.identify) {
-    //     core.collection.primaryId = bible.identify;
-    //     core.notify();
-    //   }
-    //   if (!core.scripturePrimary.isReady) {
-    //     core.message = 'a momment please';
-    //   }
-    //   core.navigate(at: 1);
-    //   core.scripturePrimary.init().whenComplete(() {
-    //     core.message = '';
-    //   });
-    // }
-
-    if (widget.arguments == null) {
-      if (core.collection.parallelId != bible.identify) {
-        core.collection.parallelId = bible.identify;
-        core.notify();
-      }
-      if (!core.scripturePrimary.isReady) {
-        core.message = preference.text.aMoment;
-      }
-      core.navigate(at: 1);
-      core.scriptureParallel.init().whenComplete(() {
-        core.message = '';
-      });
-      Navigator.of(context).pop();
-    } else {
-      bible.selected = !bible.selected;
-      core.collection.boxOfBook.putAt(index, bible);
-    }
-    // Scripture scripture = core.scripturePrimary;
-    // if (scripture.isReady) {
-    //   if (core.message.isNotEmpty){
-    //     core.message ='';
-    //   }
-    // } else {
-    //   core.message ='a momment plase';
-    // }
-    // if (core.collection.primaryId != bible.identify){
-    //   core.collection.primaryId = bible.identify;
-    // }
-    // debugPrint('reader: ${core.scripturePrimary.isReady}');
-    // core.scripturePrimary.init().catchError((e){
-    //   debugPrint('scripturePrimary: $e');
-    // }).whenComplete(
-    //   (){
-    //     core.message ='';
-    //     debugPrint('reader: done');
-    //   }
-    // );
-  }
-
-  // void onClearAll() {
-  //   Future.microtask(() {});
-  // }
-
-  // void onSearch(String word) {}
-
-  // void onDelete(String word) {
-  //   Future.delayed(Duration.zero, () {});
-  // }
-
-  // bool get canPop => Navigator.of(context).canPop();
-}
-
-class _View extends _State with _Bar, _Refresh, _Modal {
+class _View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ViewPage(
-        // key: widget.key,
         controller: scrollController,
-        child: body(),
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: sliverWidgets(),
+        ),
       ),
     );
   }
 
-  CustomScrollView body() {
-    return CustomScrollView(
-      controller: scrollController,
-      slivers: <Widget>[
-        bar(),
-        refresh(),
-        ValueListenableBuilder(
-          valueListenable: core.collection.boxOfBook.listenable(),
-          builder: (BuildContext context, Box<BookType> items, Widget? child) {
-            return bookList(items);
-          },
-        ),
-      ],
-    );
+  List<Widget> sliverWidgets() {
+    return [
+      ViewHeaderSliverSnap(
+        pinned: true,
+        floating: false,
+        // reservedPadding: MediaQuery.of(context).padding.top,
+        padding: MediaQuery.of(context).viewPadding,
+        heights: const [kToolbarHeight],
+        // overlapsBackgroundColor: Theme.of(context).primaryColor,
+        overlapsBorderColor: Theme.of(context).shadowColor,
+        builder: bar,
+      ),
+      PullToAny(
+        onUpdate: core.updateBookMeta,
+      ),
+      ValueListenableBuilder(
+        valueListenable: collection.boxOfBooks.listen(),
+        builder: bookList,
+      ),
+    ];
   }
 
-  Widget bookList(Box<BookType> box) {
-    // final items = box.toMap().entries.toList();
-    // final items = box.values.where((e) => e.selected);
-    // items.sort((a, b) => a.value.order.compareTo(b.value.order));
-    return SliverReorderableList(
+  Widget bookList(BuildContext context, Box<BooksType> box, Widget? child) {
+    return WidgetListBuilder(
       key: _kList,
       itemBuilder: (BuildContext context, int index) => bookContainer(index, box.getAt(index)!),
       itemCount: box.length,
-      onReorder: (int oldIndex, int newIndex) async {
+      itemReorderable: (int oldIndex, int newIndex) async {
         if (oldIndex < newIndex) {
           newIndex -= 1;
         }
@@ -222,11 +87,11 @@ class _View extends _State with _Bar, _Refresh, _Modal {
     );
   }
 
-  Widget bookContainer(int index, BookType book) {
+  Widget bookContainer(int index, BooksType book) {
     return SwipeForMore(
       key: Key('$index'),
       child: Card(
-        elevation: 0.5,
+        // elevation: 0.5,
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: bookItem(index, book),
       ),
@@ -234,64 +99,29 @@ class _View extends _State with _Bar, _Refresh, _Modal {
         Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.horizontal(
-              left: Radius.circular(5),
+              left: Radius.circular(12),
             ),
             // color: Theme.of(context).primaryColorLight,
             color: Theme.of(context).focusColor,
           ),
-          child: Tooltip(
-            message: preference.text.more,
-            child: CupertinoButton(
-              child: const Icon(
-                LideaIcon.dotHoriz,
-                // color: Theme.of(context).primaryColor,
-                // color: Theme.of(context).hintColor,
-              ),
-              onPressed: () => showModal(book),
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: WidgetButton(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: const WidgetLabel(
+              icon: LideaIcon.dotHoriz,
             ),
+            message: preference.text.more,
+            onPressed: () => showOptions(book),
           ),
         ),
       ],
     );
   }
 
-  Widget bookItem(int index, BookType book) {
+  Widget bookItem(int index, BooksType book) {
     bool isAvailable = book.available > 0;
-    bool isPrimary = book.identify == core.collection.primaryId;
+    bool isPrimary = book.identify == collection.primaryId;
     return ListTile(
-      enabled: true,
-      // selected: true,
-      /*
-      title: Padding(
-        padding: const EdgeInsets.only(bottom: 4),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              child: Icon(
-                Icons.check_circle,
-                size: 20,
-                color: book.selected
-                    ? Theme.of(context).highlightColor
-                    : Theme.of(context).disabledColor,
-              ),
-            ),
-            Text(
-              // book.name,
-              'oerdlgj sld jgalsjflasdf jlasdfasf jasldjfasl jfasd',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              semanticsLabel: book.name,
-              style: DefaultTextStyle.of(context).style.copyWith(
-                    fontSize: 20,
-                    fontWeight: isAvailable ? FontWeight.w400 : FontWeight.w300,
-                    // color: isAvailable?Colors.black:Colors.grey,
-                  ),
-            ),
-          ],
-        ),
-      ),
-      */
       title: Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: DefaultTextStyle(
@@ -304,18 +134,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
                 // color: isAvailable?Colors.black:Colors.grey,
               ),
         ),
-
-        // child: Text(
-        //   book.name,
-        //   maxLines: 1,
-        //   overflow: TextOverflow.ellipsis,
-        //   semanticsLabel: book.name,
-        //   style: DefaultTextStyle.of(context).style.copyWith(
-        //         fontSize: 20,
-        //         fontWeight: isAvailable ? FontWeight.w400 : FontWeight.w300,
-        //         // color: isAvailable?Colors.black:Colors.grey,
-        //       ),
-        // ),
       ),
       subtitle: Row(
         mainAxisSize: MainAxisSize.min,
@@ -323,37 +141,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
         mainAxisAlignment: MainAxisAlignment.start,
         textBaseline: TextBaseline.alphabetic,
         children: <Widget>[
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 7),
-          //   child: Icon(
-          //     Icons.check_circle,
-          //     size: 20,
-          //     color: book.selected
-          //         ? Theme.of(context).highlightColor
-          //         : Theme.of(context).disabledColor,
-          //   ),
-          // ),
-          // Container(
-          //   constraints: const BoxConstraints(
-          //     minWidth: 30.0,
-          //     minHeight: 20,
-          //   ),
-          //   // padding: const EdgeInsets.symmetric(vertical: 2),
-          //   margin: const EdgeInsets.only(right: 7),
-          //   decoration: BoxDecoration(
-          //     borderRadius: const BorderRadius.all(Radius.circular(3)),
-          //     color: book.selected
-          //         ? Theme.of(context).highlightColor
-          //         : Theme.of(context).disabledColor,
-          //   ),
-          //   child: Icon(
-          //     Icons.favorite,
-          //     size: 18,
-          //     color: book.selected
-          //         ? Theme.of(context).primaryColor
-          //         : Theme.of(context).primaryColorDark,
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.only(right: 7),
             child: Icon(
@@ -422,7 +209,6 @@ class _View extends _State with _Bar, _Refresh, _Modal {
           ),
         ],
       ),
-      // onTap: () => isAvailable ? toBible(book) : showModal(book),
       onTap: () => toBible(index, book),
     );
   }

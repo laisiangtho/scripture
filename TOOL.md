@@ -59,6 +59,11 @@ flutter build apk --split-per-abi --release
 
 As of firebase `platform :ios, '10.0'` need to set in *Podfile*.
 
+`cd ios`
+
+If `pod install` gives any error then try this
+`pod install --repo-update`
+
 - Runner->Project->Configurations
 
 ```sh

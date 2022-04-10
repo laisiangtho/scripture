@@ -29,11 +29,9 @@ class AppRoutes {
     },
   };
 
-  static void showParallelList(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).pushNamed(
-      bible.Main.route,
-    );
-  }
+  // static void showParallelList(BuildContext context) {
+  //   Navigator.of(context, rootNavigator: true).pushNamed(bible.Main.route);
+  // }
 
   // static GlobalKey<NavigatorState> homeNavigator = GlobalKey<NavigatorState>();
   static GlobalKey<NavigatorState> homeNavigator = launch.Main.navigator;

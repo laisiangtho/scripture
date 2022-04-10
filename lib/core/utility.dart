@@ -1,3 +1,3 @@
-part of 'main.dart';
+part of data.core;
 
 mixin _Utility {}

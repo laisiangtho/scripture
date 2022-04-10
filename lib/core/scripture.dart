@@ -1,9 +1,10 @@
-part of 'main.dart';
+part of data.core;
 
 class Scripture {
   late Collection collection;
   // NOTE [0: primary, 1: parallel]
   final int collectionType;
+  ValueNotifier<List<int>> verseSelection = ValueNotifier<List<int>>([]);
 
   BIBLE? cacheVerseChapter;
   BIBLE? cacheVerseSearch;
@@ -33,11 +34,13 @@ class Scripture {
   }
 
   int get _bookIndex {
-    return collection.boxOfBook.values.toList().indexWhere((BookType e) => e.identify == identify);
+    return collection.boxOfBooks.values
+        .toList()
+        .indexWhere((BooksType e) => e.identify == identify);
   }
 
-  BookType? get _bookMeta {
-    return collection.boxOfBook.getAt(_bookIndex);
+  BooksType? get _bookMeta {
+    return collection.boxOfBooks.box.getAt(_bookIndex);
   }
 
   bool get isReady {
@@ -45,6 +48,7 @@ class Scripture {
   }
 
   DefinitionBible get bible {
+    // TODO: Null check operator used on a null value -> _identifyIndexPrevious
     // return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
     return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
   }
@@ -89,7 +93,7 @@ class Scripture {
     final box = _bookMeta;
     if (box != null && available != box.available) {
       box.available = available;
-      await collection.boxOfBook.putAt(_bookIndex, box);
+      await collection.boxOfBooks.box.putAt(_bookIndex, box);
     }
   }
 
@@ -162,7 +166,7 @@ class Scripture {
     });
   }
 
-  BookType get info {
+  BooksType get info {
     return bible.info;
   }
 
@@ -332,7 +336,7 @@ class Scripture {
     // );
     return (cacheVerseSearch == null ||
             cacheVerseSearch!.info.identify != identify ||
-            cacheVerseSearch!.query != collection.suggestQuery
+            cacheVerseSearch!.query != collection.suggestQuery.asString
         // cacheVerseSearch!.book.first.info.id  != collection.bookId ||
         // cacheVerseSearch!.book.first.chapter.first.id  != collection.chapterId
         );
@@ -344,12 +348,12 @@ class Scripture {
       cacheVerseSearch = BIBLE(
         info: bible.info,
         book: [],
-        query: collection.suggestQuery,
+        query: collection.suggestQuery.asString,
         bookCount: 0,
         chapterCount: 0,
         verseCount: 0,
       );
-      if (collection.suggestQuery.isEmpty) {
+      if (collection.suggestQuery.asString.isEmpty) {
         return cacheVerseSearch!;
       }
 
@@ -358,7 +362,8 @@ class Scripture {
         bO['chapter'].forEach((cId, cO) {
           List<VERSE> verseBlock = [];
           cO['verse'].forEach((vId, v) {
-            if (RegExp(collection.suggestQuery, caseSensitive: false).hasMatch(v['text'])) {
+            if (RegExp(collection.suggestQuery.asString, caseSensitive: false)
+                .hasMatch(v['text'])) {
               cacheVerseSearch!.verseCount++;
               verseBlock.add(
                 VERSE.fromJSON(GlobalKey(), int.parse(vId), digit(vId), v),
@@ -407,7 +412,7 @@ class Scripture {
       cacheVerseChapter = BIBLE(
         info: bible.info,
         book: [],
-        query: collection.searchQuery,
+        query: collection.searchQuery.asString,
         bookCount: 0,
         chapterCount: 0,
         verseCount: 0,

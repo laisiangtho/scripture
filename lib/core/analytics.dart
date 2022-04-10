@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 
 class Analytics extends UnitAnalytics {
   @override

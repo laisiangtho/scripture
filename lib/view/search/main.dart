@@ -8,15 +8,8 @@ import '/core/main.dart';
 import '../routes.dart';
 
 class Main extends StatefulWidget {
-  const Main({
-    Key? key,
-    // this.navigator,
-    this.arguments,
-    this.defaultRouteName,
-  }) : super(key: key);
+  const Main({Key? key, this.arguments, this.defaultRouteName}) : super(key: key);
 
-  // final SettingsController? settings;
-  // final GlobalKey<NavigatorState>? navigator;
   final Object? arguments;
   final String? defaultRouteName;
 
@@ -25,17 +18,13 @@ class Main extends StatefulWidget {
   static const name = 'Search';
   static const description = 'Search';
   static final uniqueKey = UniqueKey();
-  // static final scaffoldKey = GlobalKey<ScaffoldState>();
-  // static final navigator = GlobalKey<NavigatorState>();
 
   @override
   State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<Main> {
-  // ViewNavigationArguments get arguments => widget.arguments as ViewNavigationArguments;
-  // GlobalKey<NavigatorState> get navigator => GlobalKey<NavigatorState>();
-  late final navigator = GlobalKey<NavigatorState>();
+  late final _key = GlobalKey<NavigatorState>();
 
   late final NavigationObserver obs = NavigationObserver(
     Provider.of<NavigationNotify>(
@@ -43,7 +32,7 @@ class _State extends State<Main> {
       listen: false,
     ),
   );
-  // late final key = AppRoutes.searchNavigator;
+
   @override
   void initState() {
     super.initState();
@@ -61,24 +50,22 @@ class _State extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    // navigatorKey.currentState
-    // final asdf = navigator.currentState;
     return Scaffold(
-      body: HeroControllerScope(
-        controller: MaterialApp.createMaterialHeroController(),
-        child: Navigator(
-          key: navigator,
-          observers: [obs],
-          restorationScopeId: 'search',
-          initialRoute: AppRoutes.searchInitial(name: widget.defaultRouteName),
-          onGenerateRoute: (RouteSettings route) {
-            final arguments = ViewNavigationArguments(
-              navigator: navigator,
+      body: Navigator(
+        key: _key,
+        // observers: [obs],
+        restorationScopeId: 'search',
+        initialRoute: AppRoutes.searchInitial(name: widget.defaultRouteName),
+        onGenerateRoute: (RouteSettings routeSettings) {
+          return AppRoutes.searchBuilder(
+            routeSettings,
+            ViewNavigationArguments(
+              key: _key,
               args: widget.arguments,
-            );
-            return AppRoutes.searchBuilder(route, arguments);
-          },
-        ),
+              canPop: routeSettings.arguments == null,
+            ),
+          );
+        },
       ),
     );
   }

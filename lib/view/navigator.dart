@@ -11,10 +11,10 @@ mixin _BottomNavigator on _State {
         // scrollNavigation.bottomPadding = MediaQuery.of(context).padding.bottom;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 0),
-          height: scrollNavigation.height,
+          height: scrollNavigation.heightStretch,
           child: sheetDecoration(
             child: AnimatedOpacity(
-              opacity: scrollNavigation.heightFactor,
+              opacity: scrollNavigation.factor,
               duration: Duration.zero,
               child: child,
             ),

@@ -1,18 +1,20 @@
-export "package:lidea/type/main.dart";
-// import "package:lidea/type/main.dart";
+library data.type;
+
+// NOTE: Core API manager
+export "package:lidea/main.dart";
+import "package:lidea/main.dart";
 
 import "package:lidea/hive.dart";
-// import "package:lidea/unit/notify.dart";
-import "package:lidea/cluster/docket.dart";
 
+// NOTE: Core API manager
+// import "package:lidea/cluster/main.dart";
 part "audio.dart";
 part "collection.dart";
 
 part "bible.dart";
-part "book.dart";
-part "adapter/book.dart";
-part "bookmark.dart";
-part "adapter/bookmark.dart";
+
+part "box/bookmark.dart";
+part "box/book.dart";
 
 /// tmp
 class UserDataType {

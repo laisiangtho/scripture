@@ -1,132 +1,88 @@
 part of 'main.dart';
 
 mixin _Bar on _State {
-  Widget bar() {
-    return ViewHeaderSliverSnap(
-      pinned: true,
-      floating: false,
-      // reservedPadding: MediaQuery.of(context).padding.top,
-      padding: MediaQuery.of(context).viewPadding,
-      heights: const [kBottomNavigationBarHeight],
-      overlapsBackgroundColor: Theme.of(context).primaryColor,
-      overlapsBorderColor: Theme.of(context).shadowColor,
-      // overlapsForce:focusNode.hasFocus,
-      // overlapsForce:core.nodeFocus,
-      overlapsForce: true,
-      // borderRadius: Radius.elliptical(20, 5),
-      builder: (BuildContext context, ViewHeaderData org, ViewHeaderData snap) {
-        return Row(
-          children: <Widget>[
-            Expanded(
-              child: Hero(
-                tag: 'searchbar-field',
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.5),
-                  child: _barForm(),
-                ),
-              ),
+  Widget bar(BuildContext context, ViewHeaderData org) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: _formField(),
+          ),
+          WidgetButton(
+            padding: const EdgeInsets.only(left: 15),
+            child: WidgetMark(
+              mainAxisAlignment: MainAxisAlignment.start,
+              label: preference.text.cancel,
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Hero(
-                tag: 'searchbar-right',
-                child: CupertinoButton(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 7, 10),
-                  onPressed: onCancel,
-                  child: Text(
-                    preference.text.cancel,
-                    maxLines: 1,
-                    softWrap: false,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+            onPressed: onCancel,
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _barForm() {
+  Widget _formField() {
     return TextFormField(
       key: formKey,
       controller: textController,
       focusNode: focusNode,
       textInputAction: TextInputAction.search,
       keyboardType: TextInputType.text,
-      // keyboardAppearance: Brightness.dark,
       onChanged: onSuggest,
       onFieldSubmitted: onSearch,
-      // autofocus: true,
-      // enabled: true,
-      // enableInteractiveSelection: true,
-      // enableSuggestions: true,
       maxLines: 1,
-      strutStyle: const StrutStyle(height: 1.4),
       decoration: InputDecoration(
-        // prefixIcon: const Icon(LideaIcon.find, size: 17),
-        prefixIcon: Container(
-          // padding: const EdgeInsets.fromLTRB(10, 10.1, 0, 0),
-          // child: Text(
-          //   core.scripturePrimary.bible.info.langCode.toUpperCase(),
-          //   style: TextStyle(
-          //     fontSize: 14,
-          //     fontWeight: FontWeight.bold,
-          //     color: Theme.of(context).hintColor,
-          //   ),
-          // ),
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 8),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(5),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 0.1,
+                  color: Theme.of(context).shadowColor,
+                  // spreadRadius: 0.1,
+                  offset: const Offset(0, 0),
+                )
+              ],
             ),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 0.1,
-                color: Theme.of(context).shadowColor,
-                // spreadRadius: 0.1,
-                offset: const Offset(0, 0),
-              )
-            ],
-          ),
-          child: Selector<Core, String>(
-            selector: (BuildContext _, Core e) {
-              return e.scripturePrimary.bible.info.langCode;
-            },
-            builder: (BuildContext _, String langCode, Widget? child) {
-              return Text(
-                langCode.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  // fontWeight: FontWeight.bold,
-                  color: Theme.of(context).hintColor,
-                ),
-              );
-            },
+            child: Selector<Core, String>(
+              selector: (BuildContext _, Core e) {
+                return e.scripturePrimary.bible.info.langCode;
+              },
+              builder: (BuildContext _, String langCode, Widget? child) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  child: Text(
+                    langCode.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                );
+              },
+            ),
           ),
         ),
-
         suffixIcon: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             FadeTransition(
               opacity: clearAnimation,
-              // axis: Axis.horizontal,
-              // axisAlignment: 1,
               child: Semantics(
                 enabled: true,
                 label: preference.text.clear,
-                child: CupertinoButton(
+                child: WidgetButton(
                   onPressed: onClear,
                   padding: const EdgeInsets.all(0),
                   child: Icon(
-                    CupertinoIcons.xmark,
+                    Icons.clear_rounded,
                     color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
-                    size: 17,
                     semanticLabel: "input",
                   ),
                 ),

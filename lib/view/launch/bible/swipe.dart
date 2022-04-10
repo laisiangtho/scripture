@@ -19,7 +19,7 @@ class SwipeForMore extends StatefulWidget {
 class _SwipeForMoreState extends State<SwipeForMore> with SingleTickerProviderStateMixin {
   late final AnimationController controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 200),
   );
 
   late final offset = Tween(
@@ -53,12 +53,19 @@ class _SwipeForMoreState extends State<SwipeForMore> with SingleTickerProviderSt
       },
       onHorizontalDragEnd: (data) {
         if (data.primaryVelocity! > 2500) {
-          controller.animateTo(.0, duration: const Duration(milliseconds: 200));
+          controller.animateTo(.0, duration: const Duration(milliseconds: 100));
         } else if (controller.value >= .3 || data.primaryVelocity! < -2500) {
-          controller.animateTo(1.0, duration: const Duration(milliseconds: 200));
+          controller.animateTo(1.0, duration: const Duration(milliseconds: 100));
         } else {
-          controller.animateTo(.0, duration: const Duration(milliseconds: 200));
+          controller.animateTo(.0, duration: const Duration(milliseconds: 100));
         }
+        // if (data.primaryVelocity! > 2500) {
+        //   controller.animateTo(.0, duration: const Duration(milliseconds: 50));
+        // } else if (controller.value >= .3 || data.primaryVelocity! < -2500) {
+        //   controller.animateTo(1.0, duration: const Duration(milliseconds: 50));
+        // } else {
+        //   controller.animateTo(.0, duration: const Duration(milliseconds: 50));
+        // }
       },
       onLongPress: () {
         if (controller.isCompleted) {

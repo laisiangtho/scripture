@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of data.core;
 
 /// check
 mixin _Mock on _Abstract {
@@ -252,7 +252,7 @@ mixin _Mock on _Abstract {
     // }
     // await scripturePrimary.init();
     // scripturePrimary.searchQuery = searchQuery;
-    collection.recentSearchUpdate(collection.searchQuery);
+    collection.boxOfRecentSearch.update(searchQuery);
     // scripturePrimary.verseSearch(query: searchQuery, from: 'conclusionGenerate');
     // if (!init) {
     //   notify();
