@@ -6,12 +6,13 @@
   "buildNumber":"50",
   "settingName": "",
   "settingKey": "",
-  "setting":{
+  "settings":{
     "version": 0,
     "mode": 0,
     "locale": "",
     "fontSize": 24.0,
     "searchQuery": "",
+    "suggestQuery": "",
 
     "identify": "",
     "bookId": 1,
