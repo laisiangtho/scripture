@@ -9,7 +9,7 @@
         "request": "launch",
         "type": "dart",
         "flutterMode": "debug",
-        "program": "${workspaceFolder}\\lib\\main.dart"
+        "program": "${workspaceFolder}/lib/main.dart"
       }
     ]
 }
