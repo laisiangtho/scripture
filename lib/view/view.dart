@@ -36,7 +36,7 @@ class AppView extends _State with _BottomNavigator {
           itemCount: _pageView.length,
         ),
       ),
-      // extendBody: true,
+      extendBody: true,
       // extendBodyBehindAppBar: true,
       bottomNavigationBar: bottomNavigator(),
     );
