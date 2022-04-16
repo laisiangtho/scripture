@@ -54,10 +54,10 @@ class WidgetVerse extends StatelessWidget {
   Widget build(BuildContext context) {
     final userVerse = VerseWidgetInherited.of(context)!;
 
-    return Column(
+    return ListBody(
       key: key,
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      // mainAxisSize: MainAxisSize.max,
+      // crossAxisAlignment: CrossAxisAlignment.stretch,
       // mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         if (verse.title.isNotEmpty)
@@ -78,6 +78,7 @@ class WidgetVerse extends StatelessWidget {
           ),
         Card(
           margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+          // margin: EdgeInsets.zero,
           // elevation: 0,
           // shape: const RoundedRectangleBorder(
           //   side: BorderSide(width: 0, color: Colors.transparent),
