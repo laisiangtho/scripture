@@ -19,11 +19,11 @@ class AppView extends _State with _BottomNavigator {
   Widget launched() {
     return Scaffold(
       key: _scaffoldKey,
-      // primary: true,
+      primary: true,
       // resizeToAvoidBottomInset: true,
       body: SafeArea(
         top: false,
-        bottom: false,
+        bottom: true,
         // maintainBottomViewPadding: true,
         // onUnknownRoute: routeUnknown,
         child: PageView.builder(
