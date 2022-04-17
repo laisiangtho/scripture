@@ -14,6 +14,7 @@ pubspec.lock
 # iOS
 **/Info.plist
 **/GoogleService-Info.plist
+**/Podfile.lock
 
 # Miscellaneous
 *.class
