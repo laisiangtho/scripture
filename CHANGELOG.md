@@ -1,5 +1,7 @@
 # Change log
 
+## 1.2.2+57
+
 ## 1.0.4+46
 
 Improve
