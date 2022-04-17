@@ -9,7 +9,6 @@ Improve
 - search bar
 - Parallel
 
-
 ## 1.0.4+46
 
 Improve
