@@ -6,17 +6,21 @@ mixin _BottomNavigator on _State {
   // }
 
   Widget bottomNavigator() {
+    // MediaQuery.of(context).viewPadding.bottom
     return Consumer<ViewScrollNotify>(
       builder: (context, scrollNavigation, child) {
-        // scrollNavigation.bottomPadding = MediaQuery.of(context).padding.bottom;
+        scrollNavigation.bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 0),
           height: scrollNavigation.heightStretch,
           child: sheetDecoration(
-            child: AnimatedOpacity(
-              opacity: scrollNavigation.factor,
-              duration: Duration.zero,
-              child: child,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: scrollNavigation.bottomPadding),
+              child: AnimatedOpacity(
+                opacity: scrollNavigation.factor,
+                duration: Duration.zero,
+                child: child,
+              ),
             ),
           ),
         );
