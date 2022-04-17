@@ -1,10 +1,6 @@
 part of 'main.dart';
 
 mixin _BottomNavigator on _State {
-  // Widget bottomNavigator() {
-  //   return const Player();
-  // }
-
   Widget bottomNavigator() {
     // MediaQuery.of(context).viewPadding.bottom
     return Consumer<ViewScrollNotify>(
