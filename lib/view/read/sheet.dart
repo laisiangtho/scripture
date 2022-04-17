@@ -22,6 +22,10 @@ class _SheetWidgetState extends ViewDraggableSheetState<_SheetWidget> {
   late final Core core = context.read<Core>();
   late final Preference preference = context.read<Preference>();
 
+  // NOTE: require for iOS none Home Button
+  @override
+  double get kHeight => kBottomNavigationBarHeight;
+
   void showParallel() {
     // _draggableEngine(checkChildSize ? 1.0 : 0.0);
     scrollAnimateToggle();
