@@ -1,5 +1,15 @@
 # Change log
 
+## 1.2.2+57
+
+Improve
+
+- User-interface
+- Performance
+- search bar
+- Parallel
+
+
 ## 1.0.4+46
 
 Improve
