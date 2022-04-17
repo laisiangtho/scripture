@@ -128,13 +128,13 @@ class _View extends _State with _Bar {
           await authenticate.signInWithGoogle();
         },
       ),
-      signInDecoration(
-        icon: LideaIcon.facebook,
-        label: 'Facebook',
-        onPressed: () async {
-          await authenticate.signInWithFacebook();
-        },
-      ),
+      // signInDecoration(
+      //   icon: LideaIcon.facebook,
+      //   label: 'Facebook',
+      //   onPressed: () async {
+      //     await authenticate.signInWithFacebook();
+      //   },
+      // ),
       // signInDecoration(
       //   icon: LideaIcon.apple,
       //   label: 'Apple',
