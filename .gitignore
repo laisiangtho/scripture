@@ -10,11 +10,12 @@ pubspec.lock
 # Android
 */key.properties
 **/google-services.json
+**/src/main/res/values/strings.xml
 
 # iOS
 **/Info.plist
-**/GoogleService-Info.plist
 **/Podfile.lock
+**/GoogleService-Info.plist
 
 # Miscellaneous
 *.class
