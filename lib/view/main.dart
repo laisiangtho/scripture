@@ -36,6 +36,7 @@ abstract class _State extends State<Main> with SingleTickerProviderStateMixin {
   // late final Core core = Provider.of<Core>(context, listen: false);
   late final Core core = context.read<Core>();
   // late final NavigationNotify _navigationNotify = context.read<NavigationNotify>();
+  // late final ViewScrollNotify viewScrollNotify = context.read<ViewScrollNotify>();
 
   late final Future<void> initiator = core.init(context);
 
