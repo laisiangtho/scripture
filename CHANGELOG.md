@@ -1,5 +1,11 @@
 # Change log
 
+## 1.2.3+58
+
+Add
+
+- Sign in with Apple
+
 ## 1.2.2+57
 
 Improve
