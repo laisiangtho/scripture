@@ -40,13 +40,13 @@ mixin _Bar on _State {
   Widget userPhoto(BuildContext _, bool hasUser, Widget? child) {
     final user = authenticate.user;
     if (user != null) {
-      if (user.photoURL != null) {
+      if (authenticate.userPhotoURL != null) {
         return CircleAvatar(
           radius: 15,
           child: ClipOval(
             child: Material(
               // child: Image.network(
-              //   user.photoURL!,
+              //   authenticate.userPhotoURL!,
               //   fit: BoxFit.cover,
               // ),
               child: CachedNetworkImage(
@@ -59,7 +59,7 @@ mixin _Bar on _State {
                     ),
                   );
                 },
-                imageUrl: user.photoURL!,
+                imageUrl: authenticate.userPhotoURL!,
                 fit: BoxFit.cover,
               ),
             ),
