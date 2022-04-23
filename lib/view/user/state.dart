@@ -8,14 +8,4 @@ abstract class _State extends WidgetState {
         preference.text.light,
         preference.text.dark,
       ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

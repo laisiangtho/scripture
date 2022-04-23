@@ -31,9 +31,8 @@ mixin _Bar<T> on _State {
   }
 
   Widget userPhoto(ViewHeaderData org) {
-    final user = authenticate.user;
-    if (user != null) {
-      if (user.photoURL != null) {
+    if (authenticate.hasUser) {
+      if (authenticate.userPhotoURL != null) {
         return CircleAvatar(
           // radius: 50,
           radius: (35 * org.snapShrink + 15).toDouble(),
@@ -55,7 +54,8 @@ mixin _Bar<T> on _State {
                     ),
                   );
                 },
-                imageUrl: user.photoURL!,
+                // imageUrl: user.photoURL!,
+                imageUrl: authenticate.userPhotoURL!,
                 fit: BoxFit.cover,
               ),
             ),
