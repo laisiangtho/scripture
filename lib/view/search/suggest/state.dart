@@ -27,22 +27,17 @@ abstract class _State extends WidgetState<Main> with TickerProviderStateMixin {
     arguments ??= widget.arguments;
     super.initState();
 
-    Future.microtask(() {
-      // suggestQuery = searchQuery;
-      // textController.text = searchQuery;
-      textController.text = suggestQuery;
-    });
+    onQuery();
 
     focusNode.addListener(() {
-      // core.nodeFocus = focusNode.hasFocus;
+      Future.microtask(() {
+        toggleClear(focusNode.hasFocus && textController.text.isNotEmpty);
+      });
     });
 
     scrollController.addListener(() {
       if (focusNode.hasFocus) {
         focusNode.unfocus();
-        Future.microtask(() {
-          toggleClear(false);
-        });
       }
     });
 
@@ -62,6 +57,12 @@ abstract class _State extends WidgetState<Main> with TickerProviderStateMixin {
   void dispose() {
     clearController.dispose();
     super.dispose();
+  }
+
+  void onQuery() {
+    Future.microtask(() {
+      textController.text = searchQuery;
+    });
   }
 
   void onClear() {
