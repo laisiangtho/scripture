@@ -116,18 +116,28 @@ class _View extends _State with _Bar {
               label: 'Google',
               onPressed: authenticate.signInWithGoogle,
             ),
-            SignInButton(
-              icon: LideaIcon.facebook,
-              label: 'Facebook',
-              onPressed: authenticate.signInWithFacebook,
-            ),
-            if (authenticate.isAvailableApple)
+            if (authenticate.showFacebook)
+              SignInButton(
+                icon: LideaIcon.facebook,
+                label: 'Facebook',
+                onPressed: authenticate.signInWithFacebook,
+              ),
+            if (authenticate.showApple)
               SignInButton(
                 icon: LideaIcon.apple,
                 label: 'Apple',
-                onPressed: authenticate.signInWithApple,
-              )
-
+                onPressed: () {
+                  authenticate.signInWithApple().whenComplete(() {
+                    if (authenticate.message.isNotEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(authenticate.message),
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
             // SignInButton(
             //   icon: LideaIcon.microsoft,
             //   label: 'Microsoft',
