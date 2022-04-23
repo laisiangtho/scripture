@@ -6,7 +6,7 @@ Lai Siangtho is 'the Holy Bible' app, and the continuous version of what we have
 
 ...at [App Store][appstore],
 [Google play][playStore],
-or [clone](#how-would-i-clone-correctly)!
+or [clone](#how-would-i-clone-correctly), [privacy][privacy].
 
 Lai Siangtho has currently:
 
@@ -47,6 +47,11 @@ Feature:
 
 As it is active in develpment, please feel free to rate/write yours review, so that we can bring a better Bible app.
 
+Any concerning data [Privacy & Security][privacy].
+
+![alt text][license]
+![alt text][flutterversion]
+
 ## Lai Siangtho
 
 In case of wondering what "**Lai Siangtho**" is or means, I would like to give you a hint. Of course it means "_the Holy Bible_" in _zolai_. But what is zolai then? Well its a name of written language using by some folks from Myanmar and India, called themselve as zomi, and their spoken language is zopau/zokam. You may know them as _Chin, Tedim, Falam, Hakha, Paite, Mizo, Kuki_ and many more. Each one of them has their own dialect and tradition like swedish and norwegian, with no country but border seperation. Many of its people speak and understand other dialect. This is where Lai Siangtho app is needed. I have no economic profit on making this app. If you like this particular application and its experience you are much welcome to support in anyway you would like.
@@ -55,14 +60,19 @@ Lai Siangtho is not just providing builded/packaged app. But opensource that you
 
 Take a look: [https://en.wikipedia.org/wiki/Zo_people]
 
-![alt text][license]
-![alt text][flutterversion]
+## analytics (debug on windows)
+
+```sh
+# cd \dev\android-sdk\platform-tools
+cd /dev/android-sdk/platform-tools
+adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
+```
 
 ## How would I clone correctly
 
-All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
+All you need is basically a Github command line, flutter, and modify a few settings, such as version, packageName for Android or Bundle Identifier for iOS. Since `com.laisiangtho.bible` has already taken you would need you own. It does not need to be a domain path but just platform uniqueid, so you should not take "~~com.google~~" or anything that you don't own!
 
-There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as bundle scripts.
+There isn't an easy way to separate ui and logic in flutter, any related dart scripts that plays primary logic in this application are moved to [lidea repo][lidea] as a seperated package. But they will work the same as dependency.
 
 In `pubspec.yaml` remove local package `lidea` and uncomment git
 
@@ -84,7 +94,7 @@ dependencies:
   ...
 ```
 
-...you will need your own configuration in the following files, for more info please run `flutter doctor` or see [flutter config cli](TOOL.md#flutter-config).
+...you will need your own configuration in the following files, for more info please run `flutter doctor` and see if you get it right.
 
 - `android/local.properties`
 
@@ -104,78 +114,23 @@ storeFile     = <path-of-jks>
 
 - `android/app/google-services.json`
 
-This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts`
+This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN -> Service Accounts` or Firebase.
 
-- Re-Useable
-  - [`idea`](#idea)
-    - Top layer responsible for theme color and font-size
-  - [`scroll`](#scroll)
-    - Primary view scroll gesture for bar, body bottom
-  - [`util`](#util)
-    - reading and writing file
+## Build and config
 
-## Android
-
-- [build](TOOL.md#flutter-build-android)
-
-```sh
-flutter build appbundle --release
-```
-
-- analytics (debug on windows)
-
-```sh
-# Powershell
-cd $env:UserProfile/.dev/sdk/platform-tools
-# Command Prompt
-cd %UserProfile%/.dev/sdk/platform-tools
-
-adb shell setprop debug.firebase.analytics.app "com.laisiangtho.bible"
-```
-
-## iOS
-
-- [build](TOOL.md#flutter-build-ios)
-
-```sh
-flutter clean && flutter pub get
-rm ios/Podfile && install pod
-cd .. && flutter build ios
-```
-
-## CLI
-
-- [Flutter](TOOL.md#flutter)
-  - [config](TOOL.md#flutter-config)
-  - [build](TOOL.md#flutter-config)
-    - [Android](TOOL.md#flutter-build-android)
-    - [iOS](TOOL.md#flutter-build-ios)
-- Path
-  - [JAVA_HOME](TOOL.md#path-java_home)
-  - [keytool](TOOL.md#path-keytool)
-  - [flutter](TOOL.md#path-flutter)
-- [gradlew](TOOL.md#gradlew)
-
-```sh
-cd android
-./gradlew signingReport
-./gradlew installDebug
-```
-
-See [Path configuration](TOOL.md#path-keytool) and [keytool](TOOL.md#keytool) cli.
-
-- [keytool](TOOL.md#keytool)
-  - [Generate](TOOL.md#keytool-generate)
-  - [List](TOOL.md#keytool-list)
-  - [Export](TOOL.md#keytool-export)
-- [git](TOOL.md#git)
+[Android][tool-android], [iOS][tool-ios]
 
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
 [playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
 [appstore]: https://apps.apple.com/au/app/lai-siangtho/id600127635
+
 [Home]: https://github.com/laisiangtho/scripture
+
 [lidea]: https://github.com/laisiangtho/lidea
-[tool]: /TOOL.md
+[tool-android]: https://github.com/laisiangtho/lidea/blob/main/TOOL.md#android
+[tool-ios]: https://github.com/laisiangtho/lidea/blob/main/TOOL.md#ios
+
+[privacy]: /PRIVACY.md
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/scripture/master/bible.png "Lai Siangtho"
 [license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
