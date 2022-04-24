@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
-import 'package:lidea/cached_network_image.dart';
 import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
 
