@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/view/main.dart';
-import 'package:lidea/cached_network_image.dart';
 import 'package:lidea/icon.dart';
-import 'package:lidea/extension.dart';
 
 import '/core/main.dart';
 import '/widget/main.dart';
@@ -75,8 +73,12 @@ class _View extends _State with _Bar {
         ),
       ),
 
-      themeContainer(),
-      localeContainer(),
+      WidgetUserTheme(
+        preference: preference,
+      ),
+      WidgetUserLocale(
+        preference: preference,
+      ),
       // Selector<ViewScrollNotify, double>(
       //   selector: (_, e) => e.bottomPadding,
       //   builder: (context, bottomPadding, child) {
@@ -192,111 +194,6 @@ class _View extends _State with _Bar {
       //     label: preference.text.bySigningIn,
       //   ),
       // ),
-    );
-  }
-
-  Widget themeContainer() {
-    return WidgetBlockSection(
-      duration: const Duration(milliseconds: 150),
-      placeHolder: const SliverToBoxAdapter(),
-      headerLeading: const Icon(Icons.light_mode_rounded),
-      headerTitle: WidgetBlockTile(
-        title: WidgetLabel(
-          alignment: Alignment.centerLeft,
-          label: preference.text.themeMode,
-        ),
-      ),
-      child: Card(
-        child: Selector<Preference, ThemeMode>(
-          selector: (_, e) => e.themeMode,
-          builder: (BuildContext context, ThemeMode theme, Widget? child) {
-            return WidgetListBuilder(
-              primary: false,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: ThemeMode.values.length,
-              itemBuilder: (_, index) {
-                ThemeMode mode = ThemeMode.values[index];
-                bool active = theme == mode;
-                return WidgetButton(
-                  child: WidgetLabel(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                    alignment: Alignment.centerLeft,
-                    icon: Icons.check_rounded,
-                    iconColor: active ? null : Theme.of(context).focusColor,
-                    label: themeName[index],
-                    labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    labelStyle: Theme.of(context).textTheme.bodyLarge,
-                    softWrap: true,
-                    maxLines: 3,
-                  ),
-                  onPressed: () {
-                    if (!active) {
-                      preference.updateThemeMode(mode);
-                    }
-                  },
-                );
-              },
-              itemSeparator: (_, index) {
-                return const WidgetListDivider();
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget localeContainer() {
-    return WidgetBlockSection(
-      duration: const Duration(milliseconds: 250),
-      placeHolder: const SliverToBoxAdapter(),
-      headerLeading: const Icon(Icons.translate_rounded),
-      headerTitle: WidgetBlockTile(
-        title: WidgetLabel(
-          alignment: Alignment.centerLeft,
-          label: preference.text.locale,
-        ),
-      ),
-      child: Card(
-        child: Selector<Preference, ThemeMode>(
-          selector: (_, e) => e.themeMode,
-          builder: (BuildContext context, ThemeMode theme, Widget? child) {
-            return WidgetListBuilder(
-              primary: false,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: preference.supportedLocales.length,
-              itemBuilder: (_, index) {
-                final locale = preference.supportedLocales[index];
-
-                Locale localeCurrent = Localizations.localeOf(context);
-                // final String localeName = Intl.canonicalizedLocale(lang.languageCode);
-                final String localeName = Locale(locale.languageCode).nativeName;
-                final bool active = localeCurrent.languageCode == locale.languageCode;
-
-                return WidgetButton(
-                  child: WidgetLabel(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                    alignment: Alignment.centerLeft,
-                    icon: Icons.check_rounded,
-                    iconColor: active ? null : Theme.of(context).focusColor,
-                    label: localeName,
-                    labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    labelStyle: Theme.of(context).textTheme.bodyLarge,
-                    softWrap: true,
-                    maxLines: 3,
-                  ),
-                  onPressed: () {
-                    preference.updateLocale(locale);
-                  },
-                );
-              },
-              itemSeparator: (_, index) {
-                return const WidgetListDivider();
-              },
-            );
-          },
-        ),
-      ),
     );
   }
 }

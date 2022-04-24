@@ -15,7 +15,10 @@ mixin _Bar<T> on _State {
       ],
       primary: Align(
         alignment: const Alignment(0, 0),
-        child: userPhoto(org),
+        child: UserPicture(
+          authenticate: authenticate,
+          snapShrink: org.snapShrink,
+        ),
       ),
       rightAction: [
         WidgetButton(
@@ -27,81 +30,6 @@ mixin _Bar<T> on _State {
           onPressed: authenticate.signOut,
         ),
       ],
-    );
-  }
-
-  Widget userPhoto(ViewHeaderData org) {
-    if (authenticate.hasUser) {
-      if (authenticate.userPhotoURL != null) {
-        return CircleAvatar(
-          // radius: 50,
-          radius: (35 * org.snapShrink + 15).toDouble(),
-          // backgroundColor: Theme.of(context).backgroundColor,
-          child: ClipOval(
-            child: Material(
-              // child: Image.network(
-              //   user.photoURL!,
-              //   fit: BoxFit.cover,
-              //   // height: (70 * org.snapShrink + 30).toDouble(),
-              // ),
-              child: CachedNetworkImage(
-                placeholder: (context, url) {
-                  return Padding(
-                    padding: EdgeInsets.all((7 * org.snapShrink + 3).toDouble()),
-                    child: Icon(
-                      Icons.face_retouching_natural_rounded,
-                      size: (70 * org.snapShrink).clamp(25, 70).toDouble(),
-                    ),
-                  );
-                },
-                // imageUrl: user.photoURL!,
-                imageUrl: authenticate.userPhotoURL!,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        );
-      }
-      return ClipOval(
-        child: Material(
-          elevation: 10,
-          shape: CircleBorder(
-            side: BorderSide(
-              color: Theme.of(context).backgroundColor,
-              width: .5,
-            ),
-          ),
-          shadowColor: Theme.of(context).primaryColor,
-          child: Padding(
-            padding: EdgeInsets.all((7 * org.snapShrink + 3).toDouble()),
-            child: Icon(
-              Icons.face_retouching_natural_rounded,
-              size: (70 * org.snapShrink).clamp(25, 70).toDouble(),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return ClipOval(
-      child: Material(
-        elevation: 30,
-        shape: CircleBorder(
-          side: BorderSide(
-            color: Theme.of(context).backgroundColor,
-            width: .7,
-          ),
-        ),
-        shadowColor: Theme.of(context).primaryColor,
-        child: Padding(
-          padding: EdgeInsets.all((7 * org.snapShrink + 3).toDouble()),
-          child: Icon(
-            Icons.face,
-            color: Theme.of(context).hintColor,
-            size: (70 * org.snapShrink).clamp(25, 70).toDouble(),
-          ),
-        ),
-      ),
     );
   }
 }
