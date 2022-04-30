@@ -95,7 +95,7 @@ class _View extends _State with _Bar {
     return SliverList(
       delegate: SliverChildListDelegate(
         <Widget>[
-          const Text('signed in'),
+          const Text('Signed in'),
         ],
       ),
     );
