@@ -24,6 +24,9 @@ App privacy is also updated, due to Firebase analytics & authentication.
 
 Flutter and it dependencies are also updated to the latest compatible version.
 
+- iOS: v1.2.3+59
+- Android: v1.2.1+48
+
 ## 1.2.2+57
 
 Improve
