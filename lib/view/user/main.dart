@@ -115,19 +115,13 @@ class _View extends _State with _Bar {
           children: [
             SignInButton(
               icon: LideaIcon.google,
-              label: 'Google',
+              label: 'Sign in with Google',
               onPressed: authenticate.signInWithGoogle,
             ),
-            if (authenticate.showFacebook)
-              SignInButton(
-                icon: LideaIcon.facebook,
-                label: 'Facebook',
-                onPressed: authenticate.signInWithFacebook,
-              ),
             if (authenticate.showApple)
               SignInButton(
                 icon: LideaIcon.apple,
-                label: 'Apple',
+                label: 'Sign in with Apple',
                 onPressed: () {
                   authenticate.signInWithApple().whenComplete(() {
                     if (authenticate.message.isNotEmpty) {
@@ -140,14 +134,21 @@ class _View extends _State with _Bar {
                   });
                 },
               ),
+            if (authenticate.showFacebook)
+              SignInButton(
+                icon: LideaIcon.facebook,
+                label: 'Sign in with Facebook',
+                onPressed: authenticate.signInWithFacebook,
+              ),
+
             // SignInButton(
             //   icon: LideaIcon.microsoft,
-            //   label: 'Microsoft',
+            //   label: 'Sign in with Microsoft',
             //   onPressed: null,
             // ),
             // SignInButton(
             //   icon: LideaIcon.github,
-            //   label: 'GitHub',
+            //   label: 'Sign in with GitHub',
             //   onPressed: null,
             // ),
           ],
