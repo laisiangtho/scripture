@@ -42,7 +42,6 @@ class _View extends _State with _Bar {
           slivers: sliverWidgets(),
         ),
       ),
-      // TODO: parallel
       bottomNavigationBar: _SheetWidget(
         key: const Key('read-options'),
         nextChapter: setChapterNext,
@@ -215,7 +214,6 @@ class _View extends _State with _Bar {
     //   },
     // );
 
-    // TODO: working verse
     return ValueListenableBuilder<List<int>>(
       key: verse.key,
       valueListenable: core.scripturePrimary.verseSelection,
