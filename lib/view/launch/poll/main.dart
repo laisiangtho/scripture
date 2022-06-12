@@ -173,7 +173,7 @@ class _View extends _State with _Bar {
             itemCount: candidates.length,
             itemBuilder: (_, index) {
               final member = candidates.elementAt(index);
-              bool hasSelected = pollBoard.selection.contains(member.memberId);
+              bool hasSelected = selection.contains(member.memberId);
               // bool hasVoted = pollBoard.result
               //     .where(
               //         (e) => e.memberId.contains(userMemberId) && e.candidateId == member.memberId)
@@ -206,9 +206,6 @@ class _View extends _State with _Bar {
                     return;
                   }
                   poll.toggleSelection(member.memberId);
-
-                  // debugPrint(pollBoard.selection.toString());
-                  // pollBoard.selection.add(member.memberId);
                 },
               );
             },

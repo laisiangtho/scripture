@@ -62,6 +62,8 @@ abstract class _State extends WidgetState with SingleTickerProviderStateMixin {
   PollBoard get pollBoard => poll.pollBoard;
   List<PollMemberType> get candidates => pollBoard.listOfCandidate();
   List<PollResultType> get results => pollBoard.listOfResult();
+  List<int> get selection => pollBoard.selection;
+  String get selectionCount => selection.isEmpty ? '' : selection.length.toString();
 
   // int get userMemberId => pollBoard.memberId(authenticate.userEmail);
 }

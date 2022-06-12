@@ -58,18 +58,18 @@ class _View extends _State with _Bar {
         valueListenable: core.collection.boxOfBooks.listen(),
         builder: bookList,
       ),
-      SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            WidgetButton(
-              onPressed: () {
-                core.navigate(to: '/launch/vote');
-              },
-              child: const Text('Vote'),
-            ),
-          ],
-        ),
-      ),
+      // SliverList(
+      //   delegate: SliverChildListDelegate(
+      //     [
+      //       WidgetButton(
+      //         onPressed: () {
+      //           core.navigate(to: '/launch/vote');
+      //         },
+      //         child: const Text('Vote'),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     ];
   }
 
