@@ -187,13 +187,17 @@ class _View extends _State with _Bar {
                   Icons.person,
                   // icon: Icons.check_rounded,
                   // iconColor: hasSelected ? Theme.of(context).highlightColor : null,
-                  color: hasSelected ? Theme.of(context).errorColor : Theme.of(context).focusColor,
+                  // color: hasSelected ? Theme.of(context).errorColor : Theme.of(context).hintColor,
+                  color: hasSelected ? null : Theme.of(context).hintColor,
                 ),
+                selected: hasSelected,
+                selectedColor: Theme.of(context).errorColor,
                 title: Text(member.name),
                 trailing: Icon(
                   // hasSelected ? Icons.remove_done_outlined : Icons.done_outlined,
                   Icons.done_outlined,
-                  color: hasVoted ? Theme.of(context).primaryColorDark : Colors.transparent,
+                  // color: hasVoted ? Theme.of(context).primaryColorDark : Colors.transparent,
+                  color: hasVoted ? Theme.of(context).hintColor : Colors.transparent,
                 ),
                 // remove_done_outlined
                 onTap: () {
