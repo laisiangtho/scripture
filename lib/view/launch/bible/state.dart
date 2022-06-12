@@ -17,7 +17,7 @@ abstract class _State extends WidgetState with SingleTickerProviderStateMixin {
   ).animate(dragController);
   late final Animation<Color?> colorAnimation = ColorTween(
     begin: null,
-    end: Theme.of(context).highlightColor,
+    end: Theme.of(context).errorColor,
   ).animate(dragController);
 
   @override

@@ -119,44 +119,15 @@ class _View extends _State with _Bar {
     bool isAvailable = book.available > 0;
     return Stack(
       children: [
-        // Positioned(
-        //   top: -18,
-        //   right: 0,
-        //   child: Transform(
-        //     alignment: FractionalOffset.center,
-        //     transform: Matrix4.identity()..rotateZ(40),
-        //     child: Container(
-        //       color: isAvailable
-        //           ? book.selected
-        //               ? Theme.of(context).highlightColor
-        //               : Theme.of(context).disabledColor
-        //           : book.selected
-        //               ? Theme.of(context).highlightColor
-        //               : Colors.transparent,
-        //       width: 22,
-        //       height: 55,
-        //       child: Icon(
-        //         Icons.noise_control_off,
-        //         size: 24,
-        //         color: isAvailable
-        //             ? book.selected
-        //                 ? Theme.of(context).primaryColor
-        //                 : Theme.of(context).primaryColorDark
-        //             : Colors.transparent,
-        //       ),
-        //     ),
-        //   ),
-        // ),
         Positioned(
-          top: -18,
+          top: -13,
           right: 0,
           child: ClipPath(
             clipper: CustomTriangleClipper(),
             child: Container(
               width: 60,
               height: 50,
-              alignment: const Alignment(1, .3),
-              // padding: const EdgeInsets.all(20),
+              alignment: const Alignment(1, .1),
               decoration: BoxDecoration(
                 // gradient: LinearGradient(
                 //   begin: Alignment.topCenter,
@@ -284,7 +255,7 @@ class _View extends _State with _Bar {
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Icon(
           Icons.drag_handle_rounded,
-          color: Theme.of(context).highlightColor,
+          color: Theme.of(context).errorColor,
         ),
       ),
     );
