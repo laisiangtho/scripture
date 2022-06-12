@@ -10,6 +10,8 @@ mixin _Bar on _State {
         children: [
           WidgetButton(
             constraints: const BoxConstraints(maxWidth: 56, minWidth: 40.0, maxHeight: 40),
+            message: preference.text.addTo(preference.text.bookmark(true)),
+            onPressed: core.switchBookmarkWithNotify,
             child: Selector<Core, bool>(
               selector: (_, e) => e.scripturePrimary.bookmarked,
               builder: (BuildContext context, bool hasBookmark, Widget? child) {
@@ -22,8 +24,6 @@ mixin _Bar on _State {
                 );
               },
             ),
-            message: preference.text.addTo(preference.text.bookmark(true)),
-            onPressed: core.switchBookmarkWithNotify,
           ),
           Expanded(
             flex: 1,
@@ -39,6 +39,8 @@ mixin _Bar on _State {
                       left: Radius.elliptical(20, 50),
                     ),
                   ),
+                  message: preference.text.book(true),
+                  onPressed: showBookList,
                   child: Selector<Core, String>(
                     selector: (_, e) => e.scripturePrimary.bookName,
                     builder: (BuildContext context, String bookName, Widget? child) {
@@ -49,8 +51,6 @@ mixin _Bar on _State {
                       );
                     },
                   ),
-                  message: preference.text.book(true),
-                  onPressed: showBookList,
                 ),
                 Divider(
                   indent: 1 * org.snapShrink,
@@ -64,6 +64,8 @@ mixin _Bar on _State {
                       right: Radius.elliptical(20, 50),
                     ),
                   ),
+                  message: preference.text.chapter(true),
+                  onPressed: showChapterList,
                   child: Selector<Core, String>(
                     selector: (_, e) => e.scripturePrimary.chapterName,
                     builder: (BuildContext context, String chapterName, Widget? child) {
@@ -74,8 +76,6 @@ mixin _Bar on _State {
                       );
                     },
                   ),
-                  message: preference.text.chapter(true),
-                  onPressed: showChapterList,
                 ),
               ],
             ),
@@ -83,13 +83,13 @@ mixin _Bar on _State {
           WidgetButton(
             key: kOptionButton,
             constraints: const BoxConstraints(maxWidth: 56, minWidth: 50.0),
+            message: preference.text.fontSize,
+            onPressed: showOptionList,
             child: WidgetLabel(
               icon: LideaIcon.textSize,
               iconColor: Theme.of(context).primaryColorDark,
               iconSize: (org.shrink * 22).clamp(18, 22).toDouble(),
             ),
-            message: preference.text.fontSize,
-            onPressed: showOptionList,
           )
         ],
       ),
@@ -116,12 +116,12 @@ mixin _Bar on _State {
       PageRouteBuilder<Map<String?, int?>>(
         opaque: false,
         barrierDismissible: true,
-        transitionsBuilder: (BuildContext _, Animation<double> x, _y, Widget child) {
+        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
           return FadeTransition(opacity: x, child: child);
         },
         // barrierColor: Colors.white.withOpacity(0.4),
         // barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
-        pageBuilder: (BuildContext _, _x, _y) {
+        pageBuilder: (BuildContext _, __, ___) {
           return PopBookList(
             render: kBookButton.currentContext!.findRenderObject() as RenderBox,
           );
@@ -144,12 +144,12 @@ mixin _Bar on _State {
       PageRouteBuilder<int>(
         opaque: false,
         barrierDismissible: true,
-        transitionsBuilder: (BuildContext _, Animation<double> x, _y, Widget child) {
+        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
           return FadeTransition(opacity: x, child: child);
         },
         // barrierColor: Colors.white.withOpacity(0.4),
         // barrierColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
-        pageBuilder: (BuildContext _, _x, _y) {
+        pageBuilder: (BuildContext _, __, ___) {
           return PopChapterList(
             render: kChapterButton.currentContext!.findRenderObject() as RenderBox,
           );
@@ -167,13 +167,13 @@ mixin _Bar on _State {
       PageRouteBuilder<int>(
         opaque: false,
         barrierDismissible: true,
-        transitionsBuilder: (BuildContext _, Animation<double> x, _y, Widget child) {
+        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
           return FadeTransition(
             opacity: x,
             child: child,
           );
         },
-        pageBuilder: (BuildContext _, _x, _y) {
+        pageBuilder: (BuildContext _, __, ___) {
           return PopOptionList(
             render: kOptionButton.currentContext!.findRenderObject() as RenderBox,
             setFontSize: setFontSize,

@@ -109,7 +109,7 @@ class _View extends _State with _Bar {
           return WidgetChildBuilder(
             child: Selector<Core, BIBLE>(
               selector: (_, e) => e.scripturePrimary.verseChapter,
-              builder: (BuildContext _a, BIBLE _b, Widget? _c) {
+              builder: (BuildContext _, BIBLE __, Widget? ___) {
                 return WidgetListBuilder(
                   primary: false,
                   physics: const NeverScrollableScrollPhysics(),
@@ -218,7 +218,6 @@ class _View extends _State with _Bar {
       key: verse.key,
       valueListenable: core.scripturePrimary.verseSelection,
       builder: (context, value, _) {
-        debugPrint('??? _inheritedVerse $value');
         return VerseWidgetInherited(
           size: collection.boxOfSettings.fontSize().asDouble,
           lang: core.scripturePrimary.info.langCode,

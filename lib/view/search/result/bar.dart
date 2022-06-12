@@ -9,17 +9,17 @@ mixin _Bar on _State {
         children: [
           Expanded(
             child: GestureDetector(
-              child: _formField(),
               onTap: onSuggest,
+              child: _formField(),
             ),
           ),
           WidgetButton(
             padding: const EdgeInsets.only(left: 15),
+            show: args!.hasParam,
+            onPressed: param?.currentState!.maybePop,
             child: const WidgetLabel(
               icon: LideaIcon.home,
             ),
-            show: args!.hasParam,
-            onPressed: param?.currentState!.maybePop,
           ),
         ],
       ),

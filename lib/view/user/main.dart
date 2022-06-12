@@ -56,6 +56,12 @@ class _View extends _State with _Bar {
         overlapsBorderColor: Theme.of(context).shadowColor,
         builder: bar,
       ),
+      PullToActivate(
+        onUpdate: () async {
+          await core.poll.updateAll();
+          setState(() {});
+        },
+      ),
       // SliverToBoxAdapter(child: Text(authenticate.message)),
       SliverPadding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
@@ -72,13 +78,19 @@ class _View extends _State with _Bar {
           },
         ),
       ),
-
       WidgetUserTheme(
         preference: preference,
       ),
       WidgetUserLocale(
         preference: preference,
       ),
+
+      WidgetUserAccount(
+        preference: preference,
+        authenticate: authenticate,
+        children: pollList(),
+      ),
+
       // Selector<ViewScrollNotify, double>(
       //   selector: (_, e) => e.bottomPadding,
       //   builder: (context, bottomPadding, child) {
@@ -89,16 +101,6 @@ class _View extends _State with _Bar {
       //   },
       // ),
     ];
-  }
-
-  Widget profile() {
-    return SliverList(
-      delegate: SliverChildListDelegate(
-        <Widget>[
-          const Text('Signed in'),
-        ],
-      ),
-    );
   }
 
   Widget signInContainer() {
@@ -116,29 +118,25 @@ class _View extends _State with _Bar {
             SignInButton(
               icon: LideaIcon.google,
               label: 'Sign in with Google',
-              onPressed: authenticate.signInWithGoogle,
+              onPressed: () {
+                authenticate.signInWithGoogle().whenComplete(whenCompleteSignIn);
+              },
             ),
             if (authenticate.showApple)
               SignInButton(
                 icon: LideaIcon.apple,
                 label: 'Sign in with Apple',
                 onPressed: () {
-                  authenticate.signInWithApple().whenComplete(() {
-                    if (authenticate.message.isNotEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(authenticate.message),
-                        ),
-                      );
-                    }
-                  });
+                  authenticate.signInWithApple().whenComplete(whenCompleteSignIn);
                 },
               ),
             if (authenticate.showFacebook)
               SignInButton(
                 icon: LideaIcon.facebook,
                 label: 'Sign in with Facebook',
-                onPressed: authenticate.signInWithFacebook,
+                onPressed: () {
+                  authenticate.signInWithFacebook().whenComplete(whenCompleteSignIn);
+                },
               ),
 
             // SignInButton(
@@ -172,6 +170,12 @@ class _View extends _State with _Bar {
           labelStyle: Theme.of(context).textTheme.titleLarge,
         ),
       ),
+      // footerTitle: WidgetBlockTile(
+      //   title: WidgetLabel(
+      //     // alignment: Alignment.centerLeft,
+      //     label: preference.text.bySigningIn,
+      //   ),
+      // ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
         child: ListBody(
@@ -182,6 +186,7 @@ class _View extends _State with _Bar {
               // label: 'khensolomon@gmail.com',
               labelStyle: Theme.of(context).textTheme.labelSmall,
             ),
+
             // Text(
             //   authenticate.id,
             //   textAlign: TextAlign.center,
@@ -189,12 +194,31 @@ class _View extends _State with _Bar {
           ],
         ),
       ),
-      // footerTitle: WidgetBlockTile(
-      //   title: WidgetLabel(
-      //     // alignment: Alignment.centerLeft,
-      //     label: preference.text.bySigningIn,
-      //   ),
-      // ),
+    );
+  }
+
+  List<WidgetButton> pollList() {
+    return List.generate(
+      poll.userPollBoard.length,
+      (index) {
+        final element = poll.userPollBoard.elementAt(index);
+        return WidgetButton(
+          child: WidgetLabel(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+            alignment: Alignment.centerLeft,
+            icon: Icons.how_to_vote_outlined,
+            label: element.info.title,
+            labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+            labelStyle: Theme.of(context).textTheme.bodyLarge,
+            softWrap: true,
+            maxLines: 3,
+          ),
+          onPressed: () {
+            poll.tokenId = element.gist.token.id;
+            core.navigate(to: '/launch/poll');
+          },
+        );
+      },
     );
   }
 }

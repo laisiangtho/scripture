@@ -5,12 +5,12 @@ mixin _Bar on _State {
     return ViewHeaderLayoutStack(
       leftAction: [
         WidgetButton(
+          show: hasArguments,
+          onPressed: args?.currentState!.maybePop,
           child: WidgetMark(
             icon: Icons.arrow_back_ios_new_rounded,
             label: preference.text.back,
           ),
-          show: hasArguments,
-          onPressed: args?.currentState!.maybePop,
         ),
       ],
       primary: WidgetAppbarTitle(
@@ -36,9 +36,9 @@ mixin _Bar on _State {
 
   Widget _barSortButton(BuildContext context, bool hasBookmark, Widget? child) {
     return WidgetButton(
-      child: child,
       enable: hasBookmark,
       onPressed: onDeleteAllConfirmWithDialog,
+      child: child,
     );
   }
 }

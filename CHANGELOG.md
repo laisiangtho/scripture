@@ -1,5 +1,23 @@
 # Change log
 
+## 1.2.4+61
+
+Improve
+
+- Performance
+- Dark theme
+
+Update
+
+- Core, Lidea(v0.2.6+42) and dependencies
+
+Add
+
+- Account delete
+
+- iOS: v1.2.4+?
+- Android: v1.2.4+61
+  
 ## 1.2.3+59
 
 Improve
@@ -24,7 +42,7 @@ App privacy is also updated, due to Firebase analytics & authentication.
 
 Flutter and it dependencies are also updated to the latest compatible version.
 
-- iOS: v1.2.3+59
+- iOS: v1.2.3+60
 - Android: v1.2.1+48
 
 ## 1.2.2+57

@@ -72,13 +72,13 @@ abstract class _State extends WidgetState {
 
   void verseSelectionCopy() {
     List<String> list = [];
-    String subject = tmpbook.name + ' ' + tmpchapter.name;
+    String subject = '${tmpbook.name} ${tmpchapter.name}';
     list.add(subject);
     core.scripturePrimary.verseSelection.value
       ..sort((a, b) => a.compareTo(b))
       ..forEach((id) {
         VERSE o = tmpverse.where((i) => i.id == id).single;
-        list.add(o.name + ': ' + o.text);
+        list.add('${o.name}: ${o.text}');
       });
     // Clipboard.setData(new ClipboardData(text: list.join("\n"))).whenComplete(() {
     //   showSnack('Copied to Clipboard');

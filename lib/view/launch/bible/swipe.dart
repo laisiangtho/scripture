@@ -13,10 +13,10 @@ class SwipeForMore extends StatefulWidget {
   final double dx;
 
   @override
-  _SwipeForMoreState createState() => _SwipeForMoreState();
+  SwipeForMoreState createState() => SwipeForMoreState();
 }
 
-class _SwipeForMoreState extends State<SwipeForMore> with SingleTickerProviderStateMixin {
+class SwipeForMoreState extends State<SwipeForMore> with SingleTickerProviderStateMixin {
   late final AnimationController controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 200),
@@ -92,7 +92,6 @@ class _SwipeForMoreState extends State<SwipeForMore> with SingleTickerProviderSt
                           bottom: .0,
                           width: constraint.maxWidth * offset.value.dx * -1,
                           child: SizedBox(
-                            // color: Colors.black26,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,

@@ -107,11 +107,11 @@ class _SheetParallelState extends State<SheetParallel> with TickerProviderStateM
                     ),
                   ),
                   WidgetButton(
+                    message: preference.text.chooseTo(preference.text.bible(false)),
+                    onPressed: _showParallelList,
                     child: const WidgetLabel(
                       icon: Icons.linear_scale,
                     ),
-                    message: preference.text.chooseTo(preference.text.bible(false)),
-                    onPressed: _showParallelList,
                   )
                 ],
               ),

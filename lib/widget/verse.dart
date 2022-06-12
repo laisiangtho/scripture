@@ -93,11 +93,11 @@ class WidgetVerse extends StatelessWidget {
                     children: <TextSpan>[
                       TextSpan(
                         text: verse.name,
-                        semanticsLabel: 'verse: ' + verse.name,
+                        semanticsLabel: 'verse: ${verse.name}',
                       ),
                       if (verse.merge.isNotEmpty)
                         TextSpan(
-                          text: '-' + verse.merge,
+                          text: '-${verse.merge}',
                         ),
                     ],
                     style: TextStyle(
@@ -107,7 +107,7 @@ class WidgetVerse extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: '\t',
+                    text: ' ',
                     children: hightLight(
                       verse.text,
                       keyword,
@@ -122,7 +122,7 @@ class WidgetVerse extends StatelessWidget {
                   ),
                   if (alsoInVerse != null && alsoInVerse!.isNotEmpty)
                     TextSpan(
-                      text: '\t ...$alsoInVerse',
+                      text: '3\t ...$alsoInVerse',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: userVerse.titleSize,

@@ -4,8 +4,10 @@ abstract class _Abstract extends UnitEngine with _Utility {
   final Collection collection = Collection.internal();
 
   late final Preference preference = Preference(collection);
+  // authenticate navigate
   late final Authentication authentication = Authentication();
   late final NavigationNotify navigation = NavigationNotify();
+  late final Poll poll = Poll(collection, notify, authentication);
   late final Analytics analytics = Analytics();
 
   late final store = Store();
@@ -44,11 +46,21 @@ abstract class _Abstract extends UnitEngine with _Utility {
   }
 
   Future<void> dataInitialized() async {
+    // if (collection.requireInitialized) {
+    //   APIType api = collection.env.api.firstWhere(
+    //     (e) => e.asset.isNotEmpty,
+    //   );
+    //   await UtilArchive.extractBundle(api.asset, noneArchive: true);
+    // }
+
     if (collection.requireInitialized) {
-      APIType api = collection.env.api.firstWhere(
+      Iterable<APIType> api = collection.env.api.where(
         (e) => e.asset.isNotEmpty,
       );
-      await UtilArchive.extractBundle(api.asset);
+
+      for (var e in api) {
+        await UtilArchive.extractBundle(e.asset, noneArchive: true);
+      }
     }
 
     if (collection.boxOfBooks.box.isEmpty) {
@@ -63,7 +75,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
 
   Future<void> updateBookMeta() async {
     final url = collection.env.url('book').uri(null);
-    return UtilClient(url).get<String>().then((e) async {
+    return UtilAsk(url).get<String>().then((e) async {
       final parsed = UtilDocument.decodeJSON(e);
       await _importBookMeta(parsed['book']);
     });
@@ -160,8 +172,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
     }
   }
 
-  // NOTE: Bookmark
-  // TODO: notify may not require
+  /// Bookmark switch
   void switchBookmarkWithNotify() {
     collection.boxOfBookmarks
         .userSwitch(
@@ -173,12 +184,12 @@ abstract class _Abstract extends UnitEngine with _Utility {
         .whenComplete(notify);
   }
 
-  // TODO: notify may not require
+  /// Bookmark delete all
   void clearBookmarkWithNotify() {
     collection.boxOfBookmarks.clearAll().whenComplete(notify);
   }
 
-  // TODO: notify may not require
+  /// Bookmark delete once
   void deleteBookmarkWithNotify(int index) {
     collection.boxOfBookmarks.deleteAtIndex(index).whenComplete(notify);
   }

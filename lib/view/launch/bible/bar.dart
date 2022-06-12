@@ -5,12 +5,12 @@ mixin _Bar on _State {
     return ViewHeaderLayoutStack(
       leftAction: [
         WidgetButton(
+          show: canPop(),
+          onPressed: maybePop(),
           child: WidgetMark(
             icon: Icons.arrow_back_ios_new_rounded,
             label: preference.text.back,
           ),
-          show: canPop(),
-          onPressed: maybePop(),
         ),
       ],
       primary: WidgetAppbarTitle(
@@ -18,6 +18,7 @@ mixin _Bar on _State {
       ),
       rightAction: [
         WidgetButton(
+          onPressed: onSort,
           child: AnimatedBuilder(
             animation: dragController,
             builder: (context, _) {
@@ -27,7 +28,6 @@ mixin _Bar on _State {
               );
             },
           ),
-          onPressed: onSort,
         ),
       ],
     );

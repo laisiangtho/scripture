@@ -4,7 +4,7 @@ description: the Holy Bible in languages
 # Remove this line to publish to pub.dev
 publish_to: 'none'
 
-version: 1.2.3+60
+version: 1.2.4+61
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -25,7 +25,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
 
 flutter:
   uses-material-design: true
@@ -36,7 +36,10 @@ flutter:
   # Add assets
   assets:
     - assets/env.json
-    - assets/bible.json
+    - assets/book.json
+    - assets/niv2011.json
+    - assets/tedim1932.json
+    - assets/judson1835.json
 
   # fonts from lidea
   fonts:

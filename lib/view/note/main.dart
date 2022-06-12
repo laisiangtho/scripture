@@ -75,6 +75,8 @@ class _View extends _State with _Bar {
   Widget listContainer(
       BuildContext _, List<MapEntry<dynamic, BookmarksType>> box, Widget? placeHolder) {
     return WidgetChildBuilder(
+      show: box.isNotEmpty,
+      placeHolder: placeHolder,
       child: WidgetBlockCard(
         child: WidgetListBuilder(
           primary: false,
@@ -89,8 +91,6 @@ class _View extends _State with _Bar {
           itemCount: box.length,
         ),
       ),
-      show: box.isNotEmpty,
-      placeHolder: placeHolder,
     );
   }
 
@@ -100,6 +100,16 @@ class _View extends _State with _Bar {
       // key: Key(index.toString()),
       key: Key(bookmark.value.date.toString()),
       direction: DismissDirection.endToStart,
+      background: dismissiblesFromRight(),
+
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          return await onDelete(index);
+        } else {
+          // Navigate to edit page;
+        }
+        return null;
+      },
       child: ListTile(
         // contentPadding: EdgeInsets.zero,
         title: Text(
@@ -122,16 +132,6 @@ class _View extends _State with _Bar {
           bookmark.value.chapterId,
         ),
       ),
-      background: dismissiblesFromRight(),
-
-      confirmDismiss: (direction) async {
-        if (direction == DismissDirection.endToStart) {
-          return await onDelete(index);
-        } else {
-          // Navigate to edit page;
-        }
-        return null;
-      },
     );
   }
 

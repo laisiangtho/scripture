@@ -5,12 +5,12 @@ mixin _Bar on _State {
     return ViewHeaderLayoutStack(
       leftAction: [
         WidgetButton(
+          show: hasArguments,
+          onPressed: args?.currentState!.maybePop,
           child: WidgetMark(
             icon: Icons.arrow_back_ios_new_rounded,
             label: preference.text.back,
           ),
-          show: hasArguments,
-          onPressed: args?.currentState!.maybePop,
         ),
       ],
       primary: WidgetAppbarTitle(
@@ -24,6 +24,8 @@ mixin _Bar on _State {
       ),
       rightAction: [
         WidgetButton(
+          message: preference.text.option(true),
+          onPressed: () => core.navigate(to: '/user'),
           child: WidgetMark(
             child: Selector<Authentication, bool>(
               selector: (_, e) => e.hasUser,
@@ -32,8 +34,6 @@ mixin _Bar on _State {
               },
             ),
           ),
-          message: preference.text.option(true),
-          onPressed: () => core.navigate(to: '/user'),
         ),
       ],
     );

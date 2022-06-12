@@ -47,15 +47,14 @@ class Scripture {
     return _identifyIndex >= 0;
   }
 
+  // NOTE: Null check operator used on a null value -> _identifyIndexPrevious
   DefinitionBible get bible {
-    // TODO: Null check operator used on a null value -> _identifyIndexPrevious
-    // return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
     return collection.cacheBible.elementAt(isReady ? _identifyIndex : _identifyIndexPrevious!);
   }
 
   Future<DefinitionBible> init() async {
     // searchQuery = collection.searchQuery;
-    debugPrint('scripture: $identify');
+    // debugPrint('scripture: $identify');
     if (isReady) {
       return bible;
     }
@@ -98,7 +97,7 @@ class Scripture {
   }
 
   Future<void> _download() {
-    return UtilClient(url).get<String>().then((body) async {
+    return UtilAsk(url).get<String>().then((body) async {
       await _parseDefinitionBible(body);
       await UtilDocument.writeAsString(file, body);
       await switchAvailabilityOfBox(1);

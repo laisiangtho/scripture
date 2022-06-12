@@ -53,10 +53,11 @@ class _View extends _State with _Bar {
         overlapsBorderColor: Theme.of(context).shadowColor,
         builder: bar,
       ),
-      PullToAny(
+      PullToActivate(
         onUpdate: core.updateBookMeta,
       ),
       ValueListenableBuilder(
+        key: const ValueKey('fe'),
         valueListenable: collection.boxOfBooks.listen(),
         builder: bookList,
       ),
@@ -65,7 +66,8 @@ class _View extends _State with _Bar {
 
   Widget bookList(BuildContext context, Box<BooksType> box, Widget? child) {
     return WidgetListBuilder(
-      key: _kList,
+      // key: _kList,
+      // primary: false,
       itemBuilder: (BuildContext context, int index) => bookContainer(index, box.getAt(index)!),
       itemCount: box.length,
       itemReorderable: (int oldIndex, int newIndex) async {
@@ -89,14 +91,9 @@ class _View extends _State with _Bar {
 
   Widget bookContainer(int index, BooksType book) {
     return SwipeForMore(
-      key: Key('$index'),
-      child: Card(
-        // elevation: 0.5,
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-        child: bookItem(index, book),
-      ),
       menu: <Widget>[
-        Container(
+        WidgetButton(
+          padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.horizontal(
               left: Radius.circular(12),
@@ -104,16 +101,95 @@ class _View extends _State with _Bar {
             // color: Theme.of(context).primaryColorLight,
             color: Theme.of(context).focusColor,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 2),
-          child: WidgetButton(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: const WidgetLabel(
-              icon: LideaIcon.dotHoriz,
-            ),
-            message: preference.text.more,
-            onPressed: () => showOptions(book),
+          message: preference.text.more,
+          onPressed: () => showOptions(book),
+          child: const WidgetLabel(
+            icon: LideaIcon.dotHoriz,
           ),
         ),
+      ],
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+        child: bookDecoration(index, book),
+      ),
+    );
+  }
+
+  Widget bookDecoration(int index, BooksType book) {
+    bool isAvailable = book.available > 0;
+    return Stack(
+      children: [
+        // Positioned(
+        //   top: -18,
+        //   right: 0,
+        //   child: Transform(
+        //     alignment: FractionalOffset.center,
+        //     transform: Matrix4.identity()..rotateZ(40),
+        //     child: Container(
+        //       color: isAvailable
+        //           ? book.selected
+        //               ? Theme.of(context).highlightColor
+        //               : Theme.of(context).disabledColor
+        //           : book.selected
+        //               ? Theme.of(context).highlightColor
+        //               : Colors.transparent,
+        //       width: 22,
+        //       height: 55,
+        //       child: Icon(
+        //         Icons.noise_control_off,
+        //         size: 24,
+        //         color: isAvailable
+        //             ? book.selected
+        //                 ? Theme.of(context).primaryColor
+        //                 : Theme.of(context).primaryColorDark
+        //             : Colors.transparent,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        Positioned(
+          top: -18,
+          right: 0,
+          child: ClipPath(
+            clipper: CustomTriangleClipper(),
+            child: Container(
+              width: 60,
+              height: 50,
+              alignment: const Alignment(1, .3),
+              // padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                // gradient: LinearGradient(
+                //   begin: Alignment.topCenter,
+                //   end: Alignment.bottomCenter,
+                //   colors: [
+                //     // Theme.of(context).highlightColor,
+                //     Theme.of(context).primaryColor,
+                //     Theme.of(context).disabledColor,
+                //     // Color(0xffF25D50),
+                //     // Color(0xffF2BB77),
+                //   ],
+                // ),
+                color: isAvailable
+                    ? book.selected
+                        ? Theme.of(context).highlightColor
+                        : Theme.of(context).disabledColor
+                    : book.selected
+                        ? Theme.of(context).highlightColor
+                        : Colors.transparent,
+              ),
+              child: Icon(
+                Icons.noise_control_off,
+                size: 24,
+                color: isAvailable
+                    ? book.selected
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).primaryColorDark
+                    : Colors.transparent,
+              ),
+            ),
+          ),
+        ),
+        bookItem(index, book),
       ],
     );
   }
@@ -125,32 +201,21 @@ class _View extends _State with _Bar {
       title: Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: DefaultTextStyle(
-          child: Text(book.name),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                fontSize: 20,
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                // fontSize: 20,
                 fontWeight: isAvailable ? FontWeight.w400 : FontWeight.w300,
-                // color: isAvailable?Colors.black:Colors.grey,
               ),
+          child: Text(book.name),
         ),
       ),
       subtitle: Row(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
-        textBaseline: TextBaseline.alphabetic,
+        // textBaseline: TextBaseline.alphabetic,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 7),
-            child: Icon(
-              Icons.favorite,
-              size: 18,
-              color: book.selected
-                  ? Theme.of(context).highlightColor
-                  : Theme.of(context).primaryColorDark,
-            ),
-          ),
           Container(
             constraints: const BoxConstraints(
               minWidth: 37.0,
@@ -169,8 +234,8 @@ class _View extends _State with _Bar {
             child: Text(
               book.langCode.toUpperCase(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 12,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 13,
                     color: isAvailable ? Theme.of(context).primaryColor : null,
                   ),
             ),
@@ -179,7 +244,7 @@ class _View extends _State with _Bar {
             padding: const EdgeInsets.only(left: 0),
             child: Text(
               book.shortname,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 14),
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
             ),
           ),
         ],
@@ -194,15 +259,14 @@ class _View extends _State with _Bar {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
                 transitionBuilder: (Widget child, Animation<double> animation) {
-                  return ScaleTransition(child: child, scale: animation);
+                  return ScaleTransition(scale: animation, child: child);
                 },
                 child: dragAnimation.isCompleted ? dragHandler(index) : child!,
               );
             },
             child: Text(
-              book.year.toString(),
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 16,
+              '${book.year}',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: isAvailable ? null : Theme.of(context).hintColor,
                   ),
             ),
@@ -217,12 +281,28 @@ class _View extends _State with _Bar {
     return ReorderableDragStartListener(
       index: index,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Icon(
           Icons.drag_handle_rounded,
           color: Theme.of(context).highlightColor,
         ),
       ),
     );
+  }
+}
+
+class CustomTriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }

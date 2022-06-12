@@ -1,5 +1,7 @@
 library data.core;
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +40,7 @@ part 'preference.dart';
 part 'authentication.dart';
 part 'navigation.dart';
 part 'analytics.dart';
+part 'poll.dart';
 
 part 'abstract.dart';
 part 'utility.dart';
@@ -57,6 +60,7 @@ class Core extends _Abstract with _Mock {
 
     await store.init();
     await sql.init();
+    await poll.init();
 
     // await mockTest();
 

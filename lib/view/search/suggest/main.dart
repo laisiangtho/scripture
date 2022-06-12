@@ -96,13 +96,14 @@ class _View extends _State with _Bar {
   Widget _suggestNoQuery() {
     return Selector<Core, Iterable<MapEntry<dynamic, RecentSearchType>>>(
       selector: (_, e) => e.collection.boxOfRecentSearch.entries,
-      builder: (BuildContext _a, Iterable<MapEntry<dynamic, RecentSearchType>> items, Widget? _b) {
+      builder: (BuildContext _, Iterable<MapEntry<dynamic, RecentSearchType>> items, Widget? __) {
         return WidgetBlockSection(
           show: items.isNotEmpty,
           duration: const Duration(milliseconds: 270),
           headerLeading: WidgetLabel(
             label: preference.text.recentSearch(items.length > 1),
           ),
+          placeHolder: _msg(preference.text.aWordOrTwo),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 3, 0, 5),
             child: Material(
@@ -116,7 +117,6 @@ class _View extends _State with _Bar {
               child: _recentBlock(items),
             ),
           ),
-          placeHolder: _msg(preference.text.aWordOrTwo),
         );
       },
     );
@@ -231,6 +231,14 @@ class _View extends _State with _Bar {
     return Dismissible(
       key: Key(item.value.date.toString()),
       direction: DismissDirection.endToStart,
+      background: _recentDismissibleBackground(),
+      // secondaryBackground: _recentListDismissibleSecondaryBackground),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          return onDelete(item.value.word);
+        }
+        return null;
+      },
       child: ListTile(
         leading: const Icon(Icons.north_east_rounded),
         title: _recentItem(item.value.word),
@@ -274,14 +282,6 @@ class _View extends _State with _Bar {
         // ),
         onTap: () => onSuggest(item.value.word),
       ),
-      background: _recentDismissibleBackground(),
-      // secondaryBackground: _recentListDismissibleSecondaryBackground),
-      confirmDismiss: (direction) async {
-        if (direction == DismissDirection.endToStart) {
-          return onDelete(item.value.word);
-        }
-        return null;
-      },
     );
   }
 

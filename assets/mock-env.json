@@ -2,9 +2,9 @@
   "name":"Lai Siangtho",
   "description":"the Holy Bible in languages",
   "package":"",
-  "version":"1.2.2",
-  "buildNumber":"50",
-  "settingName": "",
+  "version":"1.2.4",
+  "buildNumber":"61",
+  "settingName": "settings",
   "settingKey": "",
   "settings":{
     "version": 0,
@@ -41,21 +41,13 @@
       "id": "repo",
       "type": "repo",
       "tag": "0",
-      "owns": "<ohtgnaisial>",
-      "name": "<elbib>"
-    },
-    {
-      "id": "com",
-      "type": "url",
-      "tag": "0",
-      "owns": "<moc.hiediaz.www>",
-      "name": "</ipa>"
+      "owns": "laisiangtho",
+      "name": "bible"
     }
   ],
   "api": [
     {
       "uid": "bible",
-      "asset": "<nosj.?>",
       "local": "<nosj.?>",
       "src": [
         "[repo]<nosj.!/nosj>"
@@ -63,10 +55,23 @@
     },
     {
       "uid": "book",
+      "asset": "<nosj.?>",
       "local": "<nosj.?>",
       "src":[
         "[repo]<nosj.!>"
       ]
+    },
+    {
+      "uid": "judson1835",
+      "asset": "<nosj.?>"
+    },
+    {
+      "uid": "niv2011",
+      "asset": "<nosj.?>"
+    },
+    {
+      "uid": "tedim1932",
+      "asset": "<nosj.?>"
     }
   ],
   "attach":{}

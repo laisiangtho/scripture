@@ -2,6 +2,129 @@ part of data.core;
 
 /// check
 mixin _Mock on _Abstract {
+  Future<void> updateTokenTmp() async {
+    // await collection.updateToken(force: true);
+    // zin-ec-poll
+    // zin-ec-poll-member
+    // zin-ec-poll-result
+    // poll-zin-ec
+    // poll-zin-ec-member
+    // poll-zin-ec-result
+    // poll-zin-ec-2022
+    // poll-zin-ec-2022-member.csv
+    // poll-zin-ec-2022-result.csv
+    // poll-zin-ec-2022-info.json
+    // ZIN Executive Committee election
+    // final asf = zin();
+
+    // authentication.hasUser;
+
+    // if (authentication.hasUser) {
+    //   authentication.userEmail;
+    // }
+
+    // debugPrint(authentication.userEmail);
+
+    // await asf.gitContent<String>(file: 'zin-ec-poll-2022-member.csv').then((String e) {
+    //   debugPrint('a $e');
+    //   final asdf = e.split('\n');
+    //   final header = asdf.elementAt(0);
+    // }).onError((e, stackTrace) {
+    //   debugPrint('$e');
+    // });
+    // await asf.gitContent<String>(file: 'zin-ec-poll-2022-result.csv').then((String e) {
+    //   debugPrint('a $e');
+    //   final asdf = e.split('\n');
+    //   final header = asdf.elementAt(0);
+    // }).onError((e, stackTrace) {
+    //   debugPrint('$e');
+    // });
+
+    // startat endat
+    DateTime date = DateTime.parse('2022-06-03 17:44:00');
+    DateTime today = DateTime.now();
+
+    bool valDate = today.isBefore(date);
+    // bool valDate = today.isAfter(date);
+    debugPrint('valDate: $valDate date: $date today: $today');
+
+    // final a = today.compareTo(date);
+
+    // const timeout = Duration(seconds: 5);
+    // debugPrint('currentTime=${DateTime.now()}');
+    // Timer(timeout, () {
+    //   // Callback on time
+    //   debugPrint('afterTimer=${DateTime.now()}');
+    // });
+    // regexResultTmp();
+    // regexMemberTmp();
+    // regexInfoTmp();
+    // await poll.update();
+  }
+
+  GistData zin() {
+    return collection.env.openGistData('zin-ec-poll-2022');
+  }
+
+  void regexInfoTmp() {
+    String src =
+        '{"title":"ZIN EC election","description":"ZIN Executive Committee election","start":"","expire":"2022-07-06 12:00:00","limit":7}';
+
+    final rawSrc = UtilDocument.decodeJSON(src);
+
+    rawSrc['asdf'] = 'asfasdf';
+
+    debugPrint('list $rawSrc');
+
+    // final efe = a2.elementAt(0);
+  }
+
+  void regexResultTmp() {
+    String src = 'id,vote,rank\n1,4 7,2\n3,3 3,2\n';
+
+    List<String> rawSrc = src.split('\n');
+    rawSrc.removeWhere((item) => item.isEmpty);
+
+    List<String> header = rawSrc.removeAt(0).split(',');
+
+    final rawMap = rawSrc.map((o) {
+      List<String> val = o.split(',');
+      return val.asMap().map((idx, value) {
+        return MapEntry(header.elementAt(idx), value);
+      });
+    });
+
+    final rawJSON = rawMap.map((e) => UtilDocument.encodeJSON(e)).toList();
+
+    debugPrint('list $rawJSON');
+
+    // final efe = a2.elementAt(0);
+  }
+
+  void regexMemberTmp() {
+    String src =
+        'id,name,email,candidate\n1,Thang Za Mung,lundonniang@gmail.com,\n2,Tin Zing,tinzing08@gmail.com,\n3,Lun Don Niang,lundonniang@gmail.com,\n4,Sui Tin Sung,suitinster@gmail.com,1\n5,Pum Za Chin,pumzachin@gmail.com,\n6,Vung Za Khawm,pumzachin@gmail.com,';
+
+    List<String> rawSrc = src.split('\n');
+    rawSrc.removeWhere((item) => item.isEmpty);
+
+    List<String> header = rawSrc.removeAt(0).split(',');
+
+    final rawMap = rawSrc.map((o) {
+      List<String> val = o.split(',');
+      return val.asMap().map((i, e) {
+        int idx = val.indexOf(e);
+        return MapEntry(header.elementAt(idx), e);
+      });
+    });
+
+    final rawJSON = rawMap.map((e) => UtilDocument.encodeJSON(e)).toList();
+
+    debugPrint('list $rawJSON');
+
+    // final efe = a2.elementAt(0);
+  }
+
   Future<dynamic> mockTest1() async {
     Stopwatch mockWatch = Stopwatch()..start();
 

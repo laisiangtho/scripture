@@ -58,6 +58,18 @@ class _View extends _State with _Bar {
         valueListenable: core.collection.boxOfBooks.listen(),
         builder: bookList,
       ),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            WidgetButton(
+              onPressed: () {
+                core.navigate(to: '/launch/vote');
+              },
+              child: const Text('Vote'),
+            ),
+          ],
+        ),
+      ),
     ];
   }
 
@@ -73,13 +85,22 @@ class _View extends _State with _Bar {
         label: preference.text.favorite(true),
       ),
       headerTrailing: WidgetButton(
-        child: const WidgetLabel(
-          icon: Icons.more_horiz,
-        ),
         message: preference.text.addTo(preference.text.favorite(true)),
         onPressed: () {
           core.navigate(to: '/launch/bible');
         },
+        child: const WidgetLabel(
+          icon: Icons.more_horiz,
+        ),
+      ),
+      footerTitle: WidgetButton(
+        show: items.isNotEmpty,
+        onPressed: () {
+          core.navigate(to: '/launch/bible');
+        },
+        child: WidgetMark(
+          label: preference.text.addMore(preference.text.favorite(true)),
+        ),
       ),
       child: WidgetBlockCard(
         child: WidgetListBuilder(
@@ -105,15 +126,6 @@ class _View extends _State with _Bar {
           ),
           itemCount: items.length,
         ),
-      ),
-      footerTitle: WidgetButton(
-        child: WidgetMark(
-          label: preference.text.addMore(preference.text.favorite(true)),
-        ),
-        show: items.isNotEmpty,
-        onPressed: () {
-          core.navigate(to: '/launch/bible');
-        },
       ),
     );
   }

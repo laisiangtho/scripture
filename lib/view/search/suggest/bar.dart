@@ -12,11 +12,11 @@ mixin _Bar on _State {
           ),
           WidgetButton(
             padding: const EdgeInsets.only(left: 15),
+            onPressed: onCancel,
             child: WidgetMark(
               mainAxisAlignment: MainAxisAlignment.start,
               label: preference.text.cancel,
             ),
-            onPressed: onCancel,
           ),
         ],
       ),

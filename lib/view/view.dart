@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-class AppView extends _State with _BottomNavigator {
+class AppView extends MainState with _BottomNavigator {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

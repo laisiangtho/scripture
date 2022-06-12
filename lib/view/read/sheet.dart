@@ -25,6 +25,8 @@ class _SheetWidgetState extends ViewDraggableSheetState<_SheetWidget> {
   // NOTE: require for iOS none Home Button
   @override
   double get kHeight => kBottomNavigationBarHeight;
+  @override
+  Color get backgroundColor => Theme.of(context).scaffoldBackgroundColor;
 
   void showParallel() {
     // _draggableEngine(checkChildSize ? 1.0 : 0.0);
@@ -52,6 +54,16 @@ class _SheetWidgetState extends ViewDraggableSheetState<_SheetWidget> {
           scrollToIndex: widget.scrollToIndex,
         ),
       ),
+      // SliverList(
+      //   delegate: SliverChildListDelegate(
+      //     <Widget>[
+      //       SheetParallel(
+      //         controller: scrollController,
+      //         scrollToIndex: widget.scrollToIndex,
+      //       ),
+      //     ],
+      //   ),
+      // ),
     ];
   }
 
@@ -63,33 +75,32 @@ class _SheetWidgetState extends ViewDraggableSheetState<_SheetWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         WidgetButton(
-          child: const WidgetMark(icon: LideaIcon.chapterPrevious, iconSize: 25),
           message: preference.text.previousTo(preference.text.chapter(false)),
           onPressed: widget.previousChapter,
+          child: const WidgetMark(icon: LideaIcon.chapterPrevious, iconSize: 25),
         ),
         WidgetButton(
-          child: const WidgetMark(icon: LideaIcon.chapterNext, iconSize: 25),
           message: preference.text.nextTo(preference.text.chapter(false)),
           onPressed: widget.nextChapter,
+          child: const WidgetMark(icon: LideaIcon.chapterNext, iconSize: 25),
         ),
         WidgetButton(
-          child: const WidgetMark(icon: LideaIcon.language, iconSize: 22),
-          // message: "Compare selected verse Parallel",
           message: preference.text.compareTo(preference.text.parallel),
           onPressed: showParallel,
+          child: const WidgetMark(icon: LideaIcon.language, iconSize: 22),
         ),
         ValueListenableBuilder<List<int>>(
           valueListenable: core.scripturePrimary.verseSelection,
           builder: (context, value, _) {
             return WidgetButton(
+              enable: value.isNotEmpty,
+              message: preference.text.share,
+              onPressed: widget.verseSelectionCopy,
               child: WidgetMark(
                 icon: LideaIcon.copy,
                 iconSize: 22,
                 badge: value.isNotEmpty ? value.length.toString() : '',
               ),
-              enable: value.isNotEmpty,
-              message: preference.text.share,
-              onPressed: widget.verseSelectionCopy,
             );
           },
         ),

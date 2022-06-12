@@ -73,11 +73,11 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
           label: book.name,
         ),
         actions: [
-          if (isAvailable)
-            WidgetMark(
-              icon: Icons.verified_user_rounded,
-              iconColor: theme.primaryColorDark,
-            )
+          WidgetMark(
+            icon: Icons.verified_user_rounded,
+            iconColor: theme.primaryColorDark,
+            show: isAvailable,
+          ),
         ],
       ),
       SliverList(
@@ -94,69 +94,70 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
               padding: const EdgeInsets.all(20),
               label: book.identify,
             ),
-            if (message.isNotEmpty)
-              WidgetMark(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                label: message,
-              ),
+            WidgetMark(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              label: message,
+              show: message.isNotEmpty,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 WidgetButton(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
-                    // color: theme.highlightColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(100)),
-                    color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
-                    elevation: 1,
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
+                  // color: theme.highlightColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                  color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
+                  elevation: 1,
+                  onPressed: download(),
 
-                    // decoration: BoxDecoration(
-                    //   color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
-                    //   borderRadius: BorderRadius.circular(100),
-                    //   // border: Border.all(
-                    //   //   color: Theme.of(context).shadowColor,
-                    //   //   width: 1,
-                    //   // ),
-                    // ),
-                    // clipBehavior: Clip.hardEdge,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        if (isDownloading)
-                          SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: theme.primaryColor,
-                            ),
-                          )
-                        else
-                          SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: Icon(
-                              isAvailable ? Icons.remove_circle : Icons.add_circle,
-                              size: 29,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                        const Divider(
-                          indent: 10,
-                        ),
-                        WidgetLabel(
-                          constraints: const BoxConstraints(maxHeight: 30),
-                          label: isAvailable ? preference.text.delete : preference.text.download,
-                          labelStyle: theme.textTheme.bodyLarge!.copyWith(
+                  // decoration: BoxDecoration(
+                  //   color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
+                  //   borderRadius: BorderRadius.circular(100),
+                  //   // border: Border.all(
+                  //   //   color: Theme.of(context).shadowColor,
+                  //   //   width: 1,
+                  //   // ),
+                  // ),
+                  // clipBehavior: Clip.hardEdge,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (isDownloading)
+                        SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
                             color: theme.primaryColor,
-                            height: 1.1,
                           ),
                         )
-                      ],
-                    ),
-                    onPressed: download()),
+                      else
+                        SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: Icon(
+                            isAvailable ? Icons.remove_circle : Icons.add_circle,
+                            size: 29,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      const Divider(
+                        indent: 10,
+                      ),
+                      WidgetLabel(
+                        constraints: const BoxConstraints(maxHeight: 30),
+                        label: isAvailable ? preference.text.delete : preference.text.download,
+                        labelStyle: theme.textTheme.bodyLarge!.copyWith(
+                          color: theme.primaryColor,
+                          height: 1.1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],

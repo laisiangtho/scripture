@@ -8,7 +8,7 @@ class Coloration {
             ColorationData.textTheme(),
           ),
       color: const ColorationScheme(
-        highlight: Colors.orange,
+        highlight: Colors.blue,
       ),
     );
   }

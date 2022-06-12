@@ -5,7 +5,7 @@ abstract class _State extends WidgetState with SingleTickerProviderStateMixin {
   // late final param = args?.param<ViewNavigationArguments>();
   late final param = args?.param<String>();
 
-  late final _kList = GlobalKey<SliverReorderableListState>();
+  // late final _kList = GlobalKey<SliverReorderableListState>();
 
   late final AnimationController dragController = AnimationController(
     duration: const Duration(milliseconds: 100),

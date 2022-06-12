@@ -5,12 +5,12 @@ mixin _Bar<T> on _State {
     return ViewHeaderLayoutStack(
       leftAction: [
         WidgetButton(
+          show: hasArguments,
+          onPressed: args?.currentState!.maybePop,
           child: WidgetMark(
             icon: Icons.arrow_back_ios_new_rounded,
             label: preference.text.back,
           ),
-          show: hasArguments,
-          onPressed: args?.currentState!.maybePop,
         ),
       ],
       primary: Align(
@@ -22,12 +22,12 @@ mixin _Bar<T> on _State {
       ),
       rightAction: [
         WidgetButton(
-          child: const WidgetMark(
-            icon: Icons.logout_rounded,
-          ),
           message: preference.text.signOut,
           enable: authenticate.hasUser,
           onPressed: authenticate.signOut,
+          child: const WidgetMark(
+            icon: Icons.logout_rounded,
+          ),
         ),
       ],
     );

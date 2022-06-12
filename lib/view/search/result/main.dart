@@ -114,7 +114,7 @@ class _View extends _State with _Bar {
                 // color: Colors.red,
                 child: Text(
                   book.info.name.toUpperCase(),
-                  semanticsLabel: 'book: ' + book.info.name,
+                  semanticsLabel: 'book: ${book.info.name}',
                   style: const TextStyle(
                     fontSize: 22, //17
                     fontWeight: FontWeight.w400,
@@ -164,16 +164,16 @@ class _View extends _State with _Bar {
                         (e) => SizedBox(
                           width: 50,
                           child: RawMaterialButton(
-                            child: Text(
-                              e.name,
-                              semanticsLabel: 'chapter: ' + e.name,
-                              style: const TextStyle(fontSize: 15),
-                            ),
                             elevation: 0.0,
                             padding: const EdgeInsets.all(10),
                             fillColor: Colors.grey[300],
                             shape: const CircleBorder(),
                             onPressed: () => onNav(bookId, e.id),
+                            child: Text(
+                              e.name,
+                              semanticsLabel: 'chapter: ${e.name}',
+                              style: const TextStyle(fontSize: 15),
+                            ),
                           ),
                         ),
                       )
@@ -185,11 +185,6 @@ class _View extends _State with _Bar {
               child: Tooltip(
                 message: book.info.name,
                 child: RawMaterialButton(
-                  child: Text(
-                    chapter.name,
-                    semanticsLabel: chapter.name,
-                    style: const TextStyle(fontSize: 18),
-                  ),
                   elevation: 0.5,
                   padding: const EdgeInsets.all(10),
                   fillColor: Theme.of(context).primaryColor,
@@ -201,6 +196,11 @@ class _View extends _State with _Bar {
                   //   )
                   // ),
                   onPressed: () => onNav(bookId, chapter.id),
+                  child: Text(
+                    chapter.name,
+                    semanticsLabel: chapter.name,
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
             ),
