@@ -23,28 +23,27 @@ mixin _Bar on _State {
         shrink: org.shrink,
       ),
       rightAction: [
-        AnimatedBuilder(
-          animation: busyController,
-          builder: (context, child) {
-            return WidgetMark(
-              badge: selectionCount,
-              child: WidgetButton(
-                enable: hasReady2Vote,
-                onPressed: vote,
+        WidgetButton(
+          enable: hasReady2Vote,
+          onPressed: vote,
+          badge: selectionCount,
+          child: AnimatedBuilder(
+            animation: busyController,
+            builder: (context, child) {
+              return WidgetMark(
                 child: busyAnimation.isCompleted
                     ? child
                     : Icon(
                         Icons.add_task_outlined,
                         color: hasReady2Submit ? Theme.of(context).errorColor : null,
                       ),
+              );
+            },
+            child: const SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
               ),
-            );
-          },
-          child: const SizedBox.square(
-            dimension: 22,
-            child: CircularProgressIndicator(
-              value: 0.8,
-              strokeWidth: 2,
             ),
           ),
         ),
