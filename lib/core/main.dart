@@ -10,7 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // NOTE: Authentication
-import 'package:lidea/firebase_auth.dart';
+import 'package:lidea/firebase/auth.dart';
 import 'package:lidea/unit/authentication.dart';
 
 // NOTE: Navigation
@@ -49,6 +49,11 @@ part 'scripture.dart';
 
 class Core extends _Abstract with _Mock {
   // Core() : super();
+
+  static Future<void> initializeApp() async {
+    // await Firebase.initializeApp();
+    // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  }
 
   Future<void> init(BuildContext context) async {
     Stopwatch initWatch = Stopwatch()..start();

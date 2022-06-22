@@ -33,11 +33,17 @@ class _View extends _State with _Bar {
     return Scaffold(
       body: ViewPage(
         controller: scrollController,
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: sliverWidgets(),
+        child: Consumer<Authentication>(
+          builder: middleware,
         ),
       ),
+    );
+  }
+
+  Widget middleware(BuildContext context, Authentication aut, Widget? child) {
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: sliverWidgets(),
     );
   }
 

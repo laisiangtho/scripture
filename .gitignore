@@ -1,6 +1,7 @@
 # Ignore assets except mock data
 *.v[0-9].*
 /tmp.*
+/TODO-*.md
 /assets/*
 !/assets/mock-*.*
 

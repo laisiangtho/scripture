@@ -15,11 +15,11 @@ Add
 - ??
 
 - iOS: v?
-- Android: v?
+- Android: v1.2.5+64
   - minSdkVersion 23
   - targetSdkVersion 30
 
-## 1.2.4+61-62-63
+## 1.2.4+61-62-64
 
 Improve
 
@@ -35,7 +35,10 @@ Add
 - Account delete
 
 - iOS: v1.2.4+?
+  - iOS 12
 - Android: v1.2.4+61
+  - minSdkVersion 23
+  - targetSdkVersion 30
   
 ## 1.2.3+59
 

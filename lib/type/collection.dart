@@ -7,8 +7,10 @@ class Collection extends ClusterDocket {
   List<DefinitionBible> cacheBible = [];
 
   // retrieve the instance through the app
-  Collection.internal();
+  // Collection.internal();
   // Collection.internal() : super.internal();
+
+  Collection() : super();
 
   @override
   Future<void> ensureInitialized() async {

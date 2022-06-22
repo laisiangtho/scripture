@@ -34,7 +34,7 @@ mixin _Bar on _State {
               },
             ),
           ),
-        ),
+        )
       ],
     );
   }

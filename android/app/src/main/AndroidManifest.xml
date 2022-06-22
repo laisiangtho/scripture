@@ -40,7 +40,7 @@
             android:name="flutterEmbedding"
             android:value="2"/>
 
-        <!-- Facebook start -->
+        <!-- Facebook: config -->
         <meta-data
           android:name="com.facebook.sdk.ApplicationId"
           android:value="@string/facebook_app_id"/>
@@ -61,10 +61,17 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <!-- Facebook end -->
 
     </application>
+
+	<!-- Common: permission -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- Facebook native apps the package visibility declared with queries-->
+    <queries>
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+        <package android:name="com.facebook.katana" />
+    </queries>
 </manifest>

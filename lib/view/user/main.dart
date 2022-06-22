@@ -132,8 +132,9 @@ class _View extends _State with _Bar {
               ),
             if (authenticate.showFacebook)
               SignInButton(
-                icon: LideaIcon.facebook,
-                label: 'Sign in with Facebook',
+                // icon: LideaIcon.facebook,
+                // label: 'Login with Facebook',
+                label: 'Continue with Facebook',
                 onPressed: () {
                   authenticate.signInWithFacebook().whenComplete(whenCompleteSignIn);
                 },

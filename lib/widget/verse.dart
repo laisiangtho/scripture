@@ -101,7 +101,7 @@ class WidgetVerse extends StatelessWidget {
                         ),
                     ],
                     style: TextStyle(
-                      color: Colors.grey,
+                      // color: Colors.grey,
                       fontSize: userVerse.titleSize,
                       fontWeight: FontWeight.w300,
                     ),
@@ -111,13 +111,16 @@ class WidgetVerse extends StatelessWidget {
                     children: hightLight(
                       verse.text,
                       keyword,
-                      const TextStyle(
-                        color: Colors.red,
+                      TextStyle(
+                        color: Theme.of(context).highlightColor,
                       ),
+                      // const TextStyle(
+                      //   color: Colors.red,
+                      // ),
                     ),
                     semanticsLabel: verse.text,
                     style: TextStyle(
-                      color: userVerse.selected ? Colors.red : null,
+                      color: userVerse.selected ? Theme.of(context).errorColor : null,
                     ),
                   ),
                   if (alsoInVerse != null && alsoInVerse!.isNotEmpty)

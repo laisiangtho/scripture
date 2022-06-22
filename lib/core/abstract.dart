@@ -1,7 +1,8 @@
 part of data.core;
 
 abstract class _Abstract extends UnitEngine with _Utility {
-  final Collection collection = Collection.internal();
+  // final Collection collection = Collection.internal();
+  final Collection collection = Collection();
 
   late final Preference preference = Preference(collection);
   // authenticate navigate
@@ -108,6 +109,7 @@ abstract class _Abstract extends UnitEngine with _Utility {
     }
   }
 
+  // TODO: StateError (Bad state: No element)
   void switchIdentifyPrimary({bool force = false}) {
     final val = collection.boxOfBooks.values;
     if (collection.primaryId.isEmpty) {

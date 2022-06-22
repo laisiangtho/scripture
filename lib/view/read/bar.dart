@@ -47,7 +47,7 @@ mixin _Bar on _State {
                       return _barButton(
                         label: bookName,
                         shrink: org.shrink,
-                        padding: EdgeInsets.fromLTRB(7, 0, org.snapShrink * 5, 0),
+                        padding: EdgeInsets.fromLTRB(10, 3, org.snapShrink * 5, 3),
                       );
                     },
                   ),
@@ -72,7 +72,7 @@ mixin _Bar on _State {
                       return _barButton(
                         label: chapterName,
                         shrink: org.shrink,
-                        padding: const EdgeInsets.fromLTRB(3, 0, 5, 0),
+                        padding: EdgeInsets.fromLTRB(3, 3, org.snapShrink * 5, 3),
                       );
                     },
                   ),
