@@ -6,7 +6,32 @@
     {
       "label": "echo",
       "type": "shell",
-      "command": "echo Hello"
+      "command": "echo Hello",
+      "problemMatcher": [
+        "$dart-build_runner"
+      ],
+      "isBackground": true
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "flutter build appbundle --release",
+      "problemMatcher": [
+        "$dart-build_runner"
+      ],
+      "isBackground": true
+    },
+    {
+      "type": "flutter",
+      "command": "flutter",
+      "args": [
+        "build",
+        "appbundle"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "label": "flutter: flutter build appbundle",
+      "detail": ""
     }
   ]
 }

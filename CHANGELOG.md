@@ -1,23 +1,18 @@
 # Change log
 
-## 1.2.5+64
+## 1.2.5+64-66
 
 Improve
 
-- ??
+- Reader app bar
 
 Update
 
-- ??
+- Core
+- Continue with Facebook
 
-Add
-
-- ??
-
-- iOS: v?
-- Android: v1.2.5+64
-  - minSdkVersion 23
-  - targetSdkVersion 30
+- iOS: v1.2.5+66
+- Android: v1.2.5+66
 
 ## 1.2.4+61-62-64
 
@@ -34,7 +29,7 @@ Add
 
 - Account delete
 
-- iOS: v1.2.4+?
+- iOS: v1.2.4+61
   - iOS 12
 - Android: v1.2.4+61
   - minSdkVersion 23
