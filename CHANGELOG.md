@@ -12,7 +12,7 @@ Update
 - Continue with Facebook
 - Pull api change
 
-- iOS: v1.2.5+66
+- iOS: v1.2.5+67
 - Android: v1.2.5+66
 
 Note
