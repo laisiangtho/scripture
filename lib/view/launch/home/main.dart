@@ -108,7 +108,8 @@ class _View extends _State with _Bar {
           label: preference.text.addMore(preference.text.favorite(true)),
         ),
       ),
-      child: WidgetBlockCard(
+      // child: WidgetBlockCard(
+      child: Card(
         child: WidgetListBuilder(
           primary: false,
           physics: const NeverScrollableScrollPhysics(),
@@ -140,7 +141,6 @@ class _View extends _State with _Bar {
     bool isAvailable = book.available > 0;
     bool isPrimary = book.identify == core.collection.primaryId;
     return ListTile(
-      enabled: true,
       title: Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(

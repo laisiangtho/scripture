@@ -1,18 +1,24 @@
 # Change log
 
-## 1.2.5+64-66
+## 1.2.5+64-66-67
 
 Improve
 
-- Reader app bar
+- Reader app bar, Bible info
 
 Update
 
 - Core
 - Continue with Facebook
+- Pull api change
 
 - iOS: v1.2.5+66
 - Android: v1.2.5+66
+
+Note
+
+This update improvement theme and app-bar, changed "Continue with Facebook".
+Change of Marketing URL and update Flutter latest version.
 
 ## 1.2.4+61-62-64
 
@@ -51,7 +57,7 @@ Add
 - Sign in with Facebook
 - Sign in with Google
 
-### Note
+Note
 
 This release improved theme and functionality. Integrated with "Sign in with Apple, Facebook, Google" through Firebase Authentication, and can be signed in by tapping icon on top-left on home.
 

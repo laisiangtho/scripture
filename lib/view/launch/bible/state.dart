@@ -127,6 +127,7 @@ abstract class _State extends WidgetState with SingleTickerProviderStateMixin {
       }
       // core.navigate(at: 1);
       Navigator.of(context).pop();
+      // Navigator.of(context, rootNavigator: true).pop();
       Future.microtask(() {
         core.scriptureParallel.init().then((value) {
           if (core.message.isNotEmpty) {

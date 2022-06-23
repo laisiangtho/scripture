@@ -12,7 +12,7 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
   @override
   bool get persistent => false;
   @override
-  double get initialSize => 0.5;
+  double get initialSize => 0.6;
   @override
   double get minSize => 0.4;
 
@@ -24,6 +24,8 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
   late final BooksType book = widget.book;
 
   bool get isAvailable => book.available > 0;
+
+  String get bookName => book.name;
 
   void Function()? download() {
     if (isDownloading) {
@@ -65,104 +67,302 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
   @override
   List<Widget> sliverWidgets() {
     return <Widget>[
-      SliverAppBar(
+      // SliverAppBar(
+      //   pinned: true,
+      //   elevation: 0.5,
+      //   automaticallyImplyLeading: false,
+      //   title: WidgetAppbarTitle(
+      //     label: book.name,
+      //   ),
+      //   actions: [
+      //     WidgetMark(
+      //       icon: Icons.verified_user_rounded,
+      //       iconColor: theme.primaryColorDark,
+      //       show: isAvailable,
+      //     ),
+      //   ],
+      // ),
+      ViewHeaderSliverSnap(
         pinned: true,
-        elevation: 0.5,
-        automaticallyImplyLeading: false,
-        title: WidgetAppbarTitle(
-          label: book.name,
-        ),
-        actions: [
-          WidgetMark(
-            icon: Icons.verified_user_rounded,
-            iconColor: theme.primaryColorDark,
-            show: isAvailable,
-          ),
-        ],
+        floating: false,
+        padding: MediaQuery.of(context).viewPadding,
+        heights: const [kToolbarHeight, 50],
+        backgroundColor: Colors.transparent,
+        overlapsBackgroundColor: theme.scaffoldBackgroundColor,
+        overlapsBorderColor: Theme.of(context).shadowColor,
+        builder: (_, org) {
+          return ViewHeaderLayoutStack(
+            primary: WidgetAppbarTitle(
+              alignment: Alignment.lerp(
+                const Alignment(0, 0),
+                const Alignment(0, .5),
+                org.snapShrink,
+              ),
+              shrink: org.shrink,
+              // label: book.name,
+              label: book.shortname,
+            ),
+            rightAction: [
+              WidgetMark(
+                icon: Icons.verified_user_rounded,
+                iconColor: theme.primaryColorDark,
+                show: isAvailable,
+              ),
+            ],
+          );
+        },
       ),
-      SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            WidgetLabel(
-              padding: const EdgeInsets.all(20),
-              label: book.year.toString(),
-            ),
-            WidgetLabel(
-              label: book.langName.toUpperCase(),
-            ),
-            WidgetLabel(
-              padding: const EdgeInsets.all(20),
-              label: book.identify,
-            ),
-            WidgetMark(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              label: message,
-              show: message.isNotEmpty,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                WidgetButton(
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
-                  // color: theme.highlightColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(100)),
-                  color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
-                  elevation: 1,
-                  onPressed: download(),
 
-                  // decoration: BoxDecoration(
-                  //   color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
-                  //   borderRadius: BorderRadius.circular(100),
-                  //   // border: Border.all(
-                  //   //   color: Theme.of(context).shadowColor,
-                  //   //   width: 1,
-                  //   // ),
-                  // ),
-                  // clipBehavior: Clip.hardEdge,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+      // SliverAppBar(
+      //   pinned: true,
+      //   snap: false,
+      //   floating: false,
+      //   expandedHeight: 80.0,
+      //   elevation: 0.3,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.close),
+      //     onPressed: () => Navigator.of(context).pop(),
+      //   ),
+      //   backgroundColor: theme.primaryColor,
+      //   flexibleSpace: FlexibleSpaceBar(
+      //     centerTitle: true,
+      //     // title: const Text('Title asdfa sdfa sdfasdfasdfasf asdf'),
+      //     title: Text(book.name),
+      //     // title: WidgetAppbarTitle(
+      //     //   label: book.name,
+      //     // ),
+      //     // background: Image.network(
+      //     //   'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+      //     //   fit: BoxFit.cover,
+      //     // ),
+      //     background: Container(
+      //       decoration: BoxDecoration(
+      //         gradient: LinearGradient(
+      //           begin: Alignment.topCenter,
+      //           end: Alignment.bottomCenter,
+      //           colors: <Color>[
+      //             theme.scaffoldBackgroundColor,
+      //             theme.primaryColor,
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   actions: <Widget>[],
+      // ),
+      SliverPadding(
+        padding: const EdgeInsets.all(15.0),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              // WidgetLabel(
+              //   // labelPadding: const EdgeInsets.only(left: 7),
+              //   label: book.year.toString(),
+              //   // icon: Icons.circle_outlined,
+              //   // iconColor: Theme.of(context).focusColor,
+              // ),
+              // WidgetLabel(
+              //   // labelPadding: const EdgeInsets.only(left: 7),
+              //   label: book.langName.toUpperCase(),
+              //   // icon: Icons.translate_outlined,
+              //   // iconColor: Theme.of(context).focusColor,
+              // ),
+              // WidgetLabel(
+              //   // labelPadding: const EdgeInsets.only(left: 7),
+              //   label: book.identify,
+              //   // icon: Icons.lightbulb_outlined,
+              //   // iconColor: Theme.of(context).focusColor,
+              // ),
+              // ListTile(
+              //   leading: const Icon(Icons.event_outlined),
+              //   iconColor: Theme.of(context).primaryColorDark,
+              //   title: Text(book.year.toString()),
+              // ),
+              // ListTile(
+              //   leading: const Icon(Icons.translate_outlined),
+              //   iconColor: Theme.of(context).primaryColorDark,
+              //   title: Text(book.langName.toUpperCase()),
+              // ),
+
+              // ListTile(
+              //   leading: const Icon(Icons.lightbulb_outlined),
+              //   iconColor: Theme.of(context).primaryColorDark,
+              //   title: Text(book.identify),
+              // ),
+
+              ListTile(
+                // leading: const Icon(Icons.lightbulb_outlined),
+                // iconColor: Theme.of(context).primaryColorDark,
+                title: Row(
+                  children: [
+                    Expanded(
+                      // child: Text(book.langName.toUpperCase()),
+                      child: Text(book.langName),
+                    ),
+                    Text(book.year.toString()),
+                  ],
+                ),
+                // subtitle: Text(book.identify),
+                // subtitle: Text(book.name),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(' - ${book.name}'),
+                    Text(' - ${book.langDirection}'),
+                    Text(' - ${book.identify}'),
+                  ],
+                ),
+                // trailing: Text(book.),
+              ),
+              WidgetMark(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                label: message,
+                show: message.isNotEmpty,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  WidgetButton(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
+                    onPressed: download(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (isDownloading)
+                          SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: theme.primaryColor,
+                            ),
+                          )
+                        else
+                          SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: Icon(
+                              isAvailable ? Icons.remove_circle : Icons.add_circle,
+                              size: 29,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        const Divider(
+                          indent: 10,
+                        ),
+                        WidgetLabel(
+                          constraints: const BoxConstraints(maxHeight: 30),
+                          label: isAvailable ? preference.text.delete : preference.text.download,
+                          labelStyle: theme.textTheme.bodyLarge!.copyWith(
+                            color: theme.primaryColor,
+                            height: 1.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              // isAvailable ? theme.primaryColorDark : theme.highlightColor,
+              ListTile(
+                selected: isAvailable,
+                iconColor: theme.iconTheme.color,
+                selectedColor: theme.primaryColorDark,
+                leading: const Icon(Icons.add_circle),
+                // title: Text(preference.language('byBibleDownload')),
+                title: _actionHelpLabel('byBibleDownload'),
+              ),
+              ListTile(
+                selected: !isAvailable,
+                iconColor: theme.iconTheme.color,
+                selectedColor: theme.primaryColorDark,
+                leading: const Icon(Icons.remove_circle),
+                title: _actionHelpLabel('byBibleDelete'),
+              ),
+              const Divider(
+                indent: 15,
+                color: Colors.transparent,
+              ),
+              ListTile(
+                leading: const Icon(LideaIcon.github),
+                title: Text.rich(
+                  TextSpan(
+                    text: preference.language('RepositoryGithub'),
                     children: [
-                      if (isDownloading)
-                        SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: theme.primaryColor,
-                          ),
-                        )
-                      else
-                        SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: Icon(
-                            isAvailable ? Icons.remove_circle : Icons.add_circle,
-                            size: 29,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      const Divider(
-                        indent: 10,
+                      const TextSpan(text: ' '),
+                      TextSpan(
+                        text: preference.language('ofBibleSource'),
+                        style: TextStyle(color: theme.highlightColor),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Launcher.launchInBrowser(
+                                    Uri.parse('https://github.com/laisiangtho/bible'))
+                                .then((value) {})
+                                .onError((error, stackTrace) {
+                              debugPrint(error.toString());
+                            });
+                          },
                       ),
-                      WidgetLabel(
-                        constraints: const BoxConstraints(maxHeight: 30),
-                        label: isAvailable ? preference.text.delete : preference.text.download,
-                        labelStyle: theme.textTheme.bodyLarge!.copyWith(
-                          color: theme.primaryColor,
-                          height: 1.1,
-                        ),
+                      const TextSpan(text: ', '),
+                      TextSpan(
+                        text: preference.language('ofAppSourcecode'),
+                        style: TextStyle(color: theme.highlightColor),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Launcher.launchInBrowser(
+                                    Uri.parse('https://github.com/laisiangtho/scripture'))
+                                .then((value) {})
+                                .onError((error, stackTrace) {
+                              debugPrint(error.toString());
+                            });
+                          },
                       ),
+                      const TextSpan(text: '...'),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+
+              const Divider(
+                indent: 15,
+                color: Colors.transparent,
+              ),
+
+              note(icon: Icons.description_outlined, label: book.description),
+              note(icon: Icons.copyright_outlined, label: book.copyright),
+              note(icon: Icons.group_work_outlined, label: book.contributors),
+              note(icon: Icons.check_circle_outlined, label: book.publisher),
+            ],
+          ),
         ),
       ),
     ];
+  }
+
+  Widget note({required String label, required IconData icon}) {
+    if (label.isEmpty) {
+      return const SizedBox();
+    }
+    return ListTile(
+      leading: Icon(icon),
+      iconColor: Theme.of(context).primaryColorDark,
+      title: Text(label),
+    );
+  }
+
+  Widget _actionHelpLabel(String text) {
+    // preference.text.delete : preference.text.download,
+    final label = preference
+        .language(text)
+        .replaceAll('label.download', preference.text.download)
+        .replaceAll('label.delete', preference.text.delete)
+        .replaceAll('book.name', bookName);
+
+    return Text(label);
   }
 }
