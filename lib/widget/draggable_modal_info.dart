@@ -226,7 +226,7 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
                   WidgetButton(
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
                     onPressed: download(),
                     child: Row(
