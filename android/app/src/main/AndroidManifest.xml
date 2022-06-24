@@ -69,8 +69,23 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <!-- Facebook native apps the package visibility declared with queries-->
     <queries>
+        <!-- If your app opens https URLs -->
+        <intent>
+          <action android:name="android.intent.action.VIEW" />
+          <data android:scheme="https" />
+        </intent>
+        <!-- If your app makes calls -->
+        <intent>
+          <action android:name="android.intent.action.DIAL" />
+          <data android:scheme="tel" />
+        </intent>
+        <!-- If your app emails -->
+        <intent>
+          <action android:name="android.intent.action.SEND" />
+          <data android:mimeType="*/*" />
+        </intent>
+        <!-- Facebook native apps the package visibility declared with queries-->
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
         <package android:name="com.facebook.katana" />
     </queries>
