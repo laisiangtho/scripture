@@ -112,13 +112,13 @@ class _View extends _State with _Bar {
                     children: [
                       TextSpan(
                         text: collection.env.version,
-                        style: TextStyle(color: Theme.of(context).disabledColor),
+                        style: TextStyle(color: Theme.of(context).primaryColorDark),
                       ),
                     ],
                   ),
                   // style: TextStyle(color: Theme.of(context).focusColor),
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).focusColor,
+                        color: Theme.of(context).disabledColor,
                       ),
                 ),
               ),
@@ -144,18 +144,17 @@ class _View extends _State with _Bar {
                     ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Text.rich(
                   TextSpan(
+                    text: preference.language('issue-pull-feature'),
                     children: [
                       // const TextSpan(text: 'issues that need to be '),
-                      const TextSpan(text: 'About issue and pull request that need '),
-                      const TextSpan(text: 'attention'),
-                      const TextSpan(text: ' / '),
-                      const TextSpan(text: 'feature that you would like to use can be provided '),
+                      const TextSpan(text: ' '),
+
                       TextSpan(
-                        text: 'here',
-                        style: TextStyle(color: Theme.of(context).primaryColorDark),
+                        text: preference.language('hereOnGithub'),
+                        style: TextStyle(color: Theme.of(context).errorColor),
                         recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
                       ),
                       const TextSpan(text: '...'),
@@ -163,7 +162,7 @@ class _View extends _State with _Bar {
                   ),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).focusColor,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                 ),
               ),
