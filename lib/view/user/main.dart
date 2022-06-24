@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
 import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
+import 'package:lidea/launcher.dart';
 
 import '/core/main.dart';
 import '/widget/main.dart';
@@ -89,6 +91,85 @@ class _View extends _State with _Bar {
         preference: preference,
         authenticate: authenticate,
         children: pollList(),
+      ),
+
+      SliverPadding(
+        padding: const EdgeInsets.all(12),
+        sliver: SliverToBoxAdapter(
+          child: Column(
+            children: [
+              Text(
+                collection.env.name.toUpperCase(),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text.rich(
+                  TextSpan(
+                    text: 'v',
+                    children: [
+                      TextSpan(
+                        text: collection.env.version,
+                        style: TextStyle(color: Theme.of(context).disabledColor),
+                      ),
+                    ],
+                  ),
+                  // style: TextStyle(color: Theme.of(context).focusColor),
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: Theme.of(context).focusColor,
+                      ),
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(text: ' '),
+                    TextSpan(
+                      text: preference.language('About'),
+                      style: TextStyle(color: Theme.of(context).primaryColorDark),
+                      recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
+                    ),
+                    const TextSpan(text: ' & '),
+                    TextSpan(
+                      text: preference.language('Privacy'),
+                      style: TextStyle(color: Theme.of(context).primaryColorDark),
+                      recognizer: TapGestureRecognizer()..onTap = _launchPrivacy,
+                    ),
+                  ],
+                ),
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      color: Theme.of(context).focusColor,
+                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      // const TextSpan(text: 'issues that need to be '),
+                      const TextSpan(text: 'About issue and pull request that need '),
+                      const TextSpan(text: 'attention'),
+                      const TextSpan(text: ' / '),
+                      const TextSpan(text: 'feature that you would like to use can be provided '),
+                      TextSpan(
+                        text: 'here',
+                        style: TextStyle(color: Theme.of(context).primaryColorDark),
+                        recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
+                      ),
+                      const TextSpan(text: '...'),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: Theme.of(context).focusColor,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
 
       // Selector<ViewScrollNotify, double>(

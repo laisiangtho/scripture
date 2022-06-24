@@ -24,4 +24,16 @@ abstract class _State extends WidgetState {
       await poll.updateAll();
     }
   }
+
+  void _launchAppCode() {
+    Launcher.universalLink('https://github.com/laisiangtho/scripture');
+  }
+
+  void _launchPrivacy() {
+    Launcher.universalLink('https://github.com/laisiangtho/scripture/blob/master/PRIVACY.md');
+  }
+
+  void _launchAppIssues() {
+    Launcher.universalLink('https://github.com/laisiangtho/scripture/issues/new');
+  }
 }
