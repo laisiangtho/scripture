@@ -8,17 +8,24 @@ class Poll extends ClusterPoll {
 
   /// Update token, local (-member.csv, -result.csv -info.json)
   Future<void> updateAll() async {
+    await Future.delayed(const Duration(milliseconds: 50));
+
     await updateToken();
+    await Future.delayed(const Duration(milliseconds: 100));
+
     if (authentication.hasUser) {
       await readLiveAll();
+      await Future.delayed(const Duration(milliseconds: 500));
     }
     notify();
   }
 
   Future<void> updateIndividual() async {
+    await Future.delayed(const Duration(milliseconds: 100));
     if (authentication.hasUser) {
       await pollBoard.readLive();
     }
+    await Future.delayed(const Duration(milliseconds: 500));
     notify();
   }
 
