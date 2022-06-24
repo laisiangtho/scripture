@@ -85,7 +85,7 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
       ViewHeaderSliverSnap(
         pinned: true,
         floating: false,
-        padding: MediaQuery.of(context).viewPadding,
+        // padding: MediaQuery.of(context).viewPadding,
         heights: const [kToolbarHeight, 50],
         backgroundColor: Colors.transparent,
         overlapsBackgroundColor: theme.scaffoldBackgroundColor,
