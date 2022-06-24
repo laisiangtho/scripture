@@ -1,6 +1,6 @@
 # Change log
 
-## 1.2.5+64-66-67-68
+## 1.2.5+64-66-67-68-69
 
 Improve
 
@@ -12,8 +12,8 @@ Update
 - Continue with Facebook
 - Pull api change
 
-- iOS: v1.2.5+68
-- Android: v1.2.5+68
+- iOS: v1.2.5+69
+- Android: v1.2.5+69
 
 Note
 
