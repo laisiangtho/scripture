@@ -34,6 +34,18 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
     return _startDownloadOrDelete;
   }
 
+  void _launchBibleSource() {
+    Launcher.universalLink('https://github.com/laisiangtho/bible');
+  }
+
+  void _launchAppCode() {
+    Launcher.universalLink('https://github.com/laisiangtho/scripture');
+  }
+
+  void _launchAppIssues() {
+    Launcher.universalLink('https://github.com/laisiangtho/scripture/issues/new');
+  }
+
   void _startDownloadOrDelete() async {
     core.analytics.content(isAvailable ? 'Delete' : 'Download', book.identify);
     setState(() {
@@ -298,31 +310,21 @@ class _WidgetDraggableInfoState extends ViewDraggableSheetState<WidgetDraggableI
                       TextSpan(
                         text: preference.language('ofBibleSource'),
                         style: TextStyle(color: theme.highlightColor),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Launcher.launchInBrowser(
-                                    Uri.parse('https://github.com/laisiangtho/bible'))
-                                .then((value) {})
-                                .onError((error, stackTrace) {
-                              debugPrint(error.toString());
-                            });
-                          },
+                        recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
                       ),
                       const TextSpan(text: ', '),
                       TextSpan(
                         text: preference.language('ofAppSourcecode'),
                         style: TextStyle(color: theme.highlightColor),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Launcher.launchInBrowser(
-                                    Uri.parse('https://github.com/laisiangtho/scripture'))
-                                .then((value) {})
-                                .onError((error, stackTrace) {
-                              debugPrint(error.toString());
-                            });
-                          },
+                        recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
                       ),
-                      const TextSpan(text: '...'),
+                      const TextSpan(text: ' / '),
+                      TextSpan(
+                        text: preference.language('issues that need to be fixed'),
+                        style: TextStyle(color: theme.highlightColor),
+                        recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
+                      ),
+                      const TextSpan(text: '..'),
                     ],
                   ),
                 ),
