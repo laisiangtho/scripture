@@ -66,4 +66,16 @@ abstract class _State extends WidgetState with SingleTickerProviderStateMixin {
   String get selectionCount => selection.isEmpty ? '' : selection.length.toString();
 
   // int get userMemberId => pollBoard.memberId(authenticate.userEmail);
+
+  void showMember() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext _) {
+        return const MemberModal();
+      },
+      isScrollControlled: true,
+      useRootNavigator: true,
+      // elevation: 10,
+    );
+  }
 }

@@ -20,6 +20,9 @@ class Poll extends ClusterPoll {
     notify();
   }
 
+  String get userEmail => authentication.userEmail;
+  // String get userEmail => 'test@gmail.com';
+
   Future<void> updateIndividual() async {
     await Future.delayed(const Duration(milliseconds: 100));
     if (authentication.hasUser) {
@@ -30,7 +33,7 @@ class Poll extends ClusterPoll {
   }
 
   /// all Avaliable Polls to current user
-  List<PollBoard> get userPollBoard => listOfUserPollBoard(authentication.userEmail);
+  List<PollBoard> get userPollBoard => listOfUserPollBoard(userEmail);
 
   Future<void> vote() async {
     Stopwatch taskWatch = Stopwatch()..start();
@@ -48,7 +51,7 @@ class Poll extends ClusterPoll {
     notify();
   }
 
-  int get userMemberId => pollBoard.memberId(authentication.userEmail);
+  int get userMemberId => pollBoard.memberId(userEmail);
 
   bool get hasSubmitted {
     return pollBoard.result.where((e) => e.memberId.contains(userMemberId)).isNotEmpty;

@@ -11,6 +11,7 @@ import '/type/main.dart';
 
 part 'bar.dart';
 part 'state.dart';
+part 'member.dart';
 
 class Main extends StatefulWidget {
   const Main({Key? key, this.arguments}) : super(key: key);

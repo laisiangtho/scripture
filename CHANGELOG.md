@@ -1,5 +1,22 @@
 # Change log
 
+## 1.2.6+70
+
+Improve
+
+- systemNavigationBarColor(android) on fullscreen
+
+Update
+
+- ???
+
+- iOS: v1.2.6
+- Android: v1.2.6
+
+Note
+
+...
+
 ## 1.2.5+64-66-67-68-69
 
 Improve
@@ -18,6 +35,7 @@ Update
 Note
 
 This update improvement theme and app-bar, changed "Continue with Facebook".
+And new design of screenshot previous.
 Change of Marketing URL and update Flutter latest version.
 
 ## 1.2.4+61-62-64

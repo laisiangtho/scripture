@@ -24,6 +24,12 @@ mixin _Bar on _State {
       ),
       rightAction: [
         WidgetButton(
+          onPressed: showMember,
+          child: const WidgetMark(
+            icon: Icons.groups_outlined,
+          ),
+        ),
+        WidgetButton(
           enable: hasReady2Vote,
           onPressed: vote,
           badge: selectionCount,

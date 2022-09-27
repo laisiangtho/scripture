@@ -35,6 +35,7 @@ class _View extends _State with _Bar {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: ViewPage(
         controller: scrollController,
         child: CustomScrollView(
@@ -60,6 +61,8 @@ class _View extends _State with _Bar {
         padding: MediaQuery.of(context).viewPadding,
         heights: const [kToolbarHeight - 20, 20],
         overlapsBorderColor: Theme.of(context).shadowColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        // overlapsBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
         builder: bar,
       ),
       SliverToBoxAdapter(

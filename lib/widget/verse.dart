@@ -78,8 +78,7 @@ class WidgetVerse extends StatelessWidget {
           ),
         Card(
           margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
-          // margin: EdgeInsets.zero,
-          // elevation: 0,
+          elevation: 0.5,
           // shape: const RoundedRectangleBorder(
           //   side: BorderSide(width: 0, color: Colors.transparent),
           //   borderRadius: BorderRadius.zero,
@@ -147,6 +146,69 @@ class WidgetVerse extends StatelessWidget {
             ),
           ),
         ),
+
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+        //   child: SelectableText.rich(
+        //     TextSpan(
+        //       children: <TextSpan>[
+        //         TextSpan(
+        //           children: <TextSpan>[
+        //             TextSpan(
+        //               text: verse.name,
+        //               semanticsLabel: 'verse: ${verse.name}',
+        //             ),
+        //             if (verse.merge.isNotEmpty)
+        //               TextSpan(
+        //                 text: '-${verse.merge}',
+        //               ),
+        //           ],
+        //           style: TextStyle(
+        //             // color: Colors.grey,
+        //             fontSize: userVerse.titleSize,
+        //             fontWeight: FontWeight.w300,
+        //           ),
+        //         ),
+        //         TextSpan(
+        //           text: ' ',
+        //           children: hightLight(
+        //             verse.text,
+        //             keyword,
+        //             TextStyle(
+        //               color: Theme.of(context).highlightColor,
+        //             ),
+        //             // const TextStyle(
+        //             //   color: Colors.red,
+        //             // ),
+        //           ),
+        //           semanticsLabel: verse.text,
+        //           style: TextStyle(
+        //             color: userVerse.selected ? Theme.of(context).errorColor : null,
+        //           ),
+        //         ),
+        //         if (alsoInVerse != null && alsoInVerse!.isNotEmpty)
+        //           TextSpan(
+        //             text: '3\t ...$alsoInVerse',
+        //             style: TextStyle(
+        //               color: Colors.grey,
+        //               fontSize: userVerse.titleSize,
+        //               fontWeight: FontWeight.w300,
+        //             ),
+        //             // textAlign: TextAlign.right,
+        //           ),
+        //       ],
+        //     ),
+        //     scrollPhysics: const NeverScrollableScrollPhysics(),
+        //     textDirection: TextDirection.ltr,
+        //     style: TextStyle(
+        //       // color: Colors.black,
+        //       fontWeight: FontWeight.w400,
+        //       fontSize: userVerse.fontSize,
+        //       // height: userVerse.fontHeight,
+        //     ),
+        //     onTap: onPressed == null ? null : () => onPressed!(verse.id),
+        //   ),
+        // )
       ],
     );
   }

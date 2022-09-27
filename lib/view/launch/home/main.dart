@@ -141,6 +141,7 @@ class _View extends _State with _Bar {
     bool isAvailable = book.available > 0;
     bool isPrimary = book.identify == core.collection.primaryId;
     return ListTile(
+      selectedColor: Colors.red,
       title: Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(
