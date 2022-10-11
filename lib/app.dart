@@ -4,9 +4,6 @@ import 'package:lidea/view/keep_alive.dart';
 import '/core/main.dart';
 export '/core/main.dart';
 
-// export 'state.dart';
-part 'state.dart';
-
 class App {
   // static ScrollNotifier notifier = ScrollNotifier();
   // static Routes routeDelegate = Routes();
