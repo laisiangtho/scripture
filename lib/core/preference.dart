@@ -1,7 +1,8 @@
 part of data.core;
 
-class Preference extends ClusterController {
-  Preference(Collection docket) : super(docket);
+class Preference extends PreferenceNest {
+  // Preference(Collection docket) : super(docket);
+  Preference(super.data);
 
   @override
   AppLocalizations get text => AppLocalizations.of(context)!;
@@ -23,4 +24,5 @@ class Preference extends ClusterController {
   //       Locale('no', 'NO'),
   //       Locale('my', ''),
   //     ];
+
 }

@@ -1,129 +1,147 @@
 part of 'main.dart';
 
-abstract class _State extends WidgetState {
-  late final args = argumentsAs<ViewNavigationArguments>();
+abstract class _State extends StateAbstract<Main> {
+  late final ScrollController _controller = ScrollController();
 
-  // final keySheet = GlobalKey();
-  final kBookButton = GlobalKey();
-  final kChapterButton = GlobalKey();
-  final kOptionButton = GlobalKey();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final _kBookmarks = GlobalKey();
+  final _kBooks = GlobalKey();
+  final _kChapters = GlobalKey();
+  final _kOptions = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+    primaryScripture.scroll = _controller;
   }
 
   @override
   void dispose() {
     super.dispose();
+    _controller.dispose();
   }
 
-  // DefinitionBible get bibleInfo => core.collectionPrimary;
-  BIBLE get bible => core.scripturePrimary.verseChapter;
-  // BIBLE get bible => core.verseChapterData;
-  // CollectionBible get tmpbible => bible?.info;
-  DefinitionBook get tmpbook => bible.book.first.info;
-  CHAPTER get tmpchapter => bible.book.first.chapter.first;
-  List<VERSE> get tmpverse => tmpchapter.verse;
-
-  void setChapterPrevious() {
-    core.chapterPrevious.catchError((e) {
-      showSnack(e.toString());
-    }).whenComplete(() {
-      scrollToPosition(null);
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    primaryScripture.scroll = _controller;
   }
 
-  void setChapterNext() {
-    core.chapterNext.catchError((e) {
-      showSnack(e.toString());
-    }).whenComplete(() {
-      scrollToPosition(null);
-    });
-  }
-
-  void setChapter(int? id) {
-    if (id == null) return;
-    core.chapterChange(chapterId: id).catchError((e) {
-      showSnack(e.toString());
-    }).whenComplete(() {
-      scrollToPosition(null);
-    });
-  }
+  Scripture get primaryScripture => core.scripturePrimary;
+  List<VERSE> get primaryVerse => primaryScripture.verse;
 
   void setFontSize(bool increase) {
-    collection.boxOfSettings.fontSizeModify(increase);
+    debugPrint('setFontSize; $increase');
+    core.data.boxOfSettings.fontSizeModify(increase);
   }
 
-  // List<int> verseSelectionList = [];
-  // late final verseSelectionList = core.verseSelectionWorking;
-  // verseSelection verseSelectionList
-  // void verseSelection(int id) {
-  //   // debugPrint('selectVerse from it parent $id');
-  //   int index = core.verseSelectionWorking.indexWhere((i) => i == id);
-  //   if (index >= 0) {
-  //     core.verseSelectionWorking.removeAt(index);
-  //   } else {
-  //     core.verseSelectionWorking.add(id);
-  //   }
-  //   core.notify();
-  //   // setState(() {});
-  // }
-
-  void verseSelectionCopy() {
-    List<String> list = [];
-    String subject = '${tmpbook.name} ${tmpchapter.name}';
-    list.add(subject);
-    core.scripturePrimary.verseSelection.value
-      ..sort((a, b) => a.compareTo(b))
-      ..forEach((id) {
-        VERSE o = tmpverse.where((i) => i.id == id).single;
-        list.add('${o.name}: ${o.text}');
-      });
-    // Clipboard.setData(new ClipboardData(text: list.join("\n"))).whenComplete(() {
-    //   showSnack('Copied to Clipboard');
-    // });
-    Share.share(list.join("\n"), subject: subject);
+  void showBookmarks() {
+    // Navigator.of(context).push(
+    //   PageRouteBuilder<int>(
+    //     settings: RouteSettings(
+    //       arguments: {
+    //         'render': _kBookmarks.currentContext!.findRenderObject() as RenderBox,
+    //         'setFontSize': setFontSize,
+    //         'test': 'hello world',
+    //       },
+    //     ),
+    //     opaque: false,
+    //     barrierDismissible: true,
+    //     transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
+    //       return FadeTransition(
+    //         opacity: x,
+    //         child: child,
+    //       );
+    //     },
+    //     pageBuilder: (_, __, ___) {
+    //       return App.route.show('pop-bookmarks').child;
+    //     },
+    //   ),
+    // );
+    core.switchBookmarkWithNotify();
   }
 
-  void showSnack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(milliseconds: 500),
+  void showBooks() {
+    Navigator.of(context)
+        .push(
+      PageRouteBuilder<Map<String, int>?>(
+        settings: RouteSettings(
+          arguments: {
+            'render': _kBooks.currentContext!.findRenderObject() as RenderBox,
+          },
+        ),
+        opaque: false,
+        barrierDismissible: true,
+        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
+          return FadeTransition(
+            opacity: x,
+            child: child,
+          );
+        },
+        pageBuilder: (_, __, ___) {
+          return App.route.show('pop-books').child;
+        },
+      ),
+    )
+        .then((e) {
+      if (e != null) {
+        // debugPrint(e);
+        core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+        // setBook(e);
+      }
+    });
+  }
+
+  void showChapters() {
+    Navigator.of(context).push(
+      PageRouteBuilder<int>(
+        settings: RouteSettings(
+          arguments: {
+            'render': _kChapters.currentContext!.findRenderObject() as RenderBox,
+          },
+        ),
+        // transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 200),
+        opaque: false,
+        barrierDismissible: true,
+        // transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
+        //   return FadeTransition(
+        //     opacity: x,
+        //     child: child,
+        //   );
+        // },
+        pageBuilder: (_, __, ___) {
+          return App.route.show('pop-chapters').child;
+        },
       ),
     );
   }
 
-  void scrollToPosition(double? pos) {
-    scrollController.animateTo(
-      pos ?? scrollController.position.minScrollExtent,
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.ease,
-    );
+  void showOptions() {
+    Navigator.of(context)
+        .push(
+          PageRouteBuilder<int>(
+            settings: RouteSettings(
+              arguments: {
+                'render': _kOptions.currentContext!.findRenderObject() as RenderBox,
+                'setFontSize': setFontSize,
+                'test': 'hello world',
+              },
+            ),
+            opaque: false,
+            barrierDismissible: true,
+            transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
+              return FadeTransition(
+                opacity: x,
+                child: child,
+              );
+            },
+            pageBuilder: (_, __, ___) {
+              return App.route.show('pop-options').child;
+            },
+          ),
+        )
+        .then((value) {});
   }
-
-  Future scrollToIndex(int id, {bool isId = false}) async {
-    double scrollTo = 0.0;
-    if (id > 0) {
-      final offsetList = tmpverse.where((e) {
-        return isId ? e.id < id : tmpverse.indexOf(e) < id;
-      }).map<double>((e) {
-        final key = e.key as GlobalKey;
-        if (key.currentContext != null) {
-          final render = key.currentContext!.findRenderObject() as RenderBox;
-          return render.size.height;
-        }
-        return 0.0;
-      });
-      if (offsetList.isNotEmpty) {
-        scrollTo = offsetList.reduce((a, b) => a + b) + 17;
-      }
-      scrollToPosition(scrollTo);
-    }
-  }
-
-  // void setBookMark() {
-  //   scrollToIndex(17, isId: true);
-  // }
 }

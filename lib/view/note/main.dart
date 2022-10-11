@@ -1,104 +1,95 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/provider.dart';
-import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
+// import 'package:lidea/provider.dart';
+import 'package:lidea/hive.dart';
 
-import '/core/main.dart';
-import '/widget/main.dart';
-import '/type/main.dart';
+import '../../app.dart';
+import '/widget/button.dart';
 
-part 'bar.dart';
 part 'state.dart';
+part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.arguments}) : super(key: key);
-  final Object? arguments;
+  const Main({Key? key}) : super(key: key);
 
-  static const route = '/note';
-  static const icon = LideaIcon.listNested;
-  static const name = 'Note';
-  static const description = 'Note';
-  static final uniqueKey = UniqueKey();
+  static String route = 'note';
+  static String label = 'Note';
+  static IconData icon = LideaIcon.listNested;
 
   @override
-  State<StatefulWidget> createState() => _View();
+  State<Main> createState() => _View();
 }
 
-class _View extends _State with _Bar {
+class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
+    debugPrint('note->build');
+
     return Scaffold(
-      body: ViewPage(
-        controller: scrollController,
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: sliverWidgets(),
+      body: Views(
+        scrollBottom: ScrollBottomNavigation(
+          listener: _controller.bottom,
+          notifier: viewData.bottom,
+        ),
+        // child: CustomScrollView(
+        //   controller: _controller,
+        //   slivers: _slivers,
+        // ),
+        child: ValueListenableBuilder(
+          valueListenable: boxOfBookmarks.listen(),
+          builder: (BuildContext _, Box<BookmarksType> __, Widget? ___) {
+            return CustomScrollView(
+              controller: _controller,
+              slivers: _slivers,
+            );
+          },
         ),
       ),
     );
   }
 
-  List<Widget> sliverWidgets() {
+  List<Widget> get _slivers {
     return [
-      ViewHeaderSliverSnap(
+      ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: MediaQuery.of(context).viewPadding,
-        heights: const [kToolbarHeight, 50],
-        overlapsBackgroundColor: Theme.of(context).primaryColor,
-        overlapsBorderColor: Theme.of(context).shadowColor,
-        builder: bar,
+        padding: state.fromContext.viewPadding,
+        heights: const [kToolbarHeight, kToolbarHeight],
+        // overlapsBackgroundColor: state.theme.primaryColor,
+        overlapsBorderColor: state.theme.dividerColor,
+        builder: _header,
       ),
-      Selector<Core, List<MapEntry<dynamic, BookmarksType>>>(
-        selector: (_, e) => e.collection.boxOfBookmarks.entries.toList(),
-        builder: listContainer,
-        child: messageContainer(preference.text.bookmarkCount(0)),
-      ),
-      // Selector<Core, List<MapEntry<dynamic, BookmarkType>>>(
-      //   selector: (_, e) => e.collection.boxOfBookmark.toMap().entries.toList(),
-      //   builder: (BuildContext _, List<MapEntry<dynamic, BookmarkType>> items, Widget? child) {},
-      //   child: messageContainer(preference.text.bookmarkCount(0)),
-      // ),
+      listContainer(),
     ];
   }
 
-  Widget messageContainer(String message) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Center(
-        child: Text(message),
-      ),
-    );
-  }
-
-  Widget listContainer(
-      BuildContext _, List<MapEntry<dynamic, BookmarksType>> box, Widget? placeHolder) {
-    return WidgetChildBuilder(
-      show: box.isNotEmpty,
-      placeHolder: placeHolder,
-      child: WidgetBlockCard(
-        child: WidgetListBuilder(
-          primary: false,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (_, index) {
-            return itemContainer(index, box.elementAt(index));
-          },
-          itemSeparator: (_, index) {
-            return const WidgetListDivider();
-          },
-          itemCount: box.length,
+  Widget listContainer() {
+    final items = boxOfBookmarks.values.toList();
+    // items.sort((a, b) => b.date!.compareTo(a.date!));
+    return ViewListBuilder(
+      itemBuilder: (BuildContext context, int index) {
+        return itemContainer(index, items.elementAt(index));
+      },
+      itemCount: items.length,
+      itemVoid: SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: Text(
+            preference.text.bookmarkCount(0),
+            style: state.textTheme.caption,
+          ),
         ),
       ),
+      itemReorderable: boxOfBookmarks.reorderable,
     );
   }
 
-  Dismissible itemContainer(int index, MapEntry<dynamic, BookmarksType> bookmark) {
-    final abc = core.scripturePrimary.bookById(bookmark.value.bookId);
+  Widget itemContainer(int index, BookmarksType item) {
+    final book = App.core.scripturePrimary.bookById(item.bookId);
     return Dismissible(
       // key: Key(index.toString()),
-      key: Key(bookmark.value.date.toString()),
+      key: Key(item.date.toString()),
       direction: DismissDirection.endToStart,
       background: dismissiblesFromRight(),
 
@@ -113,24 +104,20 @@ class _View extends _State with _Bar {
       child: ListTile(
         // contentPadding: EdgeInsets.zero,
         title: Text(
-          // history.value.word,
-          abc.name,
+          book.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         minLeadingWidth: 10,
         leading: const Icon(Icons.bookmark_added),
 
         trailing: Text(
-          core.scripturePrimary.digit(bookmark.value.chapterId),
+          core.scripturePrimary.digit(item.chapterId),
+          // 'chapterId',
           style: const TextStyle(fontSize: 18),
         ),
-        onTap: () => onNav(
-          bookmark.value.bookId,
-          bookmark.value.chapterId,
-        ),
+        onTap: () => onNav(item.bookId, item.chapterId),
       ),
     );
   }
@@ -142,7 +129,7 @@ class _View extends _State with _Bar {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Text(
-          preference.text.delete,
+          App.preference.text.delete,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.bodyLarge,
         ),

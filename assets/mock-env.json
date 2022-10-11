@@ -1,10 +1,10 @@
 {
-  "name":"Lai Siangtho",
+  "name":"MyOrdbok",
   "description":"the Holy Bible in languages",
   "package":"",
-  "version":"1.2.4",
-  "buildNumber":"61",
-  "settingName": "settings",
+  "version":"1.2.6",
+  "buildNumber":"70",
+  "settingName": "",
   "settingKey": "",
   "settings":{
     "version": 0,
@@ -12,7 +12,6 @@
     "locale": "",
     "fontSize": 24.0,
     "searchQuery": "",
-    "suggestQuery": "",
 
     "identify": "",
     "bookId": 1,
@@ -21,14 +20,6 @@
     "parallel": ""
   },
   "products":[],
-  "language":{
-    "en":{
-    },
-    "my":{
-    },
-    "no":{
-    }
-  },
   "token": [
     {
       "id": "configure",
@@ -41,13 +32,21 @@
       "id": "repo",
       "type": "repo",
       "tag": "0",
-      "owns": "laisiangtho",
-      "name": "bible"
+      "owns": "<ohtgnaisial>",
+      "name": "<elbib>"
+    },
+    {
+      "id": "com",
+      "type": "url",
+      "tag": "0",
+      "owns": "<moc.hiediaz.www>",
+      "name": "</ipa>"
     }
   ],
   "api": [
     {
       "uid": "bible",
+      "asset": "<nosj.?>",
       "local": "<nosj.?>",
       "src": [
         "[repo]<nosj.!/nosj>"
@@ -55,24 +54,10 @@
     },
     {
       "uid": "book",
-      "asset": "<nosj.?>",
       "local": "<nosj.?>",
       "src":[
         "[repo]<nosj.!>"
       ]
-    },
-    {
-      "uid": "judson1835",
-      "asset": "<nosj.?>"
-    },
-    {
-      "uid": "niv2011",
-      "asset": "<nosj.?>"
-    },
-    {
-      "uid": "tedim1932",
-      "asset": "<nosj.?>"
     }
-  ],
-  "attach":{}
+  ]
 }

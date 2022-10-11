@@ -2,7 +2,7 @@ part of data.type;
 
 class BoxOfBooks<E> extends BoxOfAbstract<BooksType> {}
 
-@HiveType(typeId: 9)
+@HiveType(typeId: 10)
 class BooksType {
   @HiveField(0)
   String identify;
@@ -206,7 +206,7 @@ class BooksType {
 
 class BooksAdapter extends TypeAdapter<BooksType> {
   @override
-  final int typeId = 9;
+  final int typeId = 10;
 
   @override
   BooksType read(BinaryReader reader) {

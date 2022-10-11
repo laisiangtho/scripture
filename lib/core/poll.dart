@@ -1,10 +1,8 @@
 part of data.core;
 
-class Poll extends ClusterPoll {
-  final void Function() notify;
-  final Authentication authentication;
-
-  Poll(Collection docket, this.notify, this.authentication) : super(docket);
+class Poll extends PollNest {
+  final Authenticate authenticate;
+  Poll({required super.data, required this.authenticate});
 
   /// Update token, local (-member.csv, -result.csv -info.json)
   Future<void> updateAll() async {
@@ -13,23 +11,23 @@ class Poll extends ClusterPoll {
     await updateToken();
     await Future.delayed(const Duration(milliseconds: 100));
 
-    if (authentication.hasUser) {
+    if (authenticate.hasUser) {
       await readLiveAll();
       await Future.delayed(const Duration(milliseconds: 500));
     }
-    notify();
+    data.notify();
   }
 
-  String get userEmail => authentication.userEmail;
+  String get userEmail => authenticate.userEmail;
   // String get userEmail => 'test@gmail.com';
 
   Future<void> updateIndividual() async {
     await Future.delayed(const Duration(milliseconds: 100));
-    if (authentication.hasUser) {
+    if (authenticate.hasUser) {
       await pollBoard.readLive();
     }
     await Future.delayed(const Duration(milliseconds: 500));
-    notify();
+    data.notify();
   }
 
   /// all Avaliable Polls to current user
@@ -37,18 +35,18 @@ class Poll extends ClusterPoll {
 
   Future<void> vote() async {
     Stopwatch taskWatch = Stopwatch()..start();
-    if (authentication.hasUser && pollBoard.hasReady2Submit) {
+    if (authenticate.hasUser && pollBoard.hasReady2Submit) {
       await pollBoard.postVote(userMemberId);
     }
     if (taskWatch.elapsedMilliseconds < 1000) {
       await Future.delayed(const Duration(milliseconds: 300));
     }
-    notify();
+    data.notify();
   }
 
   void toggleSelection(int id) {
     pollBoard.toggleSelection(id);
-    notify();
+    data.notify();
   }
 
   int get userMemberId => pollBoard.memberId(userEmail);

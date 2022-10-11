@@ -14,12 +14,14 @@ import "package:lidea/hive.dart";
 // NOTE: Core API manager
 // import "package:lidea/cluster/main.dart";
 part "audio.dart";
-part "collection.dart";
+part 'data.dart';
 
 part "bible.dart";
 
-part "box/bookmark.dart";
+// NOTE: typeId: 10 (scripture)
 part "box/book.dart";
+// NOTE: typeId: 11 (scripture)
+part "box/bookmark.dart";
 
 /// tmp
 class UserDataType {

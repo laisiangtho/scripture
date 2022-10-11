@@ -1,7 +1,13 @@
 part of 'main.dart';
 
-abstract class _State extends WidgetState {
-  late final args = argumentsAs<ViewNavigationArguments>();
+abstract class _State extends StateAbstract<Main> {
+  late final ScrollController _controller = ScrollController();
+  // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
+  // late AppScrollBottomBarController _bottomBarController;
+
+  // RouteNotifier get routes => Of.route;
+
+  // late final args = argumentsAs<ViewNavigationArguments>();
 
   // late final poll = context.watch<Core>().poll;
   // late final poll = context.read<Core>().poll;
@@ -13,16 +19,16 @@ abstract class _State extends WidgetState {
   }
 
   Future<void> whenCompleteSignIn() async {
-    if (authenticate.message.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(authenticate.message),
-        ),
-      );
-    }
-    if (authenticate.hasUser) {
-      await poll.updateAll();
-    }
+    // if (authenticate.message.isNotEmpty) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text(authenticate.message),
+    //     ),
+    //   );
+    // }
+    // if (authenticate.hasUser) {
+    //   await poll.updateAll();
+    // }
   }
 
   void _launchAppCode() {

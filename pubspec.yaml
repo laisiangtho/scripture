@@ -1,13 +1,12 @@
 name: scripture
 description: the Holy Bible in languages
 
-# Remove this line to publish to pub.dev
+# Remove this line if you wish to publish to pub.dev
 publish_to: 'none'
-
 version: 1.2.6+70
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.18.2 <3.0.0'
 
 dependencies:
   flutter:
@@ -15,17 +14,24 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # Local lidea package, development only
+
   lidea:
+    # When depending on this package from a real application you should use:
+    #   lidea: ^x.y.z
+    # path: ../../
     path: ../lidea
     # git:
     #   url: git://github.com/laisiangtho/lidea.git
     #   ref: main
 
+  # cupertino_icons: ^1.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^2.0.1
+
 
 flutter:
   uses-material-design: true
@@ -36,10 +42,11 @@ flutter:
   # Add assets
   assets:
     - assets/env.json
-    - assets/book.json
-    - assets/niv2011.json
-    - assets/tedim1932.json
-    - assets/judson1835.json
+    - assets/bible.json
+    # - assets/book.json
+    # - assets/niv2011.json
+    # - assets/tedim1932.json
+    # - assets/judson1835.json
 
   # fonts from lidea
   fonts:

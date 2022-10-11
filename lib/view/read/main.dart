@@ -1,229 +1,119 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/provider.dart';
-import 'package:lidea/share.dart';
-import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
+import 'package:lidea/provider.dart';
+// import 'package:lidea/view/user/main.dart';
 
-import '/core/main.dart';
-import '/widget/main.dart';
-import '/type/main.dart';
+import '../../app.dart';
+// import '/widget/profile_icon.dart';
+// import '/widget/button.dart';
+import '/widget/verse.dart';
 
-part 'bar.dart';
 part 'state.dart';
-part 'sheet.dart';
-part 'sheet_parallel.dart';
-part 'optionlist.dart';
-part 'booklist.dart';
-part 'chapterlist.dart';
+part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.arguments}) : super(key: key);
-  final Object? arguments;
+  const Main({Key? key}) : super(key: key);
 
-  static const route = '/read';
-  static const icon = LideaIcon.bookOpen;
-  static const name = 'Read';
-  static const description = 'Read';
-  static final uniqueKey = UniqueKey();
+  static String route = 'read';
+  static String label = 'Read';
+  static IconData icon = LideaIcon.bookOpen;
 
   @override
-  State<StatefulWidget> createState() => _View();
+  State<Main> createState() => _View();
 }
 
-class _View extends _State with _Bar {
+class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
+    debugPrint('read->build');
+
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: ViewPage(
-        controller: scrollController,
+      key: _scaffoldKey,
+      body: Views(
+        scrollBottom: ScrollBottomNavigation(
+          listener: _controller.bottom,
+          notifier: App.viewData.bottom,
+          height: 120,
+          pointer: 20,
+        ),
+        // scrollBottomNavigation: ScrollBottomNavigation()
         child: CustomScrollView(
-          controller: scrollController,
-          slivers: sliverWidgets(),
+          controller: _controller,
+          slivers: _slivers,
         ),
       ),
-      bottomNavigationBar: _SheetWidget(
-        key: const Key('read-options'),
-        nextChapter: setChapterNext,
-        previousChapter: setChapterPrevious,
-        scrollToIndex: scrollToIndex,
-        verseSelectionCopy: verseSelectionCopy,
-      ),
+      resizeToAvoidBottomInset: true,
+      // extendBody: true,
+      // bottomNavigationBar: const SheetStack(),
+      bottomNavigationBar: App.route.show('sheet-parallel').child,
+      // bottomSheet: App.route.show('sheet-parallel').child,
+      // extendBody: true,
     );
   }
 
-  List<Widget> sliverWidgets() {
+  List<Widget> get _slivers {
     return [
-      ViewHeaderSliverSnap(
+      ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: MediaQuery.of(context).viewPadding,
+        padding: state.fromContext.viewPadding,
         heights: const [kToolbarHeight - 20, 20],
-        overlapsBorderColor: Theme.of(context).shadowColor,
-        backgroundColor: Theme.of(context).primaryColor,
-        // overlapsBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        builder: bar,
+        // overlapsBackgroundColor: state.theme.primaryColor,
+        overlapsBorderColor: state.theme.dividerColor,
+        builder: _header,
       ),
-      SliverToBoxAdapter(
-        child: Selector<Core, String>(
-          selector: (_, e) => e.message,
-          builder: (BuildContext context, String message, Widget? child) {
+      ViewFlatBuilder(
+        child: ValueListenableBuilder<String>(
+          valueListenable: App.core.message,
+          builder: (_, message, child) {
             if (message.isEmpty) return child!;
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Center(
-                child: Text('...$message'),
+                child: Text(message),
               ),
             );
           },
           child: const SizedBox(),
         ),
       ),
-      // SliverToBoxAdapter(
-      //   child: GestureDetector(
-      //     child: Selector<Core, BIBLE>(
-      //       selector: (_, e) => e.scripturePrimary.verseChapter,
-      //       builder: (BuildContext _a, BIBLE _b, Widget? _c) {
-      //         return ListView.builder(
-      //           shrinkWrap: true,
-      //           primary: true,
-      //           padding: EdgeInsets.zero,
-      //           physics: const NeverScrollableScrollPhysics(),
-      //           itemBuilder: (_c, index) {
-      //             return FutureBuilder(
-      //               future: Future.delayed(const Duration(milliseconds: 300), () => true),
-      //               builder: (_, snap) {
-      //                 if (snap.hasData == false) return const VerseWidgetHolder();
-      //                 return _inheritedVerse(tmpverse[index]);
-      //               },
-      //             );
-      //           },
-      //           itemCount: tmpverse.length,
-      //         );
-      //       },
-      //     ),
-      //   ),
-      // ),
       StreamBuilder(
-        initialData: collection.boxOfSettings.fontSize(),
-        stream: collection.boxOfSettings.watch(key: 'fontSize'),
+        initialData: data.boxOfSettings.fontSize(),
+        stream: data.boxOfSettings.watch(key: 'fontSize'),
         builder: (BuildContext _, e) {
-          return WidgetChildBuilder(
+          return ViewSection(
             child: Selector<Core, BIBLE>(
-              selector: (_, e) => e.scripturePrimary.verseChapter,
+              selector: (_, e) => e.scripturePrimary.read,
               builder: (BuildContext _, BIBLE __, Widget? ___) {
-                return WidgetListBuilder(
+                return ViewListBuilder(
                   primary: false,
                   physics: const NeverScrollableScrollPhysics(),
                   duration: const Duration(milliseconds: 300),
                   itemBuilder: (BuildContext _, int index) {
-                    return _inheritedVerse(tmpverse[index]);
+                    return _inheritedVerse(primaryVerse[index]);
                   },
-                  itemSnap: (BuildContext _, int index) {
-                    return const VerseWidgetHolder();
-                  },
-                  itemCount: tmpverse.length,
+                  // itemSnap: (BuildContext _, int index) {
+                  //   return const VerseWidgetHolder();
+                  // },
+                  itemCount: primaryVerse.length,
                 );
               },
             ),
           );
         },
       ),
-      // SliverToBoxAdapter(
-      //   child: Selector<Core, BIBLE>(
-      //     selector: (_, e) => e.scripturePrimary.verseChapter,
-      //     builder: (BuildContext _a, BIBLE _b, Widget? _c) {
-      //       return ListView.builder(
-      //         shrinkWrap: true,
-      //         primary: true,
-      //         padding: EdgeInsets.zero,
-      //         physics: const NeverScrollableScrollPhysics(),
-      //         itemBuilder: (_c, index) {
-      //           return FutureBuilder(
-      //             future: Future.delayed(const Duration(milliseconds: 300), () => true),
-      //             builder: (_, snap) {
-      //               if (snap.hasData == false) return const VerseWidgetHolder();
-      //               return _inheritedVerse(tmpverse[index]);
-      //             },
-      //           );
-      //         },
-      //         itemCount: tmpverse.length,
-      //       );
-      //     },
-      //   ),
-      // ),
     ];
   }
 
   Widget _inheritedVerse(VERSE verse) {
-    // core.scripturePrimary.info.langDirection
-    // return Selector<Core, String>(
-    //   selector: (_, e) => e.testQuery,
-    //   builder: (BuildContext _a, String list, Widget? _c) {
-    //     debugPrint('??? _inheritedVerse $list');
-    //     return VerseWidgetInherited(
-    //       key: verse.key,
-    //       size: core.collection.fontSize,
-    //       lang: core.scripturePrimary.info.langCode,
-    //       // selected: list.indexWhere((id) => id == verse.id) >= 0,
-    //       child: WidgetVerse(
-    //         verse: verse,
-    //         // onPressed: core.verseSelectionWithNotify,
-    //         onPressed: (int id) {
-    //           core.testQuery = id.toString();
-    //         },
-    //       ),
-    //     );
-    //   },
-    // );
-    // final asdf = Hive.box('settings').listenable(keys: ['firstKey', 'secondKey']);
-
-    // final efee = collection.boxOfSettings.listen(keys: ['fontSize']);
-    // final efee = collection.boxOfSettings.listen(keys: ['fontSize']).value.values.first.asDouble;
-    // final efee = collection.boxOfSettings.listen(keys: ['fontSize']).value.values.first;
-    // final effee = collection.boxOfSettings.box.watch(key: 'fontSize').first.;
-    // ValueListenableBuilder(
-    //   valueListenable: collection.boxOfSettings.box.,
-    //   builder: (context, value, _) {
-    //     return const SizedBox();
-    //   },
-    // );
-    // final child = ValueListenableBuilder<List<int>>(
-    //   valueListenable: core.scripturePrimary.count,
-    //   builder: (context, value, _) {
-    //     debugPrint('??? _inheritedVerse $value');
-    //     return VerseWidgetInherited(
-    //       key: verse.key,
-    //       size: collection.boxOfSettings.fontSize().asDouble,
-    //       lang: core.scripturePrimary.info.langCode,
-    //       selected: value.indexWhere((id) => id == verse.id) >= 0,
-    //       child: WidgetVerse(
-    //         verse: verse,
-    //         onPressed: (int id) {
-    //           int index = value.indexWhere((i) => i == id);
-    //           if (index >= 0) {
-    //             // value.removeAt(index);
-    //             core.scripturePrimary.count.value = List.from(value)..removeAt(index);
-    //           } else {
-    //             // value.add(id);
-    //             core.scripturePrimary.count.value = List.from(value)..add(id);
-    //           }
-    //           // core.scripturePrimary.count.value = List.from(value)..add(...);
-    //           // core.scripturePrimary.count = value;
-    //         },
-    //       ),
-    //     );
-    //   },
-    // );
-
     return ValueListenableBuilder<List<int>>(
       key: verse.key,
-      valueListenable: core.scripturePrimary.verseSelection,
+      valueListenable: primaryScripture.verseSelection,
       builder: (context, value, _) {
         return VerseWidgetInherited(
-          size: collection.boxOfSettings.fontSize().asDouble,
-          lang: core.scripturePrimary.info.langCode,
+          size: data.boxOfSettings.fontSize().asDouble,
+          lang: primaryScripture.info.langCode,
           selected: value.indexWhere((id) => id == verse.id) >= 0,
           child: WidgetVerse(
             verse: verse,
@@ -231,70 +121,36 @@ class _View extends _State with _Bar {
               int index = value.indexWhere((i) => i == id);
               if (index >= 0) {
                 // value.removeAt(index);
-                core.scripturePrimary.verseSelection.value = List.from(value)..removeAt(index);
+                primaryScripture.verseSelection.value = List.from(value)..removeAt(index);
               } else {
                 // value.add(id);
-                core.scripturePrimary.verseSelection.value = List.from(value)..add(id);
+                primaryScripture.verseSelection.value = List.from(value)..add(id);
               }
-              // core.scripturePrimary.count.value = List.from(value)..add(...);
-              // core.scripturePrimary.count = value;
+              // primaryScripture.count.value = List.from(value)..add(...);
+              // primaryScripture.count = value;
             },
           ),
         );
       },
     );
-    // return ValueListenableBuilder<List<int>>(
-    //   valueListenable: core.scripturePrimary.count,
-    //   builder: (context, value, _) {
-    //     debugPrint('??? _inheritedVerse $value');
-    //     return VerseWidgetInherited(
-    //       key: verse.key,
-    //       size: collection.boxOfSettings.fontSize().asDouble,
-    //       lang: core.scripturePrimary.info.langCode,
-    //       selected: value.indexWhere((id) => id == verse.id) >= 0,
-    //       child: WidgetVerse(
-    //         verse: verse,
-    //         onPressed: (int id) {
-    //           int index = value.indexWhere((i) => i == id);
-    //           if (index >= 0) {
-    //             // value.removeAt(index);
-    //             core.scripturePrimary.count.value = List.from(value)..removeAt(index);
-    //           } else {
-    //             // value.add(id);
-    //             core.scripturePrimary.count.value = List.from(value)..add(id);
-    //           }
-    //           // core.scripturePrimary.count.value = List.from(value)..add(...);
-    //           // core.scripturePrimary.count = value;
-    //         },
-    //       ),
-    //     );
-    //   },
-    // );
-    // return Selector<Core, List<int>>(
-    //   selector: (_, e) => e.scripturePrimary.verseSelectionWorking,
-    //   builder: (BuildContext _a, List<int> list, Widget? _c) {
-    //     debugPrint('??? _inheritedVerse $list');
-    //     return VerseWidgetInherited(
-    //       key: verse.key,
-    //       size: core.collection.fontSize,
-    //       lang: core.scripturePrimary.info.langCode,
-    //       selected: list.indexWhere((id) => id == verse.id) >= 0,
-    //       child: WidgetVerse(
-    //         verse: verse,
-    //         onPressed: core.verseSelectionWithNotify,
-    //       ),
-    //     );
-    //   },
-    // );
-    // return VerseWidgetInherited(
-    //   key: verse.key,
-    //   size: core.collection.fontSize,
-    //   lang: core.scripturePrimary.info.langCode,
-    //   selected: verseSelectionList.indexWhere((id) => id == verse.id) >= 0,
-    //   child: WidgetVerse(
-    //     verse: verse,
-    //     onPressed: verseSelection,
-    //   ),
-    // );
   }
 }
+
+// class PullToRefresh extends PullToActivate {
+//   const PullToRefresh({Key? key}) : super(key: key);
+
+//   @override
+//   State<PullToActivate> createState() => _PullToRefreshState();
+// }
+
+// class _PullToRefreshState extends PullOfState {
+//   // late final Core core = context.read<Core>();
+//   @override
+//   Future<void> refreshUpdate() async {
+//     await Future.delayed(const Duration(milliseconds: 50));
+//     // await core.updateBookMeta();
+//     // await Future.delayed(const Duration(milliseconds: 100));
+//     // await core.collection.updateToken();
+//     // await Future.delayed(const Duration(milliseconds: 400));
+//   }
+// }

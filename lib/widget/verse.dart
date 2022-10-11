@@ -1,4 +1,6 @@
-part of ui.widget;
+import 'package:flutter/material.dart';
+
+import '../app.dart';
 
 class VerseWidgetInherited extends InheritedWidget {
   final Color? fontColor;
@@ -124,7 +126,7 @@ class WidgetVerse extends StatelessWidget {
                   ),
                   if (alsoInVerse != null && alsoInVerse!.isNotEmpty)
                     TextSpan(
-                      text: '3\t ...$alsoInVerse',
+                      text: '\t ...$alsoInVerse',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: userVerse.titleSize,

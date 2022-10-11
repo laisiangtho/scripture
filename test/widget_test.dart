@@ -14,7 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:scripture/main.dart';
 
 void main() async {
-  await core.ensureInitialized();
+  // await core.ensureInitialized();
 
   group('MyWidgets', () {
     testWidgets('Counter increments smoke test', (WidgetTester tester) async {

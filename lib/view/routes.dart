@@ -1,216 +1,328 @@
 import 'package:flutter/material.dart';
-import 'package:lidea/view/main.dart';
+import 'package:lidea/route/main.dart';
 
-import '/core/main.dart';
+export 'package:lidea/route/main.dart' show RouteParser;
 
-import 'main.dart' as root;
+import 'screen_launcher.dart';
 
-import 'launch/main.dart' as launch;
-import 'launch/home/main.dart' as home;
-import 'launch/bible/main.dart' as bible;
-import 'launch/poll/main.dart' as poll;
-
-import 'read/main.dart' as read;
-import 'note/main.dart' as note;
-import 'search/main.dart' as search_page;
-import 'search/result/main.dart' as search_result;
-import 'search/suggest/main.dart' as search_suggest;
-
+import 'home/main.dart' as home;
 import 'user/main.dart' as user;
-import 'read/main.dart' as reader;
+import 'bible/main.dart' as bible;
+import 'search/main.dart' as search;
+import 'read/main.dart' as read;
+// import 'stage/main.dart' as stage;
+import 'note/main.dart' as note;
+import 'poll/main.dart' as poll;
+import 'recent_search/main.dart' as recent_search;
+// import 'settings/main.dart' as settings;
+// import 'store/main.dart' as store;
+// import 'gallery/main.dart' as gallery;
+// NOTE: sheet
+import 'sheet/modal/main.dart' as sheets_modal;
+import 'sheet/stack/main.dart' as sheets_stack;
+import 'sheet/parallel/main.dart' as sheet_parallel;
+import 'sheet/bible/main.dart' as sheet_bible;
+// import 'sheet/filter/main.dart' as sheet_filter;
+import 'sheet/poll/main.dart' as sheet_poll;
+// NOTE: pop
+import 'pop/options/main.dart' as pop_options;
+import 'pop/bookmarks/main.dart' as pop_bookmarks;
+import 'pop/books/main.dart' as pop_books;
+import 'pop/chapters/main.dart' as pop_chapters;
 
-class AppRoutes {
-  static String rootInitial = root.Main.route;
-  static Map<String, Widget Function(BuildContext)> rootMap = {
-    root.Main.route: (BuildContext _) {
-      return const root.Main();
-    },
-    bible.Main.route: (BuildContext _) {
-      return const bible.Main();
-    },
-  };
+/// RouteMainDelegate
+class RouteDelegate extends RouteMainDelegate {
+  @override
+  final RouteNotifier notifier = RouteNotifier();
 
-  // static void showParallelList(BuildContext context) {
-  //   Navigator.of(context, rootNavigator: true).pushNamed(bible.Main.route);
-  // }
-
-  // static GlobalKey<NavigatorState> homeNavigator = GlobalKey<NavigatorState>();
-  static GlobalKey<NavigatorState> homeNavigator = launch.Main.navigator;
-
-  static String homeInitial({String? name}) => name ?? launch.Main.route;
-
-  static Widget _homePage(RouteSettings route) {
-    switch (route.name) {
-      // case search_page.Main.route:
-      //   return search_page.Main(
-      //     arguments: route.arguments,
-      //     defaultRouteName: search_suggest.Main.route,
-      //   );
-      // case search_page.Main.route:
-      //   return search_result.Main(arguments: route.arguments);
-      // case search_suggest.Main.route:
-      //   return search_suggest.Main(arguments: route.arguments);
-      case search_suggest.Main.route:
-        return search_page.Main(
-          arguments: route.arguments,
-          defaultRouteName: search_suggest.Main.route,
-        );
-      case search_result.Main.route:
-        return search_page.Main(arguments: route.arguments);
-
-      // case search_result.Main.route:
-      //   return search_result.Main(arguments: route.arguments);
-      // case search_suggest.Main.route:
-      //   return search_suggest.Main(arguments: route.arguments);
-
-      case user.Main.route:
-        return user.Main(arguments: route.arguments);
-      case reader.Main.route:
-        return reader.Main(arguments: route.arguments);
-      case bible.Main.route:
-        return bible.Main(arguments: route.arguments);
-      case poll.Main.route:
-        return poll.Main(arguments: route.arguments);
-      case home.Main.route:
-      default:
-        // throw Exception('Invalid route: ${route.name}');
-        return home.Main(arguments: route.arguments);
-    }
-  }
-
-  // static Route<dynamic>? homeBuilder(RouteSettings route) {
-  //   return MaterialPageRoute<void>(
-  //     settings: route,
-  //     fullscreenDialog: true,
-  //     builder: (BuildContext context) {
-  //       return _homePage(route);
-  //     },
-  //   );
-  // }
-
-  static Route<dynamic>? homeBuilder(RouteSettings route) {
-    return PageRouteBuilder(
-      settings: route,
-      pageBuilder: (BuildContext _, Animation<double> __, Animation<double> ___) {
-        return _homePage(route);
-      },
-      transitionDuration: const Duration(milliseconds: 400),
-      reverseTransitionDuration: const Duration(milliseconds: 400),
-      transitionsBuilder: (_, animation, __, child) => FadeTransition(
-        opacity: animation,
-        child: child,
+  @override
+  List<RouteType> get routes {
+    return [
+      RouteType(
+        primaryNavigation: true,
+        page: ScreenLauncher(delegate: this),
       ),
-      fullscreenDialog: true,
-    );
-  }
-
-  // static GlobalKey<NavigatorState> searchNavigator = search_page.Main.navigator;
-  // static GlobalKey<NavigatorState> searchNavigator => GlobalKey<NavigatorState>();
-
-  static String searchInitial({String? name}) => name ?? search_result.Main.route;
-
-  static Route<dynamic>? searchBuilder(RouteSettings route, Object? args) {
-    // final arguments = ViewNavigationArguments(
-    //   navigator: searchNavigator,
-    //   args: args,
-    // );
-    return PageRouteBuilder(
-      settings: route,
-      pageBuilder: (BuildContext _, Animation<double> __, Animation<double> ___) {
-        switch (route.name) {
-          case search_suggest.Main.route:
-            return search_suggest.Main(arguments: args);
-          case search_result.Main.route:
-          default:
-            return search_result.Main(arguments: args);
-        }
-      },
-      transitionDuration: const Duration(milliseconds: 400),
-      reverseTransitionDuration: const Duration(milliseconds: 400),
-      transitionsBuilder: (_, animation, __, child) => FadeTransition(
-        opacity: animation,
-        child: child,
-      ),
-      fullscreenDialog: true,
-    );
+    ];
   }
 }
 
-// AppPageView AppPageNavigation
-class AppPageNavigation {
-  // static final controller = PageController(keepPage: true);
-  static List<ViewNavigationModel> button(Preference preference) {
+class InnerDelegate extends RouteInnerDelegate {
+  /// RouteInnerDelegate
+  InnerDelegate(super.state);
+}
+
+/// RouteChangeNotifier
+class RouteNotifier extends RouteChangeNotifier {
+  @override
+  List<RouteType> get routes {
     return [
-      ViewNavigationModel(
-        key: 0,
-        icon: launch.Main.icon,
-        name: launch.Main.name,
-        description: preference.text.home,
+      RouteType(
+        name: home.Main.route,
+        primaryNavigation: true,
+        icon: home.Main.icon,
+        label: home.Main.label,
+        route: [
+          RouteType(
+            page: const home.Main(),
+            route: [
+              RouteType(
+                name: user.Main.route,
+                icon: user.Main.icon,
+                label: user.Main.label,
+                page: const user.Main(),
+                route: [
+                  RouteType(
+                    name: poll.Main.route,
+                    icon: poll.Main.icon,
+                    label: poll.Main.label,
+                    page: const poll.Main(),
+                  ),
+                ],
+              ),
+              RouteType(
+                name: search.Main.route,
+                icon: search.Main.icon,
+                label: search.Main.label,
+                page: const search.Main(),
+              ),
+              RouteType(
+                name: bible.Main.route,
+                icon: bible.Main.icon,
+                label: bible.Main.label,
+                page: const bible.Main(),
+              ),
+              RouteType(
+                name: recent_search.Main.route,
+                icon: recent_search.Main.icon,
+                label: recent_search.Main.label,
+                page: const recent_search.Main(),
+              ),
+            ],
+          ),
+        ],
       ),
-      ViewNavigationModel(
-        key: 1,
+      RouteType(
+        name: read.Main.route,
+        primaryNavigation: true,
         icon: read.Main.icon,
-        name: read.Main.name,
-        description: preference.text.read,
+        label: read.Main.label,
+        route: [
+          RouteType(
+            page: const read.Main(),
+            route: [
+              RouteType(
+                name: bible.Main.route,
+                icon: bible.Main.icon,
+                label: bible.Main.label,
+                page: const bible.Main(),
+              ),
+            ],
+          ),
+        ],
       ),
-      ViewNavigationModel(
-        key: 2,
+      RouteType(
+        name: note.Main.route,
+        primaryNavigation: true,
         icon: note.Main.icon,
-        name: note.Main.name,
-        description: preference.text.note(false),
+        label: note.Main.label,
+        route: [
+          RouteType(
+            page: const note.Main(),
+          ),
+        ],
       ),
-      ViewNavigationModel(
-        key: 3,
-        icon: search_page.Main.icon,
-        name: search_page.Main.name,
-        description: preference.text.search(false),
+      RouteType(
+        name: search.Main.route,
+        primaryNavigation: true,
+        icon: search.Main.icon,
+        label: search.Main.label,
+        route: [
+          RouteType(
+            page: const search.Main(),
+          ),
+        ],
+      ),
+      RouteType(
+        name: sheet_parallel.Main.route,
+        icon: sheet_parallel.Main.icon,
+        label: sheet_parallel.Main.label,
+        page: const sheet_parallel.Main(),
+      ),
+      RouteType(
+        name: sheets_modal.Main.route,
+        icon: sheets_modal.Main.icon,
+        label: sheets_modal.Main.label,
+        page: const sheets_modal.Main(),
+      ),
+      RouteType(
+        name: sheets_stack.Main.route,
+        icon: sheets_stack.Main.icon,
+        label: sheets_stack.Main.label,
+        page: const sheets_stack.Main(),
+      ),
+      RouteType(
+        name: sheet_bible.Main.route,
+        icon: sheet_bible.Main.icon,
+        label: sheet_bible.Main.label,
+        page: const sheet_bible.Main(),
+      ),
+      RouteType(
+        name: sheet_poll.Main.route,
+        icon: sheet_poll.Main.icon,
+        label: sheet_poll.Main.label,
+        page: const sheet_poll.Main(),
+      ),
+      RouteType(
+        name: pop_options.Main.route,
+        icon: pop_options.Main.icon,
+        label: pop_options.Main.label,
+        page: const pop_options.Main(),
+      ),
+      RouteType(
+        name: pop_bookmarks.Main.route,
+        icon: pop_bookmarks.Main.icon,
+        label: pop_bookmarks.Main.label,
+        page: const pop_bookmarks.Main(),
+      ),
+      RouteType(
+        name: pop_books.Main.route,
+        icon: pop_books.Main.icon,
+        label: pop_books.Main.label,
+        page: const pop_books.Main(),
+      ),
+      RouteType(
+        name: pop_chapters.Main.route,
+        icon: pop_chapters.Main.icon,
+        label: pop_chapters.Main.label,
+        page: const pop_chapters.Main(),
       ),
     ];
   }
 
-  // static List<Widget> page({
-  //   GlobalKey<NavigatorState>? homeNavigator,
-  //   GlobalKey<NavigatorState>? searchNavigator,
-  // }) {
-  //   return [
-  //     WidgetKeepAlive(
-  //       key: home.Main.uniqueKey,
-  //       child: home.Main(
-  //         navigator: homeNavigator,
-  //       ),
-  //     ),
-  //     WidgetKeepAlive(
-  //       key: read.Main.uniqueKey,
-  //       child: const read.Main(),
-  //     ),
-  //     WidgetKeepAlive(
-  //       key: note.Main.uniqueKey,
-  //       child: const note.Main(),
-  //     ),
-  //     WidgetKeepAlive(
-  //       key: search_page.Main.uniqueKey,
-  //       child: search_page.Main(
-  //         navigator: searchNavigator,
-  //       ),
-  //     ),
-  //   ];
-  // }
-  static List<Widget> page = [
-    ViewKeepAlive(
-      key: launch.Main.uniqueKey,
-      child: const launch.Main(),
-    ),
-    ViewKeepAlive(
-      key: read.Main.uniqueKey,
-      child: const read.Main(),
-    ),
-    ViewKeepAlive(
-      key: note.Main.uniqueKey,
-      child: const note.Main(),
-    ),
-    ViewKeepAlive(
-      key: search_page.Main.uniqueKey,
-      child: const search_page.Main(),
-    ),
-  ];
+  List<RouteType> get routeListInnerWorking {
+    return [
+      RouteType(
+        name: '',
+      ),
+      RouteType(
+        name: 'book',
+        route: [
+          RouteType(
+            name: '',
+          ),
+          RouteType(
+            name: ':int',
+          ),
+          RouteType(
+            name: 'sub',
+          ),
+        ],
+      ),
+      RouteType(
+        name: 'name',
+        route: [
+          RouteType(
+            name: ':string',
+          ),
+        ],
+      ),
+      RouteType(
+        name: 'blog',
+        route: [
+          RouteType(
+            name: ':any',
+          ),
+        ],
+      ),
+      RouteType(
+        name: 'settings',
+        route: [
+          RouteType(
+            name: 'color',
+          ),
+        ],
+      ),
+    ];
+  }
+
+  void routeTest(String name) {
+    // final lst = routeListInnerWorking();
+
+    // final abc = Uri(path: name);
+    // final cols = mapping(uri: abc, routes: lst);
+
+    // final cols = mapping(name: name, routes: routeListInnerWorking);
+    final cols = mapping(name: name);
+    debugPrint(cols.toString());
+    // for (var element in cols) {
+    //   debugPrint('element ${element.name}');
+    // }
+  }
 }
+
+class NestDelegate extends RouteNestDelegate {
+  /// RouteNestDelegate
+  NestDelegate({required super.notifier, required super.routes, super.root});
+}
+
+class NestedView extends RouteNestedWidget {
+  /// RouteNestedWidget
+  const NestedView({super.key, required super.delegate});
+}
+
+
+/*
+class Routes extends InheritedNotifier<AppRouteMainDelegate> {
+  const Routes({
+    Key? key,
+    required AppRouteMainDelegate notifier,
+    required Widget child,
+  }) : super(key: key, notifier: notifier, child: child);
+
+  static Routes get(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<Routes>()!;
+  }
+
+  static AppRouteMainDelegate of(BuildContext context) {
+    return Routes.get(context).notifier!;
+  }
+
+  static AppRouteChangeNotifier state(BuildContext context) {
+    return Routes.of(context).state;
+  }
+  // static AppRouteChangeNotifier delegate(BuildContext context) {
+  //   return Routes.of(context).state;
+  // }
+}
+*/
+
+/// get is good and preferred then making variable
+/// ```dart
+/// // good and preferred
+/// RouteNotifier get routes => RouteManager.of(context)
+/// // this get setState whenever changes are made
+/// late final routes = RouteManager.of(context)
+/// RouteManager(
+///   notifier: App.routeDelegate,
+///   child:?
+/// )
+/// ```
+// class RouteManager extends NavigatorRouteManager<Routes> {
+//   const RouteManager({super.key, required super.notifier, required super.child});
+
+//   static RouteManager inheritedWidget(BuildContext context) {
+//     return context.dependOnInheritedWidgetOfExactType<RouteManager>()!;
+//   }
+
+//   static Routes delegate(BuildContext context) {
+//     return RouteManager.inheritedWidget(context).notifier!;
+//   }
+
+//   // static GlobalKey<NavigatorState> state(BuildContext context) {
+//   //   return RouteManager.delegate(context).navigatorKey;
+//   // }
+
+//   static RouteNotifier of(BuildContext context) {
+//     return RouteManager.delegate(context).state;
+//   }
+// }

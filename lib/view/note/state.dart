@@ -1,16 +1,13 @@
 part of 'main.dart';
 
-abstract class _State extends WidgetState {
-  late final args = argumentsAs<ViewNavigationArguments>();
+abstract class _State extends StateAbstract<Main> {
+  late final ScrollController _controller = ScrollController();
+
+  late final boxOfBookmarks = App.core.data.boxOfBookmarks;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void onDeleteAllConfirmWithDialog() {
@@ -25,20 +22,20 @@ abstract class _State extends WidgetState {
       if (confirmation != null && confirmation) {
         Future.microtask(() {
           // collection.boxOfBookmark.clear().whenComplete(core.notify);
-          core.clearBookmarkWithNotify();
+          // App.core.clearBookmarkWithNotify();
+          boxOfBookmarks.clearAll();
         });
       }
     });
   }
-
-  void onSearch(String word) {}
 
   void onNav(int book, int chapter) {
     // NotifyNavigationButton.navigation.value = 1;
     core.chapterChange(bookId: book, chapterId: chapter);
     Future.delayed(const Duration(milliseconds: 150), () {
       // core.definitionGenerate(word);
-      core.navigate(at: 1);
+      // core.navigate(at: 1);
+      App.route.pushNamed('read');
     });
     // Future.delayed(Duration.zero, () {
     //   core.historyAdd(word);
