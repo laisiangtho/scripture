@@ -35,11 +35,7 @@ mixin _Result on _State {
   }
 
   Widget _resultNoQuery() {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      // child: Center(
-      //   child: Text(preference.text.aWordOrTwo),
-      // ),
+    return ViewFeedback(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -89,11 +85,8 @@ mixin _Result on _State {
         );
       },
       itemCount: bible.book.length,
-      itemVoid: SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Text(preference.text.searchNoMatch),
-        ),
+      onEmpty: ViewFeedback.message(
+        label: App.preference.text.searchNoMatch,
       ),
     );
   }

@@ -36,33 +36,6 @@ mixin _Suggest on _State {
   }
 
   Widget _suggestBlock() {
-    /*
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int bookIndex) {
-          BOOK book = bible.book[bookIndex];
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              // Text(book.info.name),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(book.info.name.toUpperCase()),
-              ),
-              _suggestChapter(book.chapter),
-            ],
-          );
-        },
-        childCount: bible.book.length,
-      ),
-    );
-    */
-    // return ViewSection(
-    //   // headerTitle: const Text('Suggest ???'),
-    //   headerTitle: Text(preference.text.suggestion(bible.book.length > 1)),
-    //   child: ,
-    // );
     return ViewListBuilder(
       itemBuilder: (BuildContext _, int bookIndex) {
         // return _suggestItem(index, o.raw.elementAt(index));
@@ -81,12 +54,8 @@ mixin _Suggest on _State {
         );
       },
       itemCount: bible.book.length,
-      itemVoid: SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          // child: Text(preference.text.bookmarkCount(0)),
-          child: Text(preference.text.searchNoMatch),
-        ),
+      onEmpty: ViewFeedback.message(
+        label: App.preference.text.searchNoMatch,
       ),
     );
   }

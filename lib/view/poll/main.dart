@@ -57,7 +57,7 @@ class _View extends _State with _Header {
       ViewSection(
         duration: const Duration(milliseconds: 250),
         show: poll.hasSubmitted,
-        placeHolder: const SliverToBoxAdapter(),
+        onAwait: const SliverToBoxAdapter(),
         headerLeading: const Icon(Icons.receipt_long_outlined),
         headerTitle: ViewSectionTitle(
           title: ViewLabel(
@@ -105,7 +105,7 @@ class _View extends _State with _Header {
       ),
       ViewSection(
         duration: const Duration(milliseconds: 250),
-        placeHolder: const SliverToBoxAdapter(),
+        onAwait: const SliverToBoxAdapter(),
         headerLeading: const Icon(Icons.how_to_vote_outlined),
         headerTitle: ViewSectionTitle(
           title: ViewLabel(

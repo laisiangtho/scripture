@@ -140,7 +140,7 @@ class _View extends _State with _Header {
               primary: false,
             );
           },
-          itemVoid: ViewButton(
+          onEmpty: ViewButton(
             padding: const EdgeInsets.symmetric(vertical: 30),
             // child: ViewMark(
             //   label: App.preference.text.addTo(App.preference.text.favorite(true)),

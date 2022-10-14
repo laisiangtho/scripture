@@ -138,16 +138,6 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     _controller.bottom.dispose();
   }
 
-  Widget message(String msg) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      fillOverscroll: true,
-      child: Center(
-        child: Text(msg),
-      ),
-    );
-  }
-
   // void onQuery() async {
   //   Future.microtask(() {
   //     _textController.text = searchQuery;

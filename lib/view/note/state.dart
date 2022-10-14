@@ -29,6 +29,32 @@ abstract class _State extends StateAbstract<Main> {
     });
   }
 
+  Future<bool?> onDelete(dynamic key) {
+    return boxOfBookmarks.deleteAtKey(key);
+  }
+
+  // Future<bool> onDelete(int index) {
+  //   // Future.microtask((){});
+  //   // Future.delayed(Duration.zero, () {
+  //   // });
+  //   // Do you want to delete this Bookmark?
+  //   // Do you want to delete all the Bookmarks?
+  //   return doConfirmWithDialog(
+  //     context: context,
+  //     // message: 'Do you want to delete this Bookmark?',
+  //     message: preference.text.confirmToDelete(''),
+  //     title: preference.text.confirmation,
+  //     cancel: preference.text.cancel,
+  //     confirm: preference.text.confirm,
+  //   ).then((confirmation) {
+  //     if (confirmation != null && confirmation) {
+  //       core.deleteBookmarkWithNotify(index);
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+  // }
+
   void onNav(int book, int chapter) {
     // NotifyNavigationButton.navigation.value = 1;
     core.chapterChange(bookId: book, chapterId: chapter);
@@ -40,27 +66,5 @@ abstract class _State extends StateAbstract<Main> {
     // Future.delayed(Duration.zero, () {
     //   core.historyAdd(word);
     // });
-  }
-
-  Future<bool> onDelete(int index) {
-    // Future.microtask((){});
-    // Future.delayed(Duration.zero, () {
-    // });
-    // Do you want to delete this Bookmark?
-    // Do you want to delete all the Bookmarks?
-    return doConfirmWithDialog(
-      context: context,
-      // message: 'Do you want to delete this Bookmark?',
-      message: preference.text.confirmToDelete(''),
-      title: preference.text.confirmation,
-      cancel: preference.text.cancel,
-      confirm: preference.text.confirm,
-    ).then((confirmation) {
-      if (confirmation != null && confirmation) {
-        core.deleteBookmarkWithNotify(index);
-        return true;
-      }
-      return false;
-    });
   }
 }

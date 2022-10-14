@@ -47,12 +47,9 @@ class _RecentView extends _RecentState {
             alignment: Alignment.centerLeft,
             label: preference.text.recentSearch(items.length > 1),
           ),
-          placeHolder: SliverFillRemaining(
-            hasScrollBody: false,
-            fillOverscroll: true,
-            child: Center(
-              child: Text(preference.text.aWordOrTwo),
-            ),
+
+          onAwait: ViewFeedback.message(
+            label: App.preference.text.aWordOrTwo,
           ),
           child: ViewBlockCard.fill(
             child: _recentBlock(items),

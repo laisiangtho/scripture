@@ -65,41 +65,36 @@ class _View extends _State with _Header {
   }
 
   Widget listContainer() {
-    final items = boxOfBookmarks.values.toList();
+    final items = boxOfBookmarks.entries.toList();
+    // items.sort((a, b) => b.value.date!.compareTo(a.value.date!));
+
+    // final items = boxOfBookmarks.values.toList();
     // items.sort((a, b) => b.date!.compareTo(a.date!));
     return ViewListBuilder(
       itemBuilder: (BuildContext context, int index) {
         return itemContainer(index, items.elementAt(index));
       },
       itemCount: items.length,
-      itemVoid: SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Text(
-            preference.text.bookmarkCount(0),
-            style: state.textTheme.caption,
-          ),
-        ),
+      onEmpty: ViewFeedback.message(
+        label: App.preference.text.bookmarkCount(0),
       ),
       itemReorderable: boxOfBookmarks.reorderable,
     );
   }
 
-  Widget itemContainer(int index, BookmarksType item) {
-    final book = App.core.scripturePrimary.bookById(item.bookId);
+  Widget itemContainer(int index, MapEntry<dynamic, BookmarksType> item) {
+    final book = App.core.scripturePrimary.bookById(item.value.bookId);
     return Dismissible(
       // key: Key(index.toString()),
-      key: Key(item.date.toString()),
+      key: Key(item.value.date.toString()),
       direction: DismissDirection.endToStart,
       background: dismissiblesFromRight(),
 
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
-          return await onDelete(index);
-        } else {
-          // Navigate to edit page;
+          return await onDelete(item.key);
         }
-        return null;
+        return false;
       },
       child: ListTile(
         // contentPadding: EdgeInsets.zero,
@@ -113,11 +108,11 @@ class _View extends _State with _Header {
         leading: const Icon(Icons.bookmark_added),
 
         trailing: Text(
-          core.scripturePrimary.digit(item.chapterId),
+          core.scripturePrimary.digit(item.value.chapterId),
           // 'chapterId',
           style: const TextStyle(fontSize: 18),
         ),
-        onTap: () => onNav(item.bookId, item.chapterId),
+        onTap: () => onNav(item.value.bookId, item.value.chapterId),
       ),
     );
   }

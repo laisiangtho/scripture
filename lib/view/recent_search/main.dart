@@ -60,30 +60,11 @@ class _View extends _State with _Header {
       ViewSection(
         show: boxOfRecentSearch.isNotEmpty,
 
-        placeHolder: SliverFillRemaining(
-          hasScrollBody: false,
-          child: Center(
-            child: Text(App.preference.text.recentSearchCount(0)),
-          ),
+        onAwait: const ViewFeedback.await(),
+        onEmpty: ViewFeedback.message(
+          label: App.preference.text.recentSearchCount(0),
         ),
-        // child: Padding(
-        //   padding: const EdgeInsets.fromLTRB(0, 3, 0, 5),
-        //   child: Material(
-        //     type: MaterialType.card,
-        //     color: Theme.of(context).primaryColor,
-        //     shape: RoundedRectangleBorder(
-        //       side: BorderSide(
-        //         color: Theme.of(context).shadowColor,
-        //         width: 0.5,
-        //       ),
-        //     ),
-        //     child: _recentBlock(items),
-        //   ),
-        // ),
-        // child: Card(
-        //   // clipBehavior: Clip.hardEdge,
-        //   child: _recentBlock(items),
-        // ),
+
         child: ViewBlockCard.fill(
           child: listContainer(),
         ),
@@ -116,12 +97,6 @@ class _View extends _State with _Header {
       },
       itemCount: items.length,
       duration: kThemeChangeDuration,
-      itemVoid: SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Text(App.preference.text.recentSearchCount(0)),
-        ),
-      ),
     );
   }
 
