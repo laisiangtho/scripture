@@ -134,4 +134,4 @@ This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN
 
 [logo]: https://raw.githubusercontent.com/laisiangtho/scripture/master/bible.png "Lai Siangtho"
 [license]: https://img.shields.io/badge/License-MIT-yellow.svg "License"
-[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.12.0%20%3C3.0.0-green.svg "Flutter version"
+[flutterversion]: https://img.shields.io/badge/flutter-%3E%3D%202.18.2%20%3C3.0.0-green.svg "Flutter version"

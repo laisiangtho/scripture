@@ -18,7 +18,7 @@ import 'package:lidea/unit/core.dart';
 // NOTE: Analytics
 import 'package:lidea/unit/analytics.dart';
 
-// NOTE: Store
+// NOTE: Individual
 // import 'package:lidea/unit/store.dart';
 
 // NOTE: view ???

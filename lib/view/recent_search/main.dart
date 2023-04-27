@@ -53,7 +53,7 @@ class _View extends _State with _Header {
         padding: state.fromContext.viewPadding,
         heights: const [kToolbarHeight, 100],
         overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.shadowColor,
+        overlapsBorderColor: state.theme.disabledColor,
         builder: _header,
       ),
       // listContainer(),

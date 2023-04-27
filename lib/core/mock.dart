@@ -12,7 +12,7 @@ abstract class _Mock extends _Abstract {
 
       for (var e in api) {
         // await UtilArchive.extractBundle(e.asset, noneArchive: true);
-        await ArchiveNest.extractBundle(e.asset, noneArchive: true);
+        await ArchiveNest.bundle(e.asset);
       }
     }
     if (data.boxOfBooks.box.isEmpty) {
