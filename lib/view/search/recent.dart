@@ -1,7 +1,8 @@
 part of 'main.dart';
 
 class _Recents extends StatefulWidget {
-  const _Recents({Key? key}) : super(key: key);
+  final Function(String) onSuggest;
+  const _Recents({required this.onSuggest});
 
   @override
   State<_Recents> createState() => _RecentView();
@@ -9,27 +10,7 @@ class _Recents extends StatefulWidget {
 
 abstract class _RecentState extends StateAbstract<_Recents> {
   String get suggestQuery => data.suggestQuery;
-  set suggestQuery(String ord) {
-    data.suggestQuery = ord;
-  }
-
   int get lengths => suggestQuery.length;
-
-  void onSuggest(String str) {
-    suggestQuery = str;
-    // on recentHistory select
-    // if (_textController.text != str) {
-    //   _textController.text = str;
-    //   if (_focusNode.hasFocus == false) {
-    //     Future.delayed(const Duration(milliseconds: 400), () {
-    //       _focusNode.requestFocus();
-    //     });
-    //   }
-    // }
-    Future.microtask(() {
-      core.suggestionGenerate();
-    });
-  }
 
   bool onDelete(String str) => data.boxOfRecentSearch.delete(str);
 }
@@ -45,7 +26,7 @@ class _RecentView extends _RecentState {
           // duration: const Duration(milliseconds: 270),
           headerTitle: ViewLabel(
             alignment: Alignment.centerLeft,
-            label: preference.text.recentSearch(items.length > 1),
+            label: preference.text.recentSearch((items.length > 1).toString()),
           ),
 
           onAwait: ViewFeedback.message(
@@ -80,6 +61,7 @@ class _RecentView extends _RecentState {
   }
 
   Dismissible _recentContainer(int index, MapEntry<dynamic, RecentSearchType> item) {
+    debugPrint('lang ${item.value.lang}');
     return Dismissible(
       key: Key(item.value.date.toString()),
       direction: DismissDirection.endToStart,
@@ -98,24 +80,29 @@ class _RecentView extends _RecentState {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Wrap(
-              children: item.value.lang
-                  .map(
-                    (e) => Text(e),
-                  )
-                  .toList(),
-            ),
+            // Wrap(
+            //   children: item.value.lang
+            //       .map(
+            //         (e) => Text(
+            //           e,
+            //           style: Theme.of(context).textTheme.labelMedium,
+            //         ),
+            //       )
+            //       .toList(),
+            // ),
             Chip(
-              avatar: CircleAvatar(
-                // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.saved_search_outlined,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+              // avatar: CircleAvatar(
+              //   // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              //   backgroundColor: Colors.transparent,
+              //   child: Icon(
+              //     Icons.saved_search_outlined,
+              //     color: Theme.of(context).primaryColor,
+              //   ),
+              // ),
+              backgroundColor: state.theme.indicatorColor,
               label: Text(
-                item.value.hit.toString(),
+                // item.value.hit.toString(),
+                App.core.scripturePrimary.digit(item.value.hit),
               ),
             ),
           ],
@@ -133,7 +120,7 @@ class _RecentView extends _RecentState {
         //     item.value.hit.toString(),
         //   ),
         // ),
-        onTap: () => onSuggest(item.value.word),
+        onTap: () => widget.onSuggest(item.value.word),
       ),
     );
   }
@@ -144,18 +131,17 @@ class _RecentView extends _RecentState {
       TextSpan(
         text: word.substring(0, hightlight),
         semanticsLabel: word,
-        style: TextStyle(
-          fontSize: 20,
-          color: Theme.of(context).textTheme.bodySmall!.color,
-          // color: Theme.of(context).primaryTextTheme.labelLarge!.color,
-          fontWeight: FontWeight.w300,
-        ),
+        // style: TextStyle(
+        //   fontSize: 20,
+        //   color: Theme.of(context).textTheme.bodySmall!.color,
+        //   // color: Theme.of(context).primaryTextTheme.labelLarge!.color,
+        //   fontWeight: FontWeight.w300,
+        // ),
+        style: Theme.of(context).textTheme.bodyLarge,
         children: <TextSpan>[
           TextSpan(
             text: word.substring(hightlight),
-            style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.labelLarge!.color,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
           )
         ],
       ),

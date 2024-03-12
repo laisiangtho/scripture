@@ -13,10 +13,10 @@ abstract class _State extends StateAbstract<Main> {
   // late final poll = context.read<Core>().poll;
   late final poll = core.poll;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   Future<void> whenCompleteSignIn() async {
     // if (authenticate.message.isNotEmpty) {

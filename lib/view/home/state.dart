@@ -4,10 +4,10 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   late final ScrollController _controller = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   void dispose() {

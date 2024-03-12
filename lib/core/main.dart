@@ -76,9 +76,10 @@ class Core extends _Search {
       debugPrint('scripturePrimary: $e');
     });
     switchIdentifyParallel();
-    await scriptureParallel.init().catchError((e) {
-      debugPrint('scriptureParallel: $e');
-    });
+    // await scriptureParallel.init().catchError((e) {
+    //   debugPrint('scriptureParallel: $e');
+    // });
+    await scriptureParallel.init();
 
     message.value = '';
 

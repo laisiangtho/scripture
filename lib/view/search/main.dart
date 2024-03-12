@@ -15,7 +15,7 @@ part 'suggest.dart';
 part 'recent.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'search'; // ./result ./suggestion
   static String label = 'Search';

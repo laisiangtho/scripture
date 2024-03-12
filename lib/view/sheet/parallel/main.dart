@@ -9,7 +9,7 @@ import '../../../app.dart';
 part 'content.dart';
 
 class Main extends SheetsDraggable {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'sheet-parallel';
   static String label = 'Parallel';
@@ -103,12 +103,12 @@ class _State extends SheetsDraggableState<Main> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ViewButton(
-          message: preference.text.previousTo(preference.text.chapter(false)),
+          message: preference.text.previousTo(preference.text.chapter('false')),
           onPressed: setChapterPrevious,
           child: const ViewMark(icon: LideaIcon.chapterPrevious, iconSize: 22),
         ),
         ViewButton(
-          message: preference.text.nextTo(preference.text.chapter(false)),
+          message: preference.text.nextTo(preference.text.chapter('false')),
           onPressed: setChapterNext,
           child: const ViewMark(icon: LideaIcon.chapterNext, iconSize: 22),
         ),

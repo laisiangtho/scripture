@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 class Authenticate extends AuthenticateUnit {
   // Authentication({name, options}) : super(name: name, options: options);

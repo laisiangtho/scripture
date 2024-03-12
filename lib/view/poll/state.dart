@@ -12,10 +12,10 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     end: 1.0,
   ).animate(busyController);
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   late final poll = context.watch<Core>().poll;
   PollBoard get pollBoard => poll.pollBoard;

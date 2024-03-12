@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../app.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
   static String route = 'pop-books';
   static String label = 'Books';
   static IconData icon = Icons.opacity_outlined;
@@ -83,7 +83,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.40),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       // child: SizedBox(
       //   height: height,
       //   child: view(),
@@ -106,7 +106,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               blurRadius: 5,
               spreadRadius: 7,
               offset: const Offset(0, 0),
@@ -118,7 +118,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -144,7 +144,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
           return const ListTile(
             minVerticalPadding: 16,
             enabled: false,
-            title: Text(''),
+            title: Text('...'),
           );
         },
         itemCount: books.length,
@@ -166,7 +166,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
           // backgroundColor: isCurrentBook ? Theme.of(context).disabledColor : Colors.transparent,
           // backgroundColor: Colors.transparent,
 
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           // backgroundColor: Colors.red,
           // canTapOnHeader: isCurrentBook,
           headerBuilder: (BuildContext context, bool isExpanded) {
@@ -180,9 +180,10 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
               // alignment: Alignment.centerLeft,
               // enabled: !isCurrentBook,
               selected: isCurrentBook,
-              // textColor: Colors.red,
+              textColor: state.theme.hintColor,
               // selectedTileColor: Colors.blue,
-              selectedColor: state.theme.dividerColor,
+              // selectedTileColor: state.theme.cardColor,
+              // selectedColor: state.theme.dividerColor,
 
               title: Text(
                 book.name,
@@ -236,9 +237,9 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       expansionCallback: (int item, bool status) {
         // final abc = expandedList.where((e) => e == index).length;
         if (status) {
-          expandedList.remove(index);
-        } else {
           expandedList.add(index);
+        } else {
+          expandedList.remove(index);
         }
         setState(() {
           // itemData[index].expanded = !itemData[index].expanded;

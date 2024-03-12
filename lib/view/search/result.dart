@@ -43,7 +43,7 @@ mixin _Result on _State {
           // const ViewSectionDivider(primary: false),
           Text(
             primaryScripture.info.name,
-            style: state.textTheme.caption,
+            style: state.textTheme.bodySmall,
           ),
 
           Text(

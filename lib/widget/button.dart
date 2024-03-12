@@ -4,7 +4,7 @@ import '../app.dart';
 
 class BackButtonWidget extends StatelessWidget {
   final NavigatorState navigator;
-  const BackButtonWidget({Key? key, required this.navigator}) : super(key: key);
+  const BackButtonWidget({super.key, required this.navigator});
   // NavigatorState get navigator => Navigator.of(context);
   // NavigatorState get navigator => App.route.navigator(context);
   @override
@@ -61,7 +61,7 @@ class BackButtonWidget extends StatelessWidget {
 
 class HomeButtonWidget extends StatelessWidget {
   final NavigatorState navigator;
-  const HomeButtonWidget({Key? key, required this.navigator}) : super(key: key);
+  const HomeButtonWidget({super.key, required this.navigator});
   // NavigatorState get navigator => Navigator.of(context);
   // NavigatorState get navigator => App.route.navigator(context);
   @override

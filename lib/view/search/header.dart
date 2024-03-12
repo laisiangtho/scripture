@@ -57,6 +57,7 @@ mixin _Header on _State {
                 onChanged: onSuggest,
                 onFieldSubmitted: onSearch,
                 maxLines: 1,
+                style: Theme.of(context).textTheme.bodyMedium,
                 decoration: InputDecoration(
                   /*
                   prefixIcon: ViewMark(
@@ -80,6 +81,8 @@ mixin _Header on _State {
                     label: primaryScripture.info.langCode.toUpperCase(),
                   ),
                   */
+                  // labelStyle: Theme.of(context).textTheme.labelSmall,
+                  // hintStyle: Theme.of(context).textTheme.headlineSmall,
                   prefixIcon: Selector<Core, BooksType>(
                     selector: (_, e) => e.scripturePrimary.info,
                     builder: (BuildContext _, BooksType info, Widget? child) {

@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 class Scripture extends _ScriptureInterface {
   final Data data;

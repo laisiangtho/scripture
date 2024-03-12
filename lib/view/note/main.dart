@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'note';
   static String label = 'Note';
@@ -107,10 +107,15 @@ class _View extends _State with _Header {
         minLeadingWidth: 10,
         leading: const Icon(Icons.bookmark_added),
 
+        // trailing: Text(
+        //   core.scripturePrimary.digit(item.value.chapterId),
+        //   // 'chapterId',
+        //   style: const TextStyle(fontSize: 18),
+        // ),
         trailing: Text(
           core.scripturePrimary.digit(item.value.chapterId),
           // 'chapterId',
-          style: const TextStyle(fontSize: 18),
+          style: Theme.of(context).textTheme.labelMedium,
         ),
         onTap: () => onNav(item.value.bookId, item.value.chapterId),
       ),

@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'poll';
   static String label = 'Poll';
@@ -188,7 +188,7 @@ class _View extends _State with _Header {
                   color: hasSelected ? null : Theme.of(context).hintColor,
                 ),
                 selected: hasSelected,
-                selectedColor: Theme.of(context).errorColor,
+                selectedColor: Theme.of(context).colorScheme.error,
                 title: Text(member.name),
                 trailing: Icon(
                   // hasSelected ? Icons.remove_done_outlined : Icons.done_outlined,
@@ -228,10 +228,9 @@ class _ItemWidget extends StatelessWidget {
   final double value;
 
   const _ItemWidget({
-    Key? key,
     required this.value,
     this.child,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(

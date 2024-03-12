@@ -43,6 +43,8 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   String get suggestQuery => data.suggestQuery;
   set suggestQuery(String ord) {
     data.suggestQuery = ord;
+    // _textController.text = ord;
+    // setState(() {});
   }
 
   Scripture get primaryScripture => core.scripturePrimary;
@@ -171,15 +173,16 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 
   void onSuggest(String str) {
     suggestQuery = str;
+
     // on recentHistory select
-    // if (_textController.text != str) {
-    //   _textController.text = str;
-    //   if (_focusNode.hasFocus == false) {
-    //     Future.delayed(const Duration(milliseconds: 400), () {
-    //       _focusNode.requestFocus();
-    //     });
-    //   }
-    // }
+    if (_textController.text != str) {
+      _textController.text = str;
+      if (_focusNode.hasFocus == false) {
+        Future.delayed(const Duration(milliseconds: 400), () {
+          _focusNode.requestFocus();
+        });
+      }
+    }
     Future.microtask(() {
       App.core.suggestionGenerate();
     });

@@ -15,13 +15,13 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   ).animate(_dragController);
   late final Animation<Color?> _colorAnimation = ColorTween(
     begin: null,
-    end: Theme.of(context).errorColor,
+    end: Theme.of(context).colorScheme.error,
   ).animate(_dragController);
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   void onSort() {
     // boxOfBooks.box.add(

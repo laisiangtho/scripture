@@ -12,7 +12,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'home';
   static String label = 'Home';
@@ -83,14 +83,14 @@ class _View extends _State with _Header {
 
     return ViewSection(
       // headerLeading: const Icon(Icons.ac_unit),
-      headerTitle: Text(App.preference.text.favorite(true)),
+      headerTitle: Text(App.preference.text.favorite('true')),
       // headerTitle: ViewMark(
       //   mainAxisAlignment: MainAxisAlignment.start,
       //   label: App.preference.text.favorite(true),
       // ),
       headerTrailing: ViewButton(
         show: items.isNotEmpty,
-        message: App.preference.text.addTo(App.preference.text.favorite(true)),
+        message: App.preference.text.addTo(App.preference.text.favorite('true')),
         onPressed: () {
           App.route.pushNamed('home/bible');
         },
@@ -113,7 +113,7 @@ class _View extends _State with _Header {
         //   label: App.preference.text.addMore(App.preference.text.favorite(true)),
         // ),
         child: Text(
-          App.preference.text.addMore(App.preference.text.favorite(true)),
+          App.preference.text.addMore(App.preference.text.favorite('true')),
           textAlign: TextAlign.center,
         ),
       ),
@@ -146,7 +146,7 @@ class _View extends _State with _Header {
             //   label: App.preference.text.addTo(App.preference.text.favorite(true)),
             // ),
             child: Text(
-              App.preference.text.addTo(App.preference.text.favorite(true)),
+              App.preference.text.addTo(App.preference.text.favorite('true')),
               textAlign: TextAlign.center,
             ),
             onPressed: () {
@@ -185,7 +185,7 @@ class _View extends _State with _Header {
         children: <Widget>[
           Container(
             constraints: const BoxConstraints(
-              minWidth: 30.0,
+              minWidth: 40.0,
             ),
             padding: const EdgeInsets.symmetric(vertical: 2),
             decoration: BoxDecoration(
@@ -254,10 +254,10 @@ class _View extends _State with _Header {
     return ViewSection(
       show: items.isNotEmpty,
       headerTitle: Text(
-        App.preference.text.recentSearch(true),
+        App.preference.text.recentSearch('true'),
       ),
       headerTrailing: ViewButton(
-        message: App.preference.text.addTo(App.preference.text.recentSearch(true)),
+        message: App.preference.text.addTo(App.preference.text.recentSearch('true')),
         onPressed: () {
           App.route.pushNamed('home/recent-search');
         },
@@ -298,7 +298,7 @@ class _View extends _State with _Header {
 }
 
 class PullToRefresh extends PullToActivate {
-  const PullToRefresh({Key? key}) : super(key: key);
+  const PullToRefresh({super.key});
 
   @override
   State<PullToActivate> createState() => _PullToRefreshState();
@@ -308,10 +308,11 @@ class _PullToRefreshState extends PullOfState {
   // late final Core core = context.read<Core>();
   @override
   Future<void> refreshUpdate() async {
-    await Future.delayed(const Duration(milliseconds: 50));
-    await App.core.updateBookMeta();
-    await Future.delayed(const Duration(milliseconds: 100));
+    // await Future.delayed(const Duration(milliseconds: 50));
+    // await App.core.updateBookMeta();
+    // await Future.delayed(const Duration(milliseconds: 100));
+    debugPrint('refreshUpdate');
     await App.core.data.updateToken();
-    await Future.delayed(const Duration(milliseconds: 400));
+    // await Future.delayed(const Duration(milliseconds: 400));
   }
 }

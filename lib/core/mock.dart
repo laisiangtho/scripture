@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 abstract class _Mock extends _Abstract {
   late final scripturePrimary = Scripture(data);
@@ -26,15 +26,22 @@ abstract class _Mock extends _Abstract {
   }
 
   Future<void> updateBookMeta() async {
+    // final urls = data.env.url('book').uri(name: "git+");
+    // debugPrint(urls.toString());
     final url = data.env.url('book').uri();
+    debugPrint(url.toString());
     return AskNest(url).get<String>().then((e) async {
       final parsed = UtilDocument.decodeJSON(e);
+      // debugPrint(e);
       await _importBookMeta(parsed['book']);
+    }).catchError((e) {
+      debugPrint(e);
     });
   }
 
   Future<void> _importBookMeta(List<dynamic> bookList) async {
     final books = data.boxOfBooks.values.toList();
+
     for (var item in bookList) {
       BooksType meta = BooksType.fromJSON(item);
       int index = books.indexWhere((o) => o.identify == meta.identify);
@@ -46,7 +53,7 @@ abstract class _Mock extends _Abstract {
         return 0;
       });
 
-      if (index >= 0) {
+      if (index > -1) {
         BooksType old = books.elementAt(index);
         // Check if Bible has a new version
         meta.update = (meta.available > 0 && old.version != meta.version) ? 1 : old.update;
@@ -58,6 +65,32 @@ abstract class _Mock extends _Abstract {
         debugPrint('add ${meta.identify} ');
       }
     }
+
+    // for (var item in bookList) {
+    //   BooksType meta = BooksType.fromJSON(item);
+    //   int index = books.indexWhere((o) => o.identify == meta.identify);
+
+    //   String file = data.env.url('bible').cache(meta.identify);
+    //   meta.available = await UtilDocument.exists(file).then((e) {
+    //     return e.isNotEmpty ? 1 : 0;
+    //   }).catchError((_) {
+    //     return 0;
+    //   });
+
+    //   data.boxOfBooks.box.a
+
+    //   if (index > -1) {
+    //     BooksType old = books.elementAt(index);
+    //     // Check if Bible has a new version
+    //     meta.update = (meta.available > 0 && old.version != meta.version) ? 1 : old.update;
+    //     meta.selected = old.selected;
+    //     data.boxOfBooks.box.put(index, meta);
+    //     debugPrint('update ${meta.identify} ${meta.available}');
+    //   } else {
+    //     data.boxOfBooks.box.add(meta);
+    //     debugPrint('add ${meta.identify} ');
+    //   }
+    // }
   }
 
   // TODO: StateError (Bad state: No element)

@@ -6,7 +6,7 @@ import 'package:lidea/view/user/main.dart';
 import '../app.dart';
 
 class UserProfileIcon extends UserIconWidget {
-  const UserProfileIcon({Key? key}) : super(key: key);
+  const UserProfileIcon({super.key});
 
   @override
   bool get userSignedIn => App.authenticate.hasUser;
@@ -17,7 +17,7 @@ class UserProfileIcon extends UserIconWidget {
   Widget build(BuildContext context) {
     App.route.show('a');
     return ViewButton(
-      message: App.preference.text.option(true),
+      message: App.preference.text.option('true'),
 
       onPressed: () => App.route.pushNamed('home/user'),
       child: Selector<Authenticate, bool>(

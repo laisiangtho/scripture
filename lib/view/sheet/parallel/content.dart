@@ -83,7 +83,7 @@ class _ContentState extends State<ParallelContent> {
                     ),
                   ),
                   ViewButton(
-                    message: preference.text.chooseTo(preference.text.bible(false)),
+                    message: preference.text.chooseTo(preference.text.bible('false')),
                     onPressed: _showParallelList,
                     child: const ViewLabel(
                       icon: Icons.linear_scale,
@@ -120,24 +120,24 @@ class _ContentState extends State<ParallelContent> {
             );
           },
         ),
-        SliverToBoxAdapter(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('.animateTo(defaultInitial)'),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Scroll to 0'),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Scroll to 300'),
-          ),
-        ),
+        // SliverToBoxAdapter(
+        //   child: ElevatedButton(
+        //     onPressed: () {},
+        //     child: const Text('.animateTo(defaultInitial)'),
+        //   ),
+        // ),
+        // SliverToBoxAdapter(
+        //   child: ElevatedButton(
+        //     onPressed: () {},
+        //     child: const Text('Scroll to 0'),
+        //   ),
+        // ),
+        // SliverToBoxAdapter(
+        //   child: ElevatedButton(
+        //     onPressed: () {},
+        //     child: const Text('Scroll to 300'),
+        //   ),
+        // ),
       ],
     );
   }

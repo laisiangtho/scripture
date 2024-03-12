@@ -16,13 +16,13 @@ class VerseWidgetInherited extends InheritedWidget {
   double? get titleSize => (fontSize! - 3).toDouble();
 
   const VerseWidgetInherited({
-    Key? key,
+    super.key,
     this.fontColor,
     this.size,
     this.lang,
     this.selected = false,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   static VerseWidgetInherited? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<VerseWidgetInherited>();
@@ -45,12 +45,12 @@ class WidgetVerse extends StatelessWidget {
   // final ValueChanged<Map<String,dynamic>> onChange;
 
   const WidgetVerse({
-    Key? key,
+    super.key,
     required this.verse,
     this.keyword,
     this.onPressed,
     this.alsoInVerse,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +95,10 @@ class WidgetVerse extends StatelessWidget {
                       TextSpan(
                         text: verse.name,
                         semanticsLabel: 'verse: ${verse.name}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Theme.of(context).hintColor),
                       ),
                       if (verse.merge.isNotEmpty)
                         TextSpan(
@@ -121,7 +125,7 @@ class WidgetVerse extends StatelessWidget {
                     ),
                     semanticsLabel: verse.text,
                     style: TextStyle(
-                      color: userVerse.selected ? Theme.of(context).errorColor : null,
+                      color: userVerse.selected ? Theme.of(context).colorScheme.error : null,
                     ),
                   ),
                   if (alsoInVerse != null && alsoInVerse!.isNotEmpty)
@@ -250,7 +254,7 @@ class WidgetVerse extends StatelessWidget {
 }
 
 class VerseWidgetHolder extends StatelessWidget {
-  const VerseWidgetHolder({Key? key}) : super(key: key);
+  const VerseWidgetHolder({super.key});
 
   @override
   Widget build(BuildContext context) {

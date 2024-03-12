@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../app.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
   static String route = 'pop-options';
   static String label = 'Options';
   static IconData icon = Icons.opacity_outlined;
@@ -48,7 +48,7 @@ class _MainState extends StateAbstract<Main> {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.3),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       child: SizedBox(
         height: height,
         child: view(),
@@ -62,7 +62,7 @@ class _MainState extends StateAbstract<Main> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -74,7 +74,7 @@ class _MainState extends StateAbstract<Main> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),

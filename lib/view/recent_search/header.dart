@@ -15,7 +15,7 @@ mixin _Header on _State {
           const Alignment(0, .5),
           data.snapShrink,
         ),
-        label: App.preference.text.recentSearch(boxOfRecentSearch.plural),
+        label: App.preference.text.recentSearch(boxOfRecentSearch.plural as String),
         data: data,
       ),
       right: [

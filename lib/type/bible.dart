@@ -1,4 +1,4 @@
-part of data.type;
+part of 'main.dart';
 
 class DefinitionBible {
   final BooksType info;
@@ -50,7 +50,6 @@ class DefinitionBible {
   //     'book': this.book,
   //   };
   // }
-
 }
 
 class DefinitionTestament {
@@ -121,7 +120,6 @@ class BOOK {
   //     chapter:[]
   //   );
   // }
-
 }
 
 class CHAPTER {

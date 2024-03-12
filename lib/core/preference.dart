@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 class Preference extends PreferenceNest {
   // Preference(Collection docket) : super(docket);
@@ -24,5 +24,4 @@ class Preference extends PreferenceNest {
   //       Locale('no', 'NO'),
   //       Locale('my', ''),
   //     ];
-
 }

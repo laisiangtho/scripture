@@ -98,6 +98,7 @@ build: 44
 - [ ] parallel
 - [ ] sync
 - [ ] home current status of reading and search
+- [ ] Parallel bottom clean
 
 select_content
 content_type: New International Version (NIV), item_id

@@ -16,7 +16,7 @@ mixin _Header on _State {
           //   vertical: (data.shrink * 12).clamp(6, 12).toDouble(),
           //   horizontal: 7,
           // ),
-          message: preference.text.addTo(preference.text.bookmark(true)),
+          message: preference.text.addTo(preference.text.bookmark('true')),
 
           onPressed: showBookmarks,
           // child: Icon(
@@ -35,7 +35,8 @@ mixin _Header on _State {
             builder: (BuildContext context, bool hasBookmark, Widget? child) {
               return ViewMark(
                 icon: hasBookmark ? Icons.bookmark_added : Icons.bookmark_add,
-                iconColor: hasBookmark ? null : Theme.of(context).highlightColor,
+                iconColor:
+                    hasBookmark ? Theme.of(context).hintColor : Theme.of(context).dividerColor,
                 iconSize: (vhd.shrink * 26).clamp(20, 26),
               );
             },
@@ -53,7 +54,7 @@ mixin _Header on _State {
                 constraints: BoxConstraints(maxWidth: width, minWidth: 48),
                 borderRadius: const BorderRadius.horizontal(left: Radius.elliptical(20, 50)),
                 padding: EdgeInsets.fromLTRB(10, 1, vhd.snapShrink * 5, 1),
-                message: preference.text.book(true),
+                message: preference.text.book('true'),
                 onPressed: showBooks,
                 // child: ViewMark(
                 //   // label: 'Ruth',
@@ -99,7 +100,7 @@ mixin _Header on _State {
                 constraints: BoxConstraints(maxWidth: width, minWidth: 35),
                 borderRadius: const BorderRadius.horizontal(right: Radius.elliptical(20, 50)),
                 padding: EdgeInsets.fromLTRB(3, 1, vhd.snapShrink * 5, 1),
-                message: preference.text.chapter(true),
+                message: preference.text.chapter('true'),
                 onPressed: showChapters,
                 child: Selector<Core, String>(
                   selector: (_, e) => e.scripturePrimary.chapterName,

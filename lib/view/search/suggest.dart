@@ -24,7 +24,7 @@ mixin _Suggest on _State {
           selector: (_, e) => e.scripturePrimary.verseSearch,
           builder: (BuildContext context, BIBLE o, Widget? child) {
             if (o.query.isEmpty) {
-              return const _Recents();
+              return _Recents(onSuggest: onSuggest);
             }
             // o.verseCount > 0
             return _suggestBlock();

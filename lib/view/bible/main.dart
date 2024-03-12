@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'bible';
   static String label = 'Bible';
@@ -111,7 +111,7 @@ class _View extends _State with _Header {
             child: Container(
               width: 60,
               height: 50,
-              alignment: const Alignment(1, .1),
+              alignment: const Alignment(.9, .1),
               decoration: BoxDecoration(
                 // gradient: LinearGradient(
                 //   begin: Alignment.topCenter,
@@ -133,8 +133,8 @@ class _View extends _State with _Header {
                         : Colors.transparent,
               ),
               child: Icon(
-                Icons.noise_control_off,
-                size: 24,
+                LideaIcon.record,
+                size: 18,
                 color: isAvailable
                     ? book.selected
                         ? Theme.of(context).primaryColor
@@ -150,7 +150,7 @@ class _View extends _State with _Header {
   }
 
   Widget bookItem(int index, BooksType book) {
-    bool isAvailable = book.available > 0;
+    final isAva = book.available > 0;
     // bool isPrimary = book.identify == collection.primaryId;
     bool isPrimary = book.identify == App.core.data.primaryId;
     return ListTile(
@@ -160,7 +160,7 @@ class _View extends _State with _Header {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: isAvailable ? FontWeight.w400 : FontWeight.w300,
+                fontWeight: isAva ? FontWeight.w400 : FontWeight.w300,
               ),
           child: Text(book.name),
         ),
@@ -173,14 +173,14 @@ class _View extends _State with _Header {
         children: <Widget>[
           Container(
             constraints: const BoxConstraints(
-              minWidth: 37.0,
+              minWidth: 40.0,
               // minHeight: 20,
             ),
             padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
             margin: const EdgeInsets.only(right: 7),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(3)),
-              color: isAvailable
+              color: isAva
                   ? isPrimary
                       ? Theme.of(context).highlightColor
                       : Theme.of(context).primaryColorDark
@@ -191,7 +191,8 @@ class _View extends _State with _Header {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     fontSize: 13,
-                    color: isAvailable ? Theme.of(context).primaryColor : null,
+                    // color: isAvailable ? Theme.of(context).primaryColor : null,
+                    color: isAva ? Theme.of(context).primaryColor : Theme.of(context).hintColor,
                   ),
             ),
           ),
@@ -222,7 +223,7 @@ class _View extends _State with _Header {
             child: Text(
               '${book.year}',
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: isAvailable ? null : Theme.of(context).hintColor,
+                    color: isAva ? null : Theme.of(context).hintColor,
                   ),
             ),
           ),
@@ -239,7 +240,7 @@ class _View extends _State with _Header {
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Icon(
           Icons.drag_handle_rounded,
-          color: Theme.of(context).errorColor,
+          color: Theme.of(context).colorScheme.error,
         ),
       ),
     );
@@ -263,7 +264,7 @@ class CustomTriangleClipper extends CustomClipper<Path> {
 }
 
 class PullToRefresh extends PullToActivate {
-  const PullToRefresh({Key? key}) : super(key: key);
+  const PullToRefresh({super.key});
 
   @override
   State<PullToActivate> createState() => _PullToRefreshState();

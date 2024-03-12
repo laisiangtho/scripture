@@ -1,4 +1,4 @@
-part of data.type;
+part of '../main.dart';
 
 class BoxOfBookmarks<E> extends BoxOfAbstract<BookmarksType> {
   int index(int bookId, int chapterId) {

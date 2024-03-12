@@ -1,4 +1,4 @@
-part of data.type;
+part of '../main.dart';
 
 class BoxOfBooks<E> extends BoxOfAbstract<BooksType> {}
 
@@ -84,7 +84,8 @@ class BooksType {
     }
 
     return BooksType(
-      identify: o['identify'],
+      // identify: o['identify'],
+      identify: stringProperty('identify'),
       name: o['name'],
       shortname: o['shortname'],
       description: stringProperty('description'),

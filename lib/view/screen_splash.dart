@@ -2,7 +2,7 @@ part of 'screen_launcher.dart';
 // import 'package:flutter/material.dart';
 
 class ScreenSplash extends StatelessWidget {
-  const ScreenSplash({Key? key}) : super(key: key);
+  const ScreenSplash({super.key});
 
   @override
   // Widget build(BuildContext context) {

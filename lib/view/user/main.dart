@@ -16,7 +16,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key, this.arguments}) : super(key: key);
+  const Main({super.key, this.arguments});
   final Object? arguments;
 
   static String route = '/user';
@@ -177,7 +177,7 @@ class _View extends _State with _Header {
 
                       TextSpan(
                         text: 'Github',
-                        style: TextStyle(color: Theme.of(context).errorColor),
+                        style: TextStyle(color: Theme.of(context).colorScheme.error),
                         recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
                       ),
                       const TextSpan(text: '.'),
@@ -250,13 +250,13 @@ class _View extends _State with _Header {
             //   label: 'Sign in with Microsoft',
             //   onPressed: null,
             // ),
-            SignInButton(
-              icon: LideaIcon.microsoft,
-              label: 'to Poll',
-              onPressed: () {
-                route.pushNamed('/home/user/poll');
-              },
-            ),
+            // SignInButton(
+            //   icon: LideaIcon.microsoft,
+            //   label: 'to Poll',
+            //   onPressed: () {
+            //     route.pushNamed('/home/user/poll');
+            //   },
+            // ),
             // SignInButton(
             //   icon: LideaIcon.github,
             //   label: 'Sign in with GitHub',

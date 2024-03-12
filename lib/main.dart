@@ -34,7 +34,7 @@ void main() async {
 }
 
 class LaiSiangtho extends StatelessWidget {
-  const LaiSiangtho({Key? key}) : super(key: key);
+  const LaiSiangtho({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -108,5 +108,4 @@ class LaiSiangtho extends StatelessWidget {
   //   // );
   //   return child!;
   // }
-
 }

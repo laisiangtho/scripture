@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../app.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
   static String route = 'pop-chapters';
   static String label = 'Chapters';
   static IconData icon = Icons.opacity_outlined;
@@ -128,7 +128,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.18),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       // child: SizedBox(
       //   height: height,
       //   child: view(),
@@ -154,7 +154,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -166,7 +166,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),

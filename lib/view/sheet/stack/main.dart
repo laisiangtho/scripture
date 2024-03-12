@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../app.dart';
 
 class Main extends SheetsDraggable {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'sheet-stack';
   static String label = 'Sheet';

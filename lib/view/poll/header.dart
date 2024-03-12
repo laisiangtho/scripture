@@ -37,7 +37,7 @@ mixin _Header on _State {
                     ? child
                     : Icon(
                         Icons.add_task_outlined,
-                        color: hasReady2Submit ? Theme.of(context).errorColor : null,
+                        color: hasReady2Submit ? Theme.of(context).colorScheme.error : null,
                       ),
               );
             },

@@ -1,9 +1,9 @@
-part of data.core;
+part of 'main.dart';
 
 /// Primary page snap and scroll notifier
 class Views<T> extends ViewScroll<T> {
   const Views({
-    Key? key,
+    super.key,
     super.scrollBottom,
     super.depth,
     super.onNotification,
@@ -12,7 +12,7 @@ class Views<T> extends ViewScroll<T> {
     super.snapError,
     super.heroController,
     required super.child,
-  }) : super(key: key);
+  });
 }
 
 // class ScrollNotifier extends ViewData {}

@@ -1,4 +1,4 @@
-part of data.core;
+part of 'main.dart';
 
 abstract class _Search extends _Mock {
   // SuggestionType? _cacheSuggestion;
@@ -42,8 +42,10 @@ abstract class _Search extends _Mock {
     // _cacheConclusion = ConclusionType(
     //   query: data.searchQuery,
     // );
+    // scripturePrimary.bible.info.langCode
     debugPrint('cacheConclusion');
-    data.boxOfRecentSearch.update(data.searchQuery);
+    // data.boxOfRecentSearch.update(data.searchQuery);
+    data.boxOfRecentSearch.update(data.searchQuery, scripturePrimary.bible.info.langCode);
   }
 
   // ConclusionType get cacheConclusion {

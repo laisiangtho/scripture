@@ -7,7 +7,7 @@ import 'package:lidea/provider.dart';
 import '../../../app.dart';
 
 class Main extends SheetsDraggable {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'sheet-poll';
   static String label = 'Poll';

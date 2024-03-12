@@ -1,4 +1,4 @@
-part of data.type;
+part of 'main.dart';
 
 class Data extends DataNest {
   late final boxOfBooks = BoxOfBooks<BooksType>();

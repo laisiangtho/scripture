@@ -11,7 +11,7 @@ part 'state.dart';
 part 'header.dart';
 
 class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+  const Main({super.key});
 
   static String route = 'recent-search';
   static String label = 'Recent search';
@@ -123,14 +123,17 @@ class _View extends _State with _Header {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
 
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
+        // textColor: Colors.red,
+        // tileColor: Colors.blue,
+        // selectedTileColor: Colors.amber,
         minLeadingWidth: 10,
         leading: const Icon(Icons.bookmark_added),
         trailing: Text(
-          // App.core.scripturePrimary.digit(bookmark.chapterId),
-          item.hit.toString(),
-          style: const TextStyle(fontSize: 18),
+          App.core.scripturePrimary.digit(item.hit),
+          // item.hit.toString(),
+          // style: Theme.of(context).textTheme.labelMedium,
         ),
         onTap: () {
           App.route.pushNamed(
