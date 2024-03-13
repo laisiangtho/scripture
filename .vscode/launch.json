@@ -5,11 +5,17 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Lai Siangtho",
+        "name": "(debug mode)",
         "request": "launch",
         "type": "dart",
         "flutterMode": "debug",
         "program": "${workspaceFolder}/lib/main.dart"
-      }
+      },
+      {
+        "name": "(release mode)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "release"
+      },
     ]
 }
