@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scripture/core/main.dart';
 
 import '../app.dart';
 
@@ -78,9 +79,10 @@ class WidgetVerse extends StatelessWidget {
               ),
             ),
           ),
-        Card(
+        // Card
+        ViewBlockCard(
           margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
-          elevation: 0.5,
+          // elevation: 0.5,
           // shape: const RoundedRectangleBorder(
           //   side: BorderSide(width: 0, color: Colors.transparent),
           //   borderRadius: BorderRadius.zero,
