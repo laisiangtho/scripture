@@ -1,6 +1,6 @@
 # Change log
 
-## 1.2.6+70
+## 1.2.6+70-74
 
 Improve
 
@@ -8,14 +8,14 @@ Improve
 
 Update
 
-- ???
+- Update API, dependencies and environment
 
-- iOS: v1.2.6
+- iOS: ??
 - Android: v1.2.6
 
 Note
 
-...
+... iOS in progress
 
 ## 1.2.5+64-66-67-68-69
 
