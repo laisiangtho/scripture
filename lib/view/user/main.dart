@@ -133,8 +133,8 @@ class _View extends _State with _Header {
                         // style: TextStyle(color: Theme.of(context).primaryColorDark),
                       ),
                       TextSpan(
-                        text: ' - ',
-                        style: Theme.of(context).textTheme.labelSmall,
+                        text: ' + ',
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       TextSpan(
                         // text: App.core.data.env.version,
