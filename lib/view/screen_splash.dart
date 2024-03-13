@@ -24,14 +24,18 @@ class ScreenSplash extends StatelessWidget {
               child: RichText(
                 textAlign: TextAlign.center,
                 // strutStyle: StrutStyle(),
+
                 text: TextSpan(
                   text: '"',
                   semanticsLabel: "open quotation mark",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.labelLarge!.color,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w200,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w300,
+                      ),
+                  // style: TextStyle(
+                  //   color: Theme.of(context).primaryTextTheme.labelLarge!.color,
+                  //   fontSize: 30,
+                  //   fontWeight: FontWeight.w200,
+                  // ),
                   children: <TextSpan>[
                     const TextSpan(
                       text: 'the',
@@ -75,7 +79,10 @@ class ScreenSplash extends StatelessWidget {
               label: "Progress",
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 50),
-                child: Text(App.core.message.value),
+                child: Text(
+                  App.core.message.value,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             ),
             // Semantics(

@@ -92,7 +92,7 @@ class _View extends _State with _Header {
           ),
         ),
       ],
-      child: Card(
+      child: ViewBlockCard(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         child: bookDecoration(index, book),
       ),

@@ -17,11 +17,17 @@ abstract class _Mock extends _Abstract {
     }
     if (data.boxOfBooks.box.isEmpty) {
       String file = data.env.url('book').local;
-      await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
-        await _importBookMeta(ob);
-      }).catchError((e) {
-        debugPrint('task? $file $e ');
-      });
+      // await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
+      //   await _importBookMeta(ob);
+      // }).catchError((e) async {
+      //   final abc = data.env.url('book');
+      //   debugPrint('task? $file, ${abc.toString()} $e  ');
+      // });
+
+      final ob = UtilDocument.decodeJSON<List<dynamic>>(
+        await UtilDocument.loadBundleAsString(file),
+      );
+      await _importBookMeta(ob);
     }
   }
 

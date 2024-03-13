@@ -3,7 +3,7 @@ description: the Holy Bible in languages
 
 # Remove this line if you wish to publish to pub.dev
 publish_to: 'none'
-version: 1.2.6+71
+version: 1.2.6+74
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -41,7 +41,7 @@ flutter:
   assets:
     - assets/env.json
     - assets/bible.json
-    # - assets/book.json
+    - assets/book.json
     # - assets/niv2011.json
     # - assets/tedim1932.json
     # - assets/judson1835.json

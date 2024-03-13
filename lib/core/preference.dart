@@ -22,6 +22,17 @@ class Preference extends PreferenceNest {
   // Iterable<Locale> get listOfLocale => const [
   //       Locale('en', 'GB'),
   //       Locale('no', 'NO'),
-  //       Locale('my', ''),
+  //       Locale('my', 'MM'),
   //     ];
+
+  /// ThemeData for light using ThemeNest and ColorNest
+  @override
+  ThemeData? light(BuildContext context) {
+    return ThemeNest.theme(
+      text: Theme.of(context).textTheme.merge(
+            ThemeNest.textTheme(),
+          ),
+      color: const ColorNest.light(),
+    );
+  }
 }

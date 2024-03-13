@@ -58,7 +58,7 @@ class _View extends _State with _Header {
         // reservedPadding: MediaQuery.of(context).padding.top,
         padding: state.fromContext.viewPadding,
         heights: const [kToolbarHeight, 100],
-        overlapsBackgroundColor: state.theme.primaryColor,
+        // overlapsBackgroundColor: state.theme.primaryColor,
         overlapsBorderColor: state.theme.dividerColor,
         builder: _header,
       ),
@@ -105,7 +105,8 @@ class _View extends _State with _Header {
       ),
 
       SliverPadding(
-        padding: const EdgeInsets.all(12),
+        // padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
         sliver: SliverToBoxAdapter(
           child: Column(
             children: [
@@ -129,6 +130,15 @@ class _View extends _State with _Header {
                       TextSpan(
                         // text: App.core.data.env.version,
                         text: preference.digit(App.core.data.env.version),
+                        // style: TextStyle(color: Theme.of(context).primaryColorDark),
+                      ),
+                      TextSpan(
+                        text: ' - ',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                      TextSpan(
+                        // text: App.core.data.env.version,
+                        text: preference.digit(App.core.data.env.buildNumber),
                         // style: TextStyle(color: Theme.of(context).primaryColorDark),
                       ),
                     ],
@@ -209,9 +219,11 @@ class _View extends _State with _Header {
 
   Widget signInContainer() {
     return ViewSection(
+      padding: EdgeInsets.zero,
       headerTitle: ViewSectionTitle(
         title: ViewLabel(
           // alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           label: preference.text.wouldYouLiketoSignIn,
         ),
       ),
@@ -237,8 +249,7 @@ class _View extends _State with _Header {
               ),
             if (App.authenticate.showFacebook)
               SignInButton(
-                // icon: LideaIcon.facebook,
-                // label: 'Login with Facebook',
+                icon: LideaIcon.facebook,
                 label: 'Continue with Facebook',
                 onPressed: () {
                   App.authenticate.signInWithFacebook().whenComplete(whenCompleteSignIn);
@@ -281,6 +292,7 @@ class _View extends _State with _Header {
           // label: authenticate.user!.displayName,
           label: App.authenticate.userDisplayname,
           labelStyle: Theme.of(context).textTheme.titleLarge,
+          alignment: Alignment.center,
         ),
       ),
       // footerTitle: WidgetBlockTile(
