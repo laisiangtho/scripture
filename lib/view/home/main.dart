@@ -83,19 +83,25 @@ class _View extends _State with _Header {
 
     return ViewSection(
       // headerLeading: const Icon(Icons.ac_unit),
-      headerTitle: Text(App.preference.text.favorite('true')),
+      headerTitle: Text(
+        App.preference.text.favorite('true'),
+        style: state.textTheme.labelSmall,
+      ),
       // headerTitle: ViewMark(
       //   mainAxisAlignment: MainAxisAlignment.start,
       //   label: App.preference.text.favorite(true),
       // ),
       headerTrailing: ViewButton(
+        padding: EdgeInsets.zero,
         show: items.isNotEmpty,
         message: App.preference.text.addTo(App.preference.text.favorite('true')),
         onPressed: () {
           App.route.pushNamed('home/bible');
         },
-        child: const ViewMark(
-          icon: Icons.more_horiz,
+        child: ViewMark(
+          icon: LideaIcon.dotHoriz,
+          iconSize: 19,
+          iconColor: state.theme.hintColor,
         ),
       ),
       footer: items.isNotEmpty,
@@ -220,10 +226,11 @@ class _View extends _State with _Header {
         children: [
           Text(
             book.year.toString(),
-            style: DefaultTextStyle.of(context).style.copyWith(
-                  fontSize: 16,
-                  color: isAvailable ? null : Theme.of(context).hintColor,
-                ),
+            // style: DefaultTextStyle.of(context).style.copyWith(
+            //       fontSize: 16,
+            //       color: isAvailable ? null : Theme.of(context).hintColor,
+            //     ),
+            style: state.textTheme.bodySmall,
           ),
         ],
       ),
@@ -255,14 +262,17 @@ class _View extends _State with _Header {
       show: items.isNotEmpty,
       headerTitle: Text(
         App.preference.text.recentSearch('true'),
+        style: state.textTheme.labelSmall,
       ),
       headerTrailing: ViewButton(
         message: App.preference.text.addTo(App.preference.text.recentSearch('true')),
         onPressed: () {
           App.route.pushNamed('home/recent-search');
         },
-        child: const ViewMark(
-          icon: Icons.more_horiz,
+        child: ViewMark(
+          icon: LideaIcon.dotHoriz,
+          iconSize: 19,
+          iconColor: state.theme.hintColor,
         ),
       ),
       child: ViewBlockCard(

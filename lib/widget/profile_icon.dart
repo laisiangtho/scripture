@@ -15,20 +15,32 @@ class UserProfileIcon extends UserIconWidget {
 
   @override
   Widget build(BuildContext context) {
-    App.route.show('a');
+    // App.route.show('a');
     return ViewButton(
-      message: App.preference.text.option('true'),
+      // message: App.preference.text.option('true'),
+      style: Theme.of(context).textTheme.labelMedium,
 
       onPressed: () => App.route.pushNamed('home/user'),
-      child: Selector<Authenticate, bool>(
-        selector: (_, e) => e.hasUser,
-        builder: (BuildContext _, bool hasUser, Widget? child) {
-          return super.build(context);
-          // return const Icon(
-          //   Icons.face_retouching_natural_rounded,
-          // );
-        },
+      child: ViewMark(
+        child: Selector<Authenticate, bool>(
+          selector: (_, e) => e.hasUser,
+          builder: (BuildContext _, bool hasUser, Widget? child) {
+            return super.build(context);
+            // return const Icon(
+            //   Icons.face_retouching_natural_rounded,
+            // );
+          },
+        ),
       ),
+      // child: Selector<Authenticate, bool>(
+      //   selector: (_, e) => e.hasUser,
+      //   builder: (BuildContext _, bool hasUser, Widget? child) {
+      //     return super.build(context);
+      //     // return const Icon(
+      //     //   Icons.face_retouching_natural_rounded,
+      //     // );
+      //   },
+      // ),
       // child: AnimatedBuilder(
       //   animation: App.authenticate,
       //   builder: (BuildContext _, Widget? child) {

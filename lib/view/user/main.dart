@@ -128,17 +128,21 @@ class _View extends _State with _Header {
                   TextSpan(
                     children: [
                       TextSpan(
-                        // text: App.core.data.env.version,
-                        text: preference.digit(App.core.data.env.version),
-                        // style: TextStyle(color: Theme.of(context).primaryColorDark),
-                      ),
-                      TextSpan(
-                        text: ' + ',
+                        text: 'v',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       TextSpan(
-                        // text: App.core.data.env.version,
-                        text: preference.digit(App.core.data.env.buildNumber),
+                        text: App.core.data.env.version,
+                        // text: preference.digit(App.core.data.env.version),
+                        // style: TextStyle(color: Theme.of(context).primaryColorDark),
+                      ),
+                      TextSpan(
+                        text: '-',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      TextSpan(
+                        text: App.core.data.env.buildNumber,
+                        // text: preference.digit(App.core.data.env.buildNumber),
                         // style: TextStyle(color: Theme.of(context).primaryColorDark),
                       ),
                     ],
@@ -227,6 +231,21 @@ class _View extends _State with _Header {
           label: preference.text.wouldYouLiketoSignIn,
         ),
       ),
+      // headerTitle: const ViewLabel(
+      //   // icon: LideaIcon.switchArrow,
+      //   label: "center",
+      //   labelPadding: EdgeInsets.zero,
+      //   padding: EdgeInsets.zero,
+      //   margin: EdgeInsets.zero,
+      //   alignment: Alignment.center,
+      //   // textAlign: TextAlign.center,
+      // ),
+      // headerTitle: const Text(
+      //   "center",
+      //   textAlign: TextAlign.center,
+      // ),
+      // headerLeading: const Icon(Icons.light_mode_rounded),
+
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
         child: ListBody(
@@ -276,6 +295,7 @@ class _View extends _State with _Header {
           ],
         ),
       ),
+
       // footerTitle: WidgetBlockTile(
       //   title: WidgetLabel(
       //     // alignment: Alignment.centerLeft,
@@ -287,28 +307,22 @@ class _View extends _State with _Header {
 
   Widget profileContainer() {
     return ViewSection(
-      headerTitle: ViewSectionTitle(
-        title: ViewLabel(
-          // label: authenticate.user!.displayName,
-          label: App.authenticate.userDisplayname,
-          labelStyle: Theme.of(context).textTheme.titleLarge,
-          alignment: Alignment.center,
-        ),
+      headerTitle: ViewLabel(
+        // label: authenticate.user!.displayName,
+        label: App.authenticate.userDisplayname,
+        labelStyle: Theme.of(context).textTheme.titleLarge,
+        // alignment: Alignment.center,
       ),
-      // footerTitle: WidgetBlockTile(
-      //   title: WidgetLabel(
-      //     // alignment: Alignment.centerLeft,
-      //     label: preference.text.bySigningIn,
-      //   ),
+      // footerTitle: ViewLabel(
+      //   // alignment: Alignment.centerLeft,
+      //   label: preference.text.bySigningIn,
+      //   labelStyle: Theme.of(context).textTheme.labelSmall,
       // ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
-        child: ViewLabel(
-          // label: App.authenticate.user!.email!,
-          label: App.authenticate.userEmail,
-          // label: 'khensolomon@gmail.com',
-          labelStyle: Theme.of(context).textTheme.labelSmall,
-        ),
+      child: ViewLabel(
+        // label: App.authenticate.user!.email!,
+        label: App.authenticate.userEmail,
+        // label: 'khensolomon@gmail.com',
+        labelStyle: Theme.of(context).textTheme.bodySmall,
       ),
     );
   }

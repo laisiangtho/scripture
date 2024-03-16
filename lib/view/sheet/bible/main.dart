@@ -98,21 +98,25 @@ class _State extends SheetsDraggableState<Main> {
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
-        heights: const [kToolbarHeight, 20],
+        heights: const [kToolbarHeight, 50],
+        // heights: const [kToolbarHeight, kToolbarHeight],
         backgroundColor: Colors.transparent,
+        padding: state.fromContext.viewPadding,
         overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
-        overlapsBorderColor: Theme.of(context).shadowColor,
-        builder: (_, data) {
+        // overlapsBorderColor: Theme.of(context).shadowColor,
+        overlapsBorderColor: state.theme.shadowColor,
+        builder: (_, vhd) {
           return ViewHeaderLayoutStack(
-            data: data,
+            data: vhd,
             primary: ViewHeaderTitle(
               alignment: Alignment.lerp(
                 const Alignment(0, 0),
-                const Alignment(0, .5),
-                data.snapShrink,
+                const Alignment(0, 0.5),
+                vhd.snapShrink,
               ),
               // label: book.name,
               label: book.shortname,
+              data: vhd,
             ),
             right: [
               ViewMark(
@@ -133,7 +137,7 @@ class _State extends SheetsDraggableState<Main> {
               // iconColor: Theme.of(context).primaryColorDark,
               // tileColor: Colors.red,
               // textColor: Colors.blueGrey,
-              titleTextStyle: state.textTheme.bodyMedium,
+              titleTextStyle: state.textTheme.titleLarge,
               // visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
               title: Row(
                 children: [
@@ -141,73 +145,77 @@ class _State extends SheetsDraggableState<Main> {
                     // child: Text(book.langName.toUpperCase()),
                     child: Text(
                       book.langName,
+                      style: state.textTheme.titleLarge,
                     ),
                   ),
                   Text(
                     book.year.toString(),
-                    style: state.textTheme.labelMedium,
+                    style: state.textTheme.labelMedium?.copyWith(
+                      color: state.theme.hintColor,
+                    ),
                   ),
                 ],
               ),
-              // subtitle: Text(book.identify),
-              // subtitle: Text(book.name),
-              // subtitle: Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Text(' - ${book.name}'),
-              //     Text(' - ${book.langDirection}'),
-              //     Text(' - ${book.langCode}'),
-              //     Text(' - ${book.identify}'),
-              //   ],
-              // ),
 
-              subtitle: ListView(
-                primary: false,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 7),
-                children: [
-                  ListTile(
-                    title: Text(book.name),
-                    visualDensity: VisualDensity.comfortable,
-                    dense: true,
-                    leading: const Icon(
-                      LideaIcon.info,
-                      size: 16,
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  textDirection: TextDirection.ltr,
+                  spacing: 15,
+                  runSpacing: 5,
+                  children: [
+                    ViewMark(
+                      icon: LideaIcon.bible,
+                      iconSize: 18,
+                      iconColor: state.theme.focusColor,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          book.name,
+                          style: state.textTheme.labelLarge,
+                        ),
+                      ),
                     ),
-                    titleTextStyle: state.textTheme.labelMedium,
-                  ),
-                  ListTile(
-                    title: Text(book.langDirection),
-                    visualDensity: VisualDensity.comfortable,
-                    dense: true,
-                    leading: const Icon(
-                      LideaIcon.info,
-                      size: 16,
+                    ViewMark(
+                      icon: LideaIcon.global,
+                      iconColor: state.theme.focusColor,
+                      iconSize: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          book.langCode.toUpperCase(),
+                          style: state.textTheme.labelLarge,
+                        ),
+                      ),
                     ),
-                    titleTextStyle: state.textTheme.labelMedium,
-                  ),
-                  ListTile(
-                    title: Text(book.langCode),
-                    visualDensity: VisualDensity.comfortable,
-                    dense: true,
-                    leading: const Icon(
-                      LideaIcon.info,
-                      size: 16,
+                    ViewMark(
+                      icon: Icons.compare_arrows,
+                      iconColor: state.theme.focusColor,
+                      iconSize: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          book.langDirection.toUpperCase(),
+                          style: state.textTheme.labelLarge,
+                        ),
+                      ),
                     ),
-                    titleTextStyle: state.textTheme.labelMedium,
-                  ),
-                  ListTile(
-                    title: Text(book.identify),
-                    visualDensity: VisualDensity.comfortable,
-                    dense: true,
-                    leading: const Icon(
-                      LideaIcon.info,
-                      size: 16,
+                    ViewMark(
+                      icon: LideaIcon.dotTwo,
+                      iconColor: state.theme.focusColor,
+                      iconSize: 18,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          book.identify,
+                          style: state.textTheme.labelLarge,
+                        ),
+                      ),
                     ),
-                    titleTextStyle: state.textTheme.labelMedium,
-                  )
-                ],
+                  ],
+                ),
               ),
               // trailing: Text(book.),
             ),
@@ -221,10 +229,11 @@ class _State extends SheetsDraggableState<Main> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ViewButton.filled(
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
+                  margin: const EdgeInsets.only(bottom: 30),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   // borderRadius: const BorderRadius.all(Radius.circular(10)),
                   color: isAvailable ? state.theme.primaryColorDark : state.theme.highlightColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                   onPressed: download(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +253,8 @@ class _State extends SheetsDraggableState<Main> {
                           width: 30,
                           height: 30,
                           child: Icon(
-                            isAvailable ? Icons.remove_circle : Icons.add_circle,
+                            // isAvailable ? Icons.remove_circle : Icons.add_circle,
+                            isAvailable ? LideaIcon.circleRemove : LideaIcon.circleAdd,
                             size: 29,
                             color: state.theme.primaryColor,
                           ),
@@ -258,7 +268,6 @@ class _State extends SheetsDraggableState<Main> {
                             isAvailable ? App.preference.text.delete : App.preference.text.download,
                         labelStyle: state.theme.textTheme.bodyLarge!.copyWith(
                           color: state.theme.primaryColor,
-                          height: 1.1,
                         ),
                       ),
                     ],
@@ -274,18 +283,25 @@ class _State extends SheetsDraggableState<Main> {
         child: ListBody(
           children: [
             ListTile(
-              selected: isAvailable,
+              selected: true,
               iconColor: state.theme.iconTheme.color,
               selectedColor: state.theme.primaryColorDark,
-              leading: const Icon(Icons.add_circle),
-              // title: Text(preference.language('byBibleDownload')),
+              leading: const Icon(
+                LideaIcon.circleAdd,
+                size: 25,
+              ),
+              titleAlignment: ListTileTitleAlignment.titleHeight,
               title: _actionHelpLabel('byBibleDownload'),
             ),
             ListTile(
-              selected: !isAvailable,
+              selected: true,
               iconColor: state.theme.iconTheme.color,
               selectedColor: state.theme.primaryColorDark,
-              leading: const Icon(Icons.remove_circle),
+              leading: const Icon(
+                LideaIcon.circleRemove,
+                size: 25,
+              ),
+              titleAlignment: ListTileTitleAlignment.titleHeight,
               title: _actionHelpLabel('byBibleDelete'),
             ),
           ],
@@ -294,7 +310,11 @@ class _State extends SheetsDraggableState<Main> {
       const ViewSectionDivider(),
       ViewFlatBuilder(
         child: ListTile(
-          leading: const Icon(LideaIcon.github),
+          leading: const Icon(
+            LideaIcon.github,
+            size: 23,
+          ),
+          titleAlignment: ListTileTitleAlignment.titleHeight,
           title: Text.rich(
             TextSpan(
               text: App.preference.language('RepositoryGithub'),
@@ -325,12 +345,13 @@ class _State extends SheetsDraggableState<Main> {
         ),
       ),
       ViewFlatBuilder(
+        // padding: const EdgeInsets.symmetric(vertical: 30),
         child: ListBody(
           children: [
             note(icon: Icons.description_outlined, label: book.description),
             note(icon: Icons.copyright_outlined, label: book.copyright),
             note(icon: Icons.group_work_outlined, label: book.contributors),
-            note(icon: Icons.check_circle_outlined, label: book.publisher),
+            note(icon: LideaIcon.copyright, label: book.publisher),
           ],
         ),
       ),
@@ -342,12 +363,15 @@ class _State extends SheetsDraggableState<Main> {
       return const SizedBox();
     }
     return ListTile(
-      leading: Icon(icon),
-      iconColor: Theme.of(context).primaryColorDark,
+      leading: Icon(
+        icon,
+      ),
+
       title: Text(label),
       // textColor: state.textTheme.bodySmall?.color,
       textColor: state.textTheme.bodySmall?.color,
       titleTextStyle: state.textTheme.bodySmall,
+      titleAlignment: ListTileTitleAlignment.titleHeight,
     );
   }
 
@@ -359,6 +383,7 @@ class _State extends SheetsDraggableState<Main> {
         .replaceAll('label.delete', App.preference.text.delete)
         .replaceAll('book.name', bookName);
 
-    return Text(label, style: state.textTheme.bodyMedium);
+    return Text(label, style: state.textTheme.bodyLarge);
+    // return Text(label);
   }
 }

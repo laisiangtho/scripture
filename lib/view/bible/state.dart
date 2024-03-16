@@ -5,6 +5,9 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
 
   late final boxOfBooks = data.boxOfBooks;
 
+  int totalBook = 0;
+  int totalLanguage = 0;
+
   late final AnimationController _dragController = AnimationController(
     duration: const Duration(milliseconds: 100),
     vsync: this,
@@ -18,10 +21,12 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     end: Theme.of(context).colorScheme.error,
   ).animate(_dragController);
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    totalBook = boxOfBooks.box.length;
+    totalLanguage = boxOfBooks.values.map((e) => e.langCode).toSet().length;
+  }
 
   void onSort() {
     // boxOfBooks.box.add(

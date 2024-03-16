@@ -87,7 +87,7 @@ class _View extends _State with _Header {
       },
       itemSnap: (BuildContext context, int index) {
         return const ListTile(
-          leading: Icon(Icons.north_east_rounded),
+          leading: Icon(LideaIcon.subRight),
         );
       },
       itemSeparator: (BuildContext context, int index) {

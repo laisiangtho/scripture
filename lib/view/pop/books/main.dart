@@ -184,6 +184,14 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
               // selectedTileColor: Colors.blue,
               // selectedTileColor: state.theme.cardColor,
               // selectedColor: state.theme.dividerColor,
+              // contentPadding: EdgeInsets.zero,
+              horizontalTitleGap: 0,
+              leading: Text(
+                App.preference.digit(book.id.toString()),
+                style: TextStyle(
+                  color: state.theme.primaryColorDark,
+                ),
+              ),
 
               title: Text(
                 book.name,

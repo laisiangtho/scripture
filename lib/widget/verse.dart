@@ -71,12 +71,16 @@ class WidgetVerse extends StatelessWidget {
               textAlign: TextAlign.center,
               semanticsLabel: verse.title,
               textDirection: TextDirection.ltr,
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: userVerse.titleSize,
-                fontWeight: FontWeight.w300,
-                // height: 1.6,
-              ),
+              // style: TextStyle(
+              //   color: Colors.black54,
+              //   fontSize: userVerse.titleSize,
+              //   fontWeight: FontWeight.w300,
+              //   // height: 1.6,
+              // ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: userVerse.titleSize,
+                    fontWeight: FontWeight.w300,
+                  ),
             ),
           ),
         // Card
@@ -97,10 +101,11 @@ class WidgetVerse extends StatelessWidget {
                       TextSpan(
                         text: verse.name,
                         semanticsLabel: 'verse: ${verse.name}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(color: Theme.of(context).hintColor),
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: Theme.of(context).hintColor,
+                              fontSize: userVerse.titleSize,
+                              fontWeight: FontWeight.w300,
+                            ),
                       ),
                       if (verse.merge.isNotEmpty)
                         TextSpan(
@@ -134,7 +139,7 @@ class WidgetVerse extends StatelessWidget {
                     TextSpan(
                       text: '\t ...$alsoInVerse',
                       style: TextStyle(
-                        color: Colors.grey,
+                        // color: Colors.grey,
                         fontSize: userVerse.titleSize,
                         fontWeight: FontWeight.w300,
                       ),
@@ -144,12 +149,16 @@ class WidgetVerse extends StatelessWidget {
               ),
               scrollPhysics: const NeverScrollableScrollPhysics(),
               textDirection: TextDirection.ltr,
-              style: TextStyle(
-                // color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: userVerse.fontSize,
-                // height: userVerse.fontHeight,
-              ),
+              // style: TextStyle(
+              //   // color: Colors.black,
+              //   fontWeight: FontWeight.w400,
+              //   fontSize: userVerse.fontSize,
+              //   // height: userVerse.fontHeight,
+              // ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w400,
+                    fontSize: userVerse.fontSize,
+                  ),
               onTap: onPressed == null ? null : () => onPressed!(verse.id),
             ),
           ),

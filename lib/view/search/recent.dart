@@ -50,7 +50,7 @@ class _RecentView extends _RecentState {
       itemSnap: (BuildContext context, int index) {
         return const ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-          leading: Icon(Icons.north_east_rounded),
+          leading: Icon(LideaIcon.subRight),
         );
       },
       itemSeparator: (BuildContext context, int index) {
@@ -75,7 +75,7 @@ class _RecentView extends _RecentState {
       },
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-        leading: const Icon(Icons.north_east_rounded),
+        leading: const Icon(LideaIcon.subRight),
         title: _recentItem(item.value.word),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,

@@ -1,9 +1,9 @@
 part of 'main.dart';
 
 mixin _Header on _State {
-  Widget _header(BuildContext context, ViewHeaderData data) {
+  Widget _header(BuildContext context, ViewHeaderData vhd) {
     return ViewHeaderLayoutStack(
-      data: data,
+      data: vhd,
       left: [
         BackButtonWidget(
           navigator: state.navigator,
@@ -13,10 +13,10 @@ mixin _Header on _State {
         alignment: Alignment.lerp(
           const Alignment(0, 0),
           const Alignment(0, .5),
-          data.snapShrink,
+          vhd.snapShrink,
         ),
         label: App.preference.text.bible('false'),
-        data: data,
+        data: vhd,
       ),
       right: [
         ViewButton(

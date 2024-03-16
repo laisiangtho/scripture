@@ -24,8 +24,6 @@ class Main extends StatefulWidget {
 class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('bible->build');
-
     return Scaffold(
       body: Views(
         // scrollBottom: ScrollBottom(
@@ -59,7 +57,56 @@ class _View extends _State with _Header {
       ),
       const PullToRefresh(),
       bookList(),
+      SliverPadding(
+        // padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
+        // available-book-lang
+        sliver: SliverToBoxAdapter(
+          // child: Text.rich(
+          //   textAlign: TextAlign.center,
+          //   style: state.textTheme.labelSmall,
+          //   TextSpan(
+          //     children: [
+          //       const TextSpan(
+          //         text: '...available book: ',
+          //       ),
+          //       TextSpan(
+          //         text: totalBook.toString(),
+          //         style: TextStyle(
+          //           color: state.theme.hintColor,
+          //         ),
+          //       ),
+          //       const TextSpan(
+          //         text: ' & language: ',
+          //       ),
+          //       TextSpan(
+          //         text: totalLanguage.toString(),
+          //         style: TextStyle(
+          //           color: state.theme.hintColor,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          child: _availableContent(),
+        ),
+      ),
     ];
+  }
+
+  Widget _availableContent() {
+    // preference.text.delete : preference.text.download,
+    final label = preference
+        .language('total-book-lang')
+        .replaceAll('total.book', totalBook.toString())
+        .replaceAll('total.language', totalLanguage.toString());
+
+    return Text(
+      label,
+      style: state.textTheme.labelSmall,
+      textAlign: TextAlign.center,
+    );
+    // return Text(label);
   }
 
   Widget bookList() {
@@ -77,18 +124,11 @@ class _View extends _State with _Header {
     return ViewSwipeWidget(
       menu: <Widget>[
         ViewButton(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          // decoration: BoxDecoration(
-          //   borderRadius: const BorderRadius.horizontal(
-          //     left: Radius.circular(12),
-          //   ),
-          //   // color: Theme.of(context).primaryColorLight,
-          //   color: Theme.of(context).focusColor,
-          // ),
           message: preference.text.more,
           onPressed: () => showBibleInfo(book),
-          child: const ViewLabel(
+          child: ViewLabel(
             icon: LideaIcon.dotHoriz,
+            iconColor: state.theme.highlightColor,
           ),
         ),
       ],
@@ -221,10 +261,11 @@ class _View extends _State with _Header {
               );
             },
             child: Text(
-              '${book.year}',
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: isAva ? null : Theme.of(context).hintColor,
-                  ),
+              book.year.toString(),
+              // style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              //       color: isAva ? null : Theme.of(context).hintColor,
+              //     ),
+              style: state.textTheme.bodySmall,
             ),
           ),
         ],

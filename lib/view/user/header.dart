@@ -19,9 +19,12 @@ mixin _Header<T> on _State {
       right: [
         ViewButton(
           message: App.preference.text.signOut,
-          enable: App.authenticate.hasUser,
+          show: App.authenticate.hasUser,
           onPressed: App.authenticate.signOut,
-          child: const Icon(Icons.logout_rounded),
+          child: Icon(
+            Icons.logout_rounded,
+            color: state.theme.focusColor,
+          ),
         ),
       ],
     );

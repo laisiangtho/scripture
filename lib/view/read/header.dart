@@ -53,7 +53,7 @@ mixin _Header on _State {
                 color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
                 constraints: BoxConstraints(maxWidth: width, minWidth: 48),
                 borderRadius: const BorderRadius.horizontal(left: Radius.elliptical(30, 50)),
-                padding: EdgeInsets.fromLTRB(10, 1, vhd.snapShrink * 5, 1),
+                padding: EdgeInsets.fromLTRB(10, 1, vhd.snapShrink * 10, 1),
                 message: preference.text.book('true'),
                 onPressed: showBooks,
                 // child: ViewMark(
@@ -76,9 +76,9 @@ mixin _Header on _State {
                   },
                 ),
               ),
-              Divider(
-                indent: 1 * vhd.snapShrink,
-              ),
+              // Divider(
+              //   indent: 1 * vhd.snapShrink,
+              // ),
               // ViewButton.filled(
               //   showShadow: true,
               //   // color: Theme.of(context).backgroundColor.withOpacity(data.snapShrink),
@@ -99,7 +99,7 @@ mixin _Header on _State {
                 color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
                 constraints: BoxConstraints(maxWidth: width, minWidth: 35),
                 borderRadius: const BorderRadius.horizontal(right: Radius.elliptical(30, 50)),
-                padding: EdgeInsets.fromLTRB(3, 1, vhd.snapShrink * 5, 1),
+                padding: EdgeInsets.fromLTRB(2, 1, vhd.snapShrink * 5, 1),
                 message: preference.text.chapter('true'),
                 onPressed: showChapters,
                 child: Selector<Core, String>(
