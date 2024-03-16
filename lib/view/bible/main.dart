@@ -88,26 +88,47 @@ class _View extends _State with _Header {
           //     ],
           //   ),
           // ),
-          child: _availableContent(),
+          // child: _availableContent(),
+          child: TextDecoration(
+            text: App.preference.language('totalBookLang'),
+            style: state.textTheme.bodySmall,
+            textAlign: TextAlign.center,
+            decoration: [
+              TextSpan(
+                text: App.preference.digit(totalBook),
+                semanticsLabel: 'totalBook',
+                style: TextStyle(
+                  color: state.theme.highlightColor,
+                ),
+              ),
+              TextSpan(
+                text: App.preference.digit(totalLanguage),
+                semanticsLabel: 'totalLanguage',
+                style: TextStyle(
+                  color: state.theme.highlightColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ];
   }
 
-  Widget _availableContent() {
-    // preference.text.delete : preference.text.download,
-    final label = preference
-        .language('total-book-lang')
-        .replaceAll('total.book', totalBook.toString())
-        .replaceAll('total.language', totalLanguage.toString());
+  // Widget _availableContent() {
+  //   // preference.text.delete : preference.text.download,
+  //   final label = preference
+  //       .language('totalBookLang')
+  //       .replaceAll('total.book', totalBook.toString())
+  //       .replaceAll('total.language', totalLanguage.toString());
 
-    return Text(
-      label,
-      style: state.textTheme.labelSmall,
-      textAlign: TextAlign.center,
-    );
-    // return Text(label);
-  }
+  //   return Text(
+  //     label,
+  //     style: state.textTheme.labelSmall,
+  //     textAlign: TextAlign.center,
+  //   );
+  //   // return Text(label);
+  // }
 
   Widget bookList() {
     final items = boxOfBooks.values.toList();

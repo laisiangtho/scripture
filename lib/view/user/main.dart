@@ -182,25 +182,37 @@ class _View extends _State with _Header {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Text.rich(
-                  TextSpan(
-                    text: preference.language('issue-pull-feature'),
-                    children: [
-                      // const TextSpan(text: 'issues that need to be '),
-                      const TextSpan(text: ' at '),
-
-                      TextSpan(
-                        text: 'Github',
-                        style: TextStyle(color: Theme.of(context).colorScheme.error),
-                        recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
-                      ),
-                      const TextSpan(text: '.'),
-                    ],
-                  ),
+                // child: Text.rich(
+                //   TextSpan(
+                //     // text: preference.language('issue-pull-feature'),
+                //     children: textDecoration(
+                //       text: preference.language('issue-pull-feature'),
+                //       decoration: [
+                //         TextSpan(
+                //           text: 'Github',
+                //           style: TextStyle(color: Theme.of(context).colorScheme.error),
+                //           recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                //   textAlign: TextAlign.center,
+                //   // style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                //   //       color: Theme.of(context).primaryColorDark,
+                //   //     ),
+                //   style: state.textTheme.bodySmall,
+                // ),
+                child: TextDecoration(
+                  text: preference.language('issue-pull-feature'),
+                  decoration: [
+                    TextSpan(
+                      text: 'Github',
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                      recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
+                      semanticsLabel: 'Github',
+                    ),
+                  ],
                   textAlign: TextAlign.center,
-                  // style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                  //       color: Theme.of(context).primaryColorDark,
-                  //     ),
                   style: state.textTheme.bodySmall,
                 ),
               ),

@@ -288,10 +288,22 @@ class _State extends SheetsDraggableState<Main> {
               selectedColor: state.theme.primaryColorDark,
               leading: const Icon(
                 LideaIcon.circleAdd,
-                size: 25,
+                // size: 25,
               ),
-              titleAlignment: ListTileTitleAlignment.titleHeight,
-              title: _actionHelpLabel('byBibleDownload'),
+              titleAlignment: ListTileTitleAlignment.top,
+              title: TextDecoration(
+                text: App.preference.language('whenBibleDownload'),
+                style: state.textTheme.titleLarge,
+                decoration: [
+                  TextSpan(
+                    text: bookName,
+                    semanticsLabel: 'bookName',
+                    style: TextStyle(
+                      color: state.theme.primaryColorDark,
+                    ),
+                  ),
+                ],
+              ),
             ),
             ListTile(
               selected: true,
@@ -299,10 +311,22 @@ class _State extends SheetsDraggableState<Main> {
               selectedColor: state.theme.primaryColorDark,
               leading: const Icon(
                 LideaIcon.circleRemove,
-                size: 25,
+                // size: 25,
               ),
-              titleAlignment: ListTileTitleAlignment.titleHeight,
-              title: _actionHelpLabel('byBibleDelete'),
+              titleAlignment: ListTileTitleAlignment.top,
+              title: TextDecoration(
+                text: App.preference.language('whenBibleDelete'),
+                style: state.textTheme.titleLarge,
+                decoration: [
+                  TextSpan(
+                    text: bookName,
+                    semanticsLabel: 'bookName',
+                    style: TextStyle(
+                      color: state.theme.hintColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -315,32 +339,56 @@ class _State extends SheetsDraggableState<Main> {
             size: 23,
           ),
           titleAlignment: ListTileTitleAlignment.titleHeight,
-          title: Text.rich(
-            TextSpan(
-              text: App.preference.language('RepositoryGithub'),
-              style: state.textTheme.bodySmall,
-              children: [
-                const TextSpan(text: ' '),
-                TextSpan(
-                  text: App.preference.language('ofBibleSource'),
-                  style: TextStyle(color: state.theme.highlightColor),
-                  recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
-                ),
-                const TextSpan(text: ', '),
-                TextSpan(
-                  text: App.preference.language('ofAppSourcecode'),
-                  style: TextStyle(color: state.theme.highlightColor),
-                  recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
-                ),
-                const TextSpan(text: ' / '),
-                TextSpan(
-                  text: App.preference.language('issues that need to be fixed'),
-                  style: TextStyle(color: state.theme.highlightColor),
-                  recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
-                ),
-                const TextSpan(text: '..'),
-              ],
-            ),
+          // title: Text.rich(
+          //   TextSpan(
+          //     text: App.preference.language('RepositoryGithub'),
+          //     style: state.textTheme.bodySmall,
+          //     children: [
+          //       const TextSpan(text: ' '),
+          //       TextSpan(
+          //         text: App.preference.language('ofBibleSource'),
+          //         style: TextStyle(color: state.theme.highlightColor),
+          //         recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
+          //       ),
+          //       const TextSpan(text: ', '),
+          //       TextSpan(
+          //         text: App.preference.language('ofAppSourcecode'),
+          //         style: TextStyle(color: state.theme.highlightColor),
+          //         recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
+          //       ),
+          //       const TextSpan(text: ' / '),
+          //       TextSpan(
+          //         text: App.preference.language('issues that need to be fixed'),
+          //         style: TextStyle(color: state.theme.highlightColor),
+          //         recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
+          //       ),
+          //       const TextSpan(text: '..'),
+          //     ],
+          //   ),
+          // ),
+          title: TextDecoration(
+            text: App.preference.language('availableSource'),
+            style: state.textTheme.titleLarge,
+            decoration: [
+              TextSpan(
+                text: App.preference.text.holyBible,
+                semanticsLabel: 'sourceBible',
+                style: TextStyle(color: state.theme.highlightColor),
+                recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
+              ),
+              TextSpan(
+                text: 'app',
+                semanticsLabel: 'sourceCode',
+                style: TextStyle(color: state.theme.highlightColor),
+                recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
+              ),
+              TextSpan(
+                text: App.preference.text.issue('true'),
+                semanticsLabel: 'Issues',
+                style: TextStyle(color: state.theme.highlightColor),
+                recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
+              ),
+            ],
           ),
         ),
       ),
@@ -373,17 +421,5 @@ class _State extends SheetsDraggableState<Main> {
       titleTextStyle: state.textTheme.bodySmall,
       titleAlignment: ListTileTitleAlignment.titleHeight,
     );
-  }
-
-  Widget _actionHelpLabel(String text) {
-    // preference.text.delete : preference.text.download,
-    final label = App.preference
-        .language(text)
-        .replaceAll('label.download', App.preference.text.download)
-        .replaceAll('label.delete', App.preference.text.delete)
-        .replaceAll('book.name', bookName);
-
-    return Text(label, style: state.textTheme.bodyLarge);
-    // return Text(label);
   }
 }

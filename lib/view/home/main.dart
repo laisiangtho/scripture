@@ -87,12 +87,8 @@ class _View extends _State with _Header {
         App.preference.text.favorite('true'),
         style: state.textTheme.labelSmall,
       ),
-      // headerTitle: ViewMark(
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   label: App.preference.text.favorite(true),
-      // ),
+
       headerTrailing: ViewButton(
-        padding: EdgeInsets.zero,
         show: items.isNotEmpty,
         message: App.preference.text.addTo(App.preference.text.favorite('true')),
         onPressed: () {
@@ -169,8 +165,9 @@ class _View extends _State with _Header {
     bool isAvailable = book.available > 0;
     bool isPrimary = book.identify == App.core.data.primaryId;
     return ListTile(
+      minVerticalPadding: 10,
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 4),
+        padding: const EdgeInsets.only(bottom: 8),
         child: Text(
           book.name,
           maxLines: 1,

@@ -262,6 +262,18 @@ class WidgetVerse extends StatelessWidget {
     }
     return spans;
   }
+
+  // void abcdef() {
+  //   final myString = "abcdText('hello') {{abc}}abcd efghText('world') {{orange}}";
+
+  //   RegExp exp = RegExp(r"{{.*?}}");
+  //   final org = exp.allMatches(myString);
+
+  //   for (var element in org) {
+  //     element.
+  //     print(element[1].toString());
+  //   }
+  // }
 }
 
 class VerseWidgetHolder extends StatelessWidget {
