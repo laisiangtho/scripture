@@ -34,8 +34,8 @@ class _MainState extends StateAbstract<Main> {
   double get arrowWidth => 10;
   double get arrowHeight => 12;
 
-  double get defaultHeight => sizeOfRender.height + 75;
-  double get maxHeight => defaultHeight * 0.75;
+  double get defaultHeight => sizeOfRender.height + 72;
+  double get maxHeight => defaultHeight * 0.72;
   double get height => defaultHeight > maxHeight ? maxHeight : defaultHeight;
 
   @override

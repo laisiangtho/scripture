@@ -52,7 +52,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
   double get arrowHeight => 12;
 
   double get defaultHeight => sizeOfContext.height;
-  double get maxHeight => defaultHeight * 0.75;
+  double get maxHeight => defaultHeight * 0.72;
   double get height => defaultHeight > maxHeight ? maxHeight : defaultHeight;
 
   // Scripture get scripture => core.scripturePrimary;

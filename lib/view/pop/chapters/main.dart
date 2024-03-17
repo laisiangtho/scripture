@@ -81,8 +81,8 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
   // double get defaultHeight => (itemCount / perItem).ceilToDouble() * (itemLimit ? 75 : 110);
   // double get maxHeight => defaultHeight * 0.4;
 
-  double get defaultHeight => (itemCount / perItem).ceilToDouble() * 75;
-  double get maxHeight => sizeOfContext.height * 0.75;
+  double get defaultHeight => (itemCount / perItem).ceilToDouble() * 72;
+  double get maxHeight => sizeOfContext.height * 0.72;
   // NOTE:
   // double get defaultHeight => (itemCount / perItem).ceilToDouble() * 75;
   // double get maxHeight => sizeOfContext.height * 0.75;
