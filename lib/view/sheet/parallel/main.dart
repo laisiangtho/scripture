@@ -25,8 +25,6 @@ class _State extends SheetsDraggableState<Main> {
 
   @override
   bool get persistent => true;
-  @override
-  double get height => 48;
 
   Core get core => App.core;
   Preference get preference => App.preference;
