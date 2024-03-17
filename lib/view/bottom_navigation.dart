@@ -16,7 +16,8 @@ class BottomNavigationBarWidget extends StatelessWidget {
           alignment: const Alignment(0, -1),
           heightFactor: factor,
           child: Padding(
-            padding: EdgeInsets.only(bottom: App.viewData.fromContext.viewPadding.bottom),
+            // padding: EdgeInsets.only(bottom: App.viewData.fromContext.viewPadding.bottom),
+            padding: const EdgeInsets.only(bottom: 0),
             child: bottomNavigationToggle(),
           ),
         );
