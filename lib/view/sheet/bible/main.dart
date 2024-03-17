@@ -101,7 +101,7 @@ class _State extends SheetsDraggableState<Main> {
         heights: const [kToolbarHeight, 50],
         // heights: const [kToolbarHeight, kToolbarHeight],
         backgroundColor: Colors.transparent,
-        padding: state.fromContext.viewPadding,
+        // padding: state.fromContext.viewPadding,
         overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
         // overlapsBorderColor: Theme.of(context).shadowColor,
         overlapsBorderColor: state.theme.shadowColor,
