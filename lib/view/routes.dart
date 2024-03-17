@@ -253,7 +253,7 @@ class RouteNotifier extends RouteChangeNotifier {
 
     // final cols = mapping(name: name, routes: routeListInnerWorking);
     final cols = mapping(name: name);
-    debugPrint(cols.toString());
+    debugPrint('routeTest $cols');
     // for (var element in cols) {
     //   debugPrint('element ${element.name}');
     // }
