@@ -85,7 +85,7 @@ class _View extends _State with _Header {
       // headerLeading: const Icon(Icons.ac_unit),
       headerTitle: Text(
         App.preference.text.favorite('true'),
-        style: state.textTheme.labelSmall,
+        style: state.textTheme.titleSmall,
       ),
 
       headerTrailing: ViewButton(
@@ -259,7 +259,7 @@ class _View extends _State with _Header {
       show: items.isNotEmpty,
       headerTitle: Text(
         App.preference.text.recentSearch('true'),
-        style: state.textTheme.labelSmall,
+        style: state.textTheme.titleSmall,
       ),
       headerTrailing: ViewButton(
         message: App.preference.text.addTo(App.preference.text.recentSearch('true')),
