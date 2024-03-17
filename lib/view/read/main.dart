@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
+import 'package:lidea/view/main.dart';
 // import 'package:lidea/view/user/main.dart';
 
 import '../../app.dart';
@@ -103,6 +104,31 @@ class _View extends _State with _Header {
           );
         },
       ),
+      // SliverPadding(
+      //   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+      //   sliver: SliverToBoxAdapter(
+      //     child: TextDecoration(
+      //       text: '{{description}}',
+      //       textAlign: TextAlign.center,
+      //       style: state.textTheme.labelSmall,
+      //       decoration: [
+      //         TextSpan(
+      //           // text: 'App.data.cacheBible',
+      //           text: primaryScripture.info.langCode,
+      //           semanticsLabel: 'language',
+      //           style: TextStyle(
+      //             color: state.theme.highlightColor,
+      //           ),
+      //         ),
+      //         TextSpan(
+      //           // text: 'App.data.cacheBible',
+      //           text: primaryScripture.info.description,
+      //           semanticsLabel: 'description',
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     ];
   }
 
