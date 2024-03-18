@@ -16,27 +16,26 @@ abstract class _Mock extends _Abstract {
         await ArchiveNest.bundle(e.asset);
       }
     }
+
     // if (data.boxOfBooks.box.isEmpty) {
     //   String file = data.env.url('book').local;
-    //   // await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
-    //   //   await _importBookMeta(ob);
-    //   // }).catchError((e) async {
-    //   //   final abc = data.env.url('book');
-    //   //   debugPrint('task? $file, ${abc.toString()} $e  ');
-    //   // });
-
-    //   final ob = UtilDocument.decodeJSON<List<dynamic>>(
-    //     await UtilDocument.loadBundleAsString(file),
-    //   );
-    //   await _importBookMeta(ob);
+    //   await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
+    //     await _importBookMeta(ob);
+    //   }).catchError((e) async {
+    //     final abc = data.env.url('book');
+    //     debugPrint('task? $file, ${abc.toString()} $e  ');
+    //   });
     // }
 
     // NOTE: data.isUpdated can be removed a year or two later
     if (data.boxOfBooks.box.isEmpty || data.isUpdated) {
       // NOTE: this conditional can be removed when data.isUpdated no longer need
-      if (data.boxOfBooks.box.isNotEmpty) {
-        await data.boxOfBooks.box.clear();
-      }
+      // if (data.boxOfBooks.box.isNotEmpty) {
+      //   await data.boxOfBooks.box.clear();
+      // }
+      // if (data.boxOfBookmarks.box.isNotEmpty) {
+      //   await data.boxOfBookmarks.box.clear();
+      // }
       String file = data.env.url('book').local;
 
       final ob = UtilDocument.decodeJSON<List<dynamic>>(
