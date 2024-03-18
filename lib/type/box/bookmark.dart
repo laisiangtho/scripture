@@ -22,7 +22,7 @@ class BoxOfBookmarks<E> extends BoxOfAbstract<BookmarksType> {
   }
 }
 
-@HiveType(typeId: 11)
+@HiveType(typeId: 2)
 class BookmarksType {
   @HiveField(0)
   String identify;
@@ -58,7 +58,7 @@ class BookmarksType {
 
 class BookmarksAdapter extends TypeAdapter<BookmarksType> {
   @override
-  final int typeId = 11;
+  final int typeId = 2;
 
   @override
   BookmarksType read(BinaryReader reader) {
