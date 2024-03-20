@@ -66,10 +66,6 @@ class BookmarksAdapter extends TypeAdapter<BookmarksType> {
     final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    // this.identify:'',
-    // this.date,
-    // this.bookId:1,
-    // this.chapterId:1,
     return BookmarksType()
       ..identify = fields[0] as String
       ..date = fields[1] as DateTime

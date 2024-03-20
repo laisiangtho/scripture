@@ -1,6 +1,6 @@
 # Change log
 
-## 1.2.6+70-79
+## 1.2.6+70-83
 
 Improve
 
@@ -18,8 +18,14 @@ Fixed
 - Tooltips
 - identify Type
 
-- iOS: ??
+- iOS: v1.2.6
 - Android: v1.2.6
+
+Apologize in advance
+
+- The previously released version 1.2.6 build number > 76 build number < 83 containing incorrect Hive TypeId and the app launching will get stuck when updating. In order the fix this the app needs to remove the books index, bookmarks collection.
+
+- The previously released version 1.2.6 build number 76 containing incorrect Hive TypeId and the app launching will get stuck when updating. Please uninstall the app v1.2.6-76 before updating. However updating from the older version need nothing worry.
 
 Note
 

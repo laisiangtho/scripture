@@ -154,6 +154,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,
+          // useLegacyColorScheme: false,
           selectedIconTheme: Theme.of(context).iconTheme.copyWith(
                 size: 25,
               ),
@@ -169,7 +170,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             );
           }).toList(),
           currentIndex: App.routeDelegate.notifier.viewIndex,
-          elevation: 1,
+          elevation: 3,
           onTap: (index) {
             App.routeDelegate.notifier.viewIndex = index;
           },

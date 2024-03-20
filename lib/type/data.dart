@@ -23,8 +23,9 @@ class Data extends DataNest {
   @override
   Future<void> prepareInitialized() async {
     await super.prepareInitialized();
-    await boxOfBooks.open('book');
-    await boxOfBookmarks.open('bookmark');
+
+    await boxOfBooks.open('bible-list');
+    await boxOfBookmarks.open('bible-bookmark');
   }
 
   String get primaryId => boxOfSettings.identify().asString;
