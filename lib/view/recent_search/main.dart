@@ -28,10 +28,10 @@ class _View extends _State with _Header {
 
     return Scaffold(
       body: Views(
-        scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
-          notifier: App.viewData.bottom,
-        ),
+        // scrollBottom: ScrollBottomNavigation(
+        //   listener: _controller.bottom,
+        //   notifier: App.viewData.bottom,
+        // ),
         child: ValueListenableBuilder(
           valueListenable: boxOfRecentSearch.listen(),
           builder: (BuildContext _, Box<RecentSearchType> __, Widget? ___) {

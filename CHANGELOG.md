@@ -12,7 +12,7 @@ Improve
 Update
 
 - Update API, dependencies and environment
-  
+
 Fixed
 
 - Tooltips

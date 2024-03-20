@@ -32,10 +32,10 @@ class _View extends _State with _Header, _Suggest, _Result {
 
     return Scaffold(
       body: Views(
-        scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
-          notifier: App.viewData.bottom,
-        ),
+        // scrollBottom: ScrollBottomNavigation(
+        //   listener: _controller.bottom,
+        //   notifier: App.viewData.bottom,
+        // ),
         child: NestedScrollView(
           controller: _controller,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

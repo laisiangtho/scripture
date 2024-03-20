@@ -32,10 +32,10 @@ class _View extends _State with _Header {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Views(
-        scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
-          notifier: App.viewData.bottom,
-        ),
+        // scrollBottom: ScrollBottomNavigation(
+        //   listener: _controller.bottom,
+        //   notifier: viewData.bottom,
+        // ),
         child: Consumer<Authenticate>(
           builder: middleware,
         ),

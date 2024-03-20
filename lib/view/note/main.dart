@@ -28,10 +28,10 @@ class _View extends _State with _Header {
 
     return Scaffold(
       body: Views(
-        scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
-          notifier: viewData.bottom,
-        ),
+        // scrollBottom: ScrollBottomNavigation(
+        //   listener: _controller.bottom,
+        //   notifier: viewData.bottom,
+        // ),
         // child: CustomScrollView(
         //   controller: _controller,
         //   slivers: _slivers,
