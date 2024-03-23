@@ -1,6 +1,27 @@
 # Change log
 
-## 1.2.6+70-83
+## 1.2.7+86
+
+Improve
+
+- systemNavigationBarColor(android) on fullscreen
+- improve sheet
+- improve texture & context
+- improve locale
+
+Update
+
+- Update API, dependencies and environment
+
+Fixed
+
+- Tooltips
+- identify Type
+
+- iOS: v1.2.7
+- Android: v1.2.7
+
+## 1.2.6+70-85
 
 Improve
 

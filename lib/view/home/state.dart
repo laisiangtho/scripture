@@ -29,6 +29,13 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     });
   }
 
+  // Future showBibleInfo(BooksType book) {
+  //   return App.route.showSheetModal(
+  //     context: context,
+  //     name: 'sheet-bible',
+  //     arguments: book,
+  //   );
+  // }
   Future showBibleInfo(BooksType book) {
     return App.route.showSheetModal(
       context: context,

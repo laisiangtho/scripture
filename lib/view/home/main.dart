@@ -6,7 +6,7 @@ import 'package:lidea/hive.dart';
 
 import '../../app.dart';
 import '/widget/profile_icon.dart';
-import '/widget/button.dart';
+// import '/widget/button.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -316,10 +316,10 @@ class _PullToRefreshState extends PullOfState {
   @override
   Future<void> refreshUpdate() async {
     // await Future.delayed(const Duration(milliseconds: 50));
-    // await App.core.updateBookMeta();
-    // await Future.delayed(const Duration(milliseconds: 100));
+    await App.core.updateBookMeta();
+    await Future.delayed(const Duration(milliseconds: 100));
     debugPrint('refreshUpdate');
     await App.core.data.updateToken();
-    // await Future.delayed(const Duration(milliseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 400));
   }
 }

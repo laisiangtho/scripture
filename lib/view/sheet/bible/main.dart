@@ -3,11 +3,10 @@ import 'package:flutter/gestures.dart';
 
 import 'package:lidea/launcher.dart';
 import 'package:lidea/icon.dart';
+import 'package:lidea/hive.dart';
 
 import '../../../app.dart';
 
-// class _View extends _State with _Header {
-// abstract class _State extends StateAbstract<Main> with SingleTickerProviderStateMixin {
 class Main extends SheetsDraggable {
   const Main({super.key});
 
@@ -23,10 +22,16 @@ class _State extends SheetsDraggableState<Main> {
   @override
   ViewData get viewData => App.viewData;
 
-  late final BooksType book = state.as<BooksType>();
+  late final boxOfBooks = App.data.boxOfBooks;
+
+  late final BooksType params = state.as<BooksType>();
 
   bool isDownloading = false;
   String message = '';
+
+  BooksType get book => boxOfBooks.box.values.firstWhere((e) => e.identify == params.identify);
+
+  int get bookIndex => boxOfBooks.indexOfvalues((e) => e.identify == params.identify);
 
   bool get isAvailable => book.available > 0;
 
@@ -119,11 +124,27 @@ class _State extends SheetsDraggableState<Main> {
               data: vhd,
             ),
             right: [
-              ViewMark(
-                padding: const EdgeInsets.only(right: 15),
-                icon: Icons.verified_user_rounded,
-                iconColor: state.theme.primaryColorDark,
-                show: isAvailable,
+              // ViewMark(
+              //   padding: const EdgeInsets.only(right: 15),
+              //   icon: Icons.verified_user_rounded,
+              //   iconColor: state.theme.primaryColorDark,
+              //   show: isAvailable,
+              // ),
+              ValueListenableBuilder(
+                valueListenable: boxOfBooks.listen(),
+                builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
+                  return ViewButton(
+                    child: ViewMark(
+                      icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
+                      iconColor:
+                          book.selected ? state.theme.highlightColor : state.theme.primaryColorDark,
+                    ),
+                    onPressed: () {
+                      book.selected = !book.selected;
+                      boxOfBooks.box.putAt(bookIndex, book);
+                    },
+                  );
+                },
               ),
             ],
           );
@@ -232,7 +253,8 @@ class _State extends SheetsDraggableState<Main> {
                   margin: const EdgeInsets.only(bottom: 30),
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   // borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: isAvailable ? state.theme.primaryColorDark : state.theme.highlightColor,
+                  // color: isAvailable ? state.theme.primaryColorDark : state.theme.highlightColor,
+                  color: isAvailable ? state.theme.colorScheme.error : state.theme.highlightColor,
                   borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                   onPressed: download(),
                   child: Row(
@@ -339,33 +361,6 @@ class _State extends SheetsDraggableState<Main> {
             size: 23,
           ),
           titleAlignment: ListTileTitleAlignment.titleHeight,
-          // title: Text.rich(
-          //   TextSpan(
-          //     text: App.preference.language('RepositoryGithub'),
-          //     style: state.textTheme.bodySmall,
-          //     children: [
-          //       const TextSpan(text: ' '),
-          //       TextSpan(
-          //         text: App.preference.language('ofBibleSource'),
-          //         style: TextStyle(color: state.theme.highlightColor),
-          //         recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
-          //       ),
-          //       const TextSpan(text: ', '),
-          //       TextSpan(
-          //         text: App.preference.language('ofAppSourcecode'),
-          //         style: TextStyle(color: state.theme.highlightColor),
-          //         recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
-          //       ),
-          //       const TextSpan(text: ' / '),
-          //       TextSpan(
-          //         text: App.preference.language('issues that need to be fixed'),
-          //         style: TextStyle(color: state.theme.highlightColor),
-          //         recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
-          //       ),
-          //       const TextSpan(text: '..'),
-          //     ],
-          //   ),
-          // ),
           title: TextDecoration(
             text: App.preference.language('availableSource'),
             style: state.textTheme.titleLarge,

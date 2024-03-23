@@ -12,50 +12,13 @@ class BackButtonWidget extends StatelessWidget {
     return ViewButton(
       show: navigator.canPop(),
       onPressed: navigator.maybePop,
-      style: Theme.of(context).textTheme.labelMedium,
+      // style: Theme.of(context).textTheme.labelMedium,
+      style: Theme.of(context).textTheme.titleSmall,
       child: ViewMark(
         icon: Icons.arrow_back_ios_rounded,
         label: App.preference.text.back,
-        // label: 'Back',
       ),
     );
-    // return AnimatedBuilder(
-    //   animation: App.preference,
-    //   builder: (BuildContext context, Widget? child) {
-    //     return ViewButton(
-    //       show: Navigator.of(context).canPop(),
-    //       onPressed: Navigator.of(context).maybePop,
-    //       child: ViewMark(
-    //         icon: Icons.arrow_back_ios_rounded,
-    //         label: App.preference.text.back,
-    //         // label: 'Back',
-    //       ),
-    //     );
-    //   },
-    // );
-    // return AnimatedBuilder(
-    //   animation: App.preference,
-    //   builder: (BuildContext context, Widget? child) {
-    //     return ViewButton(
-    //       show: Navigator.of(context).canPop(),
-    //       onPressed: Navigator.of(context).maybePop,
-    //       child: ViewMark(
-    //         icon: Icons.arrow_back_ios_rounded,
-    //         label: App.preference.text.back,
-    //         // label: 'Back',
-    //       ),
-    //     );
-    //   },
-    // );
-    // return ViewButton(
-    //   show: Navigator.of(context).canPop(),
-    //   onPressed: Navigator.of(context).maybePop,
-    //   child: ViewMark(
-    //     icon: Icons.arrow_back_ios_rounded,
-    //     label: App.preference.text.back,
-    //     // label: 'Back',
-    //   ),
-    // );
   }
 }
 
@@ -69,7 +32,8 @@ class HomeButtonWidget extends StatelessWidget {
     return ViewButton(
       show: navigator.canPop(),
       onPressed: navigator.maybePop,
-      style: Theme.of(context).textTheme.labelMedium,
+      // style: Theme.of(context).textTheme.labelMedium,
+      style: Theme.of(context).textTheme.titleSmall,
       child: ViewMark(
         icon: Icons.arrow_back_ios_rounded,
         label: App.preference.text.back,

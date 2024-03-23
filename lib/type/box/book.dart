@@ -1,6 +1,11 @@
 part of '../main.dart';
 
-class BoxOfBooks<E> extends BoxOfAbstract<BooksType> {}
+class BoxOfBooks<E> extends BoxOfAbstract<BooksType> {
+  // int currentIndex(identify) {
+  //   final abc = box.values.firstWhere((e) => e.identify == identify);
+  //   return 0;
+  // }
+}
 
 @HiveType(typeId: 1)
 class BooksType {

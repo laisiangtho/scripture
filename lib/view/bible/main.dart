@@ -62,33 +62,6 @@ class _View extends _State with _Header {
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
         // available-book-lang
         sliver: SliverToBoxAdapter(
-          // child: Text.rich(
-          //   textAlign: TextAlign.center,
-          //   style: state.textTheme.labelSmall,
-          //   TextSpan(
-          //     children: [
-          //       const TextSpan(
-          //         text: '...available book: ',
-          //       ),
-          //       TextSpan(
-          //         text: totalBook.toString(),
-          //         style: TextStyle(
-          //           color: state.theme.hintColor,
-          //         ),
-          //       ),
-          //       const TextSpan(
-          //         text: ' & language: ',
-          //       ),
-          //       TextSpan(
-          //         text: totalLanguage.toString(),
-          //         style: TextStyle(
-          //           color: state.theme.hintColor,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // child: _availableContent(),
           child: TextDecoration(
             text: App.preference.language('totalBookLang'),
             style: state.textTheme.bodySmall,
@@ -115,21 +88,6 @@ class _View extends _State with _Header {
     ];
   }
 
-  // Widget _availableContent() {
-  //   // preference.text.delete : preference.text.download,
-  //   final label = preference
-  //       .language('totalBookLang')
-  //       .replaceAll('total.book', totalBook.toString())
-  //       .replaceAll('total.language', totalLanguage.toString());
-
-  //   return Text(
-  //     label,
-  //     style: state.textTheme.labelSmall,
-  //     textAlign: TextAlign.center,
-  //   );
-  //   // return Text(label);
-  // }
-
   Widget bookList() {
     final items = boxOfBooks.values.toList();
     return ViewListBuilder(
@@ -154,7 +112,7 @@ class _View extends _State with _Header {
         ),
       ],
       child: ViewBlockCard(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: bookDecoration(index, book),
       ),
     );
@@ -188,7 +146,7 @@ class _View extends _State with _Header {
                 color: isAvailable
                     ? book.selected
                         ? Theme.of(context).highlightColor
-                        : Theme.of(context).disabledColor
+                        : Theme.of(context).focusColor
                     : book.selected
                         ? Theme.of(context).highlightColor
                         : Colors.transparent,
@@ -199,7 +157,7 @@ class _View extends _State with _Header {
                 color: isAvailable
                     ? book.selected
                         ? Theme.of(context).primaryColor
-                        : Theme.of(context).primaryColorDark
+                        : Theme.of(context).disabledColor
                     : Colors.transparent,
               ),
             ),

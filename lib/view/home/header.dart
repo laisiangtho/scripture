@@ -4,11 +4,11 @@ mixin _Header on _State {
   Widget _header(BuildContext context, ViewHeaderData vhd) {
     return ViewHeaderLayoutStack(
       data: vhd,
-      left: [
-        BackButtonWidget(
-          navigator: state.navigator,
-        ),
-      ],
+      // left: [
+      //   BackButtonWidget(
+      //     navigator: state.navigator,
+      //   ),
+      // ],
       primary: ViewHeaderTitle(
         alignment: Alignment.lerp(
           const Alignment(0, 0),

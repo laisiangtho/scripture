@@ -213,7 +213,7 @@ class _View extends _State with _Header {
                     ),
                   ],
                   textAlign: TextAlign.center,
-                  style: state.textTheme.bodySmall,
+                  style: state.textTheme.bodyMedium,
                 ),
               ),
             ],

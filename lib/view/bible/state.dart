@@ -76,18 +76,10 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     }
   }
 
+  // Future showBibleInfo(BooksType book) {
+  //   return route.showSheetModal(context: context, name: 'sheet-bible', arguments: book);
+  // }
   Future showBibleInfo(BooksType book) {
-    // return showModalBottomSheet(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   useRootNavigator: true,
-    //   // builder: (BuildContext context) => _ModalSheet(book: book, core: core),
-    //   builder: (BuildContext context) => WidgetDraggableInfoModal(book: book),
-    //   // barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
-    //   // barrierColor: Theme.of(context).shadowColor.withOpacity(0.7),
-    //   // barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
-    //   // barrierColor: Theme.of(context).scaffoldBackgroundColor,
-    // );
     return route.showSheetModal(context: context, name: 'sheet-bible', arguments: book);
   }
 }
