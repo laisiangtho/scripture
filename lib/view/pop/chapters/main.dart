@@ -62,7 +62,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
   bool get _hasMax => sizeOfContext.width > maxWidth;
   double get left => _hasMax ? hzSize : hzSpace;
   double get right => _hasMax ? hzSize : hzSpace;
-  double get top => positionOfRender.dy + sizeOfRender.height + 20;
+  double get top => positionOfRender.dy + sizeOfRender.height + 10;
 
   double get arrowWidth => 10;
   double get arrowHeight => 12;

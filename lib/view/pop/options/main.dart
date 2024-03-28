@@ -29,7 +29,7 @@ class _MainState extends StateAbstract<Main> {
   double get maxWidth => 300;
   double get right => hzSpace;
   double get left => sizeOfContext.width > maxWidth ? sizeOfContext.width - maxWidth : hzSpace;
-  double get top => positionOfRender.dy + sizeOfRender.height + 10;
+  double get top => positionOfRender.dy + sizeOfRender.height + 7;
 
   double get arrowWidth => 10;
   double get arrowHeight => 12;

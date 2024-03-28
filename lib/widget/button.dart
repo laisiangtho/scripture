@@ -4,7 +4,8 @@ import '../app.dart';
 
 class BackButtonWidget extends StatelessWidget {
   final NavigatorState navigator;
-  const BackButtonWidget({super.key, required this.navigator});
+  final bool rootNavigator;
+  const BackButtonWidget({super.key, required this.navigator, this.rootNavigator = false});
   // NavigatorState get navigator => Navigator.of(context);
   // NavigatorState get navigator => App.route.navigator(context);
   @override
@@ -12,6 +13,13 @@ class BackButtonWidget extends StatelessWidget {
     return ViewButton(
       show: navigator.canPop(),
       onPressed: navigator.maybePop,
+      // onPressed: Navigator.of(context, rootNavigator: rootNavigator).maybePop,
+      // onPressed: Navigator.of(context, rootNavigator: rootNavigator).pop,
+      // show: Navigator.canPop(context),
+      // onPressed: () {
+      //   Navigator.of(context, rootNavigator: rootNavigator).pop(context);
+      // },
+
       // style: Theme.of(context).textTheme.labelMedium,
       style: Theme.of(context).textTheme.titleSmall,
       child: ViewMark(
@@ -35,8 +43,8 @@ class HomeButtonWidget extends StatelessWidget {
       // style: Theme.of(context).textTheme.labelMedium,
       style: Theme.of(context).textTheme.titleSmall,
       child: ViewMark(
-        icon: Icons.arrow_back_ios_rounded,
-        label: App.preference.text.back,
+        icon: Icons.home,
+        label: App.preference.text.home,
         // label: 'Back',
       ),
     );

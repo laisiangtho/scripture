@@ -6,7 +6,7 @@ import 'package:lidea/hive.dart';
 
 import '../../app.dart';
 import '/widget/profile_icon.dart';
-// import '/widget/button.dart';
+import '/widget/button.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -78,7 +78,8 @@ class _View extends _State with _Header {
 
   Widget bookList(BuildContext context, Box<BooksType> box, Widget? child) {
     // final items = box.toMap().entries.toList();
-    final items = box.values.where((e) => e.selected).toList();
+    // final items = box.values.where((e) => e.selected).toList();
+    final items = box.toMap().entries.where((e) => e.value.selected).toList();
     // items.sort((a, b) => a.value.order.compareTo(b.value.order));
 
     return ViewSection(
@@ -161,7 +162,8 @@ class _View extends _State with _Header {
     );
   }
 
-  Widget bookItem(int index, BooksType book) {
+  Widget bookItem(int index, MapEntry<dynamic, BooksType> item) {
+    final book = item.value;
     bool isAvailable = book.available > 0;
     bool isPrimary = book.identify == App.core.data.primaryId;
     return ListTile(
@@ -236,11 +238,11 @@ class _View extends _State with _Header {
         if (isAvailable) {
           showBibleContent(book);
         } else {
-          showBibleInfo(book);
+          showBibleInfo(item);
         }
       },
       onLongPress: () {
-        showBibleInfo(book);
+        showBibleInfo(item);
       },
     );
   }

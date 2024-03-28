@@ -10,7 +10,7 @@ import '../../../app.dart';
 class Main extends SheetsDraggable {
   const Main({super.key});
 
-  static String route = 'sheet-bible';
+  static String route = 'sheet-bible-info';
   static String label = 'Bible';
   static IconData icon = Icons.ac_unit;
 
@@ -24,16 +24,19 @@ class _State extends SheetsDraggableState<Main> {
 
   late final boxOfBooks = App.data.boxOfBooks;
 
-  late final BooksType params = state.as<BooksType>();
+  late final MapEntry<dynamic, BooksType> item = state.as<MapEntry<dynamic, BooksType>>();
 
   bool isDownloading = false;
   String message = '';
 
-  BooksType get book => boxOfBooks.box.values.firstWhere((e) => e.identify == params.identify);
+  BooksType get book => item.value;
+  // BooksType get book => boxOfBooks.box.values
+  //     .firstWhere((e) => e.identify == item.value.identify, orElse: () => boxOfBooks.values.first);
 
-  int get bookIndex => boxOfBooks.indexOfvalues((e) => e.identify == params.identify);
+  int get bookIndex => boxOfBooks.indexOfvalues((e) => e.identify == item.value.identify);
 
-  bool get isAvailable => book.available > 0;
+  /// if book.available > 0 or params.identify is empty
+  bool get isAvailable => book.identify.isEmpty || book.available > 0;
 
   String get bookName => book.name;
 
@@ -67,6 +70,11 @@ class _State extends SheetsDraggableState<Main> {
   }
 
   void _startDownloadOrDelete() async {
+    if (book.identify.isEmpty) {
+      boxOfBooks.box.deleteAt(bookIndex);
+      Navigator.of(context).maybePop();
+      return;
+    }
     App.core.analytics.content(isAvailable ? 'Delete' : 'Download', book.identify);
     setState(() {
       isDownloading = !isDownloading;
@@ -103,13 +111,14 @@ class _State extends SheetsDraggableState<Main> {
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
-        heights: const [kToolbarHeight, 50],
+        heights: const [kToolbarHeight, kToolbarHeight],
         // heights: const [kToolbarHeight, kToolbarHeight],
-        backgroundColor: Colors.transparent,
+        backgroundColor: state.theme.primaryColor,
+        // backgroundColor: Colors.transparent,
         // padding: state.fromContext.viewPadding,
-        overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
+        // overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
         // overlapsBorderColor: Theme.of(context).shadowColor,
-        overlapsBorderColor: state.theme.shadowColor,
+        overlapsBorderColor: state.theme.dividerColor,
         builder: (_, vhd) {
           return ViewHeaderLayoutStack(
             data: vhd,

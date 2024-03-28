@@ -21,7 +21,8 @@ import 'recent_search/main.dart' as recent_search;
 import 'sheet/modal/main.dart' as sheets_modal;
 import 'sheet/stack/main.dart' as sheets_stack;
 import 'sheet/parallel/main.dart' as sheet_parallel;
-import 'sheet/bible/main.dart' as sheet_bible;
+import 'sheet/bible/info.dart' as sheet_bible_info;
+import 'sheet/bible/lang.dart' as sheet_bible_lang;
 // import 'sheet/filter/main.dart' as sheet_filter;
 import 'sheet/poll/main.dart' as sheet_poll;
 // NOTE: pop
@@ -161,10 +162,16 @@ class RouteNotifier extends RouteChangeNotifier {
         page: const sheets_stack.Main(),
       ),
       RouteType(
-        name: sheet_bible.Main.route,
-        icon: sheet_bible.Main.icon,
-        label: sheet_bible.Main.label,
-        page: const sheet_bible.Main(),
+        name: sheet_bible_info.Main.route,
+        icon: sheet_bible_info.Main.icon,
+        label: sheet_bible_info.Main.label,
+        page: const sheet_bible_info.Main(),
+      ),
+      RouteType(
+        name: sheet_bible_lang.Main.route,
+        icon: sheet_bible_lang.Main.icon,
+        label: sheet_bible_lang.Main.label,
+        page: const sheet_bible_lang.Main(),
       ),
       RouteType(
         name: sheet_poll.Main.route,

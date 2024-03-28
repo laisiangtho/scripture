@@ -60,6 +60,7 @@ class LaiSiangtho extends StatelessWidget {
       animation: App.preference,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp.router(
+          // key: const ValueKey('laisiangtho'),
           showSemanticsDebugger: false,
           debugShowCheckedModeBanner: false,
 
@@ -81,6 +82,7 @@ class LaiSiangtho extends StatelessWidget {
       },
     );
   }
+
   // Widget builder(BuildContext context, Widget? child) {
   //   return AnimatedBuilder(
   //     animation: App.preference,

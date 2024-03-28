@@ -48,7 +48,6 @@ mixin _Header on _State {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ViewButton(
-                key: _kBooks,
                 showShadow: true,
                 color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
                 constraints: BoxConstraints(maxWidth: width, minWidth: 48),
@@ -65,6 +64,7 @@ mixin _Header on _State {
                 //       ),
                 // ),
                 child: Selector<Core, String>(
+                  key: _kBooks,
                   selector: (_, e) => e.scripturePrimary.bookName,
                   builder: (BuildContext context, String bookName, Widget? child) {
                     return ViewMark(
@@ -94,7 +94,6 @@ mixin _Header on _State {
               //   ),
               // ),
               ViewButton(
-                key: _kChapters,
                 showShadow: true,
                 color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
                 constraints: BoxConstraints(maxWidth: width, minWidth: 35),
@@ -103,6 +102,7 @@ mixin _Header on _State {
                 message: preference.text.chapter('true'),
                 onPressed: showChapters,
                 child: Selector<Core, String>(
+                  key: _kChapters,
                   selector: (_, e) => e.scripturePrimary.chapterName,
                   builder: (BuildContext context, String chapterName, Widget? child) {
                     return ViewMark(

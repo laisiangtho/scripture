@@ -10,6 +10,7 @@ import "package:lidea/main.dart";
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 import "package:lidea/hive.dart";
+import "package:lidea/unit/notify.dart";
 
 // NOTE: Core API manager
 // import "package:lidea/cluster/main.dart";
@@ -17,6 +18,7 @@ part "audio.dart";
 part 'data.dart';
 
 part "bible.dart";
+part "iso.dart";
 
 // NOTE: typeId: 10 (scripture)
 part "box/book.dart";

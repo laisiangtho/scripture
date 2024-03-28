@@ -131,14 +131,14 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     // });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-    _textController.dispose();
-    _focusNode.dispose();
-    _controller.bottom.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _controller.dispose();
+  //   _textController.dispose();
+  //   _focusNode.dispose();
+  //   _controller.bottom.dispose();
+  // }
 
   // void onQuery() async {
   //   Future.microtask(() {

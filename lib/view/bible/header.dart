@@ -20,6 +20,7 @@ mixin _Header on _State {
       ),
       right: [
         ViewButton(
+          // color: Colors.red,
           onPressed: onSort,
           child: AnimatedBuilder(
             animation: _dragController,

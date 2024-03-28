@@ -7,6 +7,7 @@ mixin _Header<T> on _State {
       left: [
         BackButtonWidget(
           navigator: state.navigator,
+          rootNavigator: true,
         ),
       ],
       primary: Align(

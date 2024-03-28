@@ -105,12 +105,12 @@ abstract class _State extends StateAbstract<Main> {
         reverseTransitionDuration: const Duration(milliseconds: 200),
         opaque: false,
         barrierDismissible: true,
-        // transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
-        //   return FadeTransition(
-        //     opacity: x,
-        //     child: child,
-        //   );
-        // },
+        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
+          return FadeTransition(
+            opacity: x,
+            child: child,
+          );
+        },
         pageBuilder: (_, __, ___) {
           return App.route.show('pop-chapters').child;
         },

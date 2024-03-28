@@ -4,9 +4,10 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   late final ScrollController _controller = ScrollController();
 
   late final boxOfBooks = data.boxOfBooks;
+  late final iso = core.iso;
 
-  int totalBook = 0;
-  int totalLanguage = 0;
+  late Box<BooksType> setOfBook;
+  late Set<String> setOfLang;
 
   late final AnimationController _dragController = AnimationController(
     duration: const Duration(milliseconds: 100),
@@ -24,21 +25,63 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   @override
   void initState() {
     super.initState();
-    totalBook = boxOfBooks.box.length;
-    totalLanguage = boxOfBooks.values.map((e) => e.langCode).toSet().length;
+    setOfBook = boxOfBooks.box;
+    _addISO(setOfBook);
+
+    boxOfBooks.watch().listen((event) {
+      setOfBook = boxOfBooks.box;
+      _addISO(setOfBook);
+    });
+  }
+
+  void _addISO(Box<BooksType> setOfBook) {
+    final setOfLang = setOfBook.values.map((e) => e.langCode).toSet();
+    if (setOfLang.length != iso.all.length) {
+      debugPrint('_addISO');
+      iso.all.clear();
+      // for (var code in setOfLang) {
+      //   // iso.insert(ISOModel(code: lang));
+      //   final obj = setOfBook.values.firstWhere((e) => e.langCode == code);
+      //   iso.insert(
+      //     ISOModel(
+      //       code: code,
+      //       text: obj.langName,
+      //       name: obj.name,
+      //       direction: obj.langDirection,
+      //     ),
+      //   );
+      // }
+
+      for (var e in setOfBook.values) {
+        // final obj = setOfBook.values.firstWhere((e) => e.langCode == e.langCode);
+        iso.insert(
+          ISOModel(
+            code: e.langCode,
+            text: e.langName,
+            shortname: e.shortname,
+            direction: e.langDirection,
+          ),
+        );
+      }
+    }
+  }
+
+  /// booksFiltered userBooks userLangs
+  List<MapEntry<dynamic, BooksType>> get booksFilter {
+    // return boxOfBooks.entries.where(
+    //   (e) {
+    //     return iso.all
+    //         .firstWhere(
+    //           (element) => element.code == e.value.langCode,
+    //           orElse: () => iso.all.first,
+    //         )
+    //         .show;
+    //   },
+    // ).toList();
+    return boxOfBooks.entries.toList();
   }
 
   void onSort() {
-    // boxOfBooks.box.add(
-    //   BooksType(
-    //     identify: data.randomString(5),
-    //     name: data.randomString(15),
-    //     shortname: data.randomString(3),
-    //     year: 2000,
-    //     langCode: 'EN',
-    //     langName: 'English',
-    //   ),
-    // );
     if (_dragController.isCompleted) {
       _dragController.reverse();
     } else {
@@ -47,7 +90,6 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   }
 
   void showBibleContent(BooksType bible, int index) async {
-    // state.hasArguments;
     if (state.hasArguments) {
       debugPrint('from:${data.parallelId} to:${bible.identify}');
 
@@ -76,10 +118,13 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     }
   }
 
-  // Future showBibleInfo(BooksType book) {
-  //   return route.showSheetModal(context: context, name: 'sheet-bible', arguments: book);
-  // }
-  Future showBibleInfo(BooksType book) {
-    return route.showSheetModal(context: context, name: 'sheet-bible', arguments: book);
+  void tmp() {}
+
+  Future showBibleInfo(MapEntry<dynamic, BooksType> book) {
+    return route.showSheetModal(context: context, name: 'sheet-bible-info', arguments: book);
+  }
+
+  Future showBibleLang() {
+    return route.showSheetModal(context: context, name: 'sheet-bible-lang');
   }
 }
