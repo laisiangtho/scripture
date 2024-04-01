@@ -312,7 +312,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       //     color: isCurrentChapter ? Theme.of(context).highlightColor : null,
       //   ),
       // ),
-      enable: !isCurrentChapter,
+      // enable: !isCurrentChapter,
       onPressed: () {
         Navigator.maybePop(context, {'book': bookId, 'chapter': chapterId});
       },
