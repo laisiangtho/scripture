@@ -35,7 +35,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  late final RenderBox render = args!['render'];
+  late final RenderBox render = args['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -56,12 +56,12 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
   double get height => defaultHeight > maxHeight ? maxHeight : defaultHeight;
 
   // Scripture get scripture => core.scripturePrimary;
-  // List<DefinitionBook> get books => scripture.bookList;
 
   Scripture get scripture => App.core.scripturePrimary;
 
-  // late final List<DefinitionBook> books = List.generate(50, (index) {
-  //   return DefinitionBook(
+  List<OfBook> get books => scripture.bookList;
+  // late final List<OfBook> books = List.generate(50, (index) {
+  //   return OfBook(
   //     testamentId: 1,
   //     id: index,
   //     name: App.core.data.randomString(15),
@@ -69,7 +69,6 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
   //     chapterCount: App.core.data.randomNumber(150),
   //   );
   // });
-  List<DefinitionBook> get books => scripture.bookList;
 
   final List<int> expandedList = [];
 
@@ -83,7 +82,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.40),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       // child: SizedBox(
       //   height: height,
       //   child: view(),
@@ -106,7 +105,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               blurRadius: 5,
               spreadRadius: 7,
               offset: const Offset(0, 0),
@@ -118,7 +117,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -126,34 +125,28 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
           ],
         ),
       ),
-      child: ViewListBuilder(
-        primary: false,
+      child: ViewLists.separator(
         // NOTE: referred to ViewScrollBehavior
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         duration: const Duration(milliseconds: 50),
         itemBuilder: (BuildContext _, int index) {
           return bookItem(index, books.elementAt(index));
         },
-        itemSeparator: (BuildContext _, int index) {
-          return const ViewSectionDivider(
-            primary: false,
-            padding: EdgeInsets.symmetric(horizontal: 15),
-          );
+        separator: (BuildContext _, int index) {
+          return const ViewDividers();
         },
-        itemSnap: (BuildContext _, int index) {
-          return const ListTile(
-            minVerticalPadding: 16,
-            enabled: false,
-            title: Text('...'),
-          );
-        },
+        itemSnap: const ListTile(
+          minVerticalPadding: 16,
+          enabled: false,
+          title: Text('...'),
+        ),
         itemCount: books.length,
       ),
     );
   }
 
-  Widget bookItem(int index, DefinitionBook book) {
-    bool isCurrentBook = App.core.data.bookId == book.id;
+  Widget bookItem(int index, OfBook book) {
+    bool isCurrentBook = App.core.data.bookId == book.info.id;
 
     bool isExpanded = expandedList.where((e) => e == index).isNotEmpty;
     return ExpansionPanelList(
@@ -166,7 +159,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
           // backgroundColor: isCurrentBook ? Theme.of(context).disabledColor : Colors.transparent,
           // backgroundColor: Colors.transparent,
 
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           // backgroundColor: Colors.red,
           // canTapOnHeader: isCurrentBook,
           headerBuilder: (BuildContext context, bool isExpanded) {
@@ -175,7 +168,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
                 // Navigator.pop<Map<String, int>>(context, {'book': book.id});
                 // Navigator.maybePop<Map<String, int>>(context, {'book': book.id});
                 // debugPrint('Navigator ${book.id}');
-                Navigator.maybePop(context, {'book': book.id});
+                Navigator.maybePop(context, {'book': book.info.id});
               },
               // alignment: Alignment.centerLeft,
               // enabled: !isCurrentBook,
@@ -187,14 +180,14 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
               // contentPadding: EdgeInsets.zero,
               horizontalTitleGap: 0,
               leading: Text(
-                App.preference.digit(book.id.toString()),
+                App.preference.digit(book.info.id),
                 style: TextStyle(
                   color: state.theme.primaryColorDark,
                 ),
               ),
 
               title: Text(
-                book.name,
+                book.info.name,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
                 style: TextStyle(
@@ -256,7 +249,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     );
   }
 
-  Widget chapterList(bool isExpanded, DefinitionBook book) {
+  Widget chapterList(bool isExpanded, OfBook book) {
     if (!isExpanded) return const SizedBox();
     // List<Widget> abc = isExpanded == false
     //     ? []
@@ -273,8 +266,8 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
           crossAxisAlignment: WrapCrossAlignment.center,
           // textDirection: TextDirection.ltr,
           children: List<Widget>.generate(
-            book.chapterCount,
-            (index) => chapterButton(book.id, index + 1),
+            book.totalChapter,
+            (index) => chapterButton(book.info.id, index + 1),
           ),
         );
       },
@@ -312,7 +305,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       //     color: isCurrentChapter ? Theme.of(context).highlightColor : null,
       //   ),
       // ),
-      // enable: !isCurrentChapter,
+      enable: !isCurrentChapter,
       onPressed: () {
         Navigator.maybePop(context, {'book': bookId, 'chapter': chapterId});
       },

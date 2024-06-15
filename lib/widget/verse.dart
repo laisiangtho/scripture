@@ -1,27 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:scripture/core/main.dart';
 
 import '../app.dart';
 
 class VerseWidgetInherited extends InheritedWidget {
-  final Color? fontColor;
+  final int verseId;
+  // final Color? color;
   final double? size;
   final String? lang;
-  final bool selected;
+  // final bool selected;
+  final Marks? marks;
+  // final bool note;
 
-  bool get isUTF8 => lang == 'my';
+  // bool get isUTF8 => lang == 'mya';
   // double get fontHeight => this.isUTF8?1.3:1.2;
   // double get fontHeight => isUTF8 ? 1.3 : 1.2;
   // double? get fontSize => isUTF8 ? size! - 1.5 : size;
   double? get fontSize => size;
-  double? get titleSize => (fontSize! - 3).toDouble();
+  double? get titleSize => (fontSize! - 5).toDouble();
+
+  bool get selected {
+    if (marks != null) {
+      return marks!.hasSelected(verseId);
+    }
+    return false;
+  }
+
+  // List<Color> get colorList => const [Colors.red, Colors.blue, Colors.green, Colors.orange];
+
+  // void background() {
+  //   if (marks != null) {
+  //     if (marks!.isNotEmpty) {
+  //       final ves = marks!.first.verse;
+  //     }
+  //   }
+  //   Paint()..color = Colors.orange.withOpacity(0.1);
+  // }
 
   const VerseWidgetInherited({
     super.key,
-    this.fontColor,
     this.size,
     this.lang,
-    this.selected = false,
+    this.marks,
+    // this.selected = false,
+    // this.note = false,
+    required this.verseId,
     required super.child,
   });
 
@@ -32,20 +54,21 @@ class VerseWidgetInherited extends InheritedWidget {
   @override
   bool updateShouldNotify(VerseWidgetInherited oldWidget) {
     return size != oldWidget.size ||
-        fontColor != oldWidget.fontColor ||
-        selected != oldWidget.selected;
+        // color != oldWidget.color ||
+        selected != oldWidget.selected ||
+        marks != oldWidget.marks;
   }
 }
 
-class WidgetVerse extends StatelessWidget {
-  final VERSE verse;
+// VerseItem VerseItemHolder VerseItemSnap VerseItemWidget
+class VerseItemWidget extends StatelessWidget {
+  final OfVerse verse;
   final String? keyword;
   final String? alsoInVerse;
 
   final void Function(int)? onPressed;
-  // final ValueChanged<Map<String,dynamic>> onChange;
 
-  const WidgetVerse({
+  const VerseItemWidget({
     super.key,
     required this.verse,
     this.keyword,
@@ -53,15 +76,19 @@ class WidgetVerse extends StatelessWidget {
     this.alsoInVerse,
   });
 
+  Scripture get primaryScripture => App.core.scripturePrimary;
+  Preference get preference => App.preference;
+
+  String get bookName => primaryScripture.bookName;
+  String get chapterName => primaryScripture.chapterName;
+
   @override
   Widget build(BuildContext context) {
     final userVerse = VerseWidgetInherited.of(context)!;
+    final verseNote = userVerse.marks?.verseNote(verse.id);
 
     return ListBody(
       key: key,
-      // mainAxisSize: MainAxisSize.max,
-      // crossAxisAlignment: CrossAxisAlignment.stretch,
-      // mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         if (verse.title.isNotEmpty)
           Padding(
@@ -71,52 +98,40 @@ class WidgetVerse extends StatelessWidget {
               textAlign: TextAlign.center,
               semanticsLabel: verse.title,
               textDirection: TextDirection.ltr,
-              // style: TextStyle(
-              //   color: Colors.black54,
-              //   fontSize: userVerse.titleSize,
-              //   fontWeight: FontWeight.w300,
-              //   // height: 1.6,
-              // ),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontSize: userVerse.titleSize,
                     fontWeight: FontWeight.w300,
                   ),
             ),
           ),
-        // Card
-        ViewBlockCard(
+        ViewCards(
           margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
-          // elevation: 0.5,
-          // shape: const RoundedRectangleBorder(
-          //   side: BorderSide(width: 0, color: Colors.transparent),
-          //   borderRadius: BorderRadius.zero,
-          // ),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: SelectableText.rich(
               TextSpan(
-                children: <TextSpan>[
+                children: [
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
                         text: verse.name,
                         semanticsLabel: 'verse: ${verse.name}',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: Theme.of(context).hintColor,
-                              fontSize: userVerse.titleSize,
-                              fontWeight: FontWeight.w300,
-                            ),
                       ),
                       if (verse.merge.isNotEmpty)
                         TextSpan(
-                          text: '-${verse.merge}',
+                          text: '-',
+                          children: [
+                            TextSpan(
+                              text: primaryScripture.digit(verse.merge),
+                            ),
+                          ],
                         ),
                     ],
-                    style: TextStyle(
-                      // color: Colors.grey,
-                      fontSize: userVerse.titleSize,
-                      fontWeight: FontWeight.w300,
-                    ),
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).hintColor,
+                          fontSize: userVerse.titleSize,
+                          fontWeight: FontWeight.w300,
+                        ),
                   ),
                   TextSpan(
                     text: ' ',
@@ -132,9 +147,62 @@ class WidgetVerse extends StatelessWidget {
                     ),
                     semanticsLabel: verse.text,
                     style: TextStyle(
-                      color: userVerse.selected ? Theme.of(context).colorScheme.error : null,
+                      color: userVerse.selected
+                          ? Theme.of(context).primaryColorDark.withOpacity(0.6)
+                          : null,
+                      decoration: userVerse.selected ? TextDecoration.underline : null,
+                      background: userVerse.marks?.verseBackground(verse.id),
+
+                      decorationStyle: TextDecorationStyle.wavy,
+                      // decorationThickness: 2,
+                      // decorationColor: Theme.of(context).colorScheme.error,
+                      decorationColor: Theme.of(context).primaryColorDark,
                     ),
                   ),
+
+                  if (verse.reference.isNotEmpty)
+                    TextSpan(
+                      text: verse.reference,
+                    ),
+                  if (verseNote != null)
+                    WidgetSpan(
+                      child: IconButton(
+                        tooltip: verseNote,
+                        alignment: Alignment.center,
+                        style: TextButton.styleFrom(
+                          // padding: const EdgeInsets.only(left: 5),
+                          minimumSize: const Size(30, 30),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          alignment: Alignment.center,
+                        ),
+                        // color: Theme.of(context).hintColor.withOpacity(0.3),
+                        color: Theme.of(context).focusColor,
+                        onPressed: () {
+                          App.route.showSheetModal(
+                            context: context,
+                            name: 'sheet-bible-navigation/leaf-editor',
+                            arguments: {
+                              'text': verseNote,
+                              // 'focus': true,
+                              'pageLabel':
+                                  preference.text.addTo(preference.text.note('').toLowerCase()),
+
+                              'pageTitle': '$bookName $chapterName:${verse.id}',
+                            },
+                          ).then((e) {
+                            debugPrint('marks: note $e');
+                            if (e != null) {
+                              userVerse.marks?.selectionApply(note: e['text'], verses: [verse.id]);
+                            }
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.chat_bubble,
+                          size: 17,
+                        ),
+                      ),
+                    ),
+
                   if (alsoInVerse != null && alsoInVerse!.isNotEmpty)
                     TextSpan(
                       text: '\t ...$alsoInVerse',
@@ -145,6 +213,8 @@ class WidgetVerse extends StatelessWidget {
                       ),
                       // textAlign: TextAlign.right,
                     ),
+
+                  // if (userVerse.marks.)
                 ],
               ),
               scrollPhysics: const NeverScrollableScrollPhysics(),
@@ -163,69 +233,6 @@ class WidgetVerse extends StatelessWidget {
             ),
           ),
         ),
-
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
-        //   child: SelectableText.rich(
-        //     TextSpan(
-        //       children: <TextSpan>[
-        //         TextSpan(
-        //           children: <TextSpan>[
-        //             TextSpan(
-        //               text: verse.name,
-        //               semanticsLabel: 'verse: ${verse.name}',
-        //             ),
-        //             if (verse.merge.isNotEmpty)
-        //               TextSpan(
-        //                 text: '-${verse.merge}',
-        //               ),
-        //           ],
-        //           style: TextStyle(
-        //             // color: Colors.grey,
-        //             fontSize: userVerse.titleSize,
-        //             fontWeight: FontWeight.w300,
-        //           ),
-        //         ),
-        //         TextSpan(
-        //           text: ' ',
-        //           children: hightLight(
-        //             verse.text,
-        //             keyword,
-        //             TextStyle(
-        //               color: Theme.of(context).highlightColor,
-        //             ),
-        //             // const TextStyle(
-        //             //   color: Colors.red,
-        //             // ),
-        //           ),
-        //           semanticsLabel: verse.text,
-        //           style: TextStyle(
-        //             color: userVerse.selected ? Theme.of(context).errorColor : null,
-        //           ),
-        //         ),
-        //         if (alsoInVerse != null && alsoInVerse!.isNotEmpty)
-        //           TextSpan(
-        //             text: '3\t ...$alsoInVerse',
-        //             style: TextStyle(
-        //               color: Colors.grey,
-        //               fontSize: userVerse.titleSize,
-        //               fontWeight: FontWeight.w300,
-        //             ),
-        //             // textAlign: TextAlign.right,
-        //           ),
-        //       ],
-        //     ),
-        //     scrollPhysics: const NeverScrollableScrollPhysics(),
-        //     textDirection: TextDirection.ltr,
-        //     style: TextStyle(
-        //       // color: Colors.black,
-        //       fontWeight: FontWeight.w400,
-        //       fontSize: userVerse.fontSize,
-        //       // height: userVerse.fontHeight,
-        //     ),
-        //     onTap: onPressed == null ? null : () => onPressed!(verse.id),
-        //   ),
-        // )
       ],
     );
   }
@@ -276,24 +283,24 @@ class WidgetVerse extends StatelessWidget {
   // }
 }
 
-class VerseWidgetHolder extends StatelessWidget {
-  const VerseWidgetHolder({super.key});
-
+class VerseItemSnap extends StatelessWidget {
+  const VerseItemSnap({super.key});
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return ViewCards(
+      // color: Theme.of(context).primaryColor,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 15,
+              height: 20,
               // width: 120,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Theme.of(context).disabledColor,
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               // color: Colors.grey[200],
             ),
@@ -306,7 +313,7 @@ class VerseWidgetHolder extends StatelessWidget {
               width: 250,
               decoration: BoxDecoration(
                 color: Theme.of(context).disabledColor,
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                borderRadius: const BorderRadius.all(Radius.circular(7)),
               ),
             ),
             const Divider(
@@ -314,7 +321,7 @@ class VerseWidgetHolder extends StatelessWidget {
               color: Colors.transparent,
             ),
             Container(
-              height: 15,
+              height: 10,
               width: 50,
               decoration: BoxDecoration(
                 color: Theme.of(context).disabledColor,

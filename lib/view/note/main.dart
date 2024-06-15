@@ -5,7 +5,6 @@ import 'package:lidea/icon.dart';
 import 'package:lidea/hive.dart';
 
 import '../../app.dart';
-import '/widget/button.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -27,6 +26,15 @@ class _View extends _State with _Header {
     debugPrint('note->build');
 
     return Scaffold(
+      appBar: ViewBars(
+        padding: state.fromContext.viewPadding,
+        // forceOverlaps: false,
+        // forceStretch: true,
+        // backgroundColor: Theme.of(context).primaryColor,
+        // overlapsBackgroundColor: Theme.of(context).primaryColor,
+        overlapsBorderColor: Theme.of(context).dividerColor,
+        child: _headerNormal(),
+      ),
       body: Views(
         // scrollBottom: ScrollBottomNavigation(
         //   listener: _controller.bottom,
@@ -36,9 +44,16 @@ class _View extends _State with _Header {
         //   controller: _controller,
         //   slivers: _slivers,
         // ),
+
         child: ValueListenableBuilder(
           valueListenable: boxOfBookmarks.listen(),
           builder: (BuildContext _, Box<BookmarksType> __, Widget? ___) {
+            // boxOfBookmarks = a;
+            // final abc = a;
+            // a.l
+            // final b = a.values;
+            // final c = a.toMap();
+
             return CustomScrollView(
               controller: _controller,
               slivers: _slivers,
@@ -51,34 +66,48 @@ class _View extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        padding: state.fromContext.viewPadding,
-        heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
-        builder: _header,
+      // ViewHeaderSliver(
+      //   pinned: true,
+      //   floating: false,
+      //   padding: state.fromContext.viewPadding,
+      //   heights: const [kToolbarHeight, kToolbarHeight],
+      //   // backgroundColor: state.theme.primaryColor,
+      //   overlapsBackgroundColor: state.theme.primaryColor,
+      //   overlapsBorderColor: state.theme.dividerColor,
+      //   builder: _header,
+      // ),
+      ViewSections(
+        duration: const Duration(milliseconds: 400),
+        child: ViewCards.fill(
+          margin: const EdgeInsets.only(top: 2),
+          child: listContainer(),
+        ),
       ),
-      listContainer(),
+      // listContainer(),
     ];
   }
 
   Widget listContainer() {
+    // debugPrint('note->build-reload');
+
+    // final items = box.toMap().entries.toList();
     final items = boxOfBookmarks.entries.toList();
+
+    debugPrint('note->build-listen ${items.length}');
     // items.sort((a, b) => b.value.date!.compareTo(a.value.date!));
 
     // final items = boxOfBookmarks.values.toList();
     // items.sort((a, b) => b.date!.compareTo(a.date!));
-    return ViewListBuilder(
+    return ViewLists.reorderable(
       itemBuilder: (BuildContext context, int index) {
         return itemContainer(index, items.elementAt(index));
       },
       itemCount: items.length,
-      onEmpty: ViewFeedback.message(
+      onEmpty: ViewFeedbacks.message(
         label: App.preference.text.bookmarkCount(0),
+        // child: Text('abc'),
       ),
-      itemReorderable: boxOfBookmarks.reorderable,
+      reorderable: boxOfBookmarks.reorderable,
     );
   }
 
@@ -96,10 +125,11 @@ class _View extends _State with _Header {
         }
         return false;
       },
+
       child: ListTile(
         // contentPadding: EdgeInsets.zero,
         title: Text(
-          book.name,
+          book.info.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.bodyMedium,
@@ -131,7 +161,7 @@ class _View extends _State with _Header {
         child: Text(
           App.preference.text.delete,
           textAlign: TextAlign.right,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
     );

@@ -10,7 +10,6 @@ import 'package:lidea/view/user/main.dart';
 // import 'package:lidea/view/demo/translate.dart';
 
 import '../../app.dart';
-import '/widget/button.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -92,13 +91,16 @@ class _View extends _State with _Header {
         ),
       ),
       UserThemeWidget(
+        sliver: true,
         preference: App.preference,
       ),
       UserLocaleWidget(
+        sliver: true,
         preference: App.preference,
       ),
 
       UserAccountWidget(
+        sliver: true,
         preference: App.preference,
         authenticate: App.authenticate,
         children: pollList(),
@@ -185,7 +187,7 @@ class _View extends _State with _Header {
                 // child: Text.rich(
                 //   TextSpan(
                 //     // text: preference.language('issue-pull-feature'),
-                //     children: textDecoration(
+                //     children: Paragraphs(
                 //       text: preference.language('issue-pull-feature'),
                 //       decoration: [
                 //         TextSpan(
@@ -202,7 +204,7 @@ class _View extends _State with _Header {
                 //   //     ),
                 //   style: state.textTheme.bodySmall,
                 // ),
-                child: TextDecoration(
+                child: Paragraphs(
                   text: preference.language('issue-pull-feature'),
                   decoration: [
                     TextSpan(
@@ -234,7 +236,8 @@ class _View extends _State with _Header {
   }
 
   Widget signInContainer() {
-    return ViewSection(
+    return ViewSections(
+      sliver: true,
       padding: EdgeInsets.zero,
       headerTitle: ViewSectionTitle(
         title: ViewLabel(
@@ -318,7 +321,8 @@ class _View extends _State with _Header {
   }
 
   Widget profileContainer() {
-    return ViewSection(
+    return ViewSections(
+      sliver: true,
       headerTitle: ViewLabel(
         // label: authenticate.user!.displayName,
         label: App.authenticate.userDisplayname,

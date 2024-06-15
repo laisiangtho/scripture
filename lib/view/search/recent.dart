@@ -1,27 +1,64 @@
 part of 'main.dart';
 
-class _Recents extends StatefulWidget {
-  final Function(String) onSuggest;
-  const _Recents({required this.onSuggest});
+class _Recent extends StatefulWidget {
+  const _Recent();
 
   @override
-  State<_Recents> createState() => _RecentView();
+  State<_Recent> createState() => _RecentView();
 }
 
-abstract class _RecentState extends StateAbstract<_Recents> {
+class _RecentView extends StateAbstract<_Recent> {
+  // Scripture get primaryScripture => core.scripturePrimary;
+
+  // BIBLE get bible => primaryScripture.verseSearch;
+  // bool get shrinkResult => bible.verseCount > 300;
+
+  // SearchCache cacheResult = SearchCache();
+
+  // String get searchQuery => data.searchQuery;
+  // set searchQuery(String ord) {
+  //   data.searchQuery = ord;
+  // }
+
   String get suggestQuery => data.suggestQuery;
+  set suggestQuery(String ord) {
+    data.suggestQuery = ord;
+  }
+
   int get lengths => suggestQuery.length;
 
   bool onDelete(String str) => data.boxOfRecentSearch.delete(str);
-}
 
-class _RecentView extends _RecentState {
+  // void toRead(int book, int chapter) {
+  //   core.chapterChange(bookId: book, chapterId: chapter).whenComplete(() {
+  //     route.pushNamed('read');
+  //   });
+  // }
+
+  void onSuggest(String str) {
+    suggestQuery = str;
+
+    // on recentHistory select
+    // if (_textController.text != str) {
+    //   _textController.text = str;
+    //   if (_focusNode.hasFocus == false) {
+    //     Future.delayed(const Duration(milliseconds: 400), () {
+    //       _focusNode.requestFocus();
+    //     });
+    //   }
+    // }
+    // Future.microtask(() {
+    //   App.core.suggestionGenerate();
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Selector<Core, Iterable<MapEntry<dynamic, RecentSearchType>>>(
       selector: (_, e) => e.data.boxOfRecentSearch.entries,
       builder: (BuildContext _, Iterable<MapEntry<dynamic, RecentSearchType>> items, Widget? __) {
-        return ViewSection(
+        return ViewSections(
+          sliver: true,
           show: items.isNotEmpty,
           // duration: const Duration(milliseconds: 270),
           headerTitle: ViewLabel(
@@ -29,33 +66,30 @@ class _RecentView extends _RecentState {
             label: preference.text.recentSearch((items.length > 1).toString()),
           ),
 
-          onAwait: ViewFeedback.message(
+          onAwait: ViewFeedbacks.message(
             label: App.preference.text.aWordOrTwo,
           ),
-          child: ViewBlockCard.fill(
-            child: _recentBlock(items),
-          ),
+          child: _recentBlock(items),
         );
       },
     );
   }
 
   Widget _recentBlock(Iterable<MapEntry<dynamic, RecentSearchType>> items) {
-    return ViewListBuilder(
-      primary: false,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        return _recentContainer(index, items.elementAt(index));
+    return ViewLists.separator(
+      separator: (BuildContext _, int index) {
+        return const ViewDividers();
       },
-      itemSnap: (BuildContext context, int index) {
-        return const ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-          leading: Icon(LideaIcon.subRight),
+      // physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (BuildContext context, int index) {
+        return RecentItem(
+          child: _recentContainer(index, items.elementAt(index)),
         );
       },
-      itemSeparator: (BuildContext context, int index) {
-        return const ViewSectionDivider(primary: false);
-      },
+      itemSnap: const RecentItem.snap(),
+      // separator: (BuildContext context, int index) {
+      //   return const ViewSectionDivider();
+      // },
       itemCount: items.length,
     );
   }
@@ -74,8 +108,9 @@ class _RecentView extends _RecentState {
         return null;
       },
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-        leading: const Icon(LideaIcon.subRight),
+        // contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        // contentPadding: const EdgeInsets.symmetric(vertical: 5),
+        leading: const Icon(Icons.arrow_outward_rounded),
         title: _recentItem(item.value.word),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
@@ -120,7 +155,7 @@ class _RecentView extends _RecentState {
         //     item.value.hit.toString(),
         //   ),
         // ),
-        onTap: () => widget.onSuggest(item.value.word),
+        onTap: () => onSuggest(item.value.word),
       ),
     );
   }
@@ -160,5 +195,26 @@ class _RecentView extends _RecentState {
         ),
       ),
     );
+  }
+}
+
+class RecentItem extends StatelessWidget {
+  final Widget? child;
+  const RecentItem({
+    super.key,
+    required this.child,
+  });
+  const RecentItem.snap({super.key}) : child = null;
+
+  @override
+  Widget build(BuildContext context) {
+    if (child == null) {
+      return const ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        leading: Icon(Icons.hive_sharp),
+      );
+    }
+
+    return child!;
   }
 }

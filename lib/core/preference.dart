@@ -32,7 +32,9 @@ class Preference extends PreferenceNest {
       text: Theme.of(context).textTheme.merge(
             ThemeNest.textTheme(),
           ),
-      color: const ColorNest.light(),
+      color: const ColorNest.light(
+          // highlight: Colors.redAccent,
+          ),
     );
   }
 }

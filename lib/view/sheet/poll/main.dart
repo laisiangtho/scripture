@@ -52,7 +52,7 @@ class _State extends SheetsDraggableState<Main> {
         overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
         overlapsBorderColor: Theme.of(context).shadowColor,
         builder: (_, vhd) {
-          return ViewHeaderLayoutStack(
+          return ViewHeaderLayouts(
             data: vhd,
             primary: ViewHeaderTitle(
               // alignment: Alignment.lerp(
@@ -84,7 +84,7 @@ class _State extends SheetsDraggableState<Main> {
           );
         },
       ),
-      ViewSection(
+      ViewSections(
         // headerTitle: const WidgetLabel(
         //   // alignment: Alignment.centerLeft,
         //   label: '...',
@@ -99,34 +99,31 @@ class _State extends SheetsDraggableState<Main> {
           },
           child: const Text('Nav'),
         ),
-        child: ViewListBuilder(
-          primary: false,
+        child: ViewLists(
           duration: const Duration(milliseconds: 900),
-          itemSnap: (_, index) {
-            return ListTile(
-              leading: Icon(
-                Icons.person,
-                color: Theme.of(context).focusColor,
+          itemSnap: ListTile(
+            leading: Icon(
+              Icons.person,
+              color: Theme.of(context).focusColor,
+            ),
+            title: Container(
+              height: 15,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).disabledColor,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
-              title: Container(
-                height: 15,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).disabledColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                ),
-                // color: Colors.grey[200],
+              // color: Colors.grey[200],
+            ),
+            subtitle: Container(
+              height: 15,
+              decoration: BoxDecoration(
+                color: Theme.of(context).disabledColor,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
-              subtitle: Container(
-                height: 15,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).disabledColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                ),
-                // color: Colors.grey[200],
-              ),
-            );
-          },
+              // color: Colors.grey[200],
+            ),
+          ),
           itemBuilder: (_, index) {
             final person = member.elementAt(index);
             final hasVoted = hasUserVoted(person.memberId);

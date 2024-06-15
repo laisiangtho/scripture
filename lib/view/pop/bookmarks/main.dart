@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../../app.dart';
 
@@ -18,9 +20,9 @@ class _MainState extends StateAbstract<Main> {
     });
   }
 
-  void Function(bool) get fontSize => args!['setFontSize'];
+  void Function(bool) get fontSize => args['setFontSize'];
 
-  late final RenderBox render = args!['render'];
+  late final RenderBox render = args['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -49,7 +51,7 @@ class _MainState extends StateAbstract<Main> {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.3),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: SizedBox(
         height: height,
         child: view(),

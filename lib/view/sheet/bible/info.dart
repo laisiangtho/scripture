@@ -46,7 +46,7 @@ class _State extends SheetsDraggableState<Main> {
   // @override
   // bool get persistent => false;
   @override
-  double get actualInitialSize => 0.6;
+  double get actualInitialSize => 0.5;
   @override
   double get actualMinSize => 0.4;
 
@@ -111,7 +111,7 @@ class _State extends SheetsDraggableState<Main> {
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
-        heights: const [kToolbarHeight, kToolbarHeight],
+        heights: const [kTextTabBarHeight, kToolbarHeight],
         // heights: const [kToolbarHeight, kToolbarHeight],
         backgroundColor: state.theme.primaryColor,
         // backgroundColor: Colors.transparent,
@@ -120,8 +120,14 @@ class _State extends SheetsDraggableState<Main> {
         // overlapsBorderColor: Theme.of(context).shadowColor,
         overlapsBorderColor: state.theme.dividerColor,
         builder: (_, vhd) {
-          return ViewHeaderLayoutStack(
+          return ViewHeaderLayouts(
             data: vhd,
+            left: [
+              OptionButtons.cancel(
+                navigator: state.navigator,
+                label: App.preference.text.cancel,
+              ),
+            ],
             primary: ViewHeaderTitle(
               alignment: Alignment.lerp(
                 const Alignment(0, 0),
@@ -159,7 +165,7 @@ class _State extends SheetsDraggableState<Main> {
           );
         },
       ),
-      ViewFlatBuilder(
+      ViewFlats(
         child: ListBody(
           children: [
             ListTile(
@@ -309,8 +315,8 @@ class _State extends SheetsDraggableState<Main> {
           ],
         ),
       ),
-      const ViewSectionDivider(),
-      ViewFlatBuilder(
+      const ViewDividers(),
+      ViewFlats(
         child: ListBody(
           children: [
             ListTile(
@@ -322,7 +328,7 @@ class _State extends SheetsDraggableState<Main> {
                 // size: 25,
               ),
               titleAlignment: ListTileTitleAlignment.top,
-              title: TextDecoration(
+              title: Paragraphs(
                 text: App.preference.language('whenBibleDownload'),
                 style: state.textTheme.titleLarge,
                 decoration: [
@@ -345,7 +351,7 @@ class _State extends SheetsDraggableState<Main> {
                 // size: 25,
               ),
               titleAlignment: ListTileTitleAlignment.top,
-              title: TextDecoration(
+              title: Paragraphs(
                 text: App.preference.language('whenBibleDelete'),
                 style: state.textTheme.titleLarge,
                 decoration: [
@@ -362,15 +368,15 @@ class _State extends SheetsDraggableState<Main> {
           ],
         ),
       ),
-      const ViewSectionDivider(),
-      ViewFlatBuilder(
+      const ViewDividers(),
+      ViewFlats(
         child: ListTile(
           leading: const Icon(
             LideaIcon.github,
             size: 23,
           ),
           titleAlignment: ListTileTitleAlignment.titleHeight,
-          title: TextDecoration(
+          title: Paragraphs(
             text: App.preference.language('availableSource'),
             style: state.textTheme.titleLarge,
             decoration: [
@@ -396,7 +402,7 @@ class _State extends SheetsDraggableState<Main> {
           ),
         ),
       ),
-      ViewFlatBuilder(
+      ViewFlats(
         // padding: const EdgeInsets.symmetric(vertical: 30),
         child: ListBody(
           children: [
@@ -406,6 +412,9 @@ class _State extends SheetsDraggableState<Main> {
             note(icon: LideaIcon.copyright, label: book.publisher),
           ],
         ),
+      ),
+      const SliverPadding(
+        padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
       ),
     ];
   }

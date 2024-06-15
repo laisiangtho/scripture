@@ -17,6 +17,11 @@ abstract class _Mock extends _Abstract {
       }
     }
 
+    await _initBooks();
+    await _initCategories();
+  }
+
+  Future<void> _initBooks() async {
     // if (data.boxOfBooks.box.isEmpty) {
     //   String file = data.env.url('book').local;
     //   await UtilDocument.readAsJSON<List<dynamic>>(file).then((ob) async {
@@ -38,11 +43,48 @@ abstract class _Mock extends _Abstract {
       // }
       String file = data.env.url('book').local;
 
-      final ob = UtilDocument.decodeJSON<List<dynamic>>(
-        await UtilDocument.loadBundleAsString(file),
-      );
+      // final ob = Docs.raw.decodeJSON<List<dynamic>>(
+      //   await Docs.asset.readAsString(file),
+      // );
+
+      final ob = await Docs.asset.readAsJSON<List<dynamic>>(file);
       await _importBookMeta(ob);
     }
+  }
+
+  Future<void> _initCategories() async {
+    String file = data.env.url('category').local;
+
+    final ob = await Docs.asset.readAsJSON<Map<String, dynamic>>(file);
+    // final ob = Docs.raw.decodeJSON<Map<String, dynamic>>(
+    //   await Docs.asset.readAsString(file),
+    // );
+    // debugPrint('??? ${ob['section']}');
+
+    category = CategoryBible.fromJSON(ob);
+    // debugPrint('??? testament ${org.testament}');
+    // debugPrint('??? section ${org.section}');
+    // final abc = category.book.length;
+    // debugPrint('??? testament:${category.testament.length}');
+    // debugPrint('??? section:${category.section.length}');
+    // debugPrint('??? book:${category.book.length}');
+
+    // for (var element in category.book) {
+    //   // debugPrint('??? bookname: ${element.name}');
+    //   debugPrint('??? bookname: ${element.name} testament: ${element.testament}');
+    // }
+    // for (var element in category.book) {
+    //   // debugPrint('??? bookname: ${element.name}');
+    //   debugPrint('"book-${element.id}": "${element.name}",');
+    // }
+
+    // await Future.delayed(const Duration(milliseconds: 800));
+
+    // final bs = category.book.first;
+    // debugPrint('??? verse: ${bs.name}');
+    // for (var element in org.section) {
+    //   debugPrint('??? ${element.name}');
+    // }
   }
 
   Future<void> updateBookMeta() async {
@@ -51,7 +93,7 @@ abstract class _Mock extends _Abstract {
     final url = data.env.url('book').uri();
     debugPrint('updateBookMeta $url');
     return AskNest(url).get<String>().then((e) async {
-      final parsed = UtilDocument.decodeJSON(e);
+      final parsed = Docs.raw.decodeJSON(e);
       // debugPrint(e);
       await _importBookMeta(parsed['book']);
     }).catchError((e) {
@@ -59,15 +101,15 @@ abstract class _Mock extends _Abstract {
     });
   }
 
-  Future<void> _importBookMeta(List<dynamic> bookList) async {
+  Future<void> _importBookMeta(List<dynamic> items) async {
     final books = data.boxOfBooks.values.toList();
 
-    for (var item in bookList) {
+    for (var item in items) {
       BooksType meta = BooksType.fromJSON(item);
       int index = books.indexWhere((o) => o.identify == meta.identify);
 
       String file = data.env.url('bible').cache(meta.identify);
-      meta.available = await UtilDocument.exists(file).then((e) {
+      meta.available = await Docs.app.exists(file).then((e) {
         return e.isNotEmpty ? 1 : 0;
       }).catchError((_) {
         return 0;
@@ -86,12 +128,12 @@ abstract class _Mock extends _Abstract {
       }
     }
 
-    // for (var item in bookList) {
+    // for (var item in items) {
     //   BooksType meta = BooksType.fromJSON(item);
     //   int index = books.indexWhere((o) => o.identify == meta.identify);
 
     //   String file = data.env.url('bible').cache(meta.identify);
-    //   meta.available = await UtilDocument.exists(file).then((e) {
+    //   meta.available = await Docs.app.exists(file).then((e) {
     //     return e.isNotEmpty ? 1 : 0;
     //   }).catchError((_) {
     //     return 0;
@@ -325,9 +367,9 @@ abstract class _Mock extends _Abstract {
   // Future<void> deleteOldLocalData(Iterable<APIType> localData) async {
   //   if (requireInitialized) {
   //     for (APIType api in localData) {
-  //       await UtilDocument.exists(api.localName).then((String e) {
+  //       await Docs.app.exists(api.localName).then((String e) {
   //         if (e.isNotEmpty) {
-  //           UtilDocument.delete(e);
+  //           Docs.app.delete(e);
   //         }
   //       });
   //     }

@@ -4,7 +4,10 @@ class Data extends DataNest {
   late final boxOfBooks = BoxOfBooks<BooksType>();
   late final boxOfBookmarks = BoxOfBookmarks<BookmarksType>();
 
-  List<DefinitionBible> cacheBible = [];
+  List<OfBible> cacheBible = [];
+
+  // late final ValueNotifier<List<int>> verseSelection = ValueNotifier<List<int>>([]);
+  // late final ValueNotifier<List<int>> verseColor = ValueNotifier<List<int>>([]);
 
   // retrieve the instance through the app
   // Collection.internal();

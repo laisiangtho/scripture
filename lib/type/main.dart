@@ -2,6 +2,7 @@ library data.type;
 
 // NOTE: Core API manager
 export "package:lidea/main.dart";
+import "package:flutter/material.dart";
 import "package:lidea/main.dart";
 
 // import 'package:flutter/material.dart';

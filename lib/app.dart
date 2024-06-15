@@ -31,7 +31,7 @@ class App {
 }
 
 abstract class StateAbstract<T extends StatefulWidget> extends ViewStateWidget<T> {
-  late final Map<String, dynamic>? args = state.asMap;
+  late final Map<String, dynamic> args = state.asMap;
 
   final ViewData viewData = App.viewData;
   final RouteDelegate routeDelegate = App.routeDelegate;

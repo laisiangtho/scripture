@@ -34,7 +34,9 @@ abstract class _Abstract extends UnitCore {
   late final iso = ISOFilter();
 
   /// Scripture
-  late final scripture = Scripture(data);
+  // late final scripture = Scripture(data);
+
+  late CategoryBible category;
 
   /// ensure and prepare initialization
   Future<void> ensureInitialized() async {

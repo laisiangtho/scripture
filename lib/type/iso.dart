@@ -23,6 +23,20 @@ class ISOModel {
   }
 
   List<String> get langNameList => text.split('/').map((e) => e.trim()).toList();
+
+  int get totalBible => bible.length;
+}
+
+class ISOBible {
+  /// ISO 639-3 language code
+  String identify;
+
+  String shortname;
+
+  ISOBible({
+    required this.identify,
+    required this.shortname,
+  });
 }
 
 // ISOCode
@@ -37,9 +51,10 @@ class ISOFilter extends Notify {
       _items.add(item);
     } else {
       final tmp = _items[index];
-      if (!tmp.bible.contains(item.shortname)) {
-        tmp.bible.add(item.shortname);
-      }
+      // if (!tmp.bible.contains(item.shortname)) {
+      //   tmp.bible.add(item.shortname);
+      // }
+      tmp.bible.add(item.shortname);
     }
   }
 
@@ -49,6 +64,13 @@ class ISOFilter extends Notify {
   void toggle(ISOModel item) {
     final index = _items.indexOf(item);
     _items[index].toggleShow();
+    notify();
+  }
+
+  void toggleAll() {
+    for (var e in all) {
+      e.toggleShow();
+    }
     notify();
   }
 

@@ -172,7 +172,18 @@ class BottomNavigationBarWidget extends StatelessWidget {
           currentIndex: App.routeDelegate.notifier.viewIndex,
           elevation: 3,
           onTap: (index) {
-            App.routeDelegate.notifier.viewIndex = index;
+            if (App.routeDelegate.notifier.viewIndex == index) {
+              // final abc = App.routeDelegate.navigatorKey.currentState;
+              // debugPrint('bottomNavigationBar $index');
+              // if (abc != null) {
+              //   debugPrint('bottomNavigationBar abc $index');
+              //   abc.
+              // }
+              // Navigator.of(context).maybePop();
+              // App.routeDelegate.notifier.pop();
+            } else {
+              App.routeDelegate.notifier.viewIndex = index;
+            }
           },
         );
       },

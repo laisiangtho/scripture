@@ -38,8 +38,8 @@ build: 44
 - [x] read -> chapter -> verse
   - [x] chapter list
   - [x] book list
-    - [ ] collapsible with chapters
-    - [ ] auto scroll to
+    - [x] collapsible with chapters
+    - [x] auto scroll to
   - [x] bookmark chapter
   - [x] Popup Offset/width
   - [x] Offset & Width chapter navigator
@@ -50,7 +50,7 @@ build: 44
     - [x] auto close sheet if selectedVerse.isEmpty
     - custom
       - [x] fontSize
-      - [ ] fontColor
+      - [x] fontColor
     - [ ] sharing
 
 - [x] note -> library
@@ -89,7 +89,10 @@ build: 44
 
 ## Feature
 
-- [ ] share
+- [x] share
+- [ ] Category
+- [x] Title
+- [ ] Quiz
 
 ## temporary
 

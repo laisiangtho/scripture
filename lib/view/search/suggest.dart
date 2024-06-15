@@ -1,30 +1,108 @@
 part of 'main.dart';
 
-mixin _Suggest on _State {
-  Widget suggestView() {
+class _Suggest extends StatefulWidget {
+  const _Suggest();
+
+  @override
+  State<_Suggest> createState() => _SuggestView();
+}
+
+class _SuggestView extends StateAbstract<_Suggest> {
+  Scripture get primaryScripture => core.scripturePrimary;
+
+  CacheBible get bible => primaryScripture.verseSearch;
+  // bool get shrinkResult => bible.verseCount > 300;
+  bool get shrinkResult => bible.suggest.totalVerse > 300;
+
+  String get suggestQuery => data.suggestQuery;
+  set suggestQuery(String ord) {
+    data.suggestQuery = ord;
+    // _textController.text = ord;
+    // setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewDelays.milliseconds(
+      // milliseconds: 400,
+      onAwait: const ViewFeedbacks.await(),
+      builder: (_, __) {
+        return Selector<Core, CacheBible>(
+          selector: (_, e) => e.scripturePrimary.verseSearch,
+          builder: (BuildContext context, CacheBible o, Widget? child) {
+            if (o.query.isEmpty) {
+              return resultRecents();
+            }
+            return resultSuggests();
+            // return scrollView(o.query.isEmpty ? resultRecent : resultBlock);
+          },
+        );
+      },
+    );
+  }
+
+  Widget resultRecents() {
+    return const CustomScrollView(
+      key: PageStorageKey('search-suggest-empty'),
+      // controller: _controller,
+      // primary: true,
+      // slivers: [_resultSliver],
+      slivers: [
+        _Recent(),
+      ],
+    );
+  }
+
+  Widget resultSuggests() {
     return CustomScrollView(
+      key: PageStorageKey('search-suggest-${bible.query}'),
+      // controller: _controller,
+      // primary: true,
+      slivers: [
+        ViewLists(
+          itemBuilder: (BuildContext _, int bookIndex) {
+            // return _suggestItem(index, o.raw.elementAt(index));
+            OfBook book = bible.suggest.book.elementAt(bookIndex);
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                // Text(book.info.name),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(book.info.name.toUpperCase()),
+                ),
+                _suggestChapter(book.chapter),
+              ],
+            );
+          },
+          itemCount: bible.suggest.book.length,
+          onEmpty: ViewFeedbacks.message(
+            label: App.preference.text.searchNoMatch,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /*
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      key: const PageStorageKey('search-suggest'),
       primary: true,
       slivers: [
-        // Selector<Core, SuggestionType>(
-        //   selector: (_, e) => e.cacheSuggestion,
-        //   builder: (BuildContext context, SuggestionType o, Widget? child) {
-        //     if (o.emptyQuery) {
-        //       return const _Recents();
-        //     } else if (o.emptyResult) {
-        //       return child!;
-        //     } else {
-        //       return _suggestBlock(o);
-        //     }
-
-        //     // return suggests(o);
-        //   },
-        //   child: message(App.preference.text.searchNoMatch),
-        // ),
+        SliverToBoxAdapter(
+          child: Text('working b:${bible.bookCount} c:${bible.chapterCount} v:${bible.verseCount}'),
+        ),
         Selector<Core, BIBLE>(
           selector: (_, e) => e.scripturePrimary.verseSearch,
           builder: (BuildContext context, BIBLE o, Widget? child) {
             if (o.query.isEmpty) {
-              return _Recents(onSuggest: onSuggest);
+              // return _Recents(onSuggest: onSuggest);
+              return const ViewFeedbacks.message(
+                label: 'working _Recents',
+              );
             }
             // o.verseCount > 0
             return _suggestBlock();
@@ -34,33 +112,9 @@ mixin _Suggest on _State {
       ],
     );
   }
+  */
 
-  Widget _suggestBlock() {
-    return ViewListBuilder(
-      itemBuilder: (BuildContext _, int bookIndex) {
-        // return _suggestItem(index, o.raw.elementAt(index));
-        BOOK book = bible.book[bookIndex];
-        return Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // Text(book.info.name),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(book.info.name.toUpperCase()),
-            ),
-            _suggestChapter(book.chapter),
-          ],
-        );
-      },
-      itemCount: bible.book.length,
-      onEmpty: ViewFeedback.message(
-        label: App.preference.text.searchNoMatch,
-      ),
-    );
-  }
-
-  Widget _suggestChapter(List<CHAPTER> chapters) {
+  Widget _suggestChapter(List<OfChapter> chapters) {
     final bool shrinkChapter = (chapters.length > 1 && shrinkResult);
     final int shrinkChapterTotal = shrinkChapter ? 1 : chapters.length;
     return ListView.builder(
@@ -70,7 +124,7 @@ mixin _Suggest on _State {
       // itemCount: chapters.length,
       itemCount: shrinkChapterTotal,
       itemBuilder: (context, chapterIndex) {
-        CHAPTER chapter = chapters[chapterIndex];
+        OfChapter chapter = chapters.elementAt(chapterIndex);
         return Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,7 +154,7 @@ mixin _Suggest on _State {
     );
   }
 
-  Widget _suggestVerse(List<VERSE> verses) {
+  Widget _suggestVerse(List<OfVerse> verses) {
     final bool shrinkVerse = (verses.length > 1 && shrinkResult);
     final int shrinkVerseTotal = shrinkVerse ? 1 : verses.length;
     return ListView.builder(
@@ -110,12 +164,13 @@ mixin _Suggest on _State {
       // itemCount: verses.length,
       itemCount: shrinkVerseTotal,
       itemBuilder: (context, index) {
-        VERSE verse = verses[index];
+        OfVerse verse = verses.elementAt(index);
         return VerseWidgetInherited(
           // key: verse.key,
           size: data.boxOfSettings.fontSize().asDouble,
           lang: primaryScripture.info.langCode,
-          child: WidgetVerse(
+          verseId: verse.id,
+          child: VerseItemWidget(
             verse: verse,
             keyword: suggestQuery,
             // alsoInVerse: shrinkVerse?verses.where((e) => e.id  != verse.id).map((e) => core.digit(e.id)).join(', '):''

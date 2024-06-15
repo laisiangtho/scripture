@@ -2,6 +2,8 @@ part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> {
   late final ScrollController _controller = ScrollController();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -14,6 +16,13 @@ abstract class _State extends StateAbstract<Main> {
   void initState() {
     super.initState();
     primaryScripture.scroll = _controller;
+
+    // Future.delayed(const Duration(milliseconds: 1000), () {
+    //   App.core.message.value = 'Testing';
+    //   Future.delayed(const Duration(milliseconds: 1000), () {
+    //     App.core.message.value = '';
+    //   });
+    // });
   }
 
   @override
@@ -22,30 +31,44 @@ abstract class _State extends StateAbstract<Main> {
     _controller.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    primaryScripture.scroll = _controller;
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   primaryScripture.scroll = _controller;
+  // }
 
   Scripture get primaryScripture => core.scripturePrimary;
-  List<VERSE> get primaryVerse => primaryScripture.verse;
-
-  void setFontSize(bool increase) {
-    debugPrint('setFontSize; $increase');
-    core.data.boxOfSettings.fontSizeModify(increase);
-  }
+  List<OfVerse> get primaryVerse => primaryScripture.verse;
 
   void showBookmarks() {
+    core.switchBookmarkWithNotify();
+  }
+
+  void showBooks() {
+    route
+        .showSheetModal(
+      context: context,
+      name: 'sheet-bible-navigation/leaf-book',
+    )
+        .then((e) {
+      if (e != null) {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+        });
+      }
+    });
+  }
+
+  void showChapters() {
     // Navigator.of(context).push(
     //   PageRouteBuilder<int>(
     //     settings: RouteSettings(
     //       arguments: {
-    //         'render': _kBookmarks.currentContext!.findRenderObject() as RenderBox,
-    //         'setFontSize': setFontSize,
-    //         'test': 'hello world',
+    //         'render': _kChapters.currentContext!.findRenderObject() as RenderBox,
     //       },
     //     ),
+    //     // transitionDuration: const Duration(milliseconds: 300),
+    //     reverseTransitionDuration: const Duration(milliseconds: 200),
     //     opaque: false,
     //     barrierDismissible: true,
     //     transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
@@ -55,67 +78,29 @@ abstract class _State extends StateAbstract<Main> {
     //       );
     //     },
     //     pageBuilder: (_, __, ___) {
-    //       return App.route.show('pop-bookmarks').child;
+    //       return App.route.show('pop-chapters').child;
     //     },
     //   ),
     // );
-    core.switchBookmarkWithNotify();
-  }
+    // route.showSheetModal(context: context, name: 'sheet-bible-chapter').then((e) {
+    //   if (e != null) {
+    //     Future.delayed(const Duration(milliseconds: 300), () {
+    //       core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+    //     });
+    //   }
+    // });
 
-  void showBooks() {
-    Navigator.of(context)
-        .push(
-      PageRouteBuilder<Map<String, int>?>(
-        settings: RouteSettings(
-          arguments: {
-            'render': _kBooks.currentContext!.findRenderObject() as RenderBox,
-          },
-        ),
-        opaque: false,
-        barrierDismissible: true,
-        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
-          return FadeTransition(
-            opacity: x,
-            child: child,
-          );
-        },
-        pageBuilder: (_, __, ___) {
-          return App.route.show('pop-books').child;
-        },
-      ),
-    )
-        .then((e) {
+    route.showSheetModal(
+      context: context,
+      name: 'sheet-bible-navigation/leaf-book',
+      arguments: {'book': primaryScripture.bookCurrent.info.id},
+    ).then((e) {
       if (e != null) {
-        // debugPrint(e);
-        core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
-        // setBook(e);
+        Future.delayed(const Duration(milliseconds: 300), () {
+          core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+        });
       }
     });
-  }
-
-  void showChapters() {
-    Navigator.of(context).push(
-      PageRouteBuilder<int>(
-        settings: RouteSettings(
-          arguments: {
-            'render': _kChapters.currentContext!.findRenderObject() as RenderBox,
-          },
-        ),
-        // transitionDuration: const Duration(milliseconds: 300),
-        reverseTransitionDuration: const Duration(milliseconds: 200),
-        opaque: false,
-        barrierDismissible: true,
-        transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
-          return FadeTransition(
-            opacity: x,
-            child: child,
-          );
-        },
-        pageBuilder: (_, __, ___) {
-          return App.route.show('pop-chapters').child;
-        },
-      ),
-    );
   }
 
   void showOptions() {
@@ -125,8 +110,8 @@ abstract class _State extends StateAbstract<Main> {
             settings: RouteSettings(
               arguments: {
                 'render': _kOptions.currentContext!.findRenderObject() as RenderBox,
-                'setFontSize': setFontSize,
-                'test': 'hello world',
+                // 'setFontSize': setFontSize,
+                // 'test': 'hello world',
               },
             ),
             opaque: false,

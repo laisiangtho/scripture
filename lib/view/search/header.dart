@@ -1,184 +1,209 @@
 part of 'main.dart';
 
 mixin _Header on _State {
-  Widget _header(BuildContext context, ViewHeaderData data) {
-    // AnimatedBuilder(
-    //   animation: _cancelController,
-    //   builder: (_, child) {
-
-    //   },
-    // );
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizeTransition(
-          sizeFactor: _backController,
-          axis: Axis.horizontal,
-          child: ViewButton(
-            onPressed: state.navigator.maybePop,
-            constraints: BoxConstraints(minHeight: data.minHeight),
-            child: const Icon(
-              LideaIcon.home,
+  Widget appBarTitleTest(bool toggle) {
+    return Container(
+      padding: state.fromContext.viewPadding,
+      height: kToolbarHeight,
+      decoration: BoxDecoration(
+        color: toggle ? Theme.of(context).primaryColor : null,
+        border: toggle
+            ? Border(
+                bottom: BorderSide(
+                  width: 0.5,
+                  color: Theme.of(context).dividerColor,
+                ),
+              )
+            : null,
+      ),
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizeTransition(
+              sizeFactor: _backController,
+              axis: Axis.horizontal,
+              child: OptionButtons(
+                navigator: state.navigator,
+              ),
             ),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Hero(
-            tag: 'search-form',
-            child: AnimatedBuilder(
-              animation: _cancelController,
-              builder: (_, child) {
-                return AnimatedBuilder(
-                  animation: _backController,
+            Expanded(
+              flex: 1,
+              child: Hero(
+                tag: 'search-form',
+                child: AnimatedBuilder(
+                  animation: _cancelController,
                   builder: (_, child) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        top: 9,
-                        bottom: 9,
-                        // left: 10 * _cancelController.value,
-                        // right: 10 * _backController.value,
-                        left: _backController.value > 0.0 ? 0 : 10,
-                        right: _cancelController.value > 0.0 ? 0 : 10,
-                      ),
+                    return AnimatedBuilder(
+                      animation: _backController,
+                      builder: (_, child) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            // top: 8,
+                            // bottom: 8,
+                            // top: 4,
+                            // bottom: 14,
+                            // top: 9,
+                            // bottom: 9,
+                            // left: 10 * _cancelController.value,
+                            // right: 10 * _backController.value,
+                            left: _backController.value > 0.0 ? 0 : 10,
+                            right: _cancelController.value > 0.0 ? 0 : 10,
+                          ),
+                          child: child,
+                        );
+                      },
                       child: child,
                     );
                   },
-                  child: child,
-                );
-              },
-              child: TextFormField(
-                key: _formKey,
-                controller: _textController,
-                focusNode: _focusNode,
-                textInputAction: TextInputAction.search,
-                keyboardType: TextInputType.text,
-                onChanged: onSuggest,
-                onFieldSubmitted: onSearch,
-                maxLines: 1,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: InputDecoration(
-                  /*
-                  prefixIcon: ViewMark(
-                    margin: const EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(4),
+                  child: TextFormField(
+                    key: _formKey,
+                    controller: _textController,
+                    focusNode: _focusNode,
+                    textInputAction: TextInputAction.search,
+                    keyboardType: TextInputType.text,
+                    onChanged: onSuggest,
+                    onFieldSubmitted: onSearch,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    decoration: InputDecoration(
+                      // labelStyle: Theme.of(context).textTheme.labelSmall,
+                      // hintStyle: Theme.of(context).textTheme.headlineSmall,
+                      prefixIcon: const SearchPrefixIcon(),
+                      suffixIcon: SearchSuffixIcon(
+                        clearController: _clearController,
+                        cancelController: _cancelController,
+                        // clearAnimation: _clearAnimation,
+                        // cancelController: _cancelController,
+                        onPressed: onClear,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 0.1,
-                          color: Theme.of(context).shadowColor,
-                          // spreadRadius: 0.1,
-                          offset: const Offset(0, 0),
-                        )
-                      ],
+                      hintText: App.preference.text.aWordOrTwo,
+                      fillColor: Theme.of(context)
+                          .inputDecorationTheme
+                          .fillColor!
+                          .withOpacity(_focusNode.hasFocus ? 0.6 : 0.4),
                     ),
-                    labelStyle: Theme.of(context).textTheme.labelSmall,
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    label: primaryScripture.info.langCode.toUpperCase(),
                   ),
-                  */
-                  // labelStyle: Theme.of(context).textTheme.labelSmall,
-                  // hintStyle: Theme.of(context).textTheme.headlineSmall,
-                  prefixIcon: Selector<Core, BooksType>(
-                    selector: (_, e) => e.scripturePrimary.info,
-                    builder: (BuildContext _, BooksType info, Widget? child) {
-                      return ViewMark(
-                        margin: const EdgeInsets.all(7),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 0.1,
-                              color: Theme.of(context).shadowColor,
-                              // spreadRadius: 0.1,
-                              offset: const Offset(0, 0),
-                            )
-                          ],
+                ),
+              ),
+            ),
+            SizeTransition(
+              sizeFactor: _cancelController,
+              axis: Axis.horizontal,
+              // child: ViewButton(
+              //   // constraints: BoxConstraints(minHeight: data.minHeight),
+              //   onPressed: onCancel,
+              //   style: Theme.of(context).textTheme.labelMedium,
+              //   child: ViewMark(
+              //     label: App.preference.text.cancel,
+              //   ),
+              // ),
+              child: OptionButtons.label(
+                label: App.preference.text.cancel,
+                onPressed: onCancel,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _header() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizeTransition(
+            sizeFactor: _backController,
+            axis: Axis.horizontal,
+            child: OptionButtons(
+              navigator: state.navigator,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Hero(
+              tag: 'search-form',
+              child: AnimatedBuilder(
+                animation: _cancelController,
+                builder: (_, child) {
+                  return AnimatedBuilder(
+                    animation: _backController,
+                    builder: (_, child) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          // top: 8,
+                          // bottom: 8,
+                          // top: 4,
+                          // bottom: 14,
+                          // top: 9,
+                          // bottom: 9,
+                          // left: 10 * _cancelController.value,
+                          // right: 10 * _backController.value,
+                          left: _backController.value > 0.0 ? 0 : 10,
+                          right: _cancelController.value > 0.0 ? 0 : 10,
                         ),
-                        labelStyle: state.textTheme.labelSmall,
-                        labelPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                        label: info.langCode.toUpperCase(),
+                        child: child,
                       );
                     },
-                  ),
-                  suffixIcon: FadeTransition(
-                    opacity: _clearAnimation,
-                    child: FadeTransition(
-                      opacity: _cancelController,
-                      child: ViewButton(
-                        onPressed: onClear,
-                        padding: const EdgeInsets.all(0),
-                        // message: App.preference.text.clear,
-                        message: App.preference.text.clear,
-                        child: Icon(
-                          Icons.clear_rounded,
-                          color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
-                          semanticLabel: "input",
-                        ),
-                      ),
+                    child: child,
+                  );
+                },
+                child: TextFormField(
+                  key: _formKey,
+                  controller: _textController,
+                  focusNode: _focusNode,
+                  textInputAction: TextInputAction.search,
+                  keyboardType: TextInputType.text,
+                  onChanged: onSuggest,
+                  onFieldSubmitted: onSearch,
+                  maxLines: 1,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  decoration: InputDecoration(
+                    // labelStyle: Theme.of(context).textTheme.labelSmall,
+                    // hintStyle: Theme.of(context).textTheme.headlineSmall,
+                    prefixIcon: const SearchPrefixIcon(),
+                    suffixIcon: SearchSuffixIcon(
+                      clearController: _clearController,
+                      cancelController: _cancelController,
+                      // clearAnimation: _clearAnimation,
+                      // cancelController: _cancelController,
+                      onPressed: onClear,
                     ),
+                    hintText: App.preference.text.aWordOrTwo,
+                    fillColor: Theme.of(context)
+                        .inputDecorationTheme
+                        .fillColor!
+                        .withOpacity(_focusNode.hasFocus ? 0.6 : 0.4),
                   ),
-                  hintText: App.preference.text.aWordOrTwo,
-                  fillColor: Theme.of(context)
-                      .inputDecorationTheme
-                      .fillColor!
-                      .withOpacity(_focusNode.hasFocus ? 0.6 : 0.4),
                 ),
               ),
             ),
           ),
-        ),
-        SizeTransition(
-          sizeFactor: _cancelController,
-          axis: Axis.horizontal,
-          child: ViewButton(
-            constraints: BoxConstraints(minHeight: data.minHeight),
-            // padding: const EdgeInsets.symmetric(vertical: 5),
-            // padding: EdgeInsets.zero,
-
-            onPressed: onCancel,
-            // child: ViewLabel(
-            //   // alignment: Alignment.center,
-            //   // padding: const EdgeInsets.only(right: 13),
-            //   // padding: const EdgeInsets.symmetric(horizontal: 10),
-            //   label: App.preference.text.cancel,
-            //   // icon: Icons.cancel,
+          SizeTransition(
+            sizeFactor: _cancelController,
+            axis: Axis.horizontal,
+            // child: ViewButton(
+            //   // constraints: BoxConstraints(minHeight: data.minHeight),
+            //   onPressed: onCancel,
+            //   style: Theme.of(context).textTheme.labelMedium,
+            //   child: ViewMark(
+            //     label: App.preference.text.cancel,
+            //   ),
             // ),
-            style: Theme.of(context).textTheme.labelMedium,
-            child: ViewMark(
-              // alignment: Alignment.center,
-              // padding: const EdgeInsets.only(right: 13),
-              // padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: OptionButtons.label(
               label: App.preference.text.cancel,
-              // softWrap: true,
-              // icon: Icons.cancel,
+              onPressed: onCancel,
             ),
-            // child: ViewLabel(
-            //   // alignment: Alignment.center,
-            //   // padding: const EdgeInsets.only(right: 13),
-            //   // padding: const EdgeInsets.symmetric(horizontal: 10),
-            //   label: App.preference.text.cancel,
-            //   softWrap: true,
-            //   // icon: Icons.cancel,
-            // ),
-            // child: const Icon(
-            //   Icons.cancel,
-            // ),
-            // child: Text(
-            //   App.preference.text.cancel,
-            //   softWrap: false,
-            //   maxLines: 1,
-            // ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

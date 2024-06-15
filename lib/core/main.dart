@@ -1,6 +1,8 @@
 library data.core;
 
 // import 'dart:async';
+// import 'dart:ffi';
+
 import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,7 @@ import 'package:lidea/unit/core.dart';
 
 // NOTE: Analytics
 import 'package:lidea/unit/analytics.dart';
+import 'package:lidea/unit/notify.dart';
 
 // NOTE: Individual
 // import 'package:lidea/unit/store.dart';
@@ -51,6 +54,7 @@ part 'store.dart';
 part 'poll.dart';
 
 part 'scripture.dart';
+part 'marks.dart';
 
 class Core extends _Search {
   Future<void> initialized(BuildContext context) async {

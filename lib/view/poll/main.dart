@@ -5,7 +5,6 @@ import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
 import '../../app.dart';
-import '/widget/button.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -54,7 +53,8 @@ class _View extends _State with _Header {
       PullToActivate(
         onUpdate: core.poll.updateIndividual,
       ),
-      ViewSection(
+      ViewSections(
+        sliver: true,
         duration: const Duration(milliseconds: 250),
         show: poll.hasSubmitted,
         onAwait: const SliverToBoxAdapter(),
@@ -65,8 +65,7 @@ class _View extends _State with _Header {
             label: pollBoard.info.outcome.replaceFirst('showTotal', results.length.toString()),
           ),
         ),
-        child: ViewListBuilder(
-          primary: false,
+        child: ViewLists(
           // padding: const EdgeInsets.symmetric(horizontal: 20),
           itemCount: results.length,
           itemBuilder: (_, index) {
@@ -103,7 +102,7 @@ class _View extends _State with _Header {
           },
         ),
       ),
-      ViewSection(
+      ViewSections(
         duration: const Duration(milliseconds: 250),
         onAwait: const SliverToBoxAdapter(),
         headerLeading: const Icon(Icons.how_to_vote_outlined),
@@ -165,8 +164,7 @@ class _View extends _State with _Header {
           ),
         ),
         child: Card(
-          child: ViewListBuilder(
-            primary: false,
+          child: ViewLists.separator(
             itemCount: candidates.length,
             itemBuilder: (_, index) {
               final member = candidates.elementAt(index);
@@ -210,10 +208,8 @@ class _View extends _State with _Header {
                 },
               );
             },
-            itemSeparator: (_, index) {
-              return const ViewSectionDivider(
-                primary: false,
-              );
+            separator: (_, index) {
+              return const ViewDividers();
             },
           ),
         ),

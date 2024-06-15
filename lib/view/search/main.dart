@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 
 import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
-// import 'package:lidea/view/user/main.dart';
 
 import '../../app.dart';
+
 import '/widget/verse.dart';
 
 part 'state.dart';
 part 'header.dart';
-
+part 'gadget.dart';
 part 'result.dart';
 part 'suggest.dart';
 part 'recent.dart';
 
+// final _textController = TextEditingController();
+
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'search'; // ./result ./suggestion
+  static String route = 'search';
   static String label = 'Search';
   static IconData icon = LideaIcon.search;
 
@@ -25,43 +27,35 @@ class Main extends StatefulWidget {
   State<Main> createState() => _View();
 }
 
-class _View extends _State with _Header, _Suggest, _Result {
+class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('search->build');
-
     return Scaffold(
+      appBar: ViewBars(
+        padding: state.fromContext.viewPadding,
+        // forceOverlaps: false,
+        // forceStretch: true,
+        // backgroundColor: Theme.of(context).primaryColor,
+        overlapsBackgroundColor: Theme.of(context).primaryColor,
+        overlapsBorderColor: Theme.of(context).dividerColor,
+        child: _header(),
+      ),
       body: Views(
-        // scrollBottom: ScrollBottomNavigation(
-        //   listener: _controller.bottom,
-        //   notifier: App.viewData.bottom,
-        // ),
-        child: NestedScrollView(
-          controller: _controller,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              ViewHeaderSliver(
-                pinned: true,
-                floating: false,
-                padding: state.fromContext.viewPadding,
-                heights: const [kToolbarHeight],
-                // overlapsBackgroundColor: state.theme.primaryColor,
-                overlapsBorderColor: state.theme.dividerColor,
-                overlapsForce: innerBoxIsScrolled,
-                builder: _header,
-              ),
-            ];
+        child: ValueListenableBuilder<bool>(
+          valueListenable: _focusNotifier,
+          builder: (_, focus, header) {
+            return ViewDelays.milliseconds(
+              onAwait: const ViewFeedbacks.await(),
+              builder: (_, __) {
+                if (focus) {
+                  return const _Suggest();
+                } else {
+                  return const _Result();
+                }
+              },
+            );
+            // return ViewFeedbacks.message(label: focus.toString());
           },
-          body: ValueListenableBuilder<bool>(
-            valueListenable: _focusNotifier,
-            builder: (context, toggle, child) {
-              if (toggle) {
-                return suggestView();
-              }
-              return child!;
-            },
-            child: resultView(),
-          ),
         ),
       ),
     );

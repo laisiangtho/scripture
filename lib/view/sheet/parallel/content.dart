@@ -13,12 +13,12 @@ class _ContentState extends State<ParallelContent> {
   Data get data => core.data;
 
   Scripture get primaryScripture => core.scripturePrimary;
-  List<VERSE> get primaryVerse => primaryScripture.verse;
+  List<OfVerse> get primaryVerse => primaryScripture.verse;
 
   Scripture get parallelScripture => core.scriptureParallel;
-  List<VERSE> get parallelVerse => parallelScripture.verse;
+  List<OfVerse> get parallelVerse => parallelScripture.verse;
 
-  late final Future<DefinitionBible> initiator = parallelScripture.init();
+  late final Future<OfBible> initiator = parallelScripture.init();
 
   // @override
   // void initState() {
@@ -39,10 +39,10 @@ class _ContentState extends State<ParallelContent> {
     // return const Text('ParallelBody');
     return Scaffold(
       body: Views(
-        child: FutureBuilder<DefinitionBible>(
+        child: FutureBuilder<OfBible>(
           // key: widget.key,
           future: initiator,
-          builder: (BuildContext context, AsyncSnapshot<DefinitionBible> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<OfBible> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
                 return body();
@@ -68,17 +68,20 @@ class _ContentState extends State<ParallelContent> {
         ViewHeaderSliver(
           pinned: false,
           floating: false,
-          heights: const [kToolbarHeight],
+          // pinned: true,
+          // floating: false,
+          heights: const [kTextTabBarHeight],
+          overlapsBorderColor: Theme.of(context).dividerColor,
           builder: (BuildContext _, ViewHeaderData vhd) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Selector<Core, BIBLE>(
+                  Selector<Core, CacheBible>(
                     selector: (_, e) => e.scriptureParallel.read,
-                    builder: (BuildContext _, BIBLE i, Widget? child) => Text(
-                      i.info.name,
+                    builder: (BuildContext _, CacheBible i, Widget? child) => Text(
+                      i.result.info.shortname,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
@@ -108,11 +111,12 @@ class _ContentState extends State<ParallelContent> {
           initialData: data.boxOfSettings.fontSize(),
           stream: data.boxOfSettings.watch(key: 'fontSize'),
           builder: (BuildContext _, e) {
-            return Selector<Core, BIBLE>(
+            return Selector<Core, CacheBible>(
               selector: (_, e) => e.scriptureParallel.read,
-              builder: (BuildContext context, BIBLE message, Widget? child) => SliverList(
+              builder: (BuildContext context, CacheBible message, Widget? child) => SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) => _inheritedVerse(parallelVerse[index]),
+                  (BuildContext context, int index) =>
+                      _inheritedVerse(parallelVerse.elementAt(index)),
                   childCount: parallelVerse.length,
                   // addAutomaticKeepAlives: true
                 ),
@@ -138,17 +142,20 @@ class _ContentState extends State<ParallelContent> {
         //     child: const Text('Scroll to 300'),
         //   ),
         // ),
+        const SliverPadding(
+          padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
+        ),
       ],
     );
   }
 
-  Widget _inheritedVerse(VERSE verse) {
+  Widget _inheritedVerse(OfVerse verse) {
     return VerseWidgetInherited(
       // key: verse.key,
       size: data.boxOfSettings.fontSize().asDouble,
       lang: parallelScripture.info.langCode,
-      selected: false,
-      child: WidgetVerse(verse: verse, onPressed: primaryScripture.scrollToIndex),
+      verseId: verse.id,
+      child: VerseItemWidget(verse: verse, onPressed: primaryScripture.scrollToIndex),
     );
   }
 }

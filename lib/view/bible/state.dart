@@ -90,7 +90,7 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   }
 
   void showBibleContent(BooksType bible, int index) async {
-    if (state.hasArguments) {
+    if (state.asMap.isNotEmpty) {
       debugPrint('from:${data.parallelId} to:${bible.identify}');
 
       if (data.parallelId != bible.identify) {

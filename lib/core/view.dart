@@ -4,6 +4,7 @@ part of 'main.dart';
 class Views<T> extends ViewScroll<T> {
   const Views({
     super.key,
+    super.behavior,
     super.scrollBottom,
     super.depth,
     super.onNotification,

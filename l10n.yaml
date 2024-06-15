@@ -6,3 +6,4 @@ untranslated-messages-file: ../lidea/assets/locale/untranslated.json
 
 template-arb-file: locale_en.arb
 output-localization-file: app_localizations.dart
+# nullable-getter: false

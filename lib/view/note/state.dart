@@ -3,7 +3,7 @@ part of 'main.dart';
 abstract class _State extends StateAbstract<Main> {
   late final ScrollController _controller = ScrollController();
 
-  late final boxOfBookmarks = App.core.data.boxOfBookmarks;
+  late final BoxOfBookmarks<BookmarksType> boxOfBookmarks = App.core.data.boxOfBookmarks;
 
   // @override
   // void initState() {

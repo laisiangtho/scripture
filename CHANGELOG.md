@@ -1,13 +1,19 @@
 # Change log
 
-## 1.2.7+86
+## 1.2.7+86-88
 
 Improve
 
-- systemNavigationBarColor(android) on fullscreen
-- improve sheet
-- improve texture & context
-- improve locale
+- texture & context
+- Color & locale
+- Search
+- Book & Chapter navigator
+
+Add
+
+- Highlight
+- Note
+- Title
 
 Update
 
@@ -15,8 +21,7 @@ Update
 
 Fixed
 
-- Tooltips
-- identify Type
+- Parallel bar
 
 - iOS: v1.2.7
 - Android: v1.2.7

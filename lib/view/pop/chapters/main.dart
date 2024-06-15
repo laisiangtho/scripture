@@ -36,7 +36,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  late final RenderBox render = args!['render'];
+  late final RenderBox render = args['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -128,7 +128,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.18),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       // child: SizedBox(
       //   height: height,
       //   child: view(),
@@ -154,7 +154,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -166,7 +166,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -225,13 +225,16 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     // bool isCurrentChapter = chapter.id == index;
 
     return ViewButton(
-      enable: !isCurrentChapter,
-      style: TextStyle(fontSize: buttonFontSize),
+      // enable: !isCurrentChapter,
+      style: TextStyle(
+        fontSize: buttonFontSize,
+      ),
       child: ViewMark(
         label: scripture.digit(index),
-        // labelStyle: TextStyle(
-        //   color: isCurrentChapter ? Theme.of(context).highlightColor : null,
-        // ),
+        // labelColor: isCurrentChapter ? Colors.red : null,
+        labelStyle: TextStyle(
+          color: isCurrentChapter ? Theme.of(context).cardColor : null,
+        ),
       ),
       onPressed: () {
         // Navigator.pop<int>(context, index);

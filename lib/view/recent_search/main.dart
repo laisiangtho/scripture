@@ -5,7 +5,6 @@ import 'package:lidea/icon.dart';
 import 'package:lidea/hive.dart';
 
 import '../../app.dart';
-import '/widget/button.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -51,21 +50,22 @@ class _View extends _State with _Header {
         pinned: true,
         floating: false,
         padding: state.fromContext.viewPadding,
-        heights: const [kToolbarHeight, 100],
-        overlapsBackgroundColor: state.theme.primaryColor,
+        heights: const [kToolbarHeight, kToolbarHeight],
+        //overlapsBackgroundColor: state.theme.primaryColor,
         overlapsBorderColor: state.theme.disabledColor,
         builder: _header,
       ),
       // listContainer(),
-      ViewSection(
+      ViewSections(
+        sliver: true,
         show: boxOfRecentSearch.isNotEmpty,
 
-        onAwait: const ViewFeedback.await(),
-        onEmpty: ViewFeedback.message(
+        onAwait: const ViewFeedbacks.await(),
+        onEmpty: ViewFeedbacks.message(
           label: App.preference.text.recentSearchCount(0),
         ),
 
-        child: ViewBlockCard.fill(
+        child: ViewCards.fill(
           child: listContainer(),
         ),
         // child: ViewBlockCard(
@@ -80,20 +80,15 @@ class _View extends _State with _Header {
     final items = boxOfRecentSearch.values.toList();
     items.sort((a, b) => b.date!.compareTo(a.date!));
 
-    return ViewListBuilder(
-      primary: false,
+    return ViewLists.separator(
       itemBuilder: (BuildContext context, int index) {
         return itemContainer(index, items.elementAt(index));
       },
-      itemSnap: (BuildContext context, int index) {
-        return const ListTile(
-          leading: Icon(LideaIcon.subRight),
-        );
-      },
-      itemSeparator: (BuildContext context, int index) {
-        return const ViewSectionDivider(
-          primary: false,
-        );
+      itemSnap: const ListTile(
+        leading: Icon(LideaIcon.subRight),
+      ),
+      separator: (BuildContext context, int index) {
+        return const ViewDividers();
       },
       itemCount: items.length,
       duration: kThemeChangeDuration,
@@ -116,14 +111,14 @@ class _View extends _State with _Header {
         return false;
       },
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        //contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
         title: Text(
           // history.value.word,
           item.word,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
 
-          style: Theme.of(context).textTheme.headlineMedium,
+          style: Theme.of(context).textTheme.labelMedium,
         ),
         // textColor: Colors.red,
         // tileColor: Colors.blue,
@@ -154,7 +149,9 @@ class _View extends _State with _Header {
         child: Text(
           App.preference.text.delete,
           textAlign: TextAlign.right,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: state.theme.splashColor,
+              ),
         ),
       ),
     );

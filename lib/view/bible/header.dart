@@ -2,11 +2,12 @@ part of 'main.dart';
 
 mixin _Header on _State {
   Widget _header(BuildContext context, ViewHeaderData vhd) {
-    return ViewHeaderLayoutStack(
+    return ViewHeaderLayouts(
       data: vhd,
       left: [
-        BackButtonWidget(
+        OptionButtons.back(
           navigator: state.navigator,
+          label: App.preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(

@@ -214,15 +214,15 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
         child: NestedView(
           delegate: NestDelegate(
             notifier: _session,
-            root: route.name,
-            routes: route.route,
+            name: route.name,
+            route: route.route,
           ),
         ),
         // child: RouteNestedWidget(
         //   delegate: NestDelegate(
         //     notifier: _session,
         //     root: route.name,
-        //     routes: route.route,
+        //     route: route.route,
         //   ),
         // ),
       ),

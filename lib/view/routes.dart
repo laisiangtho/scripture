@@ -14,6 +14,12 @@ import 'read/main.dart' as read;
 import 'note/main.dart' as note;
 import 'poll/main.dart' as poll;
 import 'recent_search/main.dart' as recent_search;
+// NOTE: test
+import 'test/group.dart' as test_group;
+import 'test/book.dart' as test_book;
+import 'test/card.dart' as test_card;
+import 'test/sliver.dart' as test_sliver;
+
 // import 'settings/main.dart' as settings;
 // import 'store/main.dart' as store;
 // import 'gallery/main.dart' as gallery;
@@ -23,8 +29,18 @@ import 'sheet/stack/main.dart' as sheets_stack;
 import 'sheet/parallel/main.dart' as sheet_parallel;
 import 'sheet/bible/info.dart' as sheet_bible_info;
 import 'sheet/bible/lang.dart' as sheet_bible_lang;
+import 'sheet/bible/section.dart' as sheet_bible_section;
+import 'sheet/bible/navigation.dart' as sheet_bible_navigation;
+import 'sheet/bible/chapter.dart' as sheet_bible_chapter;
 // import 'sheet/filter/main.dart' as sheet_filter;
 import 'sheet/poll/main.dart' as sheet_poll;
+// NOTE: leaf
+import 'leaf/book.dart' as leaf_book;
+import 'leaf/title.dart' as leaf_title;
+import 'leaf/editor.dart' as leaf_editor;
+import 'leaf/section.dart' as leaf_section;
+import 'leaf/section_chapter.dart' as leaf_section_chapter;
+
 // NOTE: pop
 import 'pop/options/main.dart' as pop_options;
 import 'pop/bookmarks/main.dart' as pop_bookmarks;
@@ -50,6 +66,16 @@ class RouteDelegate extends RouteMainDelegate {
 class InnerDelegate extends RouteInnerDelegate {
   /// RouteInnerDelegate
   InnerDelegate(super.state);
+}
+
+class NestDelegate extends RouteNestDelegate {
+  /// RouteNestDelegate
+  NestDelegate({required super.notifier, super.route, super.name, super.arguments});
+}
+
+class NestedView extends RouteNestedWidget {
+  /// RouteNestedWidget
+  const NestedView({super.key, required super.delegate});
 }
 
 /// RouteChangeNotifier
@@ -97,6 +123,44 @@ class RouteNotifier extends RouteChangeNotifier {
                 icon: recent_search.Main.icon,
                 label: recent_search.Main.label,
                 page: const recent_search.Main(),
+              ),
+              RouteType(
+                name: test_group.Main.route,
+                icon: test_group.Main.icon,
+                label: test_group.Main.label,
+                page: const test_group.Main(),
+              ),
+              RouteType(
+                name: test_book.Main.route,
+                icon: test_book.Main.icon,
+                label: test_book.Main.label,
+                page: const test_book.Main(),
+              ),
+              RouteType(
+                name: test_card.Main.route,
+                icon: test_card.Main.icon,
+                label: test_card.Main.label,
+                page: const test_card.Main(),
+              ),
+              RouteType(
+                name: test_sliver.Main.route,
+                icon: test_sliver.Main.icon,
+                label: test_sliver.Main.label,
+                page: const test_sliver.Main(),
+              ),
+              RouteType(
+                name: leaf_section.Main.route,
+                icon: leaf_section.Main.icon,
+                label: leaf_section.Main.label,
+                page: const leaf_section.Main(),
+                route: [
+                  RouteType(
+                    name: leaf_section_chapter.Main.route,
+                    icon: leaf_section_chapter.Main.icon,
+                    label: leaf_section_chapter.Main.label,
+                    page: const leaf_section_chapter.Main(),
+                  )
+                ],
               ),
             ],
           ),
@@ -174,6 +238,40 @@ class RouteNotifier extends RouteChangeNotifier {
         page: const sheet_bible_lang.Main(),
       ),
       RouteType(
+        name: sheet_bible_section.Main.route,
+        icon: sheet_bible_section.Main.icon,
+        label: sheet_bible_section.Main.label,
+        page: const sheet_bible_section.Main(),
+      ),
+      RouteType(
+        name: sheet_bible_navigation.Main.route,
+        icon: sheet_bible_navigation.Main.icon,
+        label: sheet_bible_navigation.Main.label,
+        page: const sheet_bible_navigation.Main(),
+        // route: [
+        //   RouteType(
+        //     name: sheet_bible_navigation.TmpSheetHome.route,
+        //     icon: sheet_bible_navigation.TmpSheetHome.icon,
+        //     label: sheet_bible_navigation.TmpSheetHome.label,
+        //     page: const sheet_bible_navigation.TmpSheetHome(),
+        //     route: [],
+        //   ),
+        //   RouteType(
+        //     name: sheet_bible_navigation.TmpSheetChild.route,
+        //     icon: sheet_bible_navigation.TmpSheetChild.icon,
+        //     label: sheet_bible_navigation.TmpSheetChild.label,
+        //     page: const sheet_bible_navigation.TmpSheetChild(),
+        //     route: [],
+        //   ),
+        // ],
+      ),
+      RouteType(
+        name: sheet_bible_chapter.Main.route,
+        icon: sheet_bible_chapter.Main.icon,
+        label: sheet_bible_chapter.Main.label,
+        page: const sheet_bible_chapter.Main(),
+      ),
+      RouteType(
         name: sheet_poll.Main.route,
         icon: sheet_poll.Main.icon,
         label: sheet_poll.Main.label,
@@ -202,6 +300,12 @@ class RouteNotifier extends RouteChangeNotifier {
         icon: pop_chapters.Main.icon,
         label: pop_chapters.Main.label,
         page: const pop_chapters.Main(),
+      ),
+      RouteType(
+        name: test_group.Main.route,
+        icon: test_group.Main.icon,
+        label: test_group.Main.label,
+        page: const test_group.Main(),
       ),
     ];
   }
@@ -267,15 +371,34 @@ class RouteNotifier extends RouteChangeNotifier {
   }
 }
 
-class NestDelegate extends RouteNestDelegate {
-  /// RouteNestDelegate
-  NestDelegate({required super.notifier, required super.routes, super.root});
+class ReadNestDelegate extends RouteNestDelegate {
+  ReadNestDelegate({required super.notifier, super.route, super.name, super.arguments});
+  @override
+  List<RouteType> get routes {
+    return [
+      RouteType(
+        name: leaf_book.Main.route,
+        icon: leaf_book.Main.icon,
+        label: leaf_book.Main.label,
+        page: const leaf_book.Main(),
+      ),
+      RouteType(
+        name: leaf_title.Main.route,
+        icon: leaf_title.Main.icon,
+        label: leaf_title.Main.label,
+        page: const leaf_title.Main(),
+      ),
+      // leaf-editor
+      RouteType(
+        name: leaf_editor.Main.route,
+        icon: leaf_editor.Main.icon,
+        label: leaf_editor.Main.label,
+        page: const leaf_editor.Main(),
+      ),
+    ];
+  }
 }
 
-class NestedView extends RouteNestedWidget {
-  /// RouteNestedWidget
-  const NestedView({super.key, required super.delegate});
-}
 
 
 /*

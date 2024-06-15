@@ -26,12 +26,16 @@ class _State extends SheetsDraggableState<Main> {
   @override
   bool get persistent => true;
 
+  @override
+  // double get height => kBottomNavigationBarHeight;
+  double get height => kTextTabBarHeight;
+
   Core get core => App.core;
   Preference get preference => App.preference;
 
   Scripture get primaryScripture => core.scripturePrimary;
-  ScrollController get primaryScroll => primaryScripture.scroll;
-  List<VERSE> get primaryVerse => primaryScripture.verse;
+  ScrollController? get primaryScroll => primaryScripture.scroll;
+  List<OfVerse> get primaryVerse => primaryScripture.verse;
 
   // void setChapter(int? id) {
   //   if (id == null) return;
@@ -76,8 +80,24 @@ class _State extends SheetsDraggableState<Main> {
         // backgroundColor: theme.primaryColor,
         // backgroundColor: theme.primaryColor,
         // overlapsBorderColor: theme.shadowColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        // overlapsBorderColor: state.theme.dividerColor,
         // overlapsForce: true,
+
+        // backgroundColor: Theme.of(context).primaryColor,
+        // backgroundColor: Colors.transparent,
+        // padding: state.fromContext.viewPadding,
+        // overlapsBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // overlapsBorderColor: Theme.of(context).shadowColor,
+        // overlapsBorderColor: state.theme.dividerColor,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).scaffoldBackgroundColor,
+            Theme.of(context).primaryColor,
+          ],
+        ),
+
         builder: buttonList,
       ),
       // const SliverAppBar(
@@ -93,7 +113,21 @@ class _State extends SheetsDraggableState<Main> {
     ];
   }
 
-  Widget buttonList(BuildContext _, ViewHeaderData org) {
+  // @override
+  // Widget draggableDecoration({Widget? child}) {
+  //   return Scaffold(
+  //     primary: false,
+  //     // extendBody: true,
+  //     // extendBodyBehindAppBar: true,
+  //     appBar: const PreferredSize(
+  //       preferredSize: Size.fromHeight(kTextTabBarHeight),
+  //       child: Text('draggableDecoration'),
+  //     ),
+  //     body: child,
+  //   );
+  // }
+
+  Widget buttonList(BuildContext _, ViewHeaderData vhd) {
     return Row(
       key: const ValueKey<String>('btn-action'),
       mainAxisSize: MainAxisSize.max,
@@ -115,21 +149,55 @@ class _State extends SheetsDraggableState<Main> {
           onPressed: scrollAnimateToggle,
           child: const ViewMark(icon: LideaIcon.language, iconSize: 20),
         ),
-        ValueListenableBuilder<List<int>>(
-          valueListenable: primaryScripture.verseSelection,
-          builder: (context, value, _) {
-            return ViewButton(
-              enable: value.isNotEmpty,
-              message: preference.text.share,
-              onPressed: copyVerseSelection,
-              child: ViewMark(
-                icon: LideaIcon.copy,
-                iconSize: 20,
-                badge: value.isNotEmpty ? value.length.toString() : '',
-              ),
-            );
+        ViewButton(
+          message: preference.text.title("true"),
+          onPressed: () {
+            App.route.showSheetModal(
+              context: context,
+              name: 'sheet-bible-navigation/leaf-title',
+              arguments: {'book': primaryScripture.bookCurrent.info.id},
+            ).then((e) {
+              if (e != null) {
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+                });
+              }
+            });
           },
+          child: ViewMark(
+            // icon: Icons.linear_scale_rounded,
+            icon: Icons.signpost_rounded,
+            iconColor: Theme.of(context).primaryColorDark.withOpacity(0.6),
+            iconSize: 20,
+          ),
         ),
+        // ValueListenableBuilder<List<int>>(
+        //   valueListenable: primaryScripture.verseSelection,
+        //   builder: (context, value, _) {
+        //     return ViewButton(
+        //       enable: value.isNotEmpty,
+        //       message: preference.text.share,
+        //       onPressed: copyVerseSelection,
+        //       child: ViewMark(
+        //         icon: LideaIcon.copy,
+        //         iconSize: 20,
+        //         badge: value.isNotEmpty ? value.length.toString() : '',
+        //       ),
+        //     );
+        //   },
+        // ),
+        // ViewButton.filled(
+        //   margin: margin,
+        //   // color: theme.primaryColor,
+        //   showShadow: false,
+        //   child: ViewMark(
+        //     icon: Icons.linear_scale_rounded,
+        //     iconColor: theme.highlightColor.withOpacity(0.3),
+        //   ),
+        //   onPressed: () {
+        //     Navigator.of(context).pushNamed('leaf-title', arguments: {'book': bookId});
+        //   },
+        // ),
       ],
     );
   }

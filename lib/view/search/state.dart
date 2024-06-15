@@ -1,39 +1,39 @@
 part of 'main.dart';
 
-// abstract class _State extends State<Main> {
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  // late final _controller = ScrollController();
 
-  late final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final _formKey = GlobalKey<FormState>();
   late final _textController = TextEditingController();
   late final _focusNode = FocusNode();
 
   bool get autoFocus {
-    return state.hasArguments && args!['focus'] != null;
+    return args.isNotEmpty && args['focus'] != null;
   }
 
   late final AnimationController _clearController = AnimationController(
-    duration: const Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 300),
     vsync: this,
   ); //..repeat();
-  late final Animation<double> _clearAnimation = CurvedAnimation(
-    parent: _clearController,
-    curve: Curves.fastOutSlowIn,
-  );
+  // late final Animation<double> _clearAnimation = CurvedAnimation(
+  //   parent: _clearController,
+  //   curve: Curves.fastOutSlowIn,
+  // );
   late final AnimationController _backController = AnimationController(
     duration: const Duration(milliseconds: 250),
     vsync: this,
   );
   late final AnimationController _cancelController = AnimationController(
-    duration: const Duration(milliseconds: 400),
+    duration: const Duration(milliseconds: 250),
     vsync: this,
   );
-  // late final Animation<double> _focusAnimation = CurvedAnimation(
-  //   parent: _focusController,
-  //   curve: Curves.fastOutSlowIn,
-  // );
 
-  late final Future<void> initiator = core.conclusionGenerate();
+  // late final Future<void> initiator = core.conclusionGenerate();
+
+  // bool get canPop => state.navigator.canPop();
+  bool get canPop => Navigator.of(context).canPop();
+
+  final ValueNotifier<bool> _focusNotifier = ValueNotifier(false);
 
   String get searchQuery => data.searchQuery;
   set searchQuery(String ord) {
@@ -43,18 +43,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   String get suggestQuery => data.suggestQuery;
   set suggestQuery(String ord) {
     data.suggestQuery = ord;
-    // _textController.text = ord;
-    // setState(() {});
   }
-
-  Scripture get primaryScripture => core.scripturePrimary;
-
-  BIBLE get bible => primaryScripture.verseSearch;
-  bool get shrinkResult => bible.verseCount > 300;
-
-  final ValueNotifier<bool> _focusNotifier = ValueNotifier(false);
-
-  late final bool canPop = state.navigator.canPop();
 
   @override
   void initState() {
@@ -68,6 +57,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
         onSuggest(searchQuery);
       } else {
         _cancelController.reverse();
+
         if (canPop) {
           _backController.forward();
         }
@@ -83,11 +73,11 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
       }
     });
 
-    _controller.addListener(() {
-      if (_focusNode.hasFocus) {
-        _focusNode.unfocus();
-      }
-    });
+    // _controller.addListener(() {
+    //   // if (_focusNode.hasFocus) {
+    //   //   _focusNode.unfocus();
+    //   // }
+    // });
 
     Future.microtask(() {
       if (canPop) {
@@ -95,23 +85,9 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
       }
     });
 
-    // Future.delayed(const Duration(milliseconds: 400), () {
-    //   debugPrint('didChangeDependencies autoFocus');
-    //   // if (autoFocus) {
-    //   //   _focusNode.requestFocus();
-    //   // }
-    //   if (hasArgs) {
-    //     final String asdf = args!['keyword'];
-    //     debugPrint('didChangeDependencies $asdf');
-    //   }
-    // });
-    // if (hasArgs) {
-    //   final String asdf = args!['keyword'];
-    //   debugPrint('didChangeDependencies $asdf');
-    // }
     Future.microtask(() {
-      if (state.hasArguments && args!['keyword'] != null) {
-        onQuery(args!['keyword'] as String);
+      if (args.isNotEmpty && args['keyword'] != null) {
+        onQuery(args['keyword'] as String);
       } else {
         onQuery(searchQuery);
       }
@@ -120,46 +96,31 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
         _focusNode.requestFocus();
       }
     });
-    // Future.microtask(() {
-    //   // if (hasArgs) {
-    //   //   _textController.text = args!['keyword'] as String;
-    //   // }
-    //   debugPrint('autoFocus ${_focusNode.canRequestFocus} $autoFocus $hasArgs');
-    //   if (_focusNode.canRequestFocus && autoFocus) {
-    //     _focusNode.requestFocus();
-    //   }
-    // });
-  }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _controller.dispose();
-  //   _textController.dispose();
-  //   _focusNode.dispose();
-  //   _controller.bottom.dispose();
-  // }
-
-  // void onQuery() async {
-  //   Future.microtask(() {
-  //     _textController.text = searchQuery;
-  //   });
-  // }
-  void onQuery(String str) {
-    if (_textController.text != str) {
-      _textController.text = str;
-      if (searchQuery != str) {
-        searchQuery = str;
+    data.boxOfSettings.watch(key: 'searchQuery').listen((e) {
+      debugPrint('test data.boxOfSettings.watch ${e.value}');
+      if (e.value != null) {
+        String str = e.value.toString();
+        _textController.text = str;
+        if (suggestQuery != str) {
+          suggestQuery = str;
+        }
       }
-    }
+    });
+    data.boxOfSettings.watch(key: 'suggestQuery').listen((e) {
+      if (e.value != null) {
+        String str = e.value.toString();
+        _textController.text = str;
+      }
+    });
   }
 
   void onClear() {
     _textController.clear();
     suggestQuery = '';
-    Future.microtask(() {
-      App.core.suggestionGenerate();
-    });
+    // Future.microtask(() {
+    //   App.core.suggestionGenerate();
+    // });
   }
 
   void onCancel() {
@@ -169,6 +130,15 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
       suggestQuery = searchQuery;
       _textController.text = suggestQuery;
     });
+  }
+
+  void onQuery(String str) {
+    if (_textController.text != str) {
+      _textController.text = str;
+      if (searchQuery != str) {
+        searchQuery = str;
+      }
+    }
   }
 
   void onSuggest(String str) {
@@ -209,20 +179,19 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     // });
 
     // debugPrint('suggest onSearch $canPop');
-    _controller.animateTo(
-      _controller.position.minScrollExtent,
-      curve: Curves.fastOutSlowIn,
-      duration: const Duration(milliseconds: 800),
-    );
+    // _controller.animateTo(
+    //   _controller.position.minScrollExtent,
+    //   curve: Curves.fastOutSlowIn,
+    //   duration: const Duration(milliseconds: 800),
+    // );
     // Future.delayed(Duration.zero, () {
     //   collection.historyUpdate(searchQuery);
     // });
   }
 
-  void toRead(int book, int chapter) {
-    core.chapterChange(bookId: book, chapterId: chapter).whenComplete(() {
-      route.pushNamed('read');
-    });
-  }
-  // bool onDelete(String str) => App.core.data.boxOfRecentSearch.delete(str);
+  // void toRead(int book, int chapter) {
+  //   core.chapterChange(bookId: book, chapterId: chapter).whenComplete(() {
+  //     route.pushNamed('read');
+  //   });
+  // }
 }
