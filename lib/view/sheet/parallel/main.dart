@@ -92,9 +92,13 @@ class _State extends SheetsDraggableState<Main> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
+          // colors: [
+          //   Colors.red,
+          //   Colors.white,
+          // ],
           colors: [
-            Theme.of(context).scaffoldBackgroundColor,
             Theme.of(context).primaryColor,
+            Theme.of(context).scaffoldBackgroundColor,
           ],
         ),
 

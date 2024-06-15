@@ -210,35 +210,6 @@ mixin _Header on _State {
     );
   }
 
-  Widget headerTmpDelete(BuildContext context, ViewHeaderData vhd) {
-    return ViewHeaderLayouts(
-      data: vhd,
-      left: [
-        backOrHome(),
-      ],
-      primary: ViewHeaderTitle(
-        // alignment: Alignment.lerp(
-        //   const Alignment(0, 0),
-        //   const Alignment(0, 0),
-        //   vhd.snapShrink,
-        // ),
-        label: App.preference.text.book('true'),
-        data: vhd,
-      ),
-      right: [
-        ViewButton(
-          style: Theme.of(context).textTheme.titleSmall,
-          onPressed: () {
-            Navigator.of(context).pushNamed('leaf-title');
-          },
-          child: ViewMark(
-            label: App.preference.text.title(''),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _header() {
     return ViewHeaderLayouts.fixed(
       height: kTextTabBarHeight,

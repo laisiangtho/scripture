@@ -22,14 +22,9 @@ class Main extends SheetsDraggable {
 }
 
 class _State extends SheetsDraggableState<Main> {
-  @override
-  ViewData get viewData => App.viewData;
-
   // @override
-  // ScrollNotifier get notifier => App.scroll;
+  // ViewData get viewData => App.viewData;
 
-  @override
-  bool get persistent => true;
   @override
   double get actualInitialSize => 0.9;
   @override

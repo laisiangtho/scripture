@@ -60,36 +60,6 @@ abstract class _State extends StateAbstract<Main> {
   }
 
   void showChapters() {
-    // Navigator.of(context).push(
-    //   PageRouteBuilder<int>(
-    //     settings: RouteSettings(
-    //       arguments: {
-    //         'render': _kChapters.currentContext!.findRenderObject() as RenderBox,
-    //       },
-    //     ),
-    //     // transitionDuration: const Duration(milliseconds: 300),
-    //     reverseTransitionDuration: const Duration(milliseconds: 200),
-    //     opaque: false,
-    //     barrierDismissible: true,
-    //     transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
-    //       return FadeTransition(
-    //         opacity: x,
-    //         child: child,
-    //       );
-    //     },
-    //     pageBuilder: (_, __, ___) {
-    //       return App.route.show('pop-chapters').child;
-    //     },
-    //   ),
-    // );
-    // route.showSheetModal(context: context, name: 'sheet-bible-chapter').then((e) {
-    //   if (e != null) {
-    //     Future.delayed(const Duration(milliseconds: 300), () {
-    //       core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
-    //     });
-    //   }
-    // });
-
     route.showSheetModal(
       context: context,
       name: 'sheet-bible-navigation/leaf-book',

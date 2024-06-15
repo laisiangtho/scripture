@@ -63,7 +63,7 @@ class _View extends _State with _Header {
       // bottomNavigationBar: const SheetStack(),
       // bottomNavigationBar: App.route.show('sheet-parallel').child,
       bottomNavigationBar: ViewDelays.milliseconds(
-        milliseconds: 1500,
+        milliseconds: 1700,
         builder: (_, __) {
           return App.route.show('sheet-parallel').child;
         },

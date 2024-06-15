@@ -147,15 +147,57 @@ class _MainState extends StateAbstract<Main> {
           ),
           shrinkWrap: true,
           children: <Widget>[
-            ViewButton(
-              style: state.textTheme.labelLarge,
-              message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
+            // ViewButton(
+            //   style: state.textTheme.labelLarge,
+            //   message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
+            //   onPressed: () => doFontSize(false),
+            //   child: const Icon(Icons.remove),
+            // ),
+            // ViewButton(
+            //   onPressed: doFontSizeReset,
+            //   message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
+            //   child: StreamBuilder(
+            //     initialData: bOS.fontSize(),
+            //     stream: bOS.watch(key: 'fontSize'),
+            //     builder: (BuildContext _, AsyncSnapshot<Object> e) {
+            //       return ViewMark(
+            //         decoration: BoxDecoration(
+            //           border: Border.symmetric(
+            //             vertical: BorderSide(
+            //               width: 1,
+            //               color: Theme.of(context).dividerColor,
+            //             ),
+            //           ),
+            //         ),
+            //         label: bOS.fontSize().asDouble.toStringAsFixed(0),
+            //         labelStyle: TextStyle(
+            //           color: Theme.of(context).hintColor,
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            // ViewButton(
+            //   onPressed: () => doFontSize(true),
+            //   style: state.textTheme.labelLarge,
+            //   message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
+            //   child: const Icon(Icons.add),
+            // ),
+            OptionButtons.icon(
               onPressed: () => doFontSize(false),
-              child: const Icon(Icons.remove),
+              message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
+              icon: Icons.remove,
             ),
+            // ViewButton(
+            //   onPressed: () => doFontSize(true),
+            //   style: state.textTheme.labelLarge,
+            //   message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
+            //   child: const Icon(Icons.add),
+            // ),
             ViewButton(
               onPressed: doFontSizeReset,
               message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
+              padding: EdgeInsets.zero,
               child: StreamBuilder(
                 initialData: bOS.fontSize(),
                 stream: bOS.watch(key: 'fontSize'),
@@ -169,7 +211,7 @@ class _MainState extends StateAbstract<Main> {
                         ),
                       ),
                     ),
-                    label: bOS.fontSize().asDouble.toStringAsFixed(0),
+                    label: preference.digit(bOS.fontSize().asDouble.toStringAsFixed(0)),
                     labelStyle: TextStyle(
                       color: Theme.of(context).hintColor,
                     ),
@@ -177,12 +219,11 @@ class _MainState extends StateAbstract<Main> {
                 },
               ),
             ),
-            ViewButton(
+            OptionButtons.icon(
               onPressed: () => doFontSize(true),
-              style: state.textTheme.labelLarge,
               message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
-              child: const Icon(Icons.add),
-            ),
+              icon: Icons.add,
+            )
           ],
         ),
       ),
