@@ -5,7 +5,8 @@
       android:label="Lai Siangtho"
       android:icon="@mipmap/icon"
       android:roundIcon="@mipmap/iconrounded"
-      android:usesCleartextTraffic="true">
+      android:usesCleartextTraffic="true"
+      android:enableOnBackInvokedCallback="true">
       <activity
           android:name=".MainActivity"
           android:launchMode="singleTop"
