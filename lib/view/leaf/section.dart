@@ -182,79 +182,16 @@ class _MainState extends _State with _Header {
                           label: App.preference.digit(book.totalChapter),
                         ),
                         onTap: () {
-                          // Navigator.of(context)
-                          //     .pushNamed('home/leaf-section/section-chapter', arguments: book);
-                          // TODO: testing delay
                           route.showSheetModal(
                             context: context,
                             name: 'sheet-bible-navigation/leaf-book',
                             arguments: {'book': book.id},
-                            // showDragHandle: true,
-                            // isScrollControlled: true,
                           );
                         },
                       );
                     },
-                    // separator: (BuildContext context, int index) {
-                    //   return const ViewSectionDivider();
-                    // },
                     itemCount: bList.length,
                   ),
-                  // SliverList.builder(
-                  //   itemBuilder: (BuildContext _, int index) {
-                  //     final book = bList.elementAt(index);
-                  //     final bId = book.id;
-                  //     return ListTile(
-                  //       leading: Text(
-                  //         App.preference.digit(bId),
-                  //         // scripture.digit(book.id),
-                  //         // book.id.toString(),
-                  //         textAlign: TextAlign.center,
-                  //         style: state.textTheme.titleSmall,
-                  //       ),
-                  //       title: Text(App.preference.language('book-$bId')),
-                  //       trailing: ViewMark(
-                  //         iconLeft: false,
-                  //         icon: LideaIcon.rightOpen,
-                  //         iconSize: 28,
-                  //         iconColor: Theme.of(context).hintColor,
-                  //         label: App.preference.digit(book.totalChapter),
-                  //       ),
-                  //       onTap: () {
-                  //         // App.route.pushNamed('read');
-                  //         // App.core.chapterChange(bookId: bId);
-
-                  //         // App.route.pushNamed('home/test-section/test-chapter', arguments: {
-                  //         //   'book': [1, 3]
-                  //         // });
-
-                  //         // App.route
-                  //         //     .pushNamed('home/test-section/test-chapter', arguments: book.toMap());
-                  //         // App.route.pushNamed('home/test-section/test-chapter', arguments: book);
-
-                  //         Navigator.of(context)
-                  //             .pushNamed('home/test-section/test-chapter', arguments: book);
-
-                  //         // if (!App.core.scripturePrimary.isReady) {
-                  //         //   App.core.message.value = App.preference.text.aMoment;
-                  //         // }
-
-                  //         // App.route.pushNamed('read');
-                  //         // core.chapterChange(bookId: bId).whenComplete(() {
-                  //         //   if (App.core.message.value.isNotEmpty) {
-                  //         //     Future.delayed(const Duration(milliseconds: 1000), () {
-                  //         //       App.core.message.value = '';
-                  //         //     });
-                  //         //   }
-                  //         // });
-
-                  //         // Navigator.of(context).pushNamed('read');
-                  //         // route.pushNamed('read');
-                  //       },
-                  //     );
-                  //   },
-                  //   itemCount: bList.length,
-                  // ),
                 ],
               );
             },

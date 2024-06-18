@@ -56,9 +56,9 @@ class _State extends SheetsDraggableState<Main> {
   }
 
   /// remove parent root path
+  /// state.arguments.toString(),
   String get rootPath {
-    // state.arguments.toString(),
-    debugPrint('state.arguments: ${state.arguments}');
+    // debugPrint('state.arguments: ${state.arguments}');
     if (state.name != null) {
       var name = state.name?.split('/');
 

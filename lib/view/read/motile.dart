@@ -103,8 +103,10 @@ class _MotileState extends State<Motile> {
               final rad = (40 + val).clamp(5.0, 40.0);
               return Positioned.fill(
                 left: val,
+                top: -3,
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  // alignment: Alignment.centerLeft,
+                  alignment: const Alignment(-1, 0.9),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       // border: Border(
@@ -132,9 +134,9 @@ class _MotileState extends State<Motile> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.shadowColor,
-                          // color: active ? theme.scaffoldBackgroundColor : theme.shadowColor,
-                          blurRadius: active ? 10 : 3,
+                          // color: theme.shadowColor,
+                          color: active ? theme.hintColor : theme.shadowColor,
+                          blurRadius: active ? 7 : 3,
                           spreadRadius: 1,
                           offset: const Offset(3, 0),
                           // spreadRadius: 1,
@@ -146,6 +148,7 @@ class _MotileState extends State<Motile> {
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       child: Icon(
                         Icons.arrow_back_ios_new_rounded,
+                        // Icons.arrow_back_rounded,
                         size: 25,
                         // color: active ? theme.primaryColor : null,
                       ),
@@ -166,7 +169,8 @@ class _MotileState extends State<Motile> {
               return Positioned.fill(
                 right: val,
                 child: Align(
-                  alignment: Alignment.centerRight,
+                  // alignment: Alignment.centerRight,
+                  alignment: const Alignment(1, 0.9),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       // border: Border(
@@ -191,9 +195,8 @@ class _MotileState extends State<Motile> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.shadowColor,
-                          // color: active ? theme.primaryColorDark : theme.shadowColor,
-                          blurRadius: active ? 10 : 3,
+                          color: active ? theme.hintColor : theme.shadowColor,
+                          blurRadius: active ? 7 : 3,
                           spreadRadius: 1,
                           offset: const Offset(-3, 0),
                         ),
@@ -203,6 +206,7 @@ class _MotileState extends State<Motile> {
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       child: Icon(
                         Icons.arrow_forward_ios_rounded,
+                        // Icons.arrow_forward_rounded,
                         size: 25,
                         // color: active ? theme.primaryColor : null,
                       ),
