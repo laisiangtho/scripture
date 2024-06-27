@@ -14,24 +14,22 @@ import 'read/main.dart' as read;
 import 'note/main.dart' as note;
 import 'poll/main.dart' as poll;
 import 'recent_search/main.dart' as recent_search;
+
 // NOTE: test
 import 'test/group.dart' as test_group;
 import 'test/book.dart' as test_book;
 import 'test/card.dart' as test_card;
 import 'test/sliver.dart' as test_sliver;
 
-// import 'settings/main.dart' as settings;
-// import 'store/main.dart' as store;
-// import 'gallery/main.dart' as gallery;
 // NOTE: sheet
 import 'sheet/modal/main.dart' as sheets_modal;
-import 'sheet/stack/main.dart' as sheets_stack;
-import 'sheet/parallel/main.dart' as sheet_parallel;
+// import 'sheet/parallel/main.dart' as sheet_parallel;
 import 'sheet/bible/info.dart' as sheet_bible_info;
 import 'sheet/bible/lang.dart' as sheet_bible_lang;
 import 'sheet/bible/section.dart' as sheet_bible_section;
 import 'sheet/bible/navigation.dart' as sheet_bible_navigation;
-import 'sheet/bible/chapter.dart' as sheet_bible_chapter;
+import 'sheet/bible/persistent.dart' as sheet_bible_persistent;
+// import 'sheet/bible/chapter.dart' as sheet_bible_chapter;
 // import 'sheet/filter/main.dart' as sheet_filter;
 import 'sheet/poll/main.dart' as sheet_poll;
 // NOTE: leaf
@@ -40,12 +38,14 @@ import 'leaf/title.dart' as leaf_title;
 import 'leaf/editor.dart' as leaf_editor;
 import 'leaf/section.dart' as leaf_section;
 import 'leaf/section_chapter.dart' as leaf_section_chapter;
+import 'leaf/parallel.dart' as leaf_parallel;
+import 'leaf/merge.dart' as leaf_merge;
 
 // NOTE: pop
 import 'pop/options/main.dart' as pop_options;
-import 'pop/bookmarks/main.dart' as pop_bookmarks;
-import 'pop/books/main.dart' as pop_books;
-import 'pop/chapters/main.dart' as pop_chapters;
+// import 'pop/bookmarks/main.dart' as pop_bookmarks;
+// import 'pop/books/main.dart' as pop_books;
+// import 'pop/chapters/main.dart' as pop_chapters;
 
 /// RouteMainDelegate
 class RouteDelegate extends RouteMainDelegate {
@@ -207,24 +207,14 @@ class RouteNotifier extends RouteChangeNotifier {
           ),
         ],
       ),
-      RouteType(
-        name: sheet_parallel.Main.route,
-        icon: sheet_parallel.Main.icon,
-        label: sheet_parallel.Main.label,
-        page: const sheet_parallel.Main(),
-      ),
+
       RouteType(
         name: sheets_modal.Main.route,
         icon: sheets_modal.Main.icon,
         label: sheets_modal.Main.label,
         page: const sheets_modal.Main(),
       ),
-      RouteType(
-        name: sheets_stack.Main.route,
-        icon: sheets_stack.Main.icon,
-        label: sheets_stack.Main.label,
-        page: const sheets_stack.Main(),
-      ),
+
       RouteType(
         name: sheet_bible_info.Main.route,
         icon: sheet_bible_info.Main.icon,
@@ -248,28 +238,12 @@ class RouteNotifier extends RouteChangeNotifier {
         icon: sheet_bible_navigation.Main.icon,
         label: sheet_bible_navigation.Main.label,
         page: const sheet_bible_navigation.Main(),
-        // route: [
-        //   RouteType(
-        //     name: sheet_bible_navigation.TmpSheetHome.route,
-        //     icon: sheet_bible_navigation.TmpSheetHome.icon,
-        //     label: sheet_bible_navigation.TmpSheetHome.label,
-        //     page: const sheet_bible_navigation.TmpSheetHome(),
-        //     route: [],
-        //   ),
-        //   RouteType(
-        //     name: sheet_bible_navigation.TmpSheetChild.route,
-        //     icon: sheet_bible_navigation.TmpSheetChild.icon,
-        //     label: sheet_bible_navigation.TmpSheetChild.label,
-        //     page: const sheet_bible_navigation.TmpSheetChild(),
-        //     route: [],
-        //   ),
-        // ],
       ),
       RouteType(
-        name: sheet_bible_chapter.Main.route,
-        icon: sheet_bible_chapter.Main.icon,
-        label: sheet_bible_chapter.Main.label,
-        page: const sheet_bible_chapter.Main(),
+        name: sheet_bible_persistent.Main.route,
+        icon: sheet_bible_persistent.Main.icon,
+        label: sheet_bible_persistent.Main.label,
+        page: const sheet_bible_persistent.Main(),
       ),
       RouteType(
         name: sheet_poll.Main.route,
@@ -283,30 +257,30 @@ class RouteNotifier extends RouteChangeNotifier {
         label: pop_options.Main.label,
         page: const pop_options.Main(),
       ),
-      RouteType(
-        name: pop_bookmarks.Main.route,
-        icon: pop_bookmarks.Main.icon,
-        label: pop_bookmarks.Main.label,
-        page: const pop_bookmarks.Main(),
-      ),
-      RouteType(
-        name: pop_books.Main.route,
-        icon: pop_books.Main.icon,
-        label: pop_books.Main.label,
-        page: const pop_books.Main(),
-      ),
-      RouteType(
-        name: pop_chapters.Main.route,
-        icon: pop_chapters.Main.icon,
-        label: pop_chapters.Main.label,
-        page: const pop_chapters.Main(),
-      ),
-      RouteType(
-        name: test_group.Main.route,
-        icon: test_group.Main.icon,
-        label: test_group.Main.label,
-        page: const test_group.Main(),
-      ),
+      // RouteType(
+      //   name: pop_bookmarks.Main.route,
+      //   icon: pop_bookmarks.Main.icon,
+      //   label: pop_bookmarks.Main.label,
+      //   page: const pop_bookmarks.Main(),
+      // ),
+      // RouteType(
+      //   name: pop_books.Main.route,
+      //   icon: pop_books.Main.icon,
+      //   label: pop_books.Main.label,
+      //   page: const pop_books.Main(),
+      // ),
+      // RouteType(
+      //   name: pop_chapters.Main.route,
+      //   icon: pop_chapters.Main.icon,
+      //   label: pop_chapters.Main.label,
+      //   page: const pop_chapters.Main(),
+      // ),
+      // RouteType(
+      //   name: test_group.Main.route,
+      //   icon: test_group.Main.icon,
+      //   label: test_group.Main.label,
+      //   page: const test_group.Main(),
+      // ),
     ];
   }
 
@@ -381,6 +355,7 @@ class ReadNestDelegate extends RouteNestDelegate {
         icon: leaf_book.Main.icon,
         label: leaf_book.Main.label,
         page: const leaf_book.Main(),
+        home: true,
       ),
       RouteType(
         name: leaf_title.Main.route,
@@ -388,12 +363,39 @@ class ReadNestDelegate extends RouteNestDelegate {
         label: leaf_title.Main.label,
         page: const leaf_title.Main(),
       ),
-      // leaf-editor
       RouteType(
         name: leaf_editor.Main.route,
         icon: leaf_editor.Main.icon,
         label: leaf_editor.Main.label,
         page: const leaf_editor.Main(),
+      ),
+      RouteType(
+        name: leaf_merge.Main.route,
+        icon: leaf_merge.Main.icon,
+        label: leaf_merge.Main.label,
+        page: const leaf_merge.Main(),
+      ),
+    ];
+  }
+}
+
+class PersistentNestDelegate extends RouteNestDelegate {
+  PersistentNestDelegate({required super.notifier, super.route, super.name, super.arguments});
+  @override
+  List<RouteType> get routes {
+    return [
+      RouteType(
+        name: leaf_parallel.Main.route,
+        icon: leaf_parallel.Main.icon,
+        label: leaf_parallel.Main.label,
+        page: const leaf_parallel.Main(),
+        home: true,
+      ),
+      RouteType(
+        name: leaf_title.Main.route,
+        icon: leaf_title.Main.icon,
+        label: leaf_title.Main.label,
+        page: const leaf_title.Main(),
       ),
     ];
   }

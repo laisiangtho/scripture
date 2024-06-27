@@ -13,6 +13,8 @@ import '/widget/profile_icon.dart';
 
 part 'state.dart';
 part 'header.dart';
+part 'inspect_process.dart';
+part 'inspect_route.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -58,302 +60,24 @@ class _View extends _State with _Header {
         builder: _header,
       ),
 
-      // const SliverFillRemaining(),
-      // SliverConstrainedCrossAxis(maxExtent: maxExtent, sliver: sliver)
-      // SliverCrossAxisExpanded(flex: flex, sliver: sliver)
-      // SliverCrossAxisGroup(slivers: slivers)
-
       const PullToRefresh(),
-      // SliverToBoxAdapter(
-      //   child: RefreshIndicator(
-      //     color: Colors.white,
-      //     backgroundColor: Colors.blue,
-      //     onRefresh: () async {
-      //       debugPrint('RefreshIndicator');
-      //       return Future<void>.delayed(const Duration(seconds: 3));
-      //     },
-      //     notificationPredicate: (ScrollNotification notification) {
-      //       return notification.depth == 1;
-      //     },
-      //     child: const Text('RefreshIndicator'),
-      //   ),
-      // ),
+      // const InspectProcess(),
+      // const InspectRoute(),
 
-      // ViewBlockCard(
-      //   child: ListVi,
-      // ),
-
-      // featureWidget(),
-      // SliverToBoxAdapter(
-      //   child: Container(
-      //     height: 100.0,
-      //     child: ListView.builder(
-      //       scrollDirection: Axis.horizontal,
-      //       itemCount: 10,
-      //       itemBuilder: (context, index) {
-      //         return Container(
-      //           width: 100.0,
-      //           child: const Card(
-      //             child: Text('data'),
-      //           ),
-      //         );
-      //       },
-      //     ),
-      //   ),
-      // ),
-      // testWidget(),
-      ViewFlats(
-        child: SizedBox(
-          height: 130.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              ViewCards(
-                margin: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 250,
-                  // child: Text('abc...'),
-                  child: ListTile(
-                    title: const Text('File (test)'),
-                    // subtitle: const Text('...'),
-                    onTap: () async {
-                      //  App.core.u
-                      // final docs = Docs.user;
-                      // docs.dir.then((e) {
-                      //   final test = e != null;
-                      //   debugPrint('file test: $test');
-                      //   if (test) {
-                      //     debugPrint('file test: ${e.path}/test.txt');
-                      //     // docs.writeAsJSON('test.json', {"done": true});
-                      //     docs.writeAsString('test.txt', 'Ok');
-                      //   }
-                      // });
-
-                      core.scripturePrimary.marks.backup();
-                      // if (docs != null) {
-                      //   final dir = docs.path;
-                      //   // join(await directory.then((e) => e.path), name);
-                      //   debugPrint('file: $dir');
-                      //   debugPrint('file: ${docs.absolute.uri}');
-                      //   // join(await directory.then((e) => e.path), name);
-                      // }
-                    },
-                  ),
-                ),
-              ),
-              ViewCards(
-                margin: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 250,
-                  // child: Text('abc...'),
-                  child: ListTile(
-                    title: const Text('Card (test)'),
-                    // subtitle: const Text('...'),
-                    onTap: () {
-                      App.route.pushNamed('home/test-card');
-                    },
-                  ),
-                ),
-              ),
-              ViewCards(
-                elevation: 0,
-                margin: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 250,
-                  // child: Text('abc...'),
-                  child: ListTile(
-                    title: const Text('OfBook (test)'),
-                    // subtitle: const Text('...'),
-                    onTap: () {
-                      App.core.scripturePrimary.init().then((e) {
-                        // final src = e.book;
-
-                        // src.first.chapterCount;
-
-                        // debugPrint('bookTesting ${src.length}');
-                        // debugPrint('bookTesting name:${src.first.info.name}');
-                        // debugPrint('bookTesting chapterCount:${src.first.chapterCount}');
-                        // final res = src.where((b) {
-                        //   return b.chapter.where((c) {
-                        //     return c.verse.where((v) {
-                        //       return v.contains('ki');
-                        //     }).isNotEmpty;
-                        //   }).isNotEmpty;
-                        // });
-                        // debugPrint('bookTesting search:${res.length}');
-                        // final cur = src.where((b) {
-                        //   return b.chapter.where((c) {
-                        //     return b.id == 2 && c.id == 4;
-                        //   }).isNotEmpty;
-                        // });
-                        // final cur = src.where((b) {
-                        //   return b.id == 2;
-                        // }).map((b) {
-                        //   return b.chapter.where((c) => c.id == 4);
-                        // });
-                        // var cur = src.where((b) {
-                        //   if (b.id == 2) {
-                        //     return b.chapter.where((c) {
-                        //       return c.id == 4;
-                        //     }).isNotEmpty;
-                        //   }
-                        //   return false;
-                        // });
-
-                        // I need your help of searching this similar data using Dart language.
-                        // [
-                        //   {
-                        //     bookid:1,
-                        //     chapter: [1,2,3],
-                        //   },
-                        //   {
-                        //     bookid:3,
-                        //     chapter: [3,4,6],
-                        //   },
-                        //   {
-                        //     bookid:6,
-                        //     chapter: [5,6,7],
-                        //   }
-                        // ]
-
-                        // Let say I am searching for bookid:3 then look for chapter:6, and
-                        // want the result in the same format
-                        // eg. result
-                        // [
-                        //   {
-                        //     bookid:3,
-                        //     chapter: [6],
-                        //   },
-                        // ]
-
-                        // final cur = e.book.where((b) => b.info.id == 4).map((e) {
-                        //   return e.getChapter(5);
-                        // });
-
-                        // debugPrint('bookTesting current count:${cur.length}');
-
-                        // for (var b in cur) {
-                        //   debugPrint('bookTesting current book:${b.info.name}');
-                        //   for (var c in b.chapter) {
-                        //     debugPrint('bookTesting current chapter:${c.name}');
-                        //     for (var v in c.verse) {
-                        //       debugPrint('bookTesting current verse:${v.name}');
-                        //     }
-                        //   }
-                        // }
-
-                        final res = e.getChapter(2, 1);
-
-                        debugPrint('test: fold ${res.totalChapter} == 1');
-                        debugPrint('test: fold ${res.totalVerse} == 22');
-                      });
-                    },
-                  ),
-                ),
-              ),
-              ViewCards(
-                margin: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 250,
-                  // child: Text('abc...'),
-                  child: ListTile(
-                    title: const Text('Sliver (test)'),
-                    // subtitle: const Text('...'),
-                    onTap: () {
-                      App.route.pushNamed('home/test-sliver');
-                    },
-                  ),
-                ),
-              ),
-              ViewCards(
-                margin: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 250,
-                  // child: Text('abc...'),
-                  child: ListTile(
-                    title: const Text('Search (test)'),
-                    // subtitle: const Text('...'),
-                    onTap: () {
-                      App.route.pushNamed('home/test-search');
-                    },
-                  ),
-                ),
-              ),
-              ViewCards(
-                margin: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: 250,
-                  // child: Text('abc...'),
-                  child: ListTile(
-                    title: const Text('Section (test)'),
-                    subtitle: const Text('preferred language'),
-                    onTap: () {
-                      App.route.pushNamed('home/leaf-section');
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // ViewFlatBuilder(
-      //   child: featureWidget(),
-      // ),
       // featureWidget(),
 
       /// Favorite book
       ValueListenableBuilder(
-        valueListenable: App.core.data.boxOfBooks.listen(),
+        valueListenable: data.boxOfBooks.listen(),
         builder: bookList,
       ),
 
       /// Recent search
       ValueListenableBuilder(
-        valueListenable: App.core.data.boxOfRecentSearch.listen(),
+        valueListenable: data.boxOfRecentSearch.listen(),
         builder: recentSearch,
       ),
     ];
-  }
-
-  Widget testWidget() {
-    return SliverList.list(
-      children: [
-        ListTile(
-          title: const Text('Test Groups'),
-          onTap: () {
-            App.route.pushNamed('home/test-group');
-            // Navigator.of(context).pushNamed('/test-group');
-            // Navigator.of(context, rootNavigator: true).pushNamed('/test-group');
-          },
-        ),
-        ListTile(
-          title: const Text('Sliver Tools (sticky)'),
-          onTap: () {
-            App.route.pushNamed('home/test-sticky');
-          },
-        ),
-        ListTile(
-          title: const Text('Book (sticky)'),
-          onTap: () {
-            App.route.pushNamed('home/test-book');
-          },
-        ),
-        ListTile(
-          title: const Text('Title (sticky, browse)'),
-          onTap: () {
-            App.route.pushNamed('home/test-title');
-          },
-        ),
-        ListTile(
-          title: const Text('Section (sticky, browse)'),
-          onTap: () {
-            App.route.pushNamed('home/test-section');
-          },
-        ),
-      ],
-    );
   }
 
   Widget featureWidget() {
@@ -385,15 +109,15 @@ class _View extends _State with _Header {
       sliver: true,
       // headerLeading: const Icon(Icons.ac_unit),
       headerTitle: Text(
-        App.preference.text.favorite('true'),
+        preference.text.favorite('true'),
         style: state.textTheme.titleSmall,
       ),
 
       headerTrailing: ViewButton(
         show: items.isNotEmpty,
-        message: App.preference.text.addTo(App.preference.text.favorite('true').toLowerCase()),
+        message: preference.text.addTo(preference.text.favorite('true').toLowerCase()),
         onPressed: () {
-          App.route.pushNamed('home/bible');
+          route.pushNamed('home/bible');
         },
         child: ViewMark(
           icon: LideaIcon.dotHoriz,
@@ -410,22 +134,22 @@ class _View extends _State with _Header {
         // ),
         // color: Colors.red,
         onPressed: () {
-          App.route.pushNamed('home/bible');
+          route.pushNamed('home/bible');
         },
         // child: ViewMark(
-        //   label: App.preference.text.addMore(App.preference.text.favorite(true)),
+        //   label: preference.text.addMore(preference.text.favorite(true)),
         // ),
         child: Text(
-          App.preference.text.addMore(App.preference.text.favorite('true').toLowerCase()),
+          preference.text.addMore(preference.text.favorite('true').toLowerCase()),
           textAlign: TextAlign.center,
         ),
       ),
       // footerTitle: Text(
-      //   App.preference.text.addMore(App.preference.text.favorite(true)),
+      //   preference.text.addMore(preference.text.favorite(true)),
       //   textAlign: TextAlign.center,
       // ),
       // footerOnPressed: () {
-      //   App.route.pushNamed('home/bible');
+      //   route.pushNamed('home/bible');
       // },
 
       child: ViewCards(
@@ -443,14 +167,14 @@ class _View extends _State with _Header {
           onEmpty: ViewButton(
             padding: const EdgeInsets.symmetric(vertical: 30),
             // child: ViewMark(
-            //   label: App.preference.text.addTo(App.preference.text.favorite(true)),
+            //   label: preference.text.addTo(preference.text.favorite(true)),
             // ),
             child: Text(
-              App.preference.text.addTo(App.preference.text.favorite('true')),
+              preference.text.addTo(preference.text.favorite('true')),
               textAlign: TextAlign.center,
             ),
             onPressed: () {
-              App.route.pushNamed('home/bible');
+              route.pushNamed('home/bible');
             },
           ),
           itemCount: items.length,
@@ -462,7 +186,7 @@ class _View extends _State with _Header {
   Widget bookItem(int index, MapEntry<dynamic, BooksType> item) {
     final book = item.value;
     bool isAvailable = book.available > 0;
-    bool isPrimary = book.identify == App.core.data.primaryId;
+    bool isPrimary = book.identify == data.primaryId;
     return ListTile(
       minVerticalPadding: 10,
       title: Padding(
@@ -558,13 +282,13 @@ class _View extends _State with _Header {
       show: items.isNotEmpty,
       sliver: true,
       headerTitle: Text(
-        App.preference.text.recentSearch('true'),
+        preference.text.recentSearch('true'),
         style: state.textTheme.titleSmall,
       ),
       headerTrailing: ViewButton(
-        message: App.preference.text.addTo(App.preference.text.recentSearch('true')),
+        message: preference.text.addTo(preference.text.recentSearch('true')),
         onPressed: () {
-          App.route.pushNamed('home/recent-search');
+          route.pushNamed('home/recent-search');
         },
         child: ViewMark(
           icon: LideaIcon.dotHoriz,
@@ -589,7 +313,7 @@ class _View extends _State with _Header {
                   ),
                   // onPressed: () => onSearch(e.value.word),
                   onPressed: () {
-                    App.route.pushNamed(
+                    route.pushNamed(
                       'home/search',
                       arguments: {'keyword': e.word},
                     );
@@ -619,7 +343,7 @@ class _PullToRefreshState extends PullOfState {
     await App.core.updateBookMeta();
     // await Future.delayed(const Duration(milliseconds: 100));
     // debugPrint('refreshUpdate');
-    await App.core.data.updateToken();
+    await App.data.updateToken();
     await Future.delayed(const Duration(milliseconds: 700));
   }
 }

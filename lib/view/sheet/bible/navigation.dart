@@ -14,7 +14,7 @@ class Main extends SheetsDraggable {
   const Main({super.key});
 
   static String route = 'sheet-bible-navigation';
-  static String label = 'Section';
+  static String label = 'Navigation';
   static IconData icon = Icons.ac_unit;
 
   @override
@@ -33,7 +33,7 @@ class _State extends SheetsDraggableState<Main> {
   late final RouteChangeNotifier notifier = RouteChangeNotifier();
 
   @override
-  Widget draggableBody(BuildContext context, ScrollController controller) {
+  Widget draggableBody(ScrollController controller) {
     // return Scrollable(
     //   controller: controller,
     //   viewportBuilder: (_, __) {
@@ -47,29 +47,11 @@ class _State extends SheetsDraggableState<Main> {
     return NestedView(
       delegate: ReadNestDelegate(
         notifier: notifier,
-        name: rootPath,
+        name: rootPath(Main.route),
         arguments: state.arguments,
         // root: state.name ?? TmpSheetHome.route,
         // route: routes,
       ),
     );
-  }
-
-  /// remove parent root path
-  /// state.arguments.toString(),
-  String get rootPath {
-    // debugPrint('state.arguments: ${state.arguments}');
-    if (state.name != null) {
-      var name = state.name?.split('/');
-
-      int index = name!.indexOf(Main.route);
-      name.removeRange(0, index + 1);
-
-      // numbers.removeWhere((item) => item.length == 3);
-      // name.removeWhere((item) => item.length == index);
-      return name.join('/?');
-    }
-
-    return "";
   }
 }

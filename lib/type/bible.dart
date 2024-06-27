@@ -110,6 +110,18 @@ class OfBible {
     return prototype(listOfBook: res);
   }
 
+  /// get all Titles, see [OfVerse.hasMerge]
+  OfBible getMerge() {
+    final List<OfBook> res = [];
+    for (final e in book) {
+      final o = e.getMerge();
+      if (o.chapter.isNotEmpty) {
+        res.add(o);
+      }
+    }
+    return prototype(listOfBook: res);
+  }
+
   /// Search the [keyword] that contianing in the verses
   /// See [OfVerse.wordContains]
   OfBible wordContains(String keyword) {
@@ -247,6 +259,19 @@ class OfBook {
     return _selection(res);
   }
 
+  /// get Title from Chapters and verses
+  /// See [OfVerse.hasMerge]. hasMerge
+  OfBook getMerge() {
+    final List<OfChapter> res = [];
+    for (var o in chapter) {
+      final e = o.getMerge();
+      if (e.verse.isNotEmpty) {
+        res.add(e);
+      }
+    }
+    return _selection(res);
+  }
+
   /// See [OfVerse.wordContains].
   OfBook wordContains(String keyword) {
     final List<OfChapter> res = [];
@@ -341,6 +366,18 @@ class OfChapter {
     return _selection(res);
   }
 
+  /// get Merge from Verses
+  /// See [OfVerse.hasMerge].
+  OfChapter getMerge() {
+    final List<OfVerse> res = [];
+    for (var e in verse) {
+      if (e.hasMerge) {
+        res.add(e);
+      }
+    }
+    return _selection(res);
+  }
+
   /// search Verses if containing the [keyword]
   /// See [OfVerse.wordContains].
   OfChapter wordContains(String keyword) {
@@ -414,8 +451,9 @@ class OfVerse {
       key: GlobalKey(),
       id: int.parse(o.key),
       name: o.key,
-      text: o.value['text'],
-      title: (o.value['title'] ?? '').trim(),
+      // text: o.value['text'],
+      text: (o.value['text'] ?? '').toString(),
+      title: (o.value['title'] ?? '').toString().trim(),
       reference: o.value['reference'] ?? '',
       merge: o.value['merge'] ?? '',
     );
@@ -427,6 +465,13 @@ class OfVerse {
       name = e;
     }
     return this;
+  }
+
+  /// ```dart
+  /// verse['merge'] != ""
+  /// ```
+  bool get hasMerge {
+    return merge != "";
   }
 
   /// ```dart
@@ -566,34 +611,36 @@ class CacheBible {
   }
 }
 
-class CacheTitle {
+class CacheSnap {
   final OfBible result;
   final bool ready;
 
-  CacheTitle({
+  CacheSnap({
     required this.result,
     this.ready = false,
   });
 
-  CacheTitle update({OfBible? result, bool? ready}) {
-    return CacheTitle(
+  CacheSnap update({OfBible? result, bool? ready}) {
+    return CacheSnap(
       result: result ?? this.result,
       ready: ready ?? this.ready,
     );
   }
 }
 
-class TitleReadOnly {
+// CacheSnap CacheOther CacheResult ResultReadOnly CacheSnap SnapOut
+
+class SnapOut {
   final int bookId;
   final int chapterId;
-  final int verseId;
-  final String title;
+  // final int verseId;
+  // final String title;
+  final OfVerse verse;
 
-  TitleReadOnly({
+  SnapOut({
     required this.bookId,
     required this.chapterId,
-    required this.verseId,
-    required this.title,
+    required this.verse,
   });
 }
 
@@ -605,7 +652,7 @@ class CategoryBible {
   CategoryBible({
     // required this.testament,
     // required this.section,
-    required this.book,
+    this.book = const [],
   });
 
   factory CategoryBible.fromJSON(Map<String, dynamic> o) {

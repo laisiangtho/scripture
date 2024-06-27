@@ -186,26 +186,17 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 }
 
 mixin _Header on _State {
-  Widget backOrHome() {
-    final parent = Navigator.of(context, rootNavigator: true);
+  Widget get backOrHome {
     final self = Navigator.of(context);
 
-    final selfCanPop = self.canPop();
-
-    // return OptionButtons(
-    //   navigator: selfCanPop ? self : parent,
-    //   type: selfCanPop ? 'back' : 'cancel',
-    //   opacity: selfCanPop ? 1.0 : 0.6,
-    //   label: selfCanPop ? App.preference.text.back : App.preference.text.cancel,
-    // );
-    if (selfCanPop) {
+    if (self.canPop()) {
       return OptionButtons.back(
         navigator: self,
         label: App.preference.text.back,
       );
     }
     return OptionButtons.cancel(
-      navigator: parent,
+      navigator: Navigator.of(context, rootNavigator: true),
       label: App.preference.text.cancel,
     );
   }
@@ -214,7 +205,7 @@ mixin _Header on _State {
     return ViewHeaderLayouts.fixed(
       height: kTextTabBarHeight,
       left: [
-        backOrHome(),
+        backOrHome,
       ],
       primary: ViewHeaderTitle.fixed(
         // alignment: Alignment.lerp(
@@ -392,7 +383,8 @@ class _MainState extends _State with _Header {
   }
 
   Widget chapterList(OfBook book) {
-    final itemCount = book.totalChapter + 1;
+    // final itemCount = book.totalChapter + 1;
+    final itemCount = book.totalChapter + 2;
     // const itemMin = 5;
     // final itemLimit = itemCount > itemMin;
     // final perItem = itemLimit ? itemMin : itemCount;
@@ -407,14 +399,11 @@ class _MainState extends _State with _Header {
         childAspectRatio: 1.36,
       ),
 
-      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //   crossAxisCount: perItem,
-      //   childAspectRatio: 1.36,
-      // ),
       // duration: const Duration(milliseconds: 300),
       // itemSnap: const ChapterNameItem.snap(),
       itemBuilder: (BuildContext ctx, index) {
-        return ChapterNameItem(bookId: book.info.id, chapterId: index);
+        // return ChapterNameItem(bookId: book.info.id, chapterId: index);
+        return ChapterNameItem(book: book, index: index);
       },
       itemCount: itemCount,
     );
@@ -489,35 +478,37 @@ class BookNameItem extends StatelessWidget {
 }
 
 class ChapterNameItem extends StatelessWidget {
-  final int? bookId;
-  final int? chapterId;
+  final OfBook? book;
+  final int? index;
   const ChapterNameItem({
     super.key,
-    required this.bookId,
-    required this.chapterId,
+    required this.book,
+    required this.index,
   });
 
   const ChapterNameItem.snap({super.key})
-      : bookId = null,
-        chapterId = null;
+      : book = null,
+        index = null;
 
-  bool get isCurrentChapter =>
-      App.core.data.bookId == bookId && App.core.data.chapterId == chapterId;
-  bool get isChapter => chapterId != null && chapterId! > 0;
+  Core get core => App.core;
+  Data get data => core.data;
+  Preference get preference => core.preference;
 
-  Scripture get scripture => App.core.scripturePrimary;
+  bool get isCurrentChapter => data.bookId == book?.info.id && data.chapterId == index;
+  // bool get isChapter => chapterId != null && chapterId! > 0;
+  bool get isChapter => index != null && index! > 0 && index! <= book!.totalChapter;
+
+  Scripture get scripture => core.scripturePrimary;
 
   @override
   Widget build(BuildContext context) {
-    // return const Placeholder();
     final theme = Theme.of(context);
     const margin = EdgeInsets.symmetric(vertical: 4, horizontal: 4);
+    // book?.totalChapter
 
-    if (bookId == null) {
+    if (book == null) {
       return ViewButton.filled(
         margin: margin,
-        // color: theme.indicatorColor,
-        // showShadow: true,
         enable: false,
         child: ViewMark(
           icon: Icons.signpost_rounded,
@@ -532,15 +523,32 @@ class ChapterNameItem extends StatelessWidget {
         margin: margin,
         color: theme.primaryColor.withOpacity(isCurrentChapter ? 0.4 : 1),
         showShadow: isCurrentChapter,
+        message: preference.text.chapter(''),
         child: ViewMark(
-          label: scripture.digit(chapterId),
+          label: scripture.digit(index),
           labelStyle: theme.textTheme.labelLarge?.copyWith(
-            color: isCurrentChapter ? theme.cardColor : null,
+            color: isCurrentChapter ? theme.hintColor.withOpacity(0.3) : null,
           ),
         ),
         onPressed: () {
-          Navigator.of(context, rootNavigator: true)
-              .maybePop({'book': bookId, 'chapter': chapterId});
+          Navigator.of(context, rootNavigator: true).maybePop(
+            {'book': book?.info.id, 'chapter': index},
+          );
+        },
+      );
+    }
+
+    if (index == book!.totalChapter + 1) {
+      /// NOTE: verse merge
+      return ViewButton.filled(
+        margin: margin,
+        message: preference.language('verse-merged'),
+        child: ViewMark(
+          icon: Icons.merge,
+          iconColor: theme.primaryColorDark.withOpacity(0.3),
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed('leaf-merge', arguments: {'book': book?.info.id});
         },
       );
     }
@@ -555,7 +563,7 @@ class ChapterNameItem extends StatelessWidget {
         iconColor: theme.primaryColorDark.withOpacity(0.3),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed('leaf-title', arguments: {'book': bookId});
+        Navigator.of(context).pushNamed('leaf-title', arguments: {'book': book?.info.id});
       },
     );
   }

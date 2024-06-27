@@ -3,6 +3,8 @@ import 'package:lidea/view/keep_alive.dart';
 
 import '/core/main.dart';
 export '/core/main.dart';
+import '/view/routes.dart';
+export '/view/routes.dart';
 
 class App {
   // static ScrollNotifier notifier = ScrollNotifier();
@@ -15,7 +17,8 @@ class App {
   static final ViewData viewData = core.viewData;
 
   /// Route core delegate (routeDelegate)
-  static final RouteDelegate routeDelegate = core.routeDelegate;
+  // static final RouteDelegate routeDelegate = core.routeDelegateTmp;
+  static final RouteDelegate routeDelegate = RouteDelegate();
 
   /// Route delegate notifier
   static final RouteNotifier route = routeDelegate.notifier;
@@ -33,14 +36,14 @@ class App {
 abstract class StateAbstract<T extends StatefulWidget> extends ViewStateWidget<T> {
   late final Map<String, dynamic> args = state.asMap;
 
-  final ViewData viewData = App.viewData;
-  final RouteDelegate routeDelegate = App.routeDelegate;
-  final RouteNotifier route = App.route;
+  late final ViewData viewData = App.viewData;
+  late final RouteDelegate routeDelegate = App.routeDelegate;
+  late final RouteNotifier route = App.route;
 
-  final Core core = App.core;
-  final Data data = App.data;
-  final Preference preference = App.preference;
-  final Authenticate authenticate = App.authenticate;
+  late final Core core = App.core;
+  late final Data data = App.data;
+  late final Preference preference = App.preference;
+  late final Authenticate authenticate = App.authenticate;
 }
 
 class StateAlive extends ViewKeepAlive {

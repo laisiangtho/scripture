@@ -25,7 +25,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   // List<OfBook> get books => scripture.bookList;
   List<OfTestament> get testaments => scripture.testamentList;
 
-  CategoryBible get category => App.core.category;
+  CategoryBible get category => scripture.refs.category;
 
   // @override
   // void initState() {

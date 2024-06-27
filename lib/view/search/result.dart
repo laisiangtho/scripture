@@ -128,7 +128,6 @@ class _ResultView extends StateAbstract<_Result> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(preference.text.aWordOrTwo),
-              const ViewDividers(),
               Text(
                 primaryScripture.info.name,
                 style: state.textTheme.bodySmall,
@@ -189,9 +188,10 @@ class _ResultView extends StateAbstract<_Result> {
         SliverAppBar(
           pinned: true,
           primary: false,
-          elevation: 19,
+          elevation: 0,
           shadowColor: state.theme.dividerColor,
           automaticallyImplyLeading: false,
+          toolbarHeight: 35,
           // leading: Center(
           //   child: Text(
           //     // primaryScripture.digit(iB + 1),
@@ -223,6 +223,8 @@ class _ResultView extends StateAbstract<_Result> {
 
     return ViewLists(
       // key: UniqueKey(),
+      // padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       itemBuilder: (context, index) {
         final OfChapter chapter = chapters.elementAt(index);
         return Column(
@@ -349,7 +351,8 @@ class _ResultView extends StateAbstract<_Result> {
         return VerseWidgetInherited(
           // key: verse.key,
           size: data.boxOfSettings.fontSize().asDouble,
-          lang: primaryScripture.info.langCode,
+          // lang: primaryScripture.info.langCode,
+          scripture: primaryScripture,
           verseId: verse.id,
           child: VerseItemWidget(
             verse: verse,

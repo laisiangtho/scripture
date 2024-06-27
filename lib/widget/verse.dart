@@ -4,11 +4,12 @@ import '../app.dart';
 
 class VerseWidgetInherited extends InheritedWidget {
   final int verseId;
-  // final Color? color;
+
   final double? size;
-  final String? lang;
-  // final bool selected;
-  final Marks? marks;
+
+  final Scripture scripture;
+
+  final bool marks;
   // final bool note;
 
   // bool get isUTF8 => lang == 'mya';
@@ -19,10 +20,14 @@ class VerseWidgetInherited extends InheritedWidget {
   double? get titleSize => (fontSize! - 5).toDouble();
 
   bool get selected {
-    if (marks != null) {
-      return marks!.hasSelected(verseId);
+    if (marks) {
+      return scripture.marks.hasSelected(verseId);
     }
     return false;
+  }
+
+  String get lang {
+    return scripture.info.langCode;
   }
 
   // List<Color> get colorList => const [Colors.red, Colors.blue, Colors.green, Colors.orange];
@@ -39,10 +44,8 @@ class VerseWidgetInherited extends InheritedWidget {
   const VerseWidgetInherited({
     super.key,
     this.size,
-    this.lang,
-    this.marks,
-    // this.selected = false,
-    // this.note = false,
+    required this.scripture,
+    this.marks = false,
     required this.verseId,
     required super.child,
   });
@@ -79,13 +82,20 @@ class VerseItemWidget extends StatelessWidget {
   Scripture get primaryScripture => App.core.scripturePrimary;
   Preference get preference => App.preference;
 
-  String get bookName => primaryScripture.bookName;
-  String get chapterName => primaryScripture.chapterName;
+  // String get bookName => primaryScripture.bookName;
+  // String get chapterName => primaryScripture.chapterName;
 
   @override
   Widget build(BuildContext context) {
     final userVerse = VerseWidgetInherited.of(context)!;
-    final verseNote = userVerse.marks?.verseNote(verse.id);
+    final hasMarks = userVerse.marks;
+    final scripture = userVerse.scripture;
+    final marks = scripture.marks;
+
+    // userVerse.scripture.marks.verseBackground(verse.id);
+    // final verseNote = userVerse.marks?.verseNote(verse.id);
+    final verseNote = hasMarks ? marks.verseNote(verse.id) : null;
+    final verseBackground = hasMarks ? marks.verseBackground(verse.id) : null;
 
     return ListBody(
       key: key,
@@ -114,7 +124,8 @@ class VerseItemWidget extends StatelessWidget {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: verse.name,
+                        // text: verse.name,
+                        text: scripture.digit(verse.id),
                         semanticsLabel: 'verse: ${verse.name}',
                       ),
                       if (verse.merge.isNotEmpty)
@@ -122,28 +133,29 @@ class VerseItemWidget extends StatelessWidget {
                           text: '-',
                           children: [
                             TextSpan(
-                              text: primaryScripture.digit(verse.merge),
+                              text: scripture.digit(verse.merge),
                             ),
                           ],
                         ),
                     ],
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: Theme.of(context).hintColor,
-                          fontSize: userVerse.titleSize,
-                          fontWeight: FontWeight.w300,
-                        ),
+                    // style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    //       color: Theme.of(context).hintColor,
+                    //       fontSize: userVerse.titleSize,
+                    //       fontWeight: FontWeight.w300,
+                    //     ),
+                    style: TextStyle(
+                      color: Theme.of(context).hintColor,
+                      fontSize: userVerse.titleSize,
+                      fontWeight: FontWeight.w300,
+                    ),
                   ),
+
                   TextSpan(
                     text: ' ',
                     children: hightLight(
-                      verse.text,
-                      keyword,
-                      TextStyle(
-                        color: Theme.of(context).highlightColor,
-                      ),
-                      // const TextStyle(
-                      //   color: Colors.red,
-                      // ),
+                      context: context,
+                      text: verse.text,
+                      word: keyword,
                     ),
                     semanticsLabel: verse.text,
                     style: TextStyle(
@@ -151,7 +163,8 @@ class VerseItemWidget extends StatelessWidget {
                           ? Theme.of(context).primaryColorDark.withOpacity(0.6)
                           : null,
                       decoration: userVerse.selected ? TextDecoration.underline : null,
-                      background: userVerse.marks?.verseBackground(verse.id),
+
+                      background: verseBackground,
 
                       decorationStyle: TextDecorationStyle.wavy,
                       // decorationThickness: 2,
@@ -184,15 +197,21 @@ class VerseItemWidget extends StatelessWidget {
                             arguments: {
                               'text': verseNote,
                               // 'focus': true,
-                              'pageLabel':
-                                  preference.text.addTo(preference.text.note('').toLowerCase()),
+                              'pageLabel': preference.text.addTo(
+                                preference.text.note('').toLowerCase(),
+                              ),
 
-                              'pageTitle': '$bookName $chapterName:${verse.id}',
+                              // 'pageTitle': '$bookName $chapterName:${verse.id}',
+                              'pageTitle':
+                                  '${scripture.bookName} ${scripture.chapterName}:${verse.id}',
                             },
                           ).then((e) {
                             debugPrint('marks: note $e');
                             if (e != null) {
-                              userVerse.marks?.selectionApply(note: e['text'], verses: [verse.id]);
+                              // userVerse.marks?.selectionApply(note: e['text'], verses: [verse.id]);
+                              if (hasMarks) {
+                                marks.selectionApply(note: e['text'], verses: [verse.id]);
+                              }
                             }
                           });
                         },
@@ -237,35 +256,136 @@ class VerseItemWidget extends StatelessWidget {
     );
   }
 
-  List<TextSpan> hightLight(String text, String? matchWord, TextStyle style) {
+  List<TextSpan> hightLight({required BuildContext context, required String text, String? word}) {
     // final style = TextStyle(color: Colors.red, fontSize: 22);
     // children: hightLight(verse['text'], store.searchQuery, style),
+    ThemeData theme = Theme.of(context);
+    // Color quoteTextColor = theme.colorScheme.error;
+    Color quoteTextColor = theme.indicatorColor;
     List<TextSpan> spans = [];
-    if (matchWord == null || matchWord.length < 2) {
-      spans.add(TextSpan(text: text, semanticsLabel: text));
+    int start = 0;
+    if (word == null || word.length < 2) {
+      // spans.add(TextSpan(text: text, semanticsLabel: text));
+
+      // RegExp regExp = RegExp(r'(["\']\)(.*?)([/"\'])');
+      // RegExp regExp = RegExp('(["\'])(.*?)(\\1)');
+      // RegExp regExp = RegExp('(["\'])(.*?)(["\'])');
+      // RegExp regExp = RegExp('["\'“‘](.*?)["\'”’]');
+      // RegExp regExp = RegExp('[“‘"\'](.*?)[”’"\']');
+      // RegExp regExp = RegExp('["“](.*?)["”]');
+
+      // /// NOTE: check if contains both opening and closing quotes
+      // for (RegExpMatch match in regExp.allMatches(text)) {
+      //   if (match.start > start) {
+      //     spans.add(TextSpan(
+      //       text: text.substring(start, match.start),
+      //     ));
+      //   }
+      //   spans.add(TextSpan(
+      //     text: match.group(0),
+      //     style: quoteStyle,
+      //   ));
+      //   start = match.end;
+      // }
+
+      // if (start < text.length) {
+      //   spans.add(TextSpan(
+      //     text: text.substring(start),
+      //   ));
+      // }
+
+      // RegExp regExp = RegExp('(["\'“‘]?)([^“”‘’"\']*)(["\'”’]?)');
+      // RegExp regExp = RegExp('(["“‘]?)([^“”‘’"]*)(["”’]?)');
+      RegExp regExp = RegExp('(["“]?)([^“”"]*)(["”]?)');
+      // RegExp regExp = RegExp('(["“]?)([^“”‘’"]*?)(["”]?)');
+
+      for (RegExpMatch match in regExp.allMatches(text)) {
+        if (match.start > start) {
+          spans.add(TextSpan(
+            text: text.substring(start, match.start),
+          ));
+        }
+
+        String openingQuote = match.group(1) ?? '';
+        String content = match.group(2) ?? '';
+        String closingQuote = match.group(3) ?? '';
+
+        if (openingQuote.isNotEmpty) {
+          spans.add(TextSpan(
+            text: openingQuote,
+            style: TextStyle(color: theme.dividerColor),
+          ));
+        }
+
+        if (openingQuote.isNotEmpty && closingQuote.isEmpty) {
+          // Unmatched opening quote
+          spans.add(TextSpan(
+            text: content.trim(),
+            style: TextStyle(color: quoteTextColor),
+          ));
+        } else if (openingQuote.isEmpty && closingQuote.isNotEmpty) {
+          // Unmatched closing quote
+          spans.add(TextSpan(
+            text: content.trim(),
+            style: TextStyle(color: quoteTextColor),
+          ));
+        } else if (openingQuote.isNotEmpty && closingQuote.isNotEmpty) {
+          // Properly matched quotes
+          // Matched both opening and closing quote
+          spans.add(TextSpan(
+            text: content.trim(),
+            // text: openingQuote + content + closingQuote,
+            style: TextStyle(color: quoteTextColor),
+          ));
+        } else {
+          // Regular text
+          spans.add(TextSpan(
+            text: match.group(0),
+          ));
+        }
+
+        if (closingQuote.isNotEmpty) {
+          spans.add(TextSpan(
+            text: closingQuote,
+            style: TextStyle(color: theme.dividerColor),
+          ));
+        }
+
+        start = match.end;
+      }
+
+      if (start < text.length) {
+        spans.add(TextSpan(
+          text: text.substring(start),
+        ));
+      }
     } else {
-      int spanBoundary = 0;
       do {
         // look for the next match
-        final startIndex = text.toLowerCase().indexOf(matchWord.toLowerCase(), spanBoundary);
-        // final startIndex = text.toLowerCase().indexOf(matchWord, spanBoundary);
+        final startIndex = text.toLowerCase().indexOf(word.toLowerCase(), start);
+        // final startIndex = text.toLowerCase().indexOf(matchWord, start);
         // if no more matches then add the rest of the string without style
         if (startIndex == -1) {
-          spans.add(TextSpan(text: text.substring(spanBoundary)));
+          spans.add(TextSpan(text: text.substring(start)));
           return spans;
         }
         // add any unstyled text before the next match
-        if (startIndex > spanBoundary) {
-          spans.add(TextSpan(text: text.substring(spanBoundary, startIndex)));
+        if (startIndex > start) {
+          spans.add(TextSpan(text: text.substring(start, startIndex)));
         }
         // style the matched text
-        final endIndex = startIndex + matchWord.length;
+        final endIndex = startIndex + word.length;
         final spanText = text.substring(startIndex, endIndex);
-        spans.add(TextSpan(text: spanText, style: style));
+        spans.add(TextSpan(
+          text: spanText,
+          style: TextStyle(
+            color: theme.highlightColor,
+          ),
+        ));
         // mark the boundary to start the next search from
-        spanBoundary = endIndex;
+        start = endIndex;
         // continue until there are no more matches
-      } while (spanBoundary < text.length);
+      } while (start < text.length);
     }
     return spans;
   }

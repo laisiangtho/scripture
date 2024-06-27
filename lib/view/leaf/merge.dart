@@ -6,9 +6,9 @@ import '../../app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'leaf-title';
-  static String label = 'Title';
-  static IconData icon = Icons.signpost_rounded;
+  static String route = 'leaf-merge';
+  static String label = 'Merge';
+  static IconData icon = Icons.merge;
 
   @override
   State<Main> createState() => _MainState();
@@ -31,39 +31,45 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     _mediaData();
   }
 
-  /// TODO: might not needed
+  // Todo: might not needed
   void _mediaData() {
-    // viewData.fromContext = MediaQuery.of(context);
     bookId = scripture.bookCurrent.info.id;
     if (state.hasArguments) {
-      // bookId = state.asMap['book'] as int;
       final ob = state.asMap['book'];
       if (ob != null) {
         bookId = ob as int;
       }
     }
 
-    Iterable<OfBook> books = scripture.title.result.book.where((e) => e.info.id == bookId);
+    // Iterable<OfBook> books = scripture.title.result.book.where((e) => e.info.id == bookId);
+    // Iterable<OfBook> books = scripture.merge.result.book.where((e) => e.info.id == bookId);
+    Iterable<OfBook> books = scripture.merge.result.book;
 
-    // if (books.isNotEmpty) {
-    //   for (var chapter in books.map((e) => e.chapter).first) {
-    //     itemChapters.add(chapter);
-    //   }
-    // }
     if (books.isNotEmpty) {
-      for (var chapter in books.map((e) => e.chapter).first) {
-        for (var item in chapter.verse) {
-          snap.add(
-            SnapOut(
-              bookId: bookId,
-              chapterId: chapter.id,
-              verse: item,
-              // verseId: item.id,
-              // title: item.title,
-            ),
-          );
+      for (var b in books) {
+        for (var c in b.chapter) {
+          for (var item in c.verse) {
+            snap.add(
+              SnapOut(
+                bookId: b.info.id,
+                chapterId: c.id,
+                verse: item,
+              ),
+            );
+          }
         }
       }
+      // for (var chapter in books.map((e) => e.chapter).first) {
+      //   for (var item in chapter.verse) {
+      //     snap.add(
+      //       SnapOut(
+      //         bookId: bookId,
+      //         chapterId: chapter.id,
+      //         verse: item,
+      //       ),
+      //     );
+      //   }
+      // }
     }
     if (books.isNotEmpty) {
       bookName = books.first.info.name;
@@ -101,10 +107,8 @@ mixin _Header on _State {
       left: [
         backOrHome(),
       ],
-      primary: ViewHeaderTitle.dual(
-        label: preference.text.title('true'),
-        header: bookName,
-        shrinkMax: 16,
+      primary: const ViewHeaderTitle.custom(
+        child: Icon(Icons.merge),
       ),
     );
   }
@@ -169,8 +173,7 @@ class _MainState extends _State with _Header {
             leading: SizedBox(
               width: 45,
               child: Text(
-                // '${verse.chapterId}:${verse.verseId}',
-                scripture.digit('${obj.chapterId}:${verse.id}'),
+                scripture.digit('${verse.id}-${verse.merge}'),
                 textAlign: TextAlign.center,
                 style: state.textTheme.labelSmall?.copyWith(
                   color: state.theme.hintColor,
@@ -178,8 +181,16 @@ class _MainState extends _State with _Header {
               ),
             ),
             title: Text(
-              verse.title,
+              // 'verse.title',
+              scripture.bookById(obj.bookId).info.name,
               style: state.textTheme.titleMedium,
+            ),
+            trailing: Text(
+              scripture.digit(obj.chapterId),
+              textAlign: TextAlign.center,
+              style: state.textTheme.labelSmall?.copyWith(
+                color: state.theme.hintColor,
+              ),
             ),
             onTap: () {
               Navigator.of(
@@ -193,15 +204,7 @@ class _MainState extends _State with _Header {
           );
         },
         itemCount: snap.length,
-
-        // onEmpty: const ViewFeedbacks.empty(),
-        onEmpty: ViewFeedbacks.message(
-          label:
-              preference.language('noTitleOnBook').replaceFirst('{{book}}', bookName).replaceFirst(
-                    '{{title}}',
-                    preference.text.title(''),
-                  ),
-        ),
+        onEmpty: const ViewFeedbacks.await(),
       )
     ];
   }

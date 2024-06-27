@@ -18,7 +18,6 @@ abstract class _Mock extends _Abstract {
     }
 
     await _initBooks();
-    await _initCategories();
   }
 
   Future<void> _initBooks() async {
@@ -50,41 +49,6 @@ abstract class _Mock extends _Abstract {
       final ob = await Docs.asset.readAsJSON<List<dynamic>>(file);
       await _importBookMeta(ob);
     }
-  }
-
-  Future<void> _initCategories() async {
-    String file = data.env.url('category').local;
-
-    final ob = await Docs.asset.readAsJSON<Map<String, dynamic>>(file);
-    // final ob = Docs.raw.decodeJSON<Map<String, dynamic>>(
-    //   await Docs.asset.readAsString(file),
-    // );
-    // debugPrint('??? ${ob['section']}');
-
-    category = CategoryBible.fromJSON(ob);
-    // debugPrint('??? testament ${org.testament}');
-    // debugPrint('??? section ${org.section}');
-    // final abc = category.book.length;
-    // debugPrint('??? testament:${category.testament.length}');
-    // debugPrint('??? section:${category.section.length}');
-    // debugPrint('??? book:${category.book.length}');
-
-    // for (var element in category.book) {
-    //   // debugPrint('??? bookname: ${element.name}');
-    //   debugPrint('??? bookname: ${element.name} testament: ${element.testament}');
-    // }
-    // for (var element in category.book) {
-    //   // debugPrint('??? bookname: ${element.name}');
-    //   debugPrint('"book-${element.id}": "${element.name}",');
-    // }
-
-    // await Future.delayed(const Duration(milliseconds: 800));
-
-    // final bs = category.book.first;
-    // debugPrint('??? verse: ${bs.name}');
-    // for (var element in org.section) {
-    //   debugPrint('??? ${element.name}');
-    // }
   }
 
   Future<void> updateBookMeta() async {

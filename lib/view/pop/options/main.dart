@@ -316,10 +316,11 @@ class _MainState extends StateAbstract<Main> {
                 //     onPressed: () => marks.selectionApply(color: index),
                 //   ),
                 // );
-                return colorButton(
-                  color: marks.colors.elementAt(index).color,
-                  onPressed: () => marks.selectionApply(color: index),
-                );
+                return colorButton(index: index);
+                // return colorButton(
+                //   color: marks.colors.elementAt(index).color,
+                //   onPressed: () => marks.selectionApply(color: index),
+                // );
               },
               itemCount: marks.colors.length,
             ),
@@ -388,7 +389,9 @@ class _MainState extends StateAbstract<Main> {
     );
   }
 
-  Widget colorButton({required Color color, void Function()? onPressed}) {
+  Widget colorButton({required int index}) {
+    final oj = marks.colors.elementAt(index);
+    final color = oj.color;
     return ListenableBuilder(
       listenable: marks,
       builder: (BuildContext context, Widget? _) {
@@ -397,8 +400,9 @@ class _MainState extends StateAbstract<Main> {
           child: ViewButton.filled(
             padding: EdgeInsets.zero,
             margin: EdgeInsets.zero,
-            onPressed: marks.hasSelection ? onPressed : null,
-            message: preference.text.color(''),
+            onPressed: marks.hasSelection ? () => marks.selectionApply(color: index) : null,
+            // message: preference.text.color(''),
+            message: preference.language('color-${oj.name}'),
             child: ViewMark(
               padding: EdgeInsets.zero,
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),

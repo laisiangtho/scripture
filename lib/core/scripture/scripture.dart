@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of '../main.dart';
 
 class Scripture extends _ScriptureInterface {
   final Data data;
@@ -7,6 +7,7 @@ class Scripture extends _ScriptureInterface {
   final int dataType;
 
   late final Marks marks = Marks(data);
+  late final Refs refs = Refs(data);
 
   late CacheBible cacheRead = CacheBible(
     result: bible.prototype(),
@@ -16,7 +17,10 @@ class Scripture extends _ScriptureInterface {
     result: bible.prototype(),
     suggest: bible.prototype(),
   );
-  late CacheTitle cacheTitle = CacheTitle(
+  late CacheSnap cacheTitle = CacheSnap(
+    result: bible.prototype(),
+  );
+  late CacheSnap cacheMerge = CacheSnap(
     result: bible.prototype(),
   );
 
@@ -70,6 +74,7 @@ class Scripture extends _ScriptureInterface {
     // _identifyIndexPrevious = _identifyIndex;
 
     await marks.init();
+    await refs.init();
 
     if (isReady) {
       if (dataType == 0) {
@@ -85,7 +90,7 @@ class Scripture extends _ScriptureInterface {
       }
       return bible;
     }
-    debugPrint('??? Bible is not loaded');
+
     // throw "Bible is not loaded";
     return Future.error('Bible is not loaded');
   }
@@ -440,7 +445,7 @@ class Scripture extends _ScriptureInterface {
   }
 
   /// Chapter titles
-  CacheTitle get title {
+  CacheSnap get title {
     if (cacheTitleIsEmpty) {
       cacheTitle = cacheTitle.update(
         result: bible.getTitle(),
@@ -449,6 +454,26 @@ class Scripture extends _ScriptureInterface {
     }
 
     return cacheTitle;
+  }
+
+  bool get cacheMergeIsEmpty {
+    final e = cacheMerge.result;
+    if (e.book.isNotEmpty) {
+      return (e.ready == false || e.info.identify != identify);
+    }
+    return true;
+  }
+
+  /// Chapter titles
+  CacheSnap get merge {
+    if (cacheMergeIsEmpty) {
+      cacheMerge = cacheMerge.update(
+        result: bible.getMerge(),
+        ready: true,
+      );
+    }
+
+    return cacheMerge;
   }
 }
 

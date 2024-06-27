@@ -10,7 +10,7 @@ abstract class _Abstract extends UnitCore {
   // late ScrollNotifier scrollNotifier;
 
   /// Route delegate
-  late final RouteDelegate routeDelegate = RouteDelegate();
+  // late final RouteDelegate routeDelegateTmp = RouteDelegate();
 
   /// Theme and locales
   late final Preference preference = Preference(data);
@@ -32,11 +32,6 @@ abstract class _Abstract extends UnitCore {
 
   /// ISO
   late final iso = ISOFilter();
-
-  /// Scripture
-  // late final scripture = Scripture(data);
-
-  late CategoryBible category;
 
   /// ensure and prepare initialization
   Future<void> ensureInitialized() async {

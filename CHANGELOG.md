@@ -2,18 +2,20 @@
 
 ## 1.2.7+86-88
 
+Ready: false
+
 Improve
 
 - texture & context
 - Color & locale
 - Search
-- Book & Chapter navigator
+- Book & Chapter navigation
 
 Add
 
-- Highlight
-- Note
+- Quotes, Highlight and Note to verses
 - Title
+- Verse merge
 
 Update
 

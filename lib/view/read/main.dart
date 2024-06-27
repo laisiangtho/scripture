@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
-// import 'package:lidea/share.dart';
-// import 'package:lidea/view/user/main.dart';
 
 import '../../app.dart';
-// import '/widget/profile_icon.dart';
-// import '/widget/button.dart';
+
 import '/widget/verse.dart';
 
 part 'state.dart';
@@ -46,6 +43,13 @@ class _View extends _State with _Header {
           height: 120,
           pointer: 20,
         ),
+        onNotification: (scrollNotification) {
+          if (scrollNotification is UserScrollNotification) {
+            return true;
+          }
+
+          return false;
+        },
         // scrollBottomNavigation: ScrollBottomNavigation()
         child: Motile(
           child: CustomScrollView(
@@ -62,10 +66,16 @@ class _View extends _State with _Header {
       // extendBody: true,
       // bottomNavigationBar: const SheetStack(),
       // bottomNavigationBar: App.route.show('sheet-parallel').child,
+      // bottomNavigationBar: ViewDelays.milliseconds(
+      //   milliseconds: 1700,
+      //   builder: (_, __) {
+      //     return App.route.show('sheet-parallel').child;
+      //   },
+      // ),
       bottomNavigationBar: ViewDelays.milliseconds(
         milliseconds: 1700,
         builder: (_, __) {
-          return App.route.show('sheet-parallel').child;
+          return App.route.show('sheet-bible-persistent').child;
         },
       ),
       // bottomSheet: App.route.show('sheet-parallel').child,
@@ -230,11 +240,11 @@ class _View extends _State with _Header {
       builder: (BuildContext context, Widget? child) {
         return VerseWidgetInherited(
           size: data.boxOfSettings.fontSize().asDouble,
-          lang: primaryScripture.info.langCode,
+          scripture: primaryScripture,
           verseId: verse.id,
-          marks: primaryScripture.marks,
+          marks: true,
           child: VerseItemWidget(
-            verse: verse.updateName(primaryScripture.digit(verse.id)),
+            verse: verse,
             onPressed: primaryScripture.marks.setSelection,
           ),
         );

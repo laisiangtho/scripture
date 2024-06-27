@@ -121,11 +121,11 @@ mixin _Header on _State {
               color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
               constraints: BoxConstraints(maxWidth: width, minWidth: 48),
               // borderRadius: const BorderRadius.horizontal(left: Radius.elliptical(5, 10)),
-              borderRadius: const BorderRadius.horizontal(left: Radius.elliptical(5, 12)),
+              borderRadius: const BorderRadius.horizontal(left: Radius.elliptical(15, 25)),
               padding: EdgeInsets.fromLTRB(7, 1, vhd.snapShrink * 7, 1),
               // message: preference.text.book('true') +' '+ primaryScripture.bookName,
-              message: 'books, bookName'
-                  .replaceFirst('books', preference.text.book('true'))
+              message: 'books- bookName'
+                  .replaceFirst('books', preference.text.book(''))
                   .replaceFirst('bookName', primaryScripture.bookName),
               onPressed: showBooks,
               child: Selector<Core, String>(
@@ -150,9 +150,9 @@ mixin _Header on _State {
               color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
               constraints: BoxConstraints(maxWidth: width, minWidth: 35),
               // borderRadius: const BorderRadius.horizontal(right: Radius.elliptical(5, 7)),
-              borderRadius: const BorderRadius.horizontal(right: Radius.elliptical(5, 12)),
+              borderRadius: const BorderRadius.horizontal(right: Radius.elliptical(15, 25)),
               padding: EdgeInsets.fromLTRB(1, 1, vhd.snapShrink * 2, 1),
-              message: preference.text.chapter('true'),
+              message: preference.text.chapter(''),
               onPressed: showChapters,
               child: Selector<Core, String>(
                 key: _kChapters,

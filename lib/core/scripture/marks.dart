@@ -1,4 +1,4 @@
-part of 'main.dart';
+part of '../main.dart';
 
 /// Scripture marks with notify
 class Marks extends Notify {
@@ -54,7 +54,13 @@ class Marks extends Notify {
         final colorIndex = vrBlock.color;
         if (colorIndex != null && colorIndex > -1 && colorIndex < colors.length) {
           final sefs = colors.elementAt(colorIndex);
-          return Paint()..color = sefs.color.withOpacity(colorOpacityText);
+          // return Paint()..color = sefs.color.withOpacity(colorOpacityText);
+          return Paint()
+            ..color = sefs.color.withOpacity(colorOpacityText)
+            ..strokeWidth = 5
+            ..strokeJoin = StrokeJoin.round
+            ..strokeCap = StrokeCap.round
+            ..style = PaintingStyle.fill;
           // return Paint()..color = sefs.lighten(amount: 0.38);
         }
       }
@@ -248,6 +254,7 @@ class Marks extends Notify {
   }
 
   /// Backup to supported device library
+  /// TODO: to be integrated
   Future<void> backup() {
     final raw = Docs.raw.encodeJSON(_marks.toJSON(), space: 2);
     String fileName = file.replaceFirst('.json', '.txt');

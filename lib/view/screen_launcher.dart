@@ -175,7 +175,10 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
       maintainBottomViewPadding: true,
       child: Scaffold(
         key: const Key('ScreenLauncher'),
-        // primary: true,
+        primary: true,
+        // extendBody: true,
+        extendBodyBehindAppBar: true,
+
         body: PageView(
           key: const Key('ScreenLauncherPageView'),
           controller: _controller,

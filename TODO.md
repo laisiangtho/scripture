@@ -45,6 +45,8 @@ build: 44
   - [x] Offset & Width chapter navigator
   - [x] GestureDetector
   - [ ] Hightlight by quotation marks
+    - [ ] Pasian in, “Khuavak om hen,” ci hi; tua ciangin khuavak om pah hi.
+    - [ ] And God said, “Let there be light,” and there was light.
   - option
     - [x] sheet show/hide toggle
     - [x] auto close sheet if selectedVerse.isEmpty

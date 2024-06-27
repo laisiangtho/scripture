@@ -168,7 +168,8 @@ class _SuggestView extends StateAbstract<_Suggest> {
         return VerseWidgetInherited(
           // key: verse.key,
           size: data.boxOfSettings.fontSize().asDouble,
-          lang: primaryScripture.info.langCode,
+          // lang: primaryScripture.info.langCode,
+          scripture: primaryScripture,
           verseId: verse.id,
           child: VerseItemWidget(
             verse: verse,

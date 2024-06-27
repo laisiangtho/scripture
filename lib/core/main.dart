@@ -24,18 +24,13 @@ import 'package:lidea/unit/notify.dart';
 // NOTE: Individual
 // import 'package:lidea/unit/store.dart';
 
-// NOTE: view ???
 import 'package:lidea/view/main.dart' show ViewScroll, ViewData;
 export 'package:lidea/view/main.dart';
 
 // NOTE: route
-import '/view/routes.dart' show RouteDelegate;
+// import '/view/routes.dart' show RouteDelegate;
 // show MainDelegate, NestDelegate, NestedView, RouteNotifier, RouteParser
-export '/view/routes.dart';
-
-// NOTE: scroll ???
-// import '../unit/view.md' show ScrollNotifier;
-// export '../unit/view.md' show ScrollNotifier;
+// export '/view/routes.dart';
 
 // NOTE: Nest and Type
 import '/type/main.dart';
@@ -53,8 +48,13 @@ part 'analytics.dart';
 part 'store.dart';
 part 'poll.dart';
 
-part 'scripture.dart';
-part 'marks.dart';
+part 'scripture/scripture.dart';
+
+/// Scripture marks (user)
+part 'scripture/marks.dart';
+
+/// Scripture categories and references (app)
+part 'scripture/refs.dart';
 
 class Core extends _Search {
   Future<void> initialized(BuildContext context) async {

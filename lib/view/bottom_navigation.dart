@@ -170,7 +170,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             );
           }).toList(),
           currentIndex: App.routeDelegate.notifier.viewIndex,
-          elevation: 3,
+          // elevation: 3,
           onTap: (index) {
             if (App.routeDelegate.notifier.viewIndex == index) {
               // final abc = App.routeDelegate.navigatorKey.currentState;
@@ -181,6 +181,8 @@ class BottomNavigationBarWidget extends StatelessWidget {
               // }
               // Navigator.of(context).maybePop();
               // App.routeDelegate.notifier.pop();
+              // App.route.pop();
+              // App.route.viewIndex
             } else {
               App.routeDelegate.notifier.viewIndex = index;
             }

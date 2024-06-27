@@ -1,15 +1,16 @@
 part of 'main.dart';
 
 class Motile extends StatefulWidget {
-  final Widget? child;
-  const Motile({super.key, this.child});
+  final Widget child;
+  const Motile({super.key, required this.child});
 
   @override
   State<Motile> createState() => _MotileState();
 }
 
 class _MotileState extends State<Motile> {
-  static const defaultPos = -65.0;
+  // static const defaultPos = -65.0;
+  static const defaultPos = -80.0;
   // static const defaultPos = 0.0;
   static const activePos = 0.0;
   double initial = 0.0;
@@ -62,6 +63,22 @@ class _MotileState extends State<Motile> {
     }
   }
 
+  void onVerticalDragStart(DragStartDetails details) {
+    // debugPrint('drag start ${details.globalPosition.dx}');
+  }
+
+  void onVerticalDragUpdate(DragUpdateDetails details) {
+    // debugPrint('drag update ${details.delta.dx}');
+  }
+
+  void onVerticalDragEnd(DragEndDetails details) {
+    // debugPrint('drag end ${details.globalPosition.dx}');
+  }
+
+  void onVerticalDragCancel() {
+    // debugPrint('drag cancel');
+  }
+
   // resetChapterPosition
   StreamSubscription<double> _resetChapterPosition(ValueNotifier<double> notifier) {
     return _streamDouble(notifier.value).listen((double value) {
@@ -90,9 +107,13 @@ class _MotileState extends State<Motile> {
       onHorizontalDragUpdate: onHorizontalDragUpdate,
       onHorizontalDragEnd: onHorizontalDragEnd,
       onHorizontalDragCancel: onHorizontalDragCancel,
+      onVerticalDragStart: onVerticalDragStart,
+      onVerticalDragUpdate: onVerticalDragUpdate,
+      onVerticalDragEnd: onVerticalDragEnd,
+      onVerticalDragCancel: onVerticalDragCancel,
       child: Stack(
         children: [
-          if (widget.child != null) widget.child!,
+          widget.child,
 
           /// Previous chapter drag
           ValueListenableBuilder<double>(
@@ -101,6 +122,7 @@ class _MotileState extends State<Motile> {
             builder: (_, val, child) {
               final active = val == activePos;
               final rad = (40 + val).clamp(5.0, 40.0);
+              final blurRadius = active ? 1.0 : 3.0;
               return Positioned.fill(
                 left: val,
                 top: -3,
@@ -125,6 +147,7 @@ class _MotileState extends State<Motile> {
                         colors: [
                           // theme.highlightColor,
                           theme.scaffoldBackgroundColor,
+                          // active ? theme.indicatorColor : theme.scaffoldBackgroundColor,
                           // active ? theme.colorScheme.error : theme.scaffoldBackgroundColor,
                           // active ? theme.indicatorColor : theme.scaffoldBackgroundColor,
                           theme.disabledColor,
@@ -134,21 +157,20 @@ class _MotileState extends State<Motile> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          // color: theme.shadowColor,
-                          color: active ? theme.hintColor : theme.shadowColor,
-                          blurRadius: active ? 7 : 3,
+                          color: theme.shadowColor,
+                          // color: active ? theme.hintColor : theme.shadowColor,
+                          blurRadius: blurRadius,
                           spreadRadius: 1,
-                          offset: const Offset(3, 0),
-                          // spreadRadius: 1,
-                          // offset: const Offset(5, 0),
+                          offset: const Offset(1, 0),
                         ),
                       ],
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       child: Icon(
                         Icons.arrow_back_ios_new_rounded,
                         // Icons.arrow_back_rounded,
+                        color: theme.primaryColorDark.withOpacity(active ? 1 : 0.2),
                         size: 25,
                         // color: active ? theme.primaryColor : null,
                       ),
@@ -166,6 +188,7 @@ class _MotileState extends State<Motile> {
             builder: (_, val, child) {
               final active = val == activePos;
               final rad = (40 + val).clamp(5.0, 40.0);
+              final blurRadius = active ? 1.0 : 3.0;
               return Positioned.fill(
                 right: val,
                 child: Align(
@@ -195,18 +218,21 @@ class _MotileState extends State<Motile> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: active ? theme.hintColor : theme.shadowColor,
-                          blurRadius: active ? 7 : 3,
+                          color: theme.shadowColor,
+                          // color: active ? theme.hintColor : theme.shadowColor,
+                          blurRadius: blurRadius,
                           spreadRadius: 1,
-                          offset: const Offset(-3, 0),
+                          offset: const Offset(-1, 0),
+                          // offset: Offset(blurRadius, 0),
                         ),
                       ],
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       child: Icon(
                         Icons.arrow_forward_ios_rounded,
                         // Icons.arrow_forward_rounded,
+                        color: theme.primaryColorDark.withOpacity(active ? 1 : 0.2),
                         size: 25,
                         // color: active ? theme.primaryColor : null,
                       ),

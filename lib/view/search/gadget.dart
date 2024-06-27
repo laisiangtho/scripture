@@ -65,19 +65,6 @@ class SearchSuffixIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return const Placeholder();
-    debugPrint('SearchSuffixIcon ???');
-    // return ViewButton(
-    //   onPressed: onPressed,
-    //   padding: const EdgeInsets.all(0),
-    //   // message: App.preference.text.clear,
-    //   message: App.preference.text.clear,
-    //   child: Icon(
-    //     Icons.clear_rounded,
-    //     color: Theme.of(context).iconTheme.color!.withOpacity(0.4),
-    //     semanticLabel: "input",
-    //   ),
-    // );
     return FadeTransition(
       opacity: clearController,
       child: FadeTransition(
