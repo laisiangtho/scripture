@@ -16,6 +16,7 @@ Add
 - Quotes, Highlight and Note to verses
 - Title
 - Verse merge
+- Swipeable chapter navigator
 
 Update
 

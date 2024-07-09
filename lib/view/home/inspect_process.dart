@@ -27,7 +27,24 @@ class _InspectProcessState extends _InspectProcessAbstract {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
+                child: ListTile(
+                  title: const Text('updateToken (test)'),
+                  // subtitle: const Text('...'),
+                  onTap: () {
+                    // updateToken
+                    App.data.updateToken().then((e) {
+                      debugPrint('updateToken done');
+                    }).catchError((e) {
+                      debugPrint('updateToken $e');
+                    });
+                  },
+                ),
+              ),
+            ),
+            ViewCards(
+              margin: const EdgeInsets.all(20),
+              child: SizedBox(
+                width: 250,
                 child: ListTile(
                   title: const Text('File (test)'),
                   // subtitle: const Text('...'),
@@ -60,7 +77,6 @@ class _InspectProcessState extends _InspectProcessAbstract {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Card (test)'),
                   // subtitle: const Text('...'),
@@ -75,7 +91,6 @@ class _InspectProcessState extends _InspectProcessAbstract {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('OfBook (test)'),
                   // subtitle: const Text('...'),
@@ -170,7 +185,6 @@ class _InspectProcessState extends _InspectProcessAbstract {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Sliver (test)'),
                   // subtitle: const Text('...'),
@@ -184,7 +198,6 @@ class _InspectProcessState extends _InspectProcessAbstract {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Search (test)'),
                   // subtitle: const Text('...'),
@@ -198,7 +211,6 @@ class _InspectProcessState extends _InspectProcessAbstract {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),

@@ -23,8 +23,6 @@ class Main extends StatefulWidget {
 class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('recent-search->build');
-
     return Scaffold(
       body: Views(
         // scrollBottom: ScrollBottomNavigation(

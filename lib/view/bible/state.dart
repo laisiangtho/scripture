@@ -37,20 +37,7 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   void _addISO(Box<BooksType> setOfBook) {
     final setOfLang = setOfBook.values.map((e) => e.langCode).toSet();
     if (setOfLang.length != iso.all.length) {
-      debugPrint('_addISO');
       iso.all.clear();
-      // for (var code in setOfLang) {
-      //   // iso.insert(ISOModel(code: lang));
-      //   final obj = setOfBook.values.firstWhere((e) => e.langCode == code);
-      //   iso.insert(
-      //     ISOModel(
-      //       code: code,
-      //       text: obj.langName,
-      //       name: obj.name,
-      //       direction: obj.langDirection,
-      //     ),
-      //   );
-      // }
 
       for (var e in setOfBook.values) {
         // final obj = setOfBook.values.firstWhere((e) => e.langCode == e.langCode);
@@ -91,7 +78,7 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
 
   void showBibleContent(BooksType bible, int index) async {
     if (state.asMap.isNotEmpty) {
-      debugPrint('from:${data.parallelId} to:${bible.identify}');
+      // debugPrint('from:${data.parallelId} to:${bible.identify}');
 
       if (data.parallelId != bible.identify) {
         data.parallelId = bible.identify;

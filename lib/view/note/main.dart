@@ -23,8 +23,6 @@ class Main extends StatefulWidget {
 class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('note->build');
-
     return Scaffold(
       appBar: ViewBars(
         padding: state.fromContext.viewPadding,
@@ -88,12 +86,9 @@ class _View extends _State with _Header {
   }
 
   Widget listContainer() {
-    // debugPrint('note->build-reload');
-
     // final items = box.toMap().entries.toList();
     final items = boxOfBookmarks.entries.toList();
 
-    debugPrint('note->build-listen ${items.length}');
     // items.sort((a, b) => b.value.date!.compareTo(a.value.date!));
 
     // final items = boxOfBookmarks.values.toList();

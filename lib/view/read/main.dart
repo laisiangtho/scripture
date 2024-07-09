@@ -31,7 +31,6 @@ class Main extends StatefulWidget {
 class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('read->build');
     // final double statusBarHeight = MediaQuery.of(context).padding.top;
     // debugPrint("statusBarHeight $statusBarHeight $");
     return Scaffold(
@@ -118,11 +117,10 @@ class _View extends _State with _Header {
             selector: (_, e) => e.scripturePrimary.read,
             builder: (BuildContext _, CacheBible bible, Widget? ___) {
               return ViewSections(
-                sliver: true,
                 footerTitle: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                   child: Paragraphs(
-                    text: '{{description}}',
+                    text: '{{shortname}}\n{{copyright}}\n{{description}}\n({{identify}})',
                     textAlign: TextAlign.center,
                     style: state.textTheme.labelSmall,
                     decoration: [
@@ -140,6 +138,18 @@ class _View extends _State with _Header {
                         text: bible.result.info.description,
                         // text: 'orange {{description}}',
                         semanticsLabel: 'description',
+                      ),
+                      TextSpan(
+                        text: bible.result.info.shortname,
+                        semanticsLabel: 'shortname',
+                      ),
+                      TextSpan(
+                        text: bible.result.info.identify,
+                        semanticsLabel: 'identify',
+                      ),
+                      TextSpan(
+                        text: bible.result.info.copyright,
+                        semanticsLabel: 'copyright',
                       ),
                     ],
                   ),

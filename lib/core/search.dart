@@ -43,7 +43,7 @@ abstract class _Search extends _Mock {
     //   query: data.searchQuery,
     // );
     // scripturePrimary.bible.info.langCode
-    debugPrint('cacheConclusion');
+    // debugPrint('cacheConclusion');
     // data.boxOfRecentSearch.update(data.searchQuery);
     data.boxOfRecentSearch.update(data.searchQuery, scripturePrimary.bible.info.langCode);
   }

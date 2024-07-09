@@ -38,7 +38,6 @@ class LaiSiangtho extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('AppMain->build');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Core>(

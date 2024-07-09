@@ -15,7 +15,7 @@ class Refs extends Notify {
   APIType get api => data.env.url('category');
 
   Future<void> init() async {
-    debugPrint('Categories ${api.asset}');
+    // debugPrint('Categories ${api.asset}');
     if (!_ready) {
       await _initCategories().then((e) {
         category = e;

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lidea/route/main.dart';
 
 export 'package:lidea/route/main.dart' show RouteParser;
@@ -328,20 +327,6 @@ class RouteNotifier extends RouteChangeNotifier {
         ],
       ),
     ];
-  }
-
-  void routeTest(String name) {
-    // final lst = routeListInnerWorking();
-
-    // final abc = Uri(path: name);
-    // final cols = mapping(uri: abc, routes: lst);
-
-    // final cols = mapping(name: name, routes: routeListInnerWorking);
-    final cols = mapping(name: name);
-    debugPrint('routeTest $cols');
-    // for (var element in cols) {
-    //   debugPrint('element ${element.name}');
-    // }
   }
 }
 

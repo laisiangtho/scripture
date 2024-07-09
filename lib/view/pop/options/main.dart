@@ -30,7 +30,6 @@ class _MainState extends StateAbstract<Main> {
 
   void doFontSizeReset() {
     final fontSize = data.env.settings['fontSize'];
-    debugPrint('font reset: $fontSize');
     bOS.fontSize(value: fontSize);
   }
 
@@ -62,7 +61,6 @@ class _MainState extends StateAbstract<Main> {
         'pageTitle': '$bookName $chapterName:$svs',
       },
     ).then((e) {
-      debugPrint('marks: note $e');
       if (e != null) {
         marks.selectionApply(note: e['text']);
       }

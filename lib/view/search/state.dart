@@ -98,7 +98,6 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     });
 
     data.boxOfSettings.watch(key: 'searchQuery').listen((e) {
-      debugPrint('test data.boxOfSettings.watch ${e.value}');
       if (e.value != null) {
         String str = e.value.toString();
         _textController.text = str;

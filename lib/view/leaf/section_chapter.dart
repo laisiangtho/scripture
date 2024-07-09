@@ -59,8 +59,6 @@ mixin _Header on _State {
 class _MainState extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('chapter->build');
-
     return Scaffold(
       primary: true,
       body: Views(

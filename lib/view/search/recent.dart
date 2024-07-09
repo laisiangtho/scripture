@@ -95,7 +95,6 @@ class _RecentView extends StateAbstract<_Recent> {
   }
 
   Dismissible _recentContainer(int index, MapEntry<dynamic, RecentSearchType> item) {
-    debugPrint('lang ${item.value.lang}');
     return Dismissible(
       key: Key(item.value.date.toString()),
       direction: DismissDirection.endToStart,

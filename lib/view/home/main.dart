@@ -30,8 +30,6 @@ class Main extends StatefulWidget {
 class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    debugPrint('home->build');
-
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text('abc'),
@@ -106,7 +104,6 @@ class _View extends _State with _Header {
     // items.sort((a, b) => a.value.order.compareTo(b.value.order));
 
     return ViewSections(
-      sliver: true,
       // headerLeading: const Icon(Icons.ac_unit),
       headerTitle: Text(
         preference.text.favorite('true'),
@@ -347,23 +344,3 @@ class _PullToRefreshState extends PullOfState {
     await Future.delayed(const Duration(milliseconds: 700));
   }
 }
-
-// RefreshIndicator(
-//         color: Colors.white,
-//         backgroundColor: Colors.blue,
-//         onRefresh: () async {
-//           debugPrint('RefreshIndicator');
-//           return Future<void>.delayed(const Duration(seconds: 3));
-//         },
-//         notificationPredicate: (ScrollNotification notification) {
-//           // return notification.depth == 1;
-//           return true;
-//         },
-//         child: Views(
-//           child: CustomScrollView(
-//             // physics: const AlwaysScrollableScrollPhysics(),
-//             controller: _controller,
-//             slivers: _slivers,
-//           ),
-//         ),
-//       )

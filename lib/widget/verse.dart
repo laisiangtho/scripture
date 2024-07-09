@@ -152,10 +152,9 @@ class VerseItemWidget extends StatelessWidget {
 
                   TextSpan(
                     text: ' ',
-                    children: hightLight(
+                    children: highLight(
                       context: context,
                       text: verse.text,
-                      word: keyword,
                     ),
                     semanticsLabel: verse.text,
                     style: TextStyle(
@@ -206,7 +205,6 @@ class VerseItemWidget extends StatelessWidget {
                                   '${scripture.bookName} ${scripture.chapterName}:${verse.id}',
                             },
                           ).then((e) {
-                            debugPrint('marks: note $e');
                             if (e != null) {
                               // userVerse.marks?.selectionApply(note: e['text'], verses: [verse.id]);
                               if (hasMarks) {
@@ -256,44 +254,18 @@ class VerseItemWidget extends StatelessWidget {
     );
   }
 
-  List<TextSpan> hightLight({required BuildContext context, required String text, String? word}) {
-    // final style = TextStyle(color: Colors.red, fontSize: 22);
-    // children: hightLight(verse['text'], store.searchQuery, style),
+  /// [quoted] Joined quoted in multi verses
+  List<TextSpan> highLight({required BuildContext context, required String text}) {
     ThemeData theme = Theme.of(context);
-    // Color quoteTextColor = theme.colorScheme.error;
-    Color quoteTextColor = theme.indicatorColor;
+
+    Color? quoteTextColor = theme.colorScheme.primary.lerp(theme.indicatorColor, 0.7);
+    Color? quoteMarkColor = theme.colorScheme.primary.lerp(theme.dividerColor, 1.0);
+
     List<TextSpan> spans = [];
     int start = 0;
+    bool quoted = false;
+    String? word = keyword;
     if (word == null || word.length < 2) {
-      // spans.add(TextSpan(text: text, semanticsLabel: text));
-
-      // RegExp regExp = RegExp(r'(["\']\)(.*?)([/"\'])');
-      // RegExp regExp = RegExp('(["\'])(.*?)(\\1)');
-      // RegExp regExp = RegExp('(["\'])(.*?)(["\'])');
-      // RegExp regExp = RegExp('["\'“‘](.*?)["\'”’]');
-      // RegExp regExp = RegExp('[“‘"\'](.*?)[”’"\']');
-      // RegExp regExp = RegExp('["“](.*?)["”]');
-
-      // /// NOTE: check if contains both opening and closing quotes
-      // for (RegExpMatch match in regExp.allMatches(text)) {
-      //   if (match.start > start) {
-      //     spans.add(TextSpan(
-      //       text: text.substring(start, match.start),
-      //     ));
-      //   }
-      //   spans.add(TextSpan(
-      //     text: match.group(0),
-      //     style: quoteStyle,
-      //   ));
-      //   start = match.end;
-      // }
-
-      // if (start < text.length) {
-      //   spans.add(TextSpan(
-      //     text: text.substring(start),
-      //   ));
-      // }
-
       // RegExp regExp = RegExp('(["\'“‘]?)([^“”‘’"\']*)(["\'”’]?)');
       // RegExp regExp = RegExp('(["“‘]?)([^“”‘’"]*)(["”’]?)');
       RegExp regExp = RegExp('(["“]?)([^“”"]*)(["”]?)');
@@ -311,9 +283,10 @@ class VerseItemWidget extends StatelessWidget {
         String closingQuote = match.group(3) ?? '';
 
         if (openingQuote.isNotEmpty) {
+          quoted = true;
           spans.add(TextSpan(
             text: openingQuote,
-            style: TextStyle(color: theme.dividerColor),
+            style: TextStyle(color: quoteMarkColor),
           ));
         }
 
@@ -329,34 +302,44 @@ class VerseItemWidget extends StatelessWidget {
             text: content.trim(),
             style: TextStyle(color: quoteTextColor),
           ));
+          quoted = false;
         } else if (openingQuote.isNotEmpty && closingQuote.isNotEmpty) {
           // Properly matched quotes
           // Matched both opening and closing quote
+
           spans.add(TextSpan(
             text: content.trim(),
             // text: openingQuote + content + closingQuote,
             style: TextStyle(color: quoteTextColor),
           ));
+          quoted = false;
         } else {
           // Regular text
+
           spans.add(TextSpan(
             text: match.group(0),
+            // style: const TextStyle(color: Colors.yellow),
+            style: quoted ? TextStyle(color: quoteTextColor) : null,
           ));
         }
 
         if (closingQuote.isNotEmpty) {
+          quoted = false;
           spans.add(TextSpan(
             text: closingQuote,
-            style: TextStyle(color: theme.dividerColor),
+            style: TextStyle(color: quoteMarkColor),
           ));
         }
 
         start = match.end;
+        // hasVerseQuoted = false;
       }
 
       if (start < text.length) {
+        quoted = false;
         spans.add(TextSpan(
           text: text.substring(start),
+          // style: hasVerseQuoted ? TextStyle(color: quoteTextColor) : null,
         ));
       }
     } else {

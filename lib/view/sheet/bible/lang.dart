@@ -155,7 +155,6 @@ class _State extends SheetsDraggableState<Main> {
           //   },
           // );
           //   debugPrint(item.bible.toString());
-          //   debugPrint('${item.code} ${item.totalBible} ${item.bible.length}');
           // }
           // item.totalBible;
           // return bookContainer(index, iso.all.elementAt(index));

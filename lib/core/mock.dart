@@ -5,7 +5,7 @@ abstract class _Mock extends _Abstract {
   late final scriptureParallel = Scripture(data, dataType: 1);
 
   Future<void> prepareInitialized() async {
-    debugPrint('prepareInitialized');
+    // debugPrint('prepareInitialized');
     if (data.requireInitialized) {
       Iterable<APIType> api = data.env.api.where(
         (e) => e.asset.isNotEmpty,
@@ -55,13 +55,12 @@ abstract class _Mock extends _Abstract {
     // final urls = data.env.url('book').uri(name: "git+");
     // debugPrint(urls.toString());
     final url = data.env.url('book').uri();
-    debugPrint('updateBookMeta $url');
     return AskNest(url).get<String>().then((e) async {
       final parsed = Docs.raw.decodeJSON(e);
       // debugPrint(e);
       await _importBookMeta(parsed['book']);
     }).catchError((e) {
-      debugPrint('updateBookMeta $e');
+      // debugPrint('updateBookMeta $e');
     });
   }
 
@@ -85,10 +84,9 @@ abstract class _Mock extends _Abstract {
         meta.update = (meta.available > 0 && old.version != meta.version) ? 1 : old.update;
         meta.selected = old.selected;
         data.boxOfBooks.box.put(index, meta);
-        debugPrint('update ${meta.identify} ${meta.available}');
       } else {
         data.boxOfBooks.box.add(meta);
-        debugPrint('add ${meta.identify} ');
+        // debugPrint('add ${meta.identify} ');
       }
     }
 
@@ -223,7 +221,7 @@ abstract class _Mock extends _Abstract {
     return primaryInit.then((_) {
       return scripturePrimary.chapterPrevious();
     }).catchError((e) {
-      debugPrint('51? $e');
+      // debugPrint('51? $e');
     }).whenComplete(scripturePrimary.changeNotify);
   }
 
@@ -231,7 +229,7 @@ abstract class _Mock extends _Abstract {
     return primaryInit.then((_) {
       return scripturePrimary.chapterNext();
     }).catchError((e) {
-      debugPrint('52? $e');
+      // debugPrint('52? $e');
     }).whenComplete(scripturePrimary.changeNotify);
   }
 
@@ -239,7 +237,7 @@ abstract class _Mock extends _Abstract {
     return primaryInit.then((_) {
       return scripturePrimary.chapterBook(bId: bookId, cId: chapterId);
     }).catchError((e) {
-      debugPrint('53? $e');
+      // debugPrint('53? $e');
     }).whenComplete(scripturePrimary.changeNotify);
   }
 

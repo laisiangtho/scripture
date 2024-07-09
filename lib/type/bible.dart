@@ -20,15 +20,19 @@ class OfBible {
   });
 
   factory OfBible.fromJSON(Map<String, dynamic> o) {
+    final info = BooksType.fromJSON(o['info']);
     return OfBible(
-      info: BooksType.fromJSON(o['info']),
+      info: info,
       note: o['note'],
       language: o['language'],
       digit: o['digit'] as List,
       testament:
           (o["testament"] as Map<String, dynamic>).entries.map(OfTestament.fromJSON).toList(),
       story: o['story'],
-      book: (o["book"] as Map<String, dynamic>).entries.map(OfBook.fromJSON).toList(),
+      // book: (o["book"] as Map<String, dynamic>).entries.map(OfBook.fromJSON).toList(),
+      book: (o["book"] as Map<String, dynamic>).entries.map((e) {
+        return OfBook.fromJSON(info.identify, e);
+      }).toList(),
     );
   }
 
@@ -209,13 +213,15 @@ class OfBook {
     required this.chapter,
   });
 
-  factory OfBook.fromJSON(MapEntry<String, dynamic> o) {
+  factory OfBook.fromJSON(String identify, MapEntry<String, dynamic> o) {
     return OfBook(
       key: GlobalKey(),
       info: InfoOfBook.fromJSON(o),
       topic: {},
-      chapter:
-          (o.value["chapter"] as Map<String, dynamic>).entries.map(OfChapter.fromJSON).toList(),
+      // chapter: (o.value["chapter"] as Map<String, dynamic>).entries.map(OfChapter.fromJSON).toList(),
+      chapter: (o.value["chapter"] as Map<String, dynamic>).entries.map((e) {
+        return OfChapter.fromJSON(identify, e);
+      }).toList(),
     );
   }
 
@@ -333,13 +339,16 @@ class OfChapter {
     required this.verse,
   });
 
-  factory OfChapter.fromJSON(MapEntry<String, dynamic> o) {
+  factory OfChapter.fromJSON(String identify, MapEntry<String, dynamic> o) {
     return OfChapter(
       key: GlobalKey(),
       id: int.parse(o.key),
       name: o.key,
-      verse: (o.value["verse"] as Map<String, dynamic>).entries.map(OfVerse.fromJSON).toList(),
       // verse: List<OfVerse>.from(o.value["verse"].map(OfVerse.fromJSON)),
+      // verse: (o.value["verse"] as Map<String, dynamic>).entries.map(OfVerse.fromJSON).toList(),
+      verse: (o.value["verse"] as Map<String, dynamic>).entries.map((e) {
+        return OfVerse.fromJSON(identify, e);
+      }).toList(),
     );
   }
 
@@ -446,17 +455,46 @@ class OfVerse {
     required this.merge,
   });
 
-  factory OfVerse.fromJSON(MapEntry<String, dynamic> o) {
+  factory OfVerse.fromJSON(String identify, MapEntry<String, dynamic> o) {
     return OfVerse(
       key: GlobalKey(),
       id: int.parse(o.key),
       name: o.key,
       // text: o.value['text'],
-      text: (o.value['text'] ?? '').toString(),
+      // text: (o.value['text'] ?? '').toString(),
+      text: _quoteFormat(identify, (o.value['text'] ?? '').toString()),
       title: (o.value['title'] ?? '').toString().trim(),
       reference: o.value['reference'] ?? '',
       merge: o.value['merge'] ?? '',
     );
+  }
+
+  static String _quoteFormat(String identify, String v) {
+    // return v
+    //     .replaceAll('``', '“')
+    //     .replaceAll("''", '”')
+    //     .replaceAll("``", '“')
+    //     .replaceAll("´´", '”')
+    //     .replaceAll("„", '“')
+    //     .replaceAll('\'\'', '”')
+    //     .trim();
+
+    switch (identify) {
+      case '2079':
+        return v.replaceAll('‘', '“').replaceAll("’", '”');
+      case 'dnb1930':
+        return v.replaceAll(':', '“').replaceAll("!", '.”');
+
+      default:
+        return v
+            .replaceAll('``', '“')
+            .replaceAll("''", '”')
+            .replaceAll("``", '“')
+            .replaceAll("´´", '”')
+            .replaceAll("„", '“')
+            .replaceAll('\'\'', '”')
+            .trim();
+    }
   }
 
   /// RegExp(keyword).hasMatch(text)
@@ -628,8 +666,7 @@ class CacheSnap {
   }
 }
 
-// CacheSnap CacheOther CacheResult ResultReadOnly CacheSnap SnapOut
-
+/// `SnapOut` is readonly which flatten `OfBook` type into list of [bookId,chapterId, verse]
 class SnapOut {
   final int bookId;
   final int chapterId;

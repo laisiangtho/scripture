@@ -38,9 +38,7 @@ class _TestInspectState extends _State {
                     // final docs = Docs.user;
                     // docs.dir.then((e) {
                     //   final test = e != null;
-                    //   debugPrint('file test: $test');
                     //   if (test) {
-                    //     debugPrint('file test: ${e.path}/test.txt');
                     //     // docs.writeAsJSON('test.json', {"done": true});
                     //     docs.writeAsString('test.txt', 'Ok');
                     //   }
@@ -50,8 +48,6 @@ class _TestInspectState extends _State {
                     // if (docs != null) {
                     //   final dir = docs.path;
                     //   // join(await directory.then((e) => e.path), name);
-                    //   debugPrint('file: $dir');
-                    //   debugPrint('file: ${docs.absolute.uri}');
                     //   // join(await directory.then((e) => e.path), name);
                     // }
                   },
@@ -87,9 +83,6 @@ class _TestInspectState extends _State {
 
                       // src.first.chapterCount;
 
-                      // debugPrint('bookTesting ${src.length}');
-                      // debugPrint('bookTesting name:${src.first.info.name}');
-                      // debugPrint('bookTesting chapterCount:${src.first.chapterCount}');
                       // final res = src.where((b) {
                       //   return b.chapter.where((c) {
                       //     return c.verse.where((v) {
@@ -97,7 +90,6 @@ class _TestInspectState extends _State {
                       //     }).isNotEmpty;
                       //   }).isNotEmpty;
                       // });
-                      // debugPrint('bookTesting search:${res.length}');
                       // final cur = src.where((b) {
                       //   return b.chapter.where((c) {
                       //     return b.id == 2 && c.id == 4;
@@ -146,18 +138,6 @@ class _TestInspectState extends _State {
                       // final cur = e.book.where((b) => b.info.id == 4).map((e) {
                       //   return e.getChapter(5);
                       // });
-
-                      // debugPrint('bookTesting current count:${cur.length}');
-
-                      // for (var b in cur) {
-                      //   debugPrint('bookTesting current book:${b.info.name}');
-                      //   for (var c in b.chapter) {
-                      //     debugPrint('bookTesting current chapter:${c.name}');
-                      //     for (var v in c.verse) {
-                      //       debugPrint('bookTesting current verse:${v.name}');
-                      //     }
-                      //   }
-                      // }
 
                       final res = e.getChapter(2, 1);
 

@@ -61,7 +61,6 @@ class _View extends _State with _Header {
   }
 
   List<Widget> get _slivers {
-    debugPrint('_slivers');
     return [
       ViewHeaderSliver(
         pinned: true,

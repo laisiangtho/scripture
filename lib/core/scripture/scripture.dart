@@ -99,20 +99,16 @@ class Scripture extends _ScriptureInterface {
     return Docs.app.exists(file).then((String e) {
       if (e.isEmpty) {
         // NOTE: Not Available, therefore download it
-        debugPrint('Unavailable, therefore download it');
         return _download();
       } else if (deleteIfExists && _bookMeta != null && _bookMeta!.available == 1) {
         // NOTE: Available, therefore delete it
-        debugPrint('Available, therefore delete it');
         return _delete();
       } else {
         // NOTE: Available, and meta need to update
-        debugPrint('Available, and meta need to update');
         return _read();
       }
     }).catchError((e) {
       // NOTE: Future.error
-      debugPrint('switchAvailability, $e');
       throw e;
     });
   }
@@ -376,22 +372,22 @@ class Scripture extends _ScriptureInterface {
       final contain = bible.wordContains(keyword);
       final suggest = contain.wordStarts(keyword);
       final result = suggest.wordEnds(keyword);
-      debugPrint(
-          'search contains ${contain.totalBook} ${contain.totalChapter} ${contain.totalVerse}');
-      debugPrint(
-          'search suggest ${suggest.totalBook} ${suggest.totalChapter} ${suggest.totalVerse}');
-      debugPrint('search result ${result.totalBook} ${result.totalChapter} ${result.totalVerse}');
+      // debugPrint(
+      //     'search contains ${contain.totalBook} ${contain.totalChapter} ${contain.totalVerse}');
+      // debugPrint(
+      //     'search suggest ${suggest.totalBook} ${suggest.totalChapter} ${suggest.totalVerse}');
+      // debugPrint('search result ${result.totalBook} ${result.totalChapter} ${result.totalVerse}');
 
       Set<String> words = {};
       if (result.book.isEmpty) {
         if (suggest.book.isNotEmpty) {
           words = suggest.wordExtracts(data.suggestQuery);
-          debugPrint('search b word:${words.length}');
-          debugPrint('search word:$words');
+          // debugPrint('search b word:${words.length}');
+          // debugPrint('search word:$words');
         } else if (contain.book.isNotEmpty) {
           words = contain.wordExtracts(data.suggestQuery);
-          debugPrint('search a word:${words.length}');
-          debugPrint('search word:$words');
+          // debugPrint('search a word:${words.length}');
+          // debugPrint('search word:$words');
         }
       }
 

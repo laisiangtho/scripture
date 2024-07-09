@@ -69,7 +69,6 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   }
 
   void onSubmit(String str) {
-    debugPrint('marks submit $str');
     Navigator.of(context, rootNavigator: true).maybePop({'text': str});
   }
 }

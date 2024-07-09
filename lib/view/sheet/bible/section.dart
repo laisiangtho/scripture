@@ -199,7 +199,6 @@ class _State extends SheetsDraggableState<Main> {
               onTap: () {
                 // Navigator.pop<Map<String, int>>(context, {'book': book.id});
                 // Navigator.maybePop<Map<String, int>>(context, {'book': book.id});
-                // debugPrint('Navigator ${book.id}');
                 Navigator.maybePop(context, {'book': book.info.id});
               },
               // alignment: Alignment.centerLeft,
