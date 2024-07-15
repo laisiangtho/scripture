@@ -207,18 +207,31 @@ class Marks extends Notify {
     // UtilDocument.app;
     // UtilDocument.common.decodeJSON(response);
 
-    return Docs.app.readAsJSON<Map<String, dynamic>>(file).then((o) {
-      // final abc = Docs.raw.decodeJSON<Map<String, dynamic>>(o);
-      // debugPrint('marks: $o');
-      _marks = MarkBible.fromJSON(o);
-    }).catchError((e) {
-      /// NOTE: Future.error
-      // debugPrint('marks: read $e');
-      // return Future.value(list);
+    return Docs.app.exists(file).then((e) {
+      if (e.isNotEmpty) {
+        return Docs.app.readAsJSON<Map<String, dynamic>>(file).then((o) {
+          // final abc = Docs.raw.decodeJSON<Map<String, dynamic>>(o);
+          // debugPrint('marks: $o');
+          _marks = MarkBible.fromJSON(o);
+        });
+      }
     }).whenComplete(() {
       _ready = true;
       notify();
     });
+
+    // return Docs.app.readAsJSON<Map<String, dynamic>>(file).then((o) {
+    //   // final abc = Docs.raw.decodeJSON<Map<String, dynamic>>(o);
+    //   // debugPrint('marks: $o');
+    //   _marks = MarkBible.fromJSON(o);
+    // }).catchError((e) {
+    //   /// NOTE: Future.error
+    //   // debugPrint('marks: read $e');
+    //   // return Future.value(list);
+    // }).whenComplete(() {
+    //   _ready = true;
+    //   notify();
+    // });
     // return Docs.app.readAsString(file).then((o) {
     //   final abc = Docs.raw.decodeJSON<Map<String, dynamic>>(o);
     //   // debugPrint('marks: $o');

@@ -37,10 +37,12 @@ Feature:
 
 - Parallel
 - Bookmark
-- Search
+- Search (instant suggestion and result)
 - Open Source
 - Offline
 - Customizable
+- Quotes, Highlight and Note to verses
+- Elegant
 - No authentication require
 - No Ads
 - Free
