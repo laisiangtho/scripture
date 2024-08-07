@@ -20,13 +20,13 @@ mixin _Header on _State {
         data: vhd,
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           // color: Colors.red,
           onPressed: onSort,
           child: AnimatedBuilder(
             animation: _dragController,
             builder: (_, __) {
-              return ViewMark(
+              return ViewMarks(
                 icon: Icons.sort,
                 iconColor: _colorAnimation.value,
               );

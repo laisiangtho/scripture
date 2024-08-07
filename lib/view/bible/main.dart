@@ -4,7 +4,7 @@ import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -27,14 +27,14 @@ class _View extends _State with _Header {
       body: Views(
         // scrollBottom: ScrollBottom(
         //   notifier: App.scroll.bottom,
-        //   controller: _controller.bottom,
+        //   controller: scrollController.bottom,
         // ),
 
         // child: ValueListenableBuilder(
         //   valueListenable: boxOfBooks.listen(),
         //   builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
         //     return CustomScrollView(
-        //       controller: _controller,
+        //       controller: scrollController,
         //       slivers: _slivers,
         //     );
         //   },
@@ -48,7 +48,7 @@ class _View extends _State with _Header {
               child: Consumer<ISOFilter>(
                 builder: (context, value, child) {
                   return CustomScrollView(
-                    controller: _controller,
+                    controller: scrollController,
                     slivers: _slivers,
                   );
                 },
@@ -82,9 +82,9 @@ class _View extends _State with _Header {
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ViewButton(
+                ViewButtons(
                   onPressed: showBibleLang,
-                  child: ViewMark(
+                  child: ViewMarks(
                     icon: LideaIcon.language,
                     iconLeft: false,
                     iconSize: 19,
@@ -168,10 +168,10 @@ class _View extends _State with _Header {
   Widget bookContainer(int index, MapEntry<dynamic, BooksType> item) {
     return ViewSwipeWidget(
       menu: <Widget>[
-        ViewButton(
+        ViewButtons(
           message: preference.text.more,
           onPressed: () => showBibleInfo(item),
-          child: ViewLabel(
+          child: ViewLabels(
             icon: LideaIcon.dotHoriz,
             iconColor: state.theme.highlightColor,
           ),

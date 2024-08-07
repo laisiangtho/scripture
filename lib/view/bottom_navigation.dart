@@ -1,7 +1,7 @@
 part of 'screen_launcher.dart';
 
-class BottomNavigationBarWidget extends StatelessWidget {
-  const BottomNavigationBarWidget({super.key});
+class BottomNavigationWidget extends StatelessWidget {
+  const BottomNavigationWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

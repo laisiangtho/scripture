@@ -61,7 +61,7 @@ class _RecentView extends StateAbstract<_Recent> {
           sliver: true,
           show: items.isNotEmpty,
           // duration: const Duration(milliseconds: 270),
-          headerTitle: ViewLabel(
+          headerTitle: ViewLabels(
             alignment: Alignment.centerLeft,
             label: preference.text.recentSearch((items.length > 1).toString()),
           ),

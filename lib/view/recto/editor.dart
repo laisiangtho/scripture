@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'leaf-editor';
+  static String route = 'recto-editor';
   static String label = 'Editor';
   static IconData icon = Icons.edit;
 
@@ -29,7 +29,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   // @override
   // void dispose() {
   //   super.dispose();
-  //   // _controller.dispose();
+  //   // scrollController.dispose();
   // }
 
   @override
@@ -74,33 +74,14 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 }
 
 mixin _Header on _State {
-  Widget backOrHome() {
-    final parent = Navigator.of(context, rootNavigator: true);
-    final self = Navigator.of(context);
-
-    final selfCanPop = self.canPop();
-    // return OptionButtons(
-    //   navigator: selfCanPop ? self : parent,
-    //   label: selfCanPop ? App.preference.text.back : App.preference.text.cancel,
-    //   type: selfCanPop ? 'back' : 'cancel',
-    // );
-    if (selfCanPop) {
-      return OptionButtons.back(
-        navigator: self,
-        label: App.preference.text.back,
-      );
-    }
-    return OptionButtons.cancel(
-      navigator: parent,
-      label: App.preference.text.cancel,
-    );
-  }
-
   Widget _header() {
     return ViewHeaderLayouts.fixed(
       height: kTextTabBarHeight,
       left: [
-        backOrHome(),
+        OptionButtons.backOrCancel(
+          back: App.preference.text.back,
+          cancel: App.preference.text.cancel,
+        ),
       ],
       primary: ViewHeaderTitle.dual(
         label: pageLabel,

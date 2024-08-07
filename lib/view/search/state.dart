@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  // late final _controller = ScrollController();
+  // late final scrollController = ScrollController();
 
   late final _formKey = GlobalKey<FormState>();
   late final _textController = TextEditingController();
@@ -73,7 +73,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
       }
     });
 
-    // _controller.addListener(() {
+    // scrollController.addListener(() {
     //   // if (_focusNode.hasFocus) {
     //   //   _focusNode.unfocus();
     //   // }
@@ -178,8 +178,8 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     // });
 
     // debugPrint('suggest onSearch $canPop');
-    // _controller.animateTo(
-    //   _controller.position.minScrollExtent,
+    // scrollController.animateTo(
+    //   scrollController.position.minScrollExtent,
     //   curve: Curves.fastOutSlowIn,
     //   duration: const Duration(milliseconds: 800),
     // );

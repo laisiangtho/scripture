@@ -138,7 +138,7 @@ class _State extends SheetsDraggableState<Main> {
               data: vhd,
             ),
             right: [
-              // ViewMark(
+              // ViewMarks(
               //   padding: const EdgeInsets.only(right: 15),
               //   icon: Icons.verified_user_rounded,
               //   iconColor: state.theme.primaryColorDark,
@@ -147,8 +147,8 @@ class _State extends SheetsDraggableState<Main> {
               ValueListenableBuilder(
                 valueListenable: boxOfBooks.listen(),
                 builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
-                  return ViewButton(
-                    child: ViewMark(
+                  return ViewButtons(
+                    child: ViewMarks(
                       icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
                       iconColor:
                           book.selected ? state.theme.highlightColor : state.theme.primaryColorDark,
@@ -201,7 +201,7 @@ class _State extends SheetsDraggableState<Main> {
                   spacing: 15,
                   runSpacing: 5,
                   children: [
-                    ViewMark(
+                    ViewMarks(
                       icon: LideaIcon.bible,
                       iconSize: 18,
                       iconColor: state.theme.focusColor,
@@ -213,7 +213,7 @@ class _State extends SheetsDraggableState<Main> {
                         ),
                       ),
                     ),
-                    ViewMark(
+                    ViewMarks(
                       icon: LideaIcon.global,
                       iconColor: state.theme.focusColor,
                       iconSize: 20,
@@ -225,7 +225,7 @@ class _State extends SheetsDraggableState<Main> {
                         ),
                       ),
                     ),
-                    ViewMark(
+                    ViewMarks(
                       icon: Icons.compare_arrows,
                       iconColor: state.theme.focusColor,
                       iconSize: 20,
@@ -237,7 +237,7 @@ class _State extends SheetsDraggableState<Main> {
                         ),
                       ),
                     ),
-                    ViewMark(
+                    ViewMarks(
                       icon: LideaIcon.dotTwo,
                       iconColor: state.theme.focusColor,
                       iconSize: 18,
@@ -254,7 +254,7 @@ class _State extends SheetsDraggableState<Main> {
               ),
               // trailing: Text(book.),
             ),
-            ViewMark(
+            ViewMarks(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               label: message,
               show: message.isNotEmpty,
@@ -263,7 +263,7 @@ class _State extends SheetsDraggableState<Main> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ViewButton.filled(
+                ViewButtons.filled(
                   margin: const EdgeInsets.only(bottom: 30),
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   // borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -298,7 +298,7 @@ class _State extends SheetsDraggableState<Main> {
                       const Divider(
                         indent: 10,
                       ),
-                      ViewLabel(
+                      ViewLabels(
                         // constraints: const BoxConstraints(maxHeight: 30),
                         label:
                             isAvailable ? App.preference.text.delete : App.preference.text.download,

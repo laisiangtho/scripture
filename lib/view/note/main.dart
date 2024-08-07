@@ -4,7 +4,7 @@ import 'package:lidea/icon.dart';
 // import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -35,11 +35,11 @@ class _View extends _State with _Header {
       ),
       body: Views(
         // scrollBottom: ScrollBottomNavigation(
-        //   listener: _controller.bottom,
+        //   listener: scrollController.bottom,
         //   notifier: viewData.bottom,
         // ),
         // child: CustomScrollView(
-        //   controller: _controller,
+        //   controller: scrollController,
         //   slivers: _slivers,
         // ),
 
@@ -53,7 +53,7 @@ class _View extends _State with _Header {
             // final c = a.toMap();
 
             return CustomScrollView(
-              controller: _controller,
+              controller: scrollController,
               slivers: _slivers,
             );
           },

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 // import 'package:lidea/launcher.dart';
 // import 'package:lidea/icon.dart';
 // import 'package:lidea/hive.dart';
-import 'package:lidea/route/main.dart';
 
 import '../../../app.dart';
 
@@ -30,7 +29,7 @@ class _State extends SheetsDraggableState<Main> {
   @override
   double get actualMinSize => 0.4;
 
-  late final RouteChangeNotifier notifier = RouteChangeNotifier();
+  late final RouteNotifier notifier = RouteNotifier();
 
   @override
   Widget draggableBody(ScrollController controller) {
@@ -45,8 +44,8 @@ class _State extends SheetsDraggableState<Main> {
 
   Widget child() {
     return NestedView(
-      delegate: ReadNestDelegate(
-        notifier: notifier,
+      delegate: ReadDelegates(
+        bridge: notifier,
         name: rootPath(Main.route),
         arguments: state.arguments,
         // root: state.name ?? TmpSheetHome.route,

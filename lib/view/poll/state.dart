@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> with SingleTickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
 
   late final AnimationController busyController = AnimationController(
     duration: const Duration(milliseconds: 100),

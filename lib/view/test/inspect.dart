@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 class TestInspect extends StatefulWidget {
   const TestInspect({super.key});
@@ -18,7 +18,6 @@ abstract class _State extends StateAbstract<TestInspect> {}
 class _TestInspectState extends _State {
   @override
   Widget build(BuildContext context) {
-    // return const Placeholder();
     return ViewFlats(
       child: SizedBox(
         height: 130.0,
@@ -29,27 +28,10 @@ class _TestInspectState extends _State {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('File (test)'),
-                  // subtitle: const Text('...'),
                   onTap: () async {
-                    //  App.core.u
-                    // final docs = Docs.user;
-                    // docs.dir.then((e) {
-                    //   final test = e != null;
-                    //   if (test) {
-                    //     // docs.writeAsJSON('test.json', {"done": true});
-                    //     docs.writeAsString('test.txt', 'Ok');
-                    //   }
-                    // });
-
                     core.scripturePrimary.marks.backup();
-                    // if (docs != null) {
-                    //   final dir = docs.path;
-                    //   // join(await directory.then((e) => e.path), name);
-                    //   // join(await directory.then((e) => e.path), name);
-                    // }
                   },
                 ),
               ),
@@ -58,10 +40,8 @@ class _TestInspectState extends _State {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Card (test)'),
-                  // subtitle: const Text('...'),
                   onTap: () {
                     App.route.pushNamed('home/test-card');
                   },
@@ -73,10 +53,8 @@ class _TestInspectState extends _State {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('OfBook (test)'),
-                  // subtitle: const Text('...'),
                   onTap: () {
                     App.core.scripturePrimary.init().then((e) {
                       // final src = e.book;
@@ -152,10 +130,8 @@ class _TestInspectState extends _State {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Sliver (test)'),
-                  // subtitle: const Text('...'),
                   onTap: () {
                     App.route.pushNamed('home/test-sliver');
                   },
@@ -166,10 +142,8 @@ class _TestInspectState extends _State {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Search (test)'),
-                  // subtitle: const Text('...'),
                   onTap: () {
                     App.route.pushNamed('home/test-search');
                   },
@@ -180,12 +154,11 @@ class _TestInspectState extends _State {
               margin: const EdgeInsets.all(20),
               child: SizedBox(
                 width: 250,
-                // child: Text('abc...'),
                 child: ListTile(
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),
                   onTap: () {
-                    App.route.pushNamed('home/leaf-section');
+                    App.route.pushNamed('home/recto-section');
                   },
                 ),
               ),

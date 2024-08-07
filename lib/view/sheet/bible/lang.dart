@@ -93,10 +93,10 @@ class _State extends SheetsDraggableState<Main> {
               ),
             ],
             right: [
-              // ViewButton(
+              // ViewButtons(
               //   // color: Colors.red,
               //   onPressed: iso.toggleAll,
-              //   // child: const ViewMark(
+              //   // child: const ViewMarks(
               //   //   // icon: LideaIcon.loop,
               //   //   label: 'Toggle',
               //   // ),
@@ -105,12 +105,12 @@ class _State extends SheetsDraggableState<Main> {
               //     style: Theme.of(context).textTheme.labelSmall,
               //   ),
               // ),
-              // ViewButton(
+              // ViewButtons(
               //   // color: Theme.of(context).highlightColor,
               //   opacity: 0.6,
               //   onPressed: iso.toggleAll,
               //   message: 'Toggle',
-              //   child: ViewMark(
+              //   child: ViewMarks(
               //     icon: Icons.graphic_eq,
               //     iconColor: Theme.of(context).highlightColor,
               //   ),

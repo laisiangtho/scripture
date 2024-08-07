@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -26,11 +26,11 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         // scrollBottom: ScrollBottomNavigation(
-        //   listener: _controller.bottom,
+        //   listener: scrollController.bottom,
         //   notifier: viewData.bottom,
         // ),
         child: CustomScrollView(
-          controller: _controller,
+          controller: scrollController,
           slivers: _slivers,
         ),
       ),
@@ -58,7 +58,7 @@ class _View extends _State with _Header {
         onAwait: const SliverToBoxAdapter(),
         headerLeading: const Icon(Icons.receipt_long_outlined),
         headerTitle: ViewSectionTitle(
-          title: ViewLabel(
+          title: ViewLabels(
             alignment: Alignment.centerLeft,
             label: pollBoard.info.outcome.replaceFirst('showTotal', results.length.toString()),
           ),
@@ -84,7 +84,7 @@ class _View extends _State with _Header {
                     ),
                   ),
                   // Text('1507'),
-                  ViewLabel(
+                  ViewLabels(
                     alignment: Alignment.center,
                     icon: Icons.verified_user_outlined,
                     iconColor: Theme.of(context).hintColor,
@@ -105,7 +105,7 @@ class _View extends _State with _Header {
         onAwait: const SliverToBoxAdapter(),
         headerLeading: const Icon(Icons.how_to_vote_outlined),
         headerTitle: ViewSectionTitle(
-          title: ViewLabel(
+          title: ViewLabels(
             alignment: Alignment.centerLeft,
             label: pollBoard.info.candidate.replaceFirst('showTotal', candidates.length.toString()),
           ),
@@ -113,7 +113,7 @@ class _View extends _State with _Header {
         footerTitle: ViewSectionTitle(
           title: ListBody(
             children: [
-              ViewLabel(
+              ViewLabels(
                 alignment: Alignment.center,
                 softWrap: true,
                 maxLines: 3,
@@ -126,7 +126,7 @@ class _View extends _State with _Header {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ViewLabel(
+                    ViewLabels(
                       // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                       alignment: Alignment.centerLeft,
                       icon: Icons.pending_actions_outlined,
@@ -136,7 +136,7 @@ class _View extends _State with _Header {
                       labelStyle: TextStyle(color: Theme.of(context).hintColor, fontSize: 15),
                     ),
                     if (pollBoard.listicle.used.isNotEmpty)
-                      ViewLabel(
+                      ViewLabels(
                         // padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                         alignment: Alignment.centerLeft,
                         icon: Icons.gas_meter_outlined,
@@ -151,7 +151,7 @@ class _View extends _State with _Header {
                   ],
                 ),
               ),
-              ViewLabel(
+              ViewLabels(
                 alignment: Alignment.center,
                 softWrap: true,
                 maxLines: 15,

@@ -1,8 +1,10 @@
 part of 'main.dart';
 
-class Poll extends PollNest {
+class Poll extends PollNest<Data> {
   final Authenticate authenticate;
   Poll({required super.data, required this.authenticate});
+  // final Authenticate authenticate;
+  // Poll({required super.data, required this.authenticate});
 
   /// Update token, local (-member.csv, -result.csv -info.json)
   Future<void> updateAll() async {
@@ -15,7 +17,7 @@ class Poll extends PollNest {
       await readLiveAll();
       await Future.delayed(const Duration(milliseconds: 500));
     }
-    data.notify();
+    data.state.notify();
   }
 
   String get userEmail => authenticate.userEmail;
@@ -27,7 +29,7 @@ class Poll extends PollNest {
       await pollBoard.readLive();
     }
     await Future.delayed(const Duration(milliseconds: 500));
-    data.notify();
+    data.state.notify();
   }
 
   /// all Avaliable Polls to current user
@@ -41,12 +43,12 @@ class Poll extends PollNest {
     if (taskWatch.elapsedMilliseconds < 1000) {
       await Future.delayed(const Duration(milliseconds: 300));
     }
-    data.notify();
+    data.state.notify();
   }
 
   void toggleSelection(int id) {
     pollBoard.toggleSelection(id);
-    data.notify();
+    data.state.notify();
   }
 
   int get userMemberId => pollBoard.memberId(userEmail);

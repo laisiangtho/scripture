@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 // import 'package:scripture/core/main.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'leaf-merge';
+  static String route = 'recto-merge';
   static String label = 'Merge';
   static IconData icon = Icons.merge;
 
@@ -15,7 +15,7 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  // late final ScrollController _controller = ScrollController();
+  // late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
   Scripture get scripture => core.scripturePrimary;
@@ -81,31 +81,19 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   // @override
   // void dispose() {
   //   super.dispose();
-  //   _controller.dispose();
+  //   scrollController.dispose();
   // }
 }
 
 mixin _Header on _State {
-  Widget backOrHome() {
-    final self = Navigator.of(context);
-
-    if (self.canPop()) {
-      return OptionButtons.back(
-        navigator: self,
-        label: preference.text.back,
-      );
-    }
-    return OptionButtons.cancel(
-      navigator: Navigator.of(context, rootNavigator: true),
-      label: preference.text.cancel,
-    );
-  }
-
   Widget _header() {
     return ViewHeaderLayouts.fixed(
       height: kTextTabBarHeight,
       left: [
-        backOrHome(),
+        OptionButtons.backOrCancel(
+          back: App.preference.text.back,
+          cancel: App.preference.text.cancel,
+        ),
       ],
       primary: const ViewHeaderTitle.custom(
         child: Icon(Icons.merge),
@@ -131,7 +119,7 @@ class _MainState extends _State with _Header {
       body: Views(
         heroController: HeroController(),
         child: CustomScrollView(
-          // controller: _controller,
+          // controller: scrollController,
           slivers: _slivers,
         ),
       ),

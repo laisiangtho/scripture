@@ -4,7 +4,7 @@ import 'package:lidea/icon.dart';
 // import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -26,14 +26,14 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         // scrollBottom: ScrollBottomNavigation(
-        //   listener: _controller.bottom,
+        //   listener: scrollController.bottom,
         //   notifier: App.viewData.bottom,
         // ),
         child: ValueListenableBuilder(
           valueListenable: boxOfRecentSearch.listen(),
           builder: (BuildContext _, Box<RecentSearchType> __, Widget? ___) {
             return CustomScrollView(
-              controller: _controller,
+              controller: scrollController,
               slivers: _slivers,
             );
           },

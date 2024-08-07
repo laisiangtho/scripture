@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> with SingleTickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
 
   late final boxOfBooks = data.boxOfBooks;
   late final iso = core.iso;
@@ -95,7 +95,7 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
           if (core.message.value.isNotEmpty) {
             core.message.value = '';
           } else {
-            core.notify();
+            core.state.notify();
           }
         });
       });

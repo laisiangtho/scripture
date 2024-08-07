@@ -1,7 +1,6 @@
 part of 'main.dart';
 
-class Preference extends PreferenceNest {
-  // Preference(Collection docket) : super(docket);
+class Preference extends PreferenceNest<Data> {
   Preference(super.data);
 
   @override
@@ -32,9 +31,17 @@ class Preference extends PreferenceNest {
       text: Theme.of(context).textTheme.merge(
             ThemeNest.textTheme(),
           ),
-      color: const ColorNest.light(
-          // highlight: Colors.redAccent,
+      color: const ColorNest.light(),
+    );
+  }
+
+  @override
+  ThemeData? dark(BuildContext context) {
+    return ThemeNest.theme(
+      text: Theme.of(context).textTheme.merge(
+            ThemeNest.textTheme(),
           ),
+      color: const ColorNest.dark(),
     );
   }
 }

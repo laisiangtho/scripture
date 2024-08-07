@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 /// Primary page snap and scroll notifier
-class Views<T> extends ViewScroll<T> {
+class Views<T> extends ViewScrolls<T> {
   const Views({
     super.key,
     super.behavior,

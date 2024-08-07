@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:lidea/provider.dart';
 import 'package:lidea/icon.dart';
 
-import '../../app.dart';
-import '/widget/verse.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'leaf-parallel';
+  static String route = 'recto-parallel';
   static String label = 'Parallel';
   static IconData icon = Icons.ac_unit;
   @override
@@ -65,21 +64,6 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 }
 
 mixin _Header on _State {
-  Widget get backOrHome {
-    final self = Navigator.of(context);
-
-    if (self.canPop()) {
-      return OptionButtons.back(
-        navigator: self,
-        label: preference.text.back,
-      );
-    }
-    return OptionButtons.cancel(
-      navigator: Navigator.of(context, rootNavigator: true),
-      label: preference.text.cancel,
-    );
-  }
-
   Widget _header() {
     return ViewHeaderLayouts.fixed(
       height: headerHeight,
@@ -106,20 +90,20 @@ mixin _Header on _State {
           width: buttonWidth,
           message: preference.text.previousTo(preference.text.chapter('false')),
           onPressed: setChapterPrevious,
-          child: const ViewMark(icon: LideaIcon.chapterPrevious, iconSize: 22),
+          child: const ViewMarks(icon: LideaIcon.chapterPrevious, iconSize: 22),
         ),
         buttonItem(
           width: buttonWidth,
           message: preference.text.nextTo(preference.text.chapter('false')),
           onPressed: setChapterNext,
-          child: const ViewMark(icon: LideaIcon.chapterNext, iconSize: 22),
+          child: const ViewMarks(icon: LideaIcon.chapterNext, iconSize: 22),
         ),
         buttonItem(
           width: buttonWidth,
           message: preference.text.compareTo(preference.text.parallel),
           // onPressed: scrollAnimateToggle,
           onPressed: state.asMap['presistentToggle'],
-          child: const ViewMark(icon: LideaIcon.language, iconSize: 20),
+          child: const ViewMarks(icon: LideaIcon.language, iconSize: 20),
         ),
         buttonItem(
           width: buttonWidth,
@@ -127,7 +111,7 @@ mixin _Header on _State {
           onPressed: () {
             route.showSheetModal(
               context: context,
-              name: 'sheet-bible-navigation/leaf-title',
+              name: 'sheet-bible-navigation/recto-title',
               arguments: {'book': primaryScripture.bookCurrent.info.id},
             ).then((e) {
               if (e != null) {
@@ -137,7 +121,7 @@ mixin _Header on _State {
               }
             });
           },
-          child: ViewMark(
+          child: ViewMarks(
             // icon: Icons.linear_scale_rounded,
             icon: Icons.signpost_rounded,
             iconColor: state.theme.primaryColorDark.withOpacity(0.6),
@@ -149,7 +133,7 @@ mixin _Header on _State {
           onPressed: () {
             route.showSheetModal(
               context: context,
-              name: 'sheet-bible-navigation/leaf-merge',
+              name: 'sheet-bible-navigation/recto-merge',
               arguments: {'book': primaryScripture.bookCurrent.info.id},
             ).then((e) {
               if (e != null) {
@@ -159,7 +143,7 @@ mixin _Header on _State {
               }
             });
           },
-          child: ViewMark(
+          child: ViewMarks(
             icon: Icons.merge,
             iconColor: state.theme.primaryColorDark.withOpacity(0.6),
             iconSize: 20,
@@ -167,7 +151,7 @@ mixin _Header on _State {
         ),
         // buttonItem(
         //   width: buttonWidth,
-        //   child: const ViewMark(icon: Icons.more_horiz, iconSize: 20),
+        //   child: const ViewMarks(icon: Icons.more_horiz, iconSize: 20),
         // ),
       ],
     );
@@ -178,7 +162,7 @@ mixin _Header on _State {
       required Widget child,
       void Function()? onPressed,
       String message = ''}) {
-    return ViewButton(
+    return ViewButtons(
       constraints: BoxConstraints(minWidth: width, maxWidth: width),
       padding: EdgeInsets.zero,
       // message: message,
@@ -255,19 +239,19 @@ class _MainState extends _State with _Header {
                       style: state.theme.textTheme.titleSmall,
                     ),
                   ),
-                  // ViewButton(
+                  // ViewButtons(
                   //   onPressed: () {
-                  //     Navigator.of(context).pushNamed('leaf-title');
+                  //     Navigator.of(context).pushNamed('recto-title');
                   //   },
-                  //   child: const ViewLabel(
+                  //   child: const ViewLabels(
                   //     icon: Icons.abc_outlined,
                   //   ),
                   // ),
 
-                  ViewButton(
+                  ViewButtons(
                     message: preference.text.chooseTo(preference.text.bible('false')),
                     onPressed: _showParallelList,
-                    child: const ViewLabel(
+                    child: const ViewLabels(
                       icon: Icons.linear_scale,
                     ),
                   ),

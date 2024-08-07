@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _Search extends _Mock {
+abstract class _Searches extends _Engines {
   // SuggestionType? _cacheSuggestion;
   // SuggestionType _cacheSuggestion = const SuggestionType<Map<String, String>>();
   // ConclusionType _cacheConclusion = const ConclusionType();

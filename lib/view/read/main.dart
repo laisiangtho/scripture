@@ -6,9 +6,7 @@ import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
-import '../../app.dart';
-
-import '/widget/verse.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -37,7 +35,7 @@ class _View extends _State with _Header {
       key: _scaffoldKey,
       body: Views(
         scrollBottom: ScrollBottomNavigation(
-          listener: _controller.bottom,
+          listener: scrollController.bottom,
           notifier: App.viewData.bottom,
           height: 120,
           pointer: 20,
@@ -52,12 +50,12 @@ class _View extends _State with _Header {
         // scrollBottomNavigation: ScrollBottomNavigation()
         child: Motile(
           child: CustomScrollView(
-            controller: _controller,
+            controller: scrollController,
             slivers: _slivers,
           ),
         ),
         // child: CustomScrollView(
-        //   controller: _controller,
+        //   controller: scrollController,
         //   slivers: _slivers,
         // ),
       ),

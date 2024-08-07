@@ -215,7 +215,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),
                   onTap: () {
-                    App.route.pushNamed('home/leaf-section');
+                    App.route.pushNamed('home/recto-section');
                   },
                 ),
               ),

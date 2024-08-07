@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+
+/// NOTE: Lidea
 import 'package:lidea/view/keep_alive.dart';
 
+/// NOTE: Core
 import '/core/main.dart';
 export '/core/main.dart';
+
+/// NOTE: Routes
 import '/view/routes.dart';
 export '/view/routes.dart';
 
+/// NOTE: Components
+export '/components/main.dart';
+
+/// App instance that providing Core, Data, Route, Preference, Authenticate and Context
 class App {
   // static ScrollNotifier notifier = ScrollNotifier();
   // static Routes routeDelegate = Routes();
@@ -17,8 +26,7 @@ class App {
   static final ViewData viewData = core.viewData;
 
   /// Route core delegate (routeDelegate)
-  // static final RouteDelegate routeDelegate = core.routeDelegateTmp;
-  static final RouteDelegate routeDelegate = RouteDelegate();
+  static final RouteDelegates routeDelegate = RouteDelegates();
 
   /// Route delegate notifier
   static final RouteNotifier route = routeDelegate.notifier;
@@ -37,7 +45,7 @@ abstract class StateAbstract<T extends StatefulWidget> extends ViewStateWidget<T
   late final Map<String, dynamic> args = state.asMap;
 
   late final ViewData viewData = App.viewData;
-  late final RouteDelegate routeDelegate = App.routeDelegate;
+  late final RouteDelegates routeDelegate = App.routeDelegate;
   late final RouteNotifier route = App.route;
 
   late final Core core = App.core;

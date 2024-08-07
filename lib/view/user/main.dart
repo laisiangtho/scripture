@@ -2,14 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lidea/provider.dart';
-// import 'package:lidea/view/main.dart';
 import 'package:lidea/icon.dart';
 import 'package:lidea/launcher.dart';
 
 import 'package:lidea/view/user/main.dart';
 // import 'package:lidea/view/demo/translate.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -32,7 +31,7 @@ class _View extends _State with _Header {
     return Scaffold(
       body: Views(
         // scrollBottom: ScrollBottomNavigation(
-        //   listener: _controller.bottom,
+        //   listener: scrollController.bottom,
         //   notifier: viewData.bottom,
         // ),
         child: Consumer<Authenticate>(
@@ -44,7 +43,7 @@ class _View extends _State with _Header {
 
   Widget middleware(BuildContext context, Authenticate aut, Widget? child) {
     return CustomScrollView(
-      controller: _controller,
+      controller: scrollController,
       slivers: sliverWidgets(),
     );
   }
@@ -103,7 +102,7 @@ class _View extends _State with _Header {
         sliver: true,
         preference: App.preference,
         authenticate: App.authenticate,
-        children: pollList(),
+        children: userDesk(),
       ),
 
       SliverPadding(
@@ -120,7 +119,7 @@ class _View extends _State with _Header {
                 //     ),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              // ViewMark(
+              // ViewMarks(
               //   badge: data.env.name,
               //   label: preference.text.holyBible,
               // ),
@@ -240,13 +239,13 @@ class _View extends _State with _Header {
       sliver: true,
       padding: EdgeInsets.zero,
       headerTitle: ViewSectionTitle(
-        title: ViewLabel(
+        title: ViewLabels(
           // alignment: Alignment.centerLeft,
           alignment: Alignment.center,
           label: preference.text.wouldYouLiketoSignIn,
         ),
       ),
-      // headerTitle: const ViewLabel(
+      // headerTitle: const ViewLabels(
       //   // icon: LideaIcon.switchArrow,
       //   label: "center",
       //   labelPadding: EdgeInsets.zero,
@@ -265,7 +264,7 @@ class _View extends _State with _Header {
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
         child: ListBody(
           children: [
-            SignInButton(
+            ViewSignIns(
               icon: LideaIcon.google,
               label: 'Sign in with Google',
               onPressed: () {
@@ -274,7 +273,7 @@ class _View extends _State with _Header {
             ),
 
             if (App.authenticate.showApple)
-              SignInButton(
+              ViewSignIns(
                 icon: LideaIcon.apple,
                 label: 'Sign in with Apple',
                 onPressed: () {
@@ -282,7 +281,7 @@ class _View extends _State with _Header {
                 },
               ),
             if (App.authenticate.showFacebook)
-              SignInButton(
+              ViewSignIns(
                 icon: LideaIcon.facebook,
                 label: 'Continue with Facebook',
                 onPressed: () {
@@ -323,34 +322,34 @@ class _View extends _State with _Header {
   Widget profileContainer() {
     return ViewSections(
       sliver: true,
-      headerTitle: ViewLabel(
+      headerTitle: ViewLabels(
         // label: authenticate.user!.displayName,
         label: App.authenticate.userDisplayname,
         labelStyle: Theme.of(context).textTheme.titleLarge,
         // alignment: Alignment.center,
       ),
-      // footerTitle: ViewLabel(
+      // footerTitle: ViewLabels(
       //   // alignment: Alignment.centerLeft,
       //   label: preference.text.bySigningIn,
       //   labelStyle: Theme.of(context).textTheme.labelSmall,
       // ),
-      child: ViewLabel(
+      child: ViewLabels(
         // label: App.authenticate.user!.email!,
         label: App.authenticate.userEmail,
-        // label: 'khensolomon@gmail.com',
+
         labelStyle: Theme.of(context).textTheme.bodySmall,
       ),
     );
   }
 
-  List<ViewButton> pollList() {
+  List<ViewButtons> userDesk() {
     // return [];
     return List.generate(
       poll.userPollBoard.length,
       (index) {
         final element = poll.userPollBoard.elementAt(index);
-        return ViewButton(
-          child: ViewLabel(
+        return ViewButtons(
+          child: ViewLabels(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
             alignment: Alignment.centerLeft,
             icon: Icons.how_to_vote_outlined,

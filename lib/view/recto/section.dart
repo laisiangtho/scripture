@@ -4,12 +4,12 @@ import 'package:lidea/icon.dart';
 // import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'leaf-section';
+  static String route = 'recto-section';
   static String label = 'Section';
   static IconData icon = Icons.ac_unit;
 
@@ -18,7 +18,7 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
   Scripture get scripture => App.core.scripturePrimary;
@@ -35,7 +35,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    scrollController.dispose();
   }
 }
 
@@ -71,7 +71,7 @@ class _MainState extends _State with _Header {
         // snap: Future.delayed(const Duration(milliseconds: 400)),
         // snapAwait: const ViewFeedback.await(primary: false),
         child: CustomScrollView(
-          controller: _controller,
+          controller: scrollController,
           slivers: _slivers,
         ),
       ),
@@ -174,7 +174,7 @@ class _MainState extends _State with _Header {
                           style: state.textTheme.titleSmall,
                         ),
                         title: Text(App.preference.language('book-$bId')),
-                        trailing: ViewMark(
+                        trailing: ViewMarks(
                           iconLeft: false,
                           icon: LideaIcon.rightOpen,
                           iconSize: 28,
@@ -184,7 +184,7 @@ class _MainState extends _State with _Header {
                         onTap: () {
                           route.showSheetModal(
                             context: context,
-                            name: 'sheet-bible-navigation/leaf-book',
+                            name: 'sheet-bible-navigation/recto-book',
                             arguments: {'book': book.id},
                           );
                         },

@@ -51,7 +51,7 @@ class _MainState extends StateAbstract<Main> {
 
     App.route.showSheetModal(
       context: context,
-      name: 'sheet-bible-navigation/leaf-editor',
+      name: 'sheet-bible-navigation/recto-editor',
       arguments: {
         'text': toEdit,
         'focus': true,
@@ -145,20 +145,20 @@ class _MainState extends StateAbstract<Main> {
           ),
           shrinkWrap: true,
           children: <Widget>[
-            // ViewButton(
+            // ViewButtons(
             //   style: state.textTheme.labelLarge,
             //   message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
             //   onPressed: () => doFontSize(false),
             //   child: const Icon(Icons.remove),
             // ),
-            // ViewButton(
+            // ViewButtons(
             //   onPressed: doFontSizeReset,
             //   message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
             //   child: StreamBuilder(
             //     initialData: bOS.fontSize(),
             //     stream: bOS.watch(key: 'fontSize'),
             //     builder: (BuildContext _, AsyncSnapshot<Object> e) {
-            //       return ViewMark(
+            //       return ViewMarks(
             //         decoration: BoxDecoration(
             //           border: Border.symmetric(
             //             vertical: BorderSide(
@@ -175,7 +175,7 @@ class _MainState extends StateAbstract<Main> {
             //     },
             //   ),
             // ),
-            // ViewButton(
+            // ViewButtons(
             //   onPressed: () => doFontSize(true),
             //   style: state.textTheme.labelLarge,
             //   message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
@@ -186,13 +186,13 @@ class _MainState extends StateAbstract<Main> {
               message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
               icon: Icons.remove,
             ),
-            // ViewButton(
+            // ViewButtons(
             //   onPressed: () => doFontSize(true),
             //   style: state.textTheme.labelLarge,
             //   message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
             //   child: const Icon(Icons.add),
             // ),
-            ViewButton(
+            ViewButtons(
               onPressed: doFontSizeReset,
               message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
               padding: EdgeInsets.zero,
@@ -200,7 +200,7 @@ class _MainState extends StateAbstract<Main> {
                 initialData: bOS.fontSize(),
                 stream: bOS.watch(key: 'fontSize'),
                 builder: (BuildContext _, AsyncSnapshot<Object> e) {
-                  return ViewMark(
+                  return ViewMarks(
                     decoration: BoxDecoration(
                       border: Border.symmetric(
                         vertical: BorderSide(
@@ -233,7 +233,7 @@ class _MainState extends StateAbstract<Main> {
           // ListenableBuilder(
           //   listenable: marks,
           //   builder: (BuildContext context, Widget? _) {
-          //     return ViewButton.filled(
+          //     return ViewButtons.filled(
           //       color: color.withOpacity(0.2),
           //       borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           //       onPressed: marks.hasSelection ? onPressed : null,
@@ -395,13 +395,13 @@ class _MainState extends StateAbstract<Main> {
       builder: (BuildContext context, Widget? _) {
         return Opacity(
           opacity: marks.hasSelection ? 1 : 0.3,
-          child: ViewButton.filled(
+          child: ViewButtons.filled(
             padding: EdgeInsets.zero,
             margin: EdgeInsets.zero,
             onPressed: marks.hasSelection ? () => marks.selectionApply(color: index) : null,
             // message: preference.text.color(''),
             message: preference.language('color-${oj.name}'),
-            child: ViewMark(
+            child: ViewMarks(
               padding: EdgeInsets.zero,
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               // constraints: const BoxConstraints(minWidth: 30),
@@ -434,19 +434,19 @@ class _MainState extends StateAbstract<Main> {
     return ListenableBuilder(
       listenable: marks,
       builder: (BuildContext context, Widget? _) {
-        return ViewButton(
+        return ViewButtons(
           onPressed: marks.hasSelection ? onPressed : null,
           message: msg,
-          child: ViewMark(
+          child: ViewMarks(
             icon: icon,
           ),
         );
       },
     );
-    // return ViewButton(
+    // return ViewButtons(
     //   onPressed: hasSelection ? onPressed : null,
     //   message: msg,
-    //   child: ViewMark(
+    //   child: ViewMarks(
     //     icon: icon,
     //     // labelPadding: const EdgeInsets.only(left: 7),
     //     // iconSize: 17,

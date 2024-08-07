@@ -26,19 +26,19 @@ mixin _Header on _State {
         //   valueListenable: App.core.data.boxOfRecentSearch.listen(),
         //   // valueListenable: App.core.data.boxOfBooks.listen(),
         //   builder: (BuildContext context, Box<RecentSearchType> box, Widget? child) {
-        //     return ViewButton(
+        //     return ViewButtons(
         //       enable: box.isNotEmpty,
         //       onPressed: onDeleteAllConfirmWithDialog,
-        //       child: const ViewMark(
+        //       child: const ViewMarks(
         //         icon: Icons.clear_all_rounded,
         //       ),
         //     );
         //   },
         // ),
-        // ViewButton(
+        // ViewButtons(
         //   enable: boxOfRecentSearch.isNotEmpty,
         //   onPressed: onDeleteAllConfirmWithDialog,
-        //   child: const ViewMark(
+        //   child: const ViewMarks(
         //     icon: Icons.clear_all_rounded,
         //   ),
         // ),

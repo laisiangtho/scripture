@@ -224,12 +224,12 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     bool isCurrentChapter = App.core.data.chapterId == index;
     // bool isCurrentChapter = chapter.id == index;
 
-    return ViewButton(
+    return ViewButtons(
       // enable: !isCurrentChapter,
       style: TextStyle(
         fontSize: buttonFontSize,
       ),
-      child: ViewMark(
+      child: ViewMarks(
         label: scripture.digit(index),
         // labelColor: isCurrentChapter ? Colors.red : null,
         labelStyle: TextStyle(

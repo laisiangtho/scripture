@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../app.dart';
+part of 'main.dart';
 
 class VerseWidgetInherited extends InheritedWidget {
   final int verseId;
@@ -192,7 +190,7 @@ class VerseItemWidget extends StatelessWidget {
                         onPressed: () {
                           App.route.showSheetModal(
                             context: context,
-                            name: 'sheet-bible-navigation/leaf-editor',
+                            name: 'sheet-bible-navigation/recto-editor',
                             arguments: {
                               'text': verseNote,
                               // 'focus': true,

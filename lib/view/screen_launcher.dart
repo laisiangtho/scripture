@@ -1,19 +1,16 @@
-// NOTE: Material
 import 'package:flutter/material.dart';
 
-// NOTE: SystemUiOverlayStyle
+/// NOTE: SystemUiOverlayStyle
 import 'package:flutter/services.dart';
 
-import '../app.dart';
-// import 'routes.dart';
-// import 'views.dart';
-// import 'screen_splash.dart';
+/// NOTE: Core, Components
+import '/app.dart';
 
 part 'screen_splash.dart';
 part 'bottom_navigation.dart';
 
 class ScreenLauncher extends StatefulWidget {
-  final RouteDelegate delegate;
+  final RouteDelegates delegate;
   const ScreenLauncher({super.key, required this.delegate});
 
   @override
@@ -22,7 +19,7 @@ class ScreenLauncher extends StatefulWidget {
 
 class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
   late final _session = widget.delegate.notifier;
-  late final PageController _controller = PageController(initialPage: _session.viewIndex);
+  late final PageController pageController = PageController(initialPage: _session.viewIndex);
   // late final Future<void> _initiator = Future.delayed(const Duration(milliseconds: 300));
   late final Future<void> _initiator = App.core.initialized(context);
 
@@ -40,13 +37,13 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
 
   // Deep link
   void onPageChange() {
-    if (!_controller.hasClients) return;
+    if (!pageController.hasClients) return;
     _session.setIndex();
-    _controller.jumpToPage(_session.viewIndex);
+    pageController.jumpToPage(_session.viewIndex);
     // if (_started) {
-    //   _controller.jumpToPage(_session.viewIndex);
+    //   pageController.jumpToPage(_session.viewIndex);
     // } else {
-    //   _controller.animateToPage(
+    //   pageController.animateToPage(
     //     _session.viewIndex,
     //     duration: const Duration(milliseconds: 700),
     //     curve: Curves.easeIn,
@@ -157,7 +154,7 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
     //     maintainBottomViewPadding: true,
     //     child: PageView(
     //       key: const Key('ScreenLauncherPageView'),
-    //       controller: _controller,
+    //       controller: pageController,
     //       physics: const NeverScrollableScrollPhysics(),
     //       children: _viewChildren,
     //     ),
@@ -181,13 +178,13 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
 
         body: PageView(
           key: const Key('ScreenLauncherPageView'),
-          controller: _controller,
+          controller: pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: _viewChildren,
         ),
         // extendBody: true,
         // resizeToAvoidBottomInset: true,
-        bottomNavigationBar: const BottomNavigationBarWidget(),
+        bottomNavigationBar: const BottomNavigationWidget(),
       ),
     );
   }
@@ -215,19 +212,12 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
       (route) => StateAlive(
         key: Key('ScreenLauncherViewKeepAlive-${route.name}'),
         child: NestedView(
-          delegate: NestDelegate(
-            notifier: _session,
+          delegate: NestedDelegates(
+            bridge: _session,
             name: route.name,
-            route: route.route,
+            route: route.nest,
           ),
         ),
-        // child: RouteNestedWidget(
-        //   delegate: NestDelegate(
-        //     notifier: _session,
-        //     root: route.name,
-        //     route: route.route,
-        //   ),
-        // ),
       ),
     ),
   );

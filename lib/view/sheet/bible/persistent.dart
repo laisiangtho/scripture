@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/route/main.dart';
-
 import '../../../app.dart';
 
 class Main extends SheetsDraggable {
@@ -58,7 +56,7 @@ class _State extends SheetsDraggableState<Main> {
     );
   }
 
-  late final RouteChangeNotifier notifier = RouteChangeNotifier();
+  late final RouteNotifier notifier = RouteNotifier();
 
   // void copyVerseSelection() {
   //   primaryScripture.getSelection().then(Share.share);
@@ -67,7 +65,7 @@ class _State extends SheetsDraggableState<Main> {
   @override
   List<Widget> slivers() {
     Map<String, dynamic> nestArguments = {
-      'presistentToggle': scrollAnimateToggle,
+      'presistentToggle': scrollToggle,
     }..addAll(state.asMap);
 
     return <Widget>[
@@ -75,8 +73,8 @@ class _State extends SheetsDraggableState<Main> {
         // hasScrollBody: false,
         // fillOverscroll: true,
         child: NestedView(
-          delegate: PersistentNestDelegate(
-            notifier: notifier,
+          delegate: PersistentDelegates(
+            bridge: notifier,
             name: rootPath(Main.route),
             // arguments: state.arguments,
 

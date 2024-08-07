@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 // import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
-import '../../app.dart';
-// import '/widget/button.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'leaf-book';
+  static String route = 'recto-book';
   static String label = 'Book';
   static IconData icon = Icons.ac_unit;
 
@@ -186,26 +185,14 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 }
 
 mixin _Header on _State {
-  Widget get backOrHome {
-    final self = Navigator.of(context);
-
-    if (self.canPop()) {
-      return OptionButtons.back(
-        navigator: self,
-        label: App.preference.text.back,
-      );
-    }
-    return OptionButtons.cancel(
-      navigator: Navigator.of(context, rootNavigator: true),
-      label: App.preference.text.cancel,
-    );
-  }
-
   Widget _header() {
     return ViewHeaderLayouts.fixed(
       height: kTextTabBarHeight,
       left: [
-        backOrHome,
+        OptionButtons.backOrCancel(
+          back: App.preference.text.back,
+          cancel: App.preference.text.cancel,
+        ),
       ],
       primary: ViewHeaderTitle.fixed(
         // alignment: Alignment.lerp(
@@ -216,12 +203,12 @@ mixin _Header on _State {
         label: App.preference.text.book('true'),
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           style: Theme.of(context).textTheme.titleSmall,
           onPressed: () {
-            Navigator.of(context).pushNamed('leaf-title');
+            Navigator.of(context).pushNamed('recto-title');
           },
-          child: ViewMark(
+          child: ViewMarks(
             label: App.preference.text.title(''),
           ),
         ),
@@ -361,7 +348,7 @@ class _MainState extends _State with _Header {
         textAlign: TextAlign.start,
         style: Theme.of(context).textTheme.titleMedium,
       ),
-      // trailing: ViewMark(
+      // trailing: ViewMarks(
       //   iconLeft: false,
       //   // icon: Icons.arrow_forward_ios_rounded,
       //   icon: Icons.expand_more_rounded,
@@ -507,10 +494,10 @@ class ChapterNameItem extends StatelessWidget {
     // book?.totalChapter
 
     if (book == null) {
-      return ViewButton.filled(
+      return ViewButtons.filled(
         margin: margin,
         enable: false,
-        child: ViewMark(
+        child: ViewMarks(
           icon: Icons.signpost_rounded,
           // iconColor: theme.disabledColor,
           iconColor: theme.primaryColorDark.withOpacity(0.3),
@@ -519,12 +506,12 @@ class ChapterNameItem extends StatelessWidget {
     }
 
     if (isChapter) {
-      return ViewButton.filled(
+      return ViewButtons.filled(
         margin: margin,
         color: theme.primaryColor.withOpacity(isCurrentChapter ? 0.4 : 1),
         showShadow: isCurrentChapter,
         message: preference.text.chapter(''),
-        child: ViewMark(
+        child: ViewMarks(
           label: scripture.digit(index),
           labelStyle: theme.textTheme.labelLarge?.copyWith(
             color: isCurrentChapter ? theme.hintColor.withOpacity(0.3) : null,
@@ -540,30 +527,30 @@ class ChapterNameItem extends StatelessWidget {
 
     if (index == book!.totalChapter + 1) {
       /// NOTE: verse merge
-      return ViewButton.filled(
+      return ViewButtons.filled(
         margin: margin,
         message: preference.language('verse-merged'),
-        child: ViewMark(
+        child: ViewMarks(
           icon: Icons.merge,
           iconColor: theme.primaryColorDark.withOpacity(0.3),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed('leaf-merge', arguments: {'book': book?.info.id});
+          Navigator.of(context).pushNamed('recto-merge', arguments: {'book': book?.info.id});
         },
       );
     }
 
-    return ViewButton.filled(
+    return ViewButtons.filled(
       margin: margin,
       // color: theme.primaryColor,
       showShadow: false,
       message: App.preference.text.title(''),
-      child: ViewMark(
+      child: ViewMarks(
         icon: Icons.signpost_rounded,
         iconColor: theme.primaryColorDark.withOpacity(0.3),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed('leaf-title', arguments: {'book': book?.info.id});
+        Navigator.of(context).pushNamed('recto-title', arguments: {'book': book?.info.id});
       },
     );
   }

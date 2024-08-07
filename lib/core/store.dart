@@ -1,5 +1,5 @@
 part of 'main.dart';
 
-class Store {
-  Store();
+class Store extends UnitStore<Data> {
+  Store(super.data);
 }

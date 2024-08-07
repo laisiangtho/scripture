@@ -78,7 +78,7 @@ class Scripture extends _ScriptureInterface {
 
     if (isReady) {
       if (dataType == 0) {
-        data.notify();
+        data.state.notify();
       }
       return bible;
     }
@@ -86,7 +86,7 @@ class Scripture extends _ScriptureInterface {
     _identifyIndexPrevious = _identifyIndex;
     if (isReady) {
       if (dataType == 0) {
-        data.notify();
+        data.state.notify();
       }
       return bible;
     }
@@ -534,7 +534,7 @@ extension ScriptureExtension on Scripture {
   /// current book or chapter have been changed
   /// notify then scroll to top
   void changeNotify() {
-    Future.microtask(data.notify).whenComplete(() {
+    Future.microtask(data.state.notify).whenComplete(() {
       scrollToPosition(0);
     });
   }

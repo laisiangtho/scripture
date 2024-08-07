@@ -20,20 +20,20 @@ mixin _Header on _State {
         data: vhd,
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           onPressed: showMember,
-          child: const ViewMark(
+          child: const ViewMarks(
             icon: Icons.groups_outlined,
           ),
         ),
-        ViewButton(
+        ViewButtons(
           enable: hasReady2Vote,
           onPressed: vote,
           badge: selectionCount,
           child: AnimatedBuilder(
             animation: busyController,
             builder: (context, child) {
-              return ViewMark(
+              return ViewMarks(
                 child: busyAnimation.isCompleted
                     ? child
                     : Icon(

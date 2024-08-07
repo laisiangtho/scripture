@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});

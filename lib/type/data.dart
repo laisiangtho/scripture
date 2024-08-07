@@ -1,24 +1,23 @@
 part of 'main.dart';
 
 class Data extends DataNest {
+  /// retrieve the instance through the app
+  /// ```dart
+  /// Data.internal();
+  /// Data.internal() : super.internal();
+  /// Data() : super();
+  /// ```
+  Data({required super.state});
+
   late final boxOfBooks = BoxOfBooks<BooksType>();
   late final boxOfBookmarks = BoxOfBookmarks<BookmarksType>();
 
   List<OfBible> cacheBible = [];
 
-  // late final ValueNotifier<List<int>> verseSelection = ValueNotifier<List<int>>([]);
-  // late final ValueNotifier<List<int>> verseColor = ValueNotifier<List<int>>([]);
-
-  // retrieve the instance through the app
-  // Collection.internal();
-  // Collection.internal() : super.internal();
-
-  // Data() : super();
-  Data({required super.notify});
-
   @override
   Future<void> ensureInitialized() async {
     await super.ensureInitialized();
+
     boxOfBooks.registerAdapter(BooksAdapter());
     boxOfBookmarks.registerAdapter(BookmarksAdapter());
   }

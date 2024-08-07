@@ -1,48 +1,31 @@
 part of 'screen_launcher.dart';
-// import 'package:flutter/material.dart';
 
 class ScreenSplash extends StatelessWidget {
   const ScreenSplash({super.key});
 
   @override
-  // Widget build(BuildContext context) {
-  //   return const Scaffold(
-  //     body: Center(
-  //       child: Text('Splash'),
-  //     ),
-  //   );
-  // }
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             MergeSemantics(
               child: RichText(
                 textAlign: TextAlign.center,
-                // strutStyle: StrutStyle(),
-
                 text: TextSpan(
                   text: '"',
                   semanticsLabel: "open quotation mark",
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w300,
                       ),
-                  // style: TextStyle(
-                  //   color: Theme.of(context).primaryTextTheme.labelLarge!.color,
-                  //   fontSize: 30,
-                  //   fontWeight: FontWeight.w200,
-                  // ),
-                  children: <TextSpan>[
-                    const TextSpan(
+                  children: const <TextSpan>[
+                    TextSpan(
                       text: 'the',
                       semanticsLabel: "the",
                       style: TextStyle(fontSize: 45),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: ' Holy\n',
                       semanticsLabel: "Holy",
                       style: TextStyle(
@@ -50,23 +33,23 @@ class ScreenSplash extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: 'Bible\n'.toUpperCase(),
+                      text: 'BIBLE\n',
                       semanticsLabel: "Bible",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 65,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'in ',
                       semanticsLabel: "in",
                       // style: TextStyle(fontSize: 30),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: 'languages',
                       semanticsLabel: "languages",
                       // style: TextStyle(fontSize: 30),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: '"',
                       semanticsLabel: "close quotation mark",
                       style: TextStyle(fontSize: 25),
@@ -85,14 +68,6 @@ class ScreenSplash extends StatelessWidget {
                 ),
               ),
             ),
-            // Semantics(
-            //   label: "Message",
-            //   child: Text(
-            //     App.core.message,
-            //     semanticsLabel: App.core.message,
-            //     style: const TextStyle(fontSize: 30),
-            //   ),
-            // )
           ],
         ),
       ),

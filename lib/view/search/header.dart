@@ -93,11 +93,11 @@ mixin _Header on _State {
             SizeTransition(
               sizeFactor: _cancelController,
               axis: Axis.horizontal,
-              // child: ViewButton(
+              // child: ViewButtons(
               //   // constraints: BoxConstraints(minHeight: data.minHeight),
               //   onPressed: onCancel,
               //   style: Theme.of(context).textTheme.labelMedium,
-              //   child: ViewMark(
+              //   child: ViewMarks(
               //     label: App.preference.text.cancel,
               //   ),
               // ),
@@ -189,11 +189,11 @@ mixin _Header on _State {
           SizeTransition(
             sizeFactor: _cancelController,
             axis: Axis.horizontal,
-            // child: ViewButton(
+            // child: ViewButtons(
             //   // constraints: BoxConstraints(minHeight: data.minHeight),
             //   onPressed: onCancel,
             //   style: Theme.of(context).textTheme.labelMedium,
-            //   child: ViewMark(
+            //   child: ViewMarks(
             //     label: App.preference.text.cancel,
             //   ),
             // ),

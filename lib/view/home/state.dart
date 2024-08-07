@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
   late final Scripture scripturePrimary = core.scripturePrimary;
@@ -14,7 +14,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    scrollController.dispose();
   }
 
   void showBibleContent(BooksType bible) async {

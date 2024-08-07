@@ -51,10 +51,10 @@ class _State extends SheetsDraggableState<Main> {
           // forceMaterialTransparency: true,
           // backgroundColor: Colors.red,
           // foregroundColor: Colors.blue,
-          leading: ViewButton(
+          leading: ViewButtons(
             // color: Colors.red,
             padding: EdgeInsets.zero,
-            child: const ViewLabel(
+            child: const ViewLabels(
               icon: Icons.arrow_back_ios_new,
               label: 'Back',
             ),
@@ -427,7 +427,7 @@ class _State extends SheetsDraggableState<Main> {
     // bool isCurrentChapter = 2 == index;
     bool isCurrentChapter = App.core.data.chapterId == chapterId;
 
-    return ViewButton(
+    return ViewButtons(
       // borderRadius: const BorderRadius.all(Radius.circular(2.0)),
       padding: const EdgeInsets.all(12),
       constraints: const BoxConstraints(
@@ -435,7 +435,7 @@ class _State extends SheetsDraggableState<Main> {
         // minHeight: 70,
       ),
       // color: Colors.red,
-      // child: ViewMark(
+      // child: ViewMarks(
       //   // label: scripture.digit(chapterId),
       //   label: chapterId.toString(),
       //   labelStyle: TextStyle(

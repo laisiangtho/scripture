@@ -21,13 +21,16 @@ class OfBible {
 
   factory OfBible.fromJSON(Map<String, dynamic> o) {
     final info = BooksType.fromJSON(o['info']);
+
     return OfBible(
       info: info,
       note: o['note'],
       language: o['language'],
       digit: o['digit'] as List,
-      testament:
-          (o["testament"] as Map<String, dynamic>).entries.map(OfTestament.fromJSON).toList(),
+      // testament: (o["testament"]).entries.map(OfTestament.fromJSON).toList(),
+      testament: (o["testament"] as Map<String, dynamic>).entries.map((e) {
+        return OfTestament.fromJSON(e);
+      }).toList(),
       story: o['story'],
       // book: (o["book"] as Map<String, dynamic>).entries.map(OfBook.fromJSON).toList(),
       book: (o["book"] as Map<String, dynamic>).entries.map((e) {

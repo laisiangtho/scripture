@@ -18,7 +18,7 @@ mixin _Header<T> on _State {
         ),
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           message: App.preference.text.signOut,
           show: App.authenticate.hasUser,
           onPressed: App.authenticate.signOut,

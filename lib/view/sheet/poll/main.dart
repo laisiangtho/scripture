@@ -89,7 +89,7 @@ class _State extends SheetsDraggableState<Main> {
         //   // alignment: Alignment.centerLeft,
         //   label: '...',
         // ),
-        headerTitle: ViewButton(
+        headerTitle: ViewButtons(
           onPressed: () {
             // Navigator.push(
             //   context,

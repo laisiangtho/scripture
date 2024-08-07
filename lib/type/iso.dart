@@ -64,14 +64,14 @@ class ISOFilter extends Notify {
   void toggle(ISOModel item) {
     final index = _items.indexOf(item);
     _items[index].toggleShow();
-    notify();
+    state.notify();
   }
 
   void toggleAll() {
     for (var e in all) {
       e.toggleShow();
     }
-    notify();
+    state.notify();
   }
 
   void delete(ISOModel item) {

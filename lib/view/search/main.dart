@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
 
-import '../../app.dart';
-
-import '/widget/verse.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';

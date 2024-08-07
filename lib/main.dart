@@ -1,10 +1,9 @@
-// NOTE: Material
 import 'package:flutter/material.dart';
 
-// NOTE: SystemUiOverlayStyle
+/// NOTE: SystemUiOverlayStyle
 // import 'package:flutter/services.dart';
 
-// NOTE: Privider: state management
+/// NOTE: State management
 import 'package:lidea/provider.dart';
 
 import 'app.dart';
@@ -12,25 +11,9 @@ import 'initialize.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown,
-  //   DeviceOrientation.landscapeLeft,
-  //   DeviceOrientation.landscapeRight,
-  // ]);
-
   await initializeApp();
   await App.core.ensureInitialized();
-
   runApp(const LaiSiangtho());
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  //   DeviceOrientation.portraitDown,
-  //   DeviceOrientation.landscapeLeft,
-  //   DeviceOrientation.landscapeRight,
-  // ]).then((_) {
-  //   runApp(const Example());
-  // });
 }
 
 class LaiSiangtho extends StatelessWidget {

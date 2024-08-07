@@ -26,7 +26,7 @@ class SearchPrefixIcon extends StatelessWidget {
     return Selector<Core, BooksType>(
       selector: (_, e) => e.scripturePrimary.info,
       builder: (BuildContext _, BooksType info, Widget? child) {
-        return ViewMark(
+        return ViewMarks(
           margin: const EdgeInsets.all(9),
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
@@ -69,7 +69,7 @@ class SearchSuffixIcon extends StatelessWidget {
       opacity: clearController,
       child: FadeTransition(
         opacity: cancelController,
-        child: ViewButton(
+        child: ViewButtons(
           onPressed: onPressed,
           padding: const EdgeInsets.all(0),
           // message: App.preference.text.clear,

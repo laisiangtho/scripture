@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
-import '../../app.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -19,7 +19,7 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
   // @override
@@ -30,7 +30,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    scrollController.dispose();
   }
 }
 
@@ -64,7 +64,7 @@ class _MainState extends _State with _Header {
       primary: true,
       body: Views(
         child: CustomScrollView(
-          controller: _controller,
+          controller: scrollController,
           slivers: _slivers,
         ),
       ),

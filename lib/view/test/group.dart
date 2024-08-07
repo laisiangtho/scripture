@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:lidea/provider.dart';
 // import 'package:lidea/hive.dart';
 
-import '../../app.dart';
-// import '/widget/button.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -19,7 +18,7 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  // late final ScrollController _controller = ScrollController();
+  // late final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class _MainState extends State<Main> {
           body: Builder(builder: (context) {
             return CustomScrollView(
               key: const PageStorageKey<String>("abcs"),
-              // controller: _controller,
+              // controller: scrollController,
               slivers: [
                 SliverOverlapInjector(
                   // This is the flip side of the SliverOverlapAbsorber

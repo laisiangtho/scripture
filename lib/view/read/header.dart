@@ -8,14 +8,14 @@ mixin _Header on _State {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ViewButton(
+        ViewButtons(
           key: _kBookmarks,
           message: preference.text.addTo(preference.text.bookmark('true')),
           onPressed: showBookmarks,
           child: Selector<Core, bool>(
             selector: (_, e) => e.scripturePrimary.bookmarked,
             builder: (BuildContext context, bool hasBookmark, Widget? child) {
-              return ViewMark(
+              return ViewMarks(
                 icon: hasBookmark ? Icons.bookmark_added : Icons.bookmark_add,
                 iconColor:
                     hasBookmark ? Theme.of(context).hintColor : Theme.of(context).dividerColor,
@@ -29,7 +29,7 @@ mixin _Header on _State {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ViewButton(
+              ViewButtons(
                 showShadow: true,
                 color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
                 constraints: BoxConstraints(maxWidth: width, minWidth: 48),
@@ -41,7 +41,7 @@ mixin _Header on _State {
                   key: _kBooks,
                   selector: (_, e) => e.scripturePrimary.bookName,
                   builder: (BuildContext context, String bookName, Widget? child) {
-                    return ViewMark(
+                    return ViewMarks(
                       label: bookName,
                       labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontSize: (vhd.shrink * 18).clamp(15, 18),
@@ -54,7 +54,7 @@ mixin _Header on _State {
               //   indent: 1 * vhd.snapShrink,
               // ),
 
-              ViewButton(
+              ViewButtons(
                 showShadow: true,
                 color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
                 constraints: BoxConstraints(maxWidth: width, minWidth: 35),
@@ -66,7 +66,7 @@ mixin _Header on _State {
                   key: _kChapters,
                   selector: (_, e) => e.scripturePrimary.chapterName,
                   builder: (BuildContext context, String chapterName, Widget? child) {
-                    return ViewMark(
+                    return ViewMarks(
                       label: chapterName,
                       labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontSize: (vhd.shrink * 18).clamp(15, 18),
@@ -78,7 +78,7 @@ mixin _Header on _State {
             ],
           ),
         ),
-        ViewButton(
+        ViewButtons(
           key: _kOptions,
           // constraints: const BoxConstraints(minWidth: 50.0),
           // color: Theme.of(context).backgroundColor,
@@ -94,7 +94,7 @@ mixin _Header on _State {
           //   LideaIcon.textSize,
           //   size: (data.shrink * 26).clamp(20, 26),
           // ),
-          child: ViewMark(
+          child: ViewMarks(
             // padding: const EdgeInsets.only(right: 13),
             child: Icon(
               LideaIcon.textSize,
@@ -116,7 +116,7 @@ mixin _Header on _State {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ViewButton(
+            ViewButtons(
               showShadow: true,
               color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
               constraints: BoxConstraints(maxWidth: width, minWidth: 48),
@@ -132,7 +132,7 @@ mixin _Header on _State {
                 key: _kBooks,
                 selector: (_, e) => e.scripturePrimary.bookName,
                 builder: (BuildContext context, String bookName, Widget? child) {
-                  return ViewMark(
+                  return ViewMarks(
                     label: bookName,
                     overflow: TextOverflow.fade,
                     labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -145,7 +145,7 @@ mixin _Header on _State {
             // Divider(
             //   indent: 1 * vhd.snapShrink,
             // ),
-            ViewButton(
+            ViewButtons(
               showShadow: true,
               color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
               constraints: BoxConstraints(maxWidth: width, minWidth: 35),
@@ -158,7 +158,7 @@ mixin _Header on _State {
                 key: _kChapters,
                 selector: (_, e) => e.scripturePrimary.chapterName,
                 builder: (BuildContext context, String chapterName, Widget? child) {
-                  return ViewMark(
+                  return ViewMarks(
                     label: chapterName,
                     labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontSize: (vhd.shrink * 18).clamp(15, 18),
@@ -174,14 +174,14 @@ mixin _Header on _State {
         ViewDelays.milliseconds(
           milliseconds: 400,
           builder: (_, snap) {
-            return ViewButton(
+            return ViewButtons(
               key: _kBookmarks,
               message: preference.text.addTo(preference.text.bookmark('true')),
               onPressed: showBookmarks,
               // child: Selector<Core, bool>(
               //   selector: (_, e) => e.scripturePrimary.bookmarked,
               //   builder: (BuildContext context, bool hasBookmark, Widget? child) {
-              //     return ViewMark(
+              //     return ViewMarks(
               //       icon: hasBookmark ? Icons.bookmark_added : Icons.bookmark_add,
               //       iconColor:
               //           hasBookmark ? Theme.of(context).hintColor : Theme.of(context).dividerColor,
@@ -193,7 +193,7 @@ mixin _Header on _State {
                 valueListenable: App.core.data.boxOfBookmarks.listen(),
                 builder: (BuildContext _, Box<BookmarksType> __, Widget? child) {
                   // final has = primaryScripture.bookmarked;
-                  // return ViewMark(
+                  // return ViewMarks(
                   //   icon: has ? Icons.bookmark_added : Icons.bookmark_add,
                   //   iconColor: has ? state.theme.hintColor : state.theme.dividerColor,
                   //   iconSize: (vhd.shrink * 26).clamp(20, 26),
@@ -201,7 +201,7 @@ mixin _Header on _State {
                   return Selector<Core, bool>(
                     selector: (_, e) => e.scripturePrimary.bookmarked,
                     builder: (BuildContext context, bool has, Widget? child) {
-                      return ViewMark(
+                      return ViewMarks(
                         icon: has ? Icons.bookmark_added : Icons.bookmark_add,
                         iconColor: has ? state.theme.hintColor : state.theme.dividerColor,
                         iconSize: (vhd.shrink * 24).clamp(20, 24),
@@ -213,9 +213,9 @@ mixin _Header on _State {
             );
           },
         ),
-        // ViewButton(
+        // ViewButtons(
         //   onPressed: () {},
-        //   child: ViewMark(
+        //   child: ViewMarks(
         //     child: Icon(
         //       LideaIcon.play,
         //       size: (vhd.shrink * 26).clamp(20, 26),
@@ -227,12 +227,12 @@ mixin _Header on _State {
           builder: (BuildContext context, _) {
             // return const Text('data');
             final vse = primaryScripture.marks.verseSelection;
-            return ViewButton(
+            return ViewButtons(
               key: _kOptions,
               // enable: value.isNotEmpty,
               padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
               onPressed: showOptions,
-              child: ViewMark(
+              child: ViewMarks(
                 // icon: LideaIcon.clipboardList,
                 // icon: LideaIcon.checklist,
                 icon: vse.isEmpty ? LideaIcon.textSize : LideaIcon.popup,
@@ -256,12 +256,12 @@ mixin _Header on _State {
         //     //   return const SizedBox();
         //     // }
 
-        //     return ViewButton(
+        //     return ViewButtons(
         //       key: _kOptions,
         //       // enable: value.isNotEmpty,
         //       padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
         //       onPressed: showOptions,
-        //       child: ViewMark(
+        //       child: ViewMarks(
         //         // icon: LideaIcon.clipboardList,
         //         // icon: LideaIcon.checklist,
         //         icon: vse.isEmpty ? LideaIcon.textSize : LideaIcon.popup,
@@ -278,10 +278,10 @@ mixin _Header on _State {
         //   },
         // ),
 
-        // ViewButton(
+        // ViewButtons(
         //   key: _kOptions,
         //   onPressed: showOptions,
-        //   child: ViewMark(
+        //   child: ViewMarks(
         //     child: Icon(
         //       // LideaIcon.textSize,
         //       // LideaIcon.dotHoriz,
@@ -307,14 +307,14 @@ mixin _Header on _State {
         ViewDelays.milliseconds(
           milliseconds: 400,
           builder: (_, snap) {
-            return ViewButton(
+            return ViewButtons(
               key: _kBookmarks,
               message: preference.text.addTo(preference.text.bookmark('true')),
               onPressed: showBookmarks,
               // child: Selector<Core, bool>(
               //   selector: (_, e) => e.scripturePrimary.bookmarked,
               //   builder: (BuildContext context, bool hasBookmark, Widget? child) {
-              //     return ViewMark(
+              //     return ViewMarks(
               //       icon: hasBookmark ? Icons.bookmark_added : Icons.bookmark_add,
               //       iconColor:
               //           hasBookmark ? Theme.of(context).hintColor : Theme.of(context).dividerColor,
@@ -326,7 +326,7 @@ mixin _Header on _State {
                 valueListenable: App.core.data.boxOfBookmarks.listen(),
                 builder: (BuildContext _, Box<BookmarksType> __, Widget? child) {
                   // final has = primaryScripture.bookmarked;
-                  // return ViewMark(
+                  // return ViewMarks(
                   //   icon: has ? Icons.bookmark_added : Icons.bookmark_add,
                   //   iconColor: has ? state.theme.hintColor : state.theme.dividerColor,
                   //   iconSize: (vhd.shrink * 26).clamp(20, 26),
@@ -334,7 +334,7 @@ mixin _Header on _State {
                   return Selector<Core, bool>(
                     selector: (_, e) => e.scripturePrimary.bookmarked,
                     builder: (BuildContext context, bool has, Widget? child) {
-                      return ViewMark(
+                      return ViewMarks(
                         icon: has ? Icons.bookmark_added : Icons.bookmark_add,
                         iconColor: has ? state.theme.hintColor : state.theme.dividerColor,
                         iconSize: (vhd.shrink * 26).clamp(20, 26),
@@ -350,7 +350,7 @@ mixin _Header on _State {
       primary: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ViewButton(
+          ViewButtons(
             showShadow: true,
             color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
             constraints: BoxConstraints(maxWidth: width, minWidth: 48),
@@ -362,7 +362,7 @@ mixin _Header on _State {
               key: _kBooks,
               selector: (_, e) => e.scripturePrimary.bookName,
               builder: (BuildContext context, String bookName, Widget? child) {
-                return ViewMark(
+                return ViewMarks(
                   label: bookName,
                   labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: (vhd.shrink * 18).clamp(15, 18),
@@ -374,7 +374,7 @@ mixin _Header on _State {
           // Divider(
           //   indent: 1 * vhd.snapShrink,
           // ),
-          ViewButton(
+          ViewButtons(
             showShadow: true,
             color: Theme.of(context).primaryColor.withOpacity(vhd.snapShrink),
             constraints: BoxConstraints(maxWidth: width, minWidth: 35),
@@ -386,7 +386,7 @@ mixin _Header on _State {
               key: _kChapters,
               selector: (_, e) => e.scripturePrimary.chapterName,
               builder: (BuildContext context, String chapterName, Widget? child) {
-                return ViewMark(
+                return ViewMarks(
                   label: chapterName,
                   labelStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: (vhd.shrink * 18).clamp(15, 18),
@@ -398,19 +398,19 @@ mixin _Header on _State {
         ],
       ),
       right: [
-        ViewButton(
+        ViewButtons(
           key: _kOptions,
           onPressed: showOptions,
-          child: ViewMark(
+          child: ViewMarks(
             child: Icon(
               LideaIcon.textSize,
               size: (vhd.shrink * 26).clamp(20, 26),
             ),
           ),
         ),
-        // ViewButton(
+        // ViewButtons(
         //   onPressed: () {},
-        //   child: ViewMark(
+        //   child: ViewMarks(
         //     child: Icon(
         //       LideaIcon.menu,
         //       size: (vhd.shrink * 20).clamp(15, 20),

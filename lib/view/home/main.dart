@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:lidea/icon.dart';
 // import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
-// import 'package:scripture/widget/button.dart';
 
-import '../../app.dart';
-import '/widget/profile_icon.dart';
-// import '/widget/button.dart';
+import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
@@ -37,7 +34,7 @@ class _View extends _State with _Header {
       body: Views(
         child: CustomScrollView(
           // physics: const AlwaysScrollableScrollPhysics(),
-          controller: _controller,
+          controller: scrollController,
           slivers: _slivers,
         ),
       ),
@@ -110,20 +107,20 @@ class _View extends _State with _Header {
         style: state.textTheme.titleSmall,
       ),
 
-      headerTrailing: ViewButton(
+      headerTrailing: ViewButtons(
         show: items.isNotEmpty,
         message: preference.text.addTo(preference.text.favorite('true').toLowerCase()),
         onPressed: () {
           route.pushNamed('home/bible');
         },
-        child: ViewMark(
+        child: ViewMarks(
           icon: LideaIcon.dotHoriz,
           iconSize: 19,
           iconColor: state.theme.hintColor,
         ),
       ),
       footer: items.isNotEmpty,
-      footerTitle: ViewButton(
+      footerTitle: ViewButtons(
         // padding: EdgeInsets.zero,
         // style: const TextStyle(
         //   color: Colors.red,
@@ -133,7 +130,7 @@ class _View extends _State with _Header {
         onPressed: () {
           route.pushNamed('home/bible');
         },
-        // child: ViewMark(
+        // child: ViewMarks(
         //   label: preference.text.addMore(preference.text.favorite(true)),
         // ),
         child: Text(
@@ -161,9 +158,9 @@ class _View extends _State with _Header {
           separator: (BuildContext context, int index) {
             return const ViewDividers();
           },
-          onEmpty: ViewButton(
+          onEmpty: ViewButtons(
             padding: const EdgeInsets.symmetric(vertical: 30),
-            // child: ViewMark(
+            // child: ViewMarks(
             //   label: preference.text.addTo(preference.text.favorite(true)),
             // ),
             child: Text(
@@ -282,12 +279,12 @@ class _View extends _State with _Header {
         preference.text.recentSearch('true'),
         style: state.textTheme.titleSmall,
       ),
-      headerTrailing: ViewButton(
+      headerTrailing: ViewButtons(
         message: preference.text.addTo(preference.text.recentSearch('true')),
         onPressed: () {
           route.pushNamed('home/recent-search');
         },
-        child: ViewMark(
+        child: ViewMarks(
           icon: LideaIcon.dotHoriz,
           iconSize: 19,
           iconColor: state.theme.hintColor,
@@ -302,9 +299,9 @@ class _View extends _State with _Header {
             textDirection: TextDirection.ltr,
             children: items.take(3).map(
               (e) {
-                return ViewButton(
+                return ViewButtons(
                   style: state.theme.textTheme.bodyLarge,
-                  child: ViewMark(
+                  child: ViewMarks(
                     // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                     label: e.word,
                   ),

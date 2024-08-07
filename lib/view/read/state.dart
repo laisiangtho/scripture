@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -15,7 +15,7 @@ abstract class _State extends StateAbstract<Main> {
   @override
   void initState() {
     super.initState();
-    primaryScripture.scroll = _controller;
+    primaryScripture.scroll = scrollController;
 
     // Future.delayed(const Duration(milliseconds: 1000), () {
     //   App.core.message.value = 'Testing';
@@ -28,13 +28,13 @@ abstract class _State extends StateAbstract<Main> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    scrollController.dispose();
   }
 
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
-  //   primaryScripture.scroll = _controller;
+  //   primaryScripture.scroll = scrollController;
   // }
 
   Scripture get primaryScripture => core.scripturePrimary;
@@ -48,7 +48,7 @@ abstract class _State extends StateAbstract<Main> {
     route
         .showSheetModal(
       context: context,
-      name: 'sheet-bible-navigation/leaf-book',
+      name: 'sheet-bible-navigation/recto-book',
     )
         .then((e) {
       if (e != null) {
@@ -62,7 +62,7 @@ abstract class _State extends StateAbstract<Main> {
   void showChapters() {
     route.showSheetModal(
       context: context,
-      name: 'sheet-bible-navigation/leaf-book',
+      name: 'sheet-bible-navigation/recto-book',
       arguments: {'book': primaryScripture.bookCurrent.info.id},
     ).then((e) {
       if (e != null) {

@@ -1,26 +1,28 @@
 import 'package:lidea/route/main.dart';
-
 export 'package:lidea/route/main.dart' show RouteParser;
 
+/// NOTE: Launcher
 import 'screen_launcher.dart';
 
+/// NOTE: Menu
 import 'home/main.dart' as home;
+import 'read/main.dart' as read;
+import 'note/main.dart' as note;
+import 'search/main.dart' as search;
+
+// NOTE: Stage
 import 'user/main.dart' as user;
 import 'bible/main.dart' as bible;
-import 'search/main.dart' as search;
-import 'read/main.dart' as read;
-// import 'stage/main.dart' as stage;
-import 'note/main.dart' as note;
 import 'poll/main.dart' as poll;
 import 'recent_search/main.dart' as recent_search;
 
-// NOTE: test
-import 'test/group.dart' as test_group;
-import 'test/book.dart' as test_book;
-import 'test/card.dart' as test_card;
-import 'test/sliver.dart' as test_sliver;
+// NOTE: Test
+// import 'test/group.dart' as test_group;
+// import 'test/book.dart' as test_book;
+// import 'test/card.dart' as test_card;
+// import 'test/sliver.dart' as test_sliver;
 
-// NOTE: sheet
+// NOTE: Sheet
 import 'sheet/modal/main.dart' as sheets_modal;
 // import 'sheet/parallel/main.dart' as sheet_parallel;
 import 'sheet/bible/info.dart' as sheet_bible_info;
@@ -31,26 +33,24 @@ import 'sheet/bible/persistent.dart' as sheet_bible_persistent;
 // import 'sheet/bible/chapter.dart' as sheet_bible_chapter;
 // import 'sheet/filter/main.dart' as sheet_filter;
 import 'sheet/poll/main.dart' as sheet_poll;
-// NOTE: leaf
-import 'leaf/book.dart' as leaf_book;
-import 'leaf/title.dart' as leaf_title;
-import 'leaf/editor.dart' as leaf_editor;
-import 'leaf/section.dart' as leaf_section;
-import 'leaf/section_chapter.dart' as leaf_section_chapter;
-import 'leaf/parallel.dart' as leaf_parallel;
-import 'leaf/merge.dart' as leaf_merge;
 
-// NOTE: pop
+// NOTE: Recto
+import 'recto/book.dart' as recto_book;
+import 'recto/title.dart' as recto_title;
+import 'recto/editor.dart' as recto_editor;
+import 'recto/section.dart' as recto_section;
+import 'recto/section_chapter.dart' as recto_section_chapter;
+import 'recto/parallel.dart' as recto_parallel;
+import 'recto/merge.dart' as recto_merge;
+
+// NOTE: Pop
 import 'pop/options/main.dart' as pop_options;
 // import 'pop/bookmarks/main.dart' as pop_bookmarks;
 // import 'pop/books/main.dart' as pop_books;
 // import 'pop/chapters/main.dart' as pop_chapters;
 
-/// RouteMainDelegate
-class RouteDelegate extends RouteMainDelegate {
-  @override
-  final RouteNotifier notifier = RouteNotifier();
-
+/// MainRouteDelegates
+class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
   @override
   List<RouteType> get routes {
     return [
@@ -60,43 +60,25 @@ class RouteDelegate extends RouteMainDelegate {
       ),
     ];
   }
-}
 
-class InnerDelegate extends RouteInnerDelegate {
-  /// RouteInnerDelegate
-  InnerDelegate(super.state);
-}
-
-class NestDelegate extends RouteNestDelegate {
-  /// RouteNestDelegate
-  NestDelegate({required super.notifier, super.route, super.name, super.arguments});
-}
-
-class NestedView extends RouteNestedWidget {
-  /// RouteNestedWidget
-  const NestedView({super.key, required super.delegate});
-}
-
-/// RouteChangeNotifier
-class RouteNotifier extends RouteChangeNotifier {
   @override
-  List<RouteType> get routes {
-    return [
+  final RouteNotifier notifier = RouteNotifier(
+    route: [
       RouteType(
         name: home.Main.route,
         primaryNavigation: true,
         icon: home.Main.icon,
         label: home.Main.label,
-        route: [
+        nest: [
           RouteType(
             page: const home.Main(),
-            route: [
+            nest: [
               RouteType(
                 name: user.Main.route,
                 icon: user.Main.icon,
                 label: user.Main.label,
                 page: const user.Main(),
-                route: [
+                nest: [
                   RouteType(
                     name: poll.Main.route,
                     icon: poll.Main.icon,
@@ -123,41 +105,41 @@ class RouteNotifier extends RouteChangeNotifier {
                 label: recent_search.Main.label,
                 page: const recent_search.Main(),
               ),
+              // RouteType(
+              //   name: test_group.Main.route,
+              //   icon: test_group.Main.icon,
+              //   label: test_group.Main.label,
+              //   page: const test_group.Main(),
+              // ),
+              // RouteType(
+              //   name: test_book.Main.route,
+              //   icon: test_book.Main.icon,
+              //   label: test_book.Main.label,
+              //   page: const test_book.Main(),
+              // ),
+              // RouteType(
+              //   name: test_card.Main.route,
+              //   icon: test_card.Main.icon,
+              //   label: test_card.Main.label,
+              //   page: const test_card.Main(),
+              // ),
+              // RouteType(
+              //   name: test_sliver.Main.route,
+              //   icon: test_sliver.Main.icon,
+              //   label: test_sliver.Main.label,
+              //   page: const test_sliver.Main(),
+              // ),
               RouteType(
-                name: test_group.Main.route,
-                icon: test_group.Main.icon,
-                label: test_group.Main.label,
-                page: const test_group.Main(),
-              ),
-              RouteType(
-                name: test_book.Main.route,
-                icon: test_book.Main.icon,
-                label: test_book.Main.label,
-                page: const test_book.Main(),
-              ),
-              RouteType(
-                name: test_card.Main.route,
-                icon: test_card.Main.icon,
-                label: test_card.Main.label,
-                page: const test_card.Main(),
-              ),
-              RouteType(
-                name: test_sliver.Main.route,
-                icon: test_sliver.Main.icon,
-                label: test_sliver.Main.label,
-                page: const test_sliver.Main(),
-              ),
-              RouteType(
-                name: leaf_section.Main.route,
-                icon: leaf_section.Main.icon,
-                label: leaf_section.Main.label,
-                page: const leaf_section.Main(),
-                route: [
+                name: recto_section.Main.route,
+                icon: recto_section.Main.icon,
+                label: recto_section.Main.label,
+                page: const recto_section.Main(),
+                nest: [
                   RouteType(
-                    name: leaf_section_chapter.Main.route,
-                    icon: leaf_section_chapter.Main.icon,
-                    label: leaf_section_chapter.Main.label,
-                    page: const leaf_section_chapter.Main(),
+                    name: recto_section_chapter.Main.route,
+                    icon: recto_section_chapter.Main.icon,
+                    label: recto_section_chapter.Main.label,
+                    page: const recto_section_chapter.Main(),
                   )
                 ],
               ),
@@ -170,10 +152,10 @@ class RouteNotifier extends RouteChangeNotifier {
         primaryNavigation: true,
         icon: read.Main.icon,
         label: read.Main.label,
-        route: [
+        nest: [
           RouteType(
             page: const read.Main(),
-            route: [
+            nest: [
               RouteType(
                 name: bible.Main.route,
                 icon: bible.Main.icon,
@@ -189,7 +171,7 @@ class RouteNotifier extends RouteChangeNotifier {
         primaryNavigation: true,
         icon: note.Main.icon,
         label: note.Main.label,
-        route: [
+        nest: [
           RouteType(
             page: const note.Main(),
           ),
@@ -200,7 +182,7 @@ class RouteNotifier extends RouteChangeNotifier {
         primaryNavigation: true,
         icon: search.Main.icon,
         label: search.Main.label,
-        route: [
+        nest: [
           RouteType(
             page: const search.Main(),
           ),
@@ -280,107 +262,91 @@ class RouteNotifier extends RouteChangeNotifier {
       //   label: test_group.Main.label,
       //   page: const test_group.Main(),
       // ),
-    ];
-  }
+    ],
+  );
+}
 
-  List<RouteType> get routeListInnerWorking {
+class NestedDelegates extends RouteMixinDelegate<RouteNotifier> {
+  NestedDelegates({
+    required super.bridge,
+    super.routeType = 1,
+    super.route,
+    super.name,
+  });
+}
+
+class NestedView extends NestedRoutes {
+  const NestedView({super.key, required super.delegate});
+}
+
+/// RouteChangeNotifier
+class RouteNotifier extends RouteChangeNotifier {
+  RouteNotifier({super.route});
+}
+
+class ReadDelegates extends RouteMixinDelegate<RouteNotifier> {
+  ReadDelegates({
+    required super.bridge,
+    super.routeType = 1,
+    super.route,
+    super.name,
+    super.arguments,
+  });
+  @override
+  List<RouteType> get routes {
     return [
       RouteType(
-        name: '',
+        name: recto_book.Main.route,
+        icon: recto_book.Main.icon,
+        label: recto_book.Main.label,
+        page: const recto_book.Main(),
+        home: true,
       ),
       RouteType(
-        name: 'book',
-        route: [
-          RouteType(
-            name: '',
-          ),
-          RouteType(
-            name: ':int',
-          ),
-          RouteType(
-            name: 'sub',
-          ),
-        ],
+        name: recto_title.Main.route,
+        icon: recto_title.Main.icon,
+        label: recto_title.Main.label,
+        page: const recto_title.Main(),
       ),
       RouteType(
-        name: 'name',
-        route: [
-          RouteType(
-            name: ':string',
-          ),
-        ],
+        name: recto_editor.Main.route,
+        icon: recto_editor.Main.icon,
+        label: recto_editor.Main.label,
+        page: const recto_editor.Main(),
       ),
       RouteType(
-        name: 'blog',
-        route: [
-          RouteType(
-            name: ':any',
-          ),
-        ],
-      ),
-      RouteType(
-        name: 'settings',
-        route: [
-          RouteType(
-            name: 'color',
-          ),
-        ],
+        name: recto_merge.Main.route,
+        icon: recto_merge.Main.icon,
+        label: recto_merge.Main.label,
+        page: const recto_merge.Main(),
       ),
     ];
   }
 }
 
-class ReadNestDelegate extends RouteNestDelegate {
-  ReadNestDelegate({required super.notifier, super.route, super.name, super.arguments});
+class PersistentDelegates extends RouteMixinDelegate<RouteNotifier> {
+  PersistentDelegates({
+    required super.bridge,
+    super.routeType = 1,
+    super.route,
+    super.name,
+    super.arguments,
+  });
   @override
   List<RouteType> get routes {
     return [
       RouteType(
-        name: leaf_book.Main.route,
-        icon: leaf_book.Main.icon,
-        label: leaf_book.Main.label,
-        page: const leaf_book.Main(),
+        name: recto_parallel.Main.route,
+        icon: recto_parallel.Main.icon,
+        label: recto_parallel.Main.label,
+        page: const recto_parallel.Main(),
         home: true,
       ),
       RouteType(
-        name: leaf_title.Main.route,
-        icon: leaf_title.Main.icon,
-        label: leaf_title.Main.label,
-        page: const leaf_title.Main(),
-      ),
-      RouteType(
-        name: leaf_editor.Main.route,
-        icon: leaf_editor.Main.icon,
-        label: leaf_editor.Main.label,
-        page: const leaf_editor.Main(),
-      ),
-      RouteType(
-        name: leaf_merge.Main.route,
-        icon: leaf_merge.Main.icon,
-        label: leaf_merge.Main.label,
-        page: const leaf_merge.Main(),
-      ),
-    ];
-  }
-}
-
-class PersistentNestDelegate extends RouteNestDelegate {
-  PersistentNestDelegate({required super.notifier, super.route, super.name, super.arguments});
-  @override
-  List<RouteType> get routes {
-    return [
-      RouteType(
-        name: leaf_parallel.Main.route,
-        icon: leaf_parallel.Main.icon,
-        label: leaf_parallel.Main.label,
-        page: const leaf_parallel.Main(),
-        home: true,
-      ),
-      RouteType(
-        name: leaf_title.Main.route,
-        icon: leaf_title.Main.icon,
-        label: leaf_title.Main.label,
-        page: const leaf_title.Main(),
+        name: recto_title.Main.route,
+        icon: recto_title.Main.icon,
+        label: recto_title.Main.label,
+        page: const recto_title.Main(),
       ),
     ];
   }

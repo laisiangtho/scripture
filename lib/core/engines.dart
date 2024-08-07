@@ -1,10 +1,12 @@
 part of 'main.dart';
 
-abstract class _Mock extends _Abstract {
+/// A custom data provider extended on [_Searches], [_Mocks] and [_Abstracts].
+/// And private class for current project, but have access to parent data
+abstract class _Engines extends _Mocks {
   late final scripturePrimary = Scripture(data);
   late final scriptureParallel = Scripture(data, dataType: 1);
 
-  Future<void> prepareInitialized() async {
+  Future<void> engineInitialized() async {
     // debugPrint('prepareInitialized');
     if (data.requireInitialized) {
       Iterable<APIType> api = data.env.api.where(
@@ -13,7 +15,7 @@ abstract class _Mock extends _Abstract {
 
       for (var e in api) {
         // await UtilArchive.extractBundle(e.asset, noneArchive: true);
-        await ArchiveNest.bundle(e.asset);
+        await Docs.archive.bundle(e.asset);
       }
     }
 
@@ -191,17 +193,17 @@ abstract class _Mock extends _Abstract {
           data.bookId,
           data.chapterId,
         )
-        .whenComplete(notify);
+        .whenComplete(state.notify);
   }
 
   /// Bookmark delete all
   void clearBookmarkWithNotify() {
-    data.boxOfBookmarks.clearAll().whenComplete(notify);
+    data.boxOfBookmarks.clearAll().whenComplete(state.notify);
   }
 
   /// Bookmark delete once
   void deleteBookmarkWithNotify(int index) {
-    data.boxOfBookmarks.deleteAtIndex(index).whenComplete(notify);
+    data.boxOfBookmarks.deleteAtIndex(index).whenComplete(state.notify);
   }
 
   /// init scripturePrimary and seed analytics

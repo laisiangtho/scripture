@@ -74,9 +74,9 @@ class _State extends SheetsDraggableState<Main> {
           return ViewHeaderLayouts(
             data: vhd,
             left: [
-              // ViewButton(
+              // ViewButtons(
               //   padding: EdgeInsets.zero,
-              //   child: const ViewLabel(
+              //   child: const ViewLabels(
               //     icon: Icons.close,
               //     iconSize: 20,
               //   ),
@@ -152,7 +152,7 @@ class _State extends SheetsDraggableState<Main> {
     bool isCurrentChapter = App.core.data.chapterId == chapterId;
     // bool isCurrentChapter = chapter.id == index;
 
-    return ViewButton.filled(
+    return ViewButtons.filled(
       // enable: !isCurrentChapter,
       // style: TextStyle(
       //   fontSize: buttonFontSize,
@@ -165,7 +165,7 @@ class _State extends SheetsDraggableState<Main> {
       // offsetShadow: const Offset(0, 0),
       // border: Border.all(width: isCurrentChapter ? 1.0 : 0.3, color: state.theme.dividerColor),
       // border: isCurrentChapter ? Border.all(width: 1, color: state.theme.dividerColor) : null,
-      child: ViewMark(
+      child: ViewMarks(
         label: scripture.digit(chapterId),
         // labelColor: isCurrentChapter ? Colors.red : null,
         // labelStyle: TextStyle(
@@ -210,12 +210,12 @@ class ChapterItemSnap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ViewButton.filled(
+    return ViewButtons.filled(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
       color: theme.primaryColor.withOpacity(0.4),
       // showShadow: true,
       enable: false,
-      child: ViewMark(
+      child: ViewMarks(
         icon: Icons.linear_scale_rounded,
         iconColor: theme.disabledColor,
       ),

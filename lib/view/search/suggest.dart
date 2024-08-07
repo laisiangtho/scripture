@@ -44,7 +44,7 @@ class _SuggestView extends StateAbstract<_Suggest> {
   Widget resultRecents() {
     return const CustomScrollView(
       key: PageStorageKey('search-suggest-empty'),
-      // controller: _controller,
+      // controller: scrollController,
       // primary: true,
       // slivers: [_resultSliver],
       slivers: [
@@ -56,7 +56,7 @@ class _SuggestView extends StateAbstract<_Suggest> {
   Widget resultSuggests() {
     return CustomScrollView(
       key: PageStorageKey('search-suggest-${bible.query}'),
-      // controller: _controller,
+      // controller: scrollController,
       // primary: true,
       slivers: [
         ViewLists(

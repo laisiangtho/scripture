@@ -100,7 +100,7 @@ class Marks extends Notify {
     // primaryScripture.count.value = List.from(value)..add(...);
     // primaryScripture.count = value;
 
-    notify();
+    state.notify();
   }
 
   bool get hasSelection => verseSelection.isNotEmpty;
@@ -112,7 +112,7 @@ class Marks extends Notify {
 
   void resetSelection() {
     verseSelection = [];
-    notify();
+    state.notify();
   }
 
   /// Apply on current reading chapter
@@ -181,7 +181,7 @@ class Marks extends Notify {
     }
 
     _marks.bible.removeWhere((e) => e.verse.isEmpty);
-    notify();
+    state.notify();
     save();
   }
 
@@ -217,7 +217,7 @@ class Marks extends Notify {
       }
     }).whenComplete(() {
       _ready = true;
-      notify();
+      state.notify();
     });
 
     // return Docs.app.readAsJSON<Map<String, dynamic>>(file).then((o) {

@@ -1,7 +1,7 @@
 part of 'main.dart';
 
 abstract class _State extends StateAbstract<Main> {
-  late final ScrollController _controller = ScrollController();
+  late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
   // late AppScrollBottomBarController _bottomBarController;
 

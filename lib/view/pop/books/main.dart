@@ -203,9 +203,9 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
             //     fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
             //   ),
             // );
-            // return ViewButton(
+            // return ViewButtons(
             //   // padding: const EdgeInsets.only(left: 25),
-            //   // child: ViewLabel(
+            //   // child: ViewLabels(
             //   //   label: book.name,
             //   //   alignment: Alignment.centerLeft,
             //   //   overflow: TextOverflow.ellipsis,
@@ -291,14 +291,14 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     // bool isCurrentChapter = 2 == index;
     bool isCurrentChapter = App.core.data.chapterId == chapterId;
 
-    return ViewButton(
+    return ViewButtons(
       // borderRadius: const BorderRadius.all(Radius.circular(2.0)),
       // padding: const EdgeInsets.all(5),
       constraints: const BoxConstraints(
         minWidth: 70,
         minHeight: 70,
       ),
-      // child: ViewMark(
+      // child: ViewMarks(
       //   // label: scripture.digit(chapterId),
       //   label: chapterId.toString(),
       //   labelStyle: TextStyle(

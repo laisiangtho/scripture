@@ -32,8 +32,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    namespace 'com.laisiangtho.bible'
     compileSdkVersion 34
-    ndkVersion "25.1.8937393"
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -52,8 +53,8 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.laisiangtho.bible"
 
-        minSdkVersion 23 // flutter.minSdkVersion
-        targetSdkVersion 34 // flutter.targetSdkVersion
+        minSdk 23 // flutter.minSdkVersion
+        targetSdk 34 // flutter.targetSdkVersion
 
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -87,7 +88,6 @@ android {
             minifyEnabled true
         }
     }
-    namespace 'com.laisiangtho.bible'
 }
 
 flutter {
@@ -98,17 +98,15 @@ dependencies {
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.23"
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.0"
-    // implementation 'com.android.support:multidex:1.0.3'
+
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    // prev
     // implementation platform('com.google.firebase:firebase-bom:32.7.4')
     implementation platform('com.google.firebase:firebase-bom:33.1.2')
     // Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
 
-    // prev
     // implementation 'com.facebook.android:facebook-android-sdk:14.1.1'
     implementation 'com.facebook.android:facebook-android-sdk:17.0.0'
 }
