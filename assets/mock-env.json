@@ -3,7 +3,7 @@
   "description": "the Holy Bible in languages",
   "package": "",
   "version": "1.2.7",
-  "buildNumber": "89",
+  "buildNumber": "97",
   "settingName": "preferences",
   "settingKey": "",
   "settings": {
@@ -129,7 +129,7 @@
       "totalBookLang": "... ကျမ်းပေါင်း {{totalBook}} အုပ် နှင့် ဘာသာစကား {{totalLanguage}} ခု",
       "noTitleOnBook": "{{book}} တွင် {{title}}မရှိပါ",
       "chapterName": "အခန်းကြီး {{chapter}}",
-      "verse-merged": "ကျမ်းပိုဒ် ပေါင်းစပ်",
+      "verse-merged": "ပေါင်းစပ် ကျမ်းပိုဒ်",
       "color-red": "အနီရောင်",
       "color-blue": "အပြာရောင်",
       "color-green": "အစိမ်းရောင်",
@@ -334,8 +334,9 @@
       "id": "configure",
       "type": "gist",
       "tag": "0",
-      "owns": "",
-      "name": ""
+      "owns": "<nomolosnehk>",
+      "name": "??",
+      "key": "??"
     },
     {
       "id": "repo",

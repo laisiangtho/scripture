@@ -17,21 +17,16 @@ import 'poll/main.dart' as poll;
 import 'recent_search/main.dart' as recent_search;
 
 // NOTE: Test
-// import 'test/group.dart' as test_group;
-// import 'test/book.dart' as test_book;
-// import 'test/card.dart' as test_card;
-// import 'test/sliver.dart' as test_sliver;
+// import 'test/tmp.dart' as test_tmp;
 
 // NOTE: Sheet
 import 'sheet/modal/main.dart' as sheets_modal;
-// import 'sheet/parallel/main.dart' as sheet_parallel;
 import 'sheet/bible/info.dart' as sheet_bible_info;
 import 'sheet/bible/lang.dart' as sheet_bible_lang;
 import 'sheet/bible/section.dart' as sheet_bible_section;
 import 'sheet/bible/navigation.dart' as sheet_bible_navigation;
 import 'sheet/bible/persistent.dart' as sheet_bible_persistent;
 // import 'sheet/bible/chapter.dart' as sheet_bible_chapter;
-// import 'sheet/filter/main.dart' as sheet_filter;
 import 'sheet/poll/main.dart' as sheet_poll;
 
 // NOTE: Recto
@@ -106,28 +101,10 @@ class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
                 page: const recent_search.Main(),
               ),
               // RouteType(
-              //   name: test_group.Main.route,
-              //   icon: test_group.Main.icon,
-              //   label: test_group.Main.label,
-              //   page: const test_group.Main(),
-              // ),
-              // RouteType(
-              //   name: test_book.Main.route,
-              //   icon: test_book.Main.icon,
-              //   label: test_book.Main.label,
-              //   page: const test_book.Main(),
-              // ),
-              // RouteType(
-              //   name: test_card.Main.route,
-              //   icon: test_card.Main.icon,
-              //   label: test_card.Main.label,
-              //   page: const test_card.Main(),
-              // ),
-              // RouteType(
-              //   name: test_sliver.Main.route,
-              //   icon: test_sliver.Main.icon,
-              //   label: test_sliver.Main.label,
-              //   page: const test_sliver.Main(),
+              //   name: test_tmp.Main.route,
+              //   icon: test_tmp.Main.icon,
+              //   label: test_tmp.Main.label,
+              //   page: const test_tmp.Main(),
               // ),
               RouteType(
                 name: recto_section.Main.route,
@@ -255,12 +232,6 @@ class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
       //   icon: pop_chapters.Main.icon,
       //   label: pop_chapters.Main.label,
       //   page: const pop_chapters.Main(),
-      // ),
-      // RouteType(
-      //   name: test_group.Main.route,
-      //   icon: test_group.Main.icon,
-      //   label: test_group.Main.label,
-      //   page: const test_group.Main(),
       // ),
     ],
   );
