@@ -4,6 +4,9 @@
 /TODO-*.md
 /assets/*
 !/assets/mock-*.*
+!/assets/bible.json
+!/assets/book.json
+!/assets/category.json
 
 # Development platform
 pubspec.lock

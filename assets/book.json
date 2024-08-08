@@ -1,0 +1,155 @@
+[
+  {
+    "identify": "niv2011",
+    "name": "New International Version",
+    "shortname": "NIV",
+    "year": "2011",
+    "language": {
+      "text": "English",
+      "textdirection": "ltr",
+      "name": "en"
+    },
+    "version": "1"
+  },
+  {
+    "identify": "judson1835",
+    "name": "သမ္မာကျမ်း",
+    "shortname": "ယုဒသန်",
+    "year": "1835",
+    "language": {
+      "text": "Burmese",
+      "textdirection": "ltr",
+      "name": "my"
+    },
+    "version": "1",
+    "description": "Translated from The Original Tongues by Rev. A. Judson, D.D.",
+    "publisher": "Bible Society of Myanmar"
+  },
+  {
+    "identify": "ddb1931",
+    "name": "Det Danske Bibel",
+    "shortname": "Danske",
+    "year": "1931",
+    "language": {
+      "text": "Danish",
+      "textdirection": "ltr",
+      "name": "da"
+    },
+    "version": "1",
+    "description": "The electronic edition of this Bible comes from the Danish 1933 edition.",
+    "publisher": "Det Danske Bibelselskab",
+    "copyright": "The New Testament is Public Domain."
+  },
+  {
+    "identify": "dnb1930",
+    "name": "Norsk Bibel",
+    "shortname": "Norske",
+    "year": "1930",
+    "language": {
+      "text": "Norwegian, Bokmål",
+      "textdirection": "ltr",
+      "name": "no"
+    },
+    "version": "1",
+    "description": "Norsk Bibelen 1906 /1930",
+    "publisher": "Det Norsk Bibelselskap"
+  },
+  {
+    "identify": "luther1912",
+    "name": "Luther",
+    "shortname": "German",
+    "year": "1912",
+    "language": {
+      "text": "German",
+      "textdirection": "ltr",
+      "name": "de"
+    },
+    "version": "1",
+    "description": "Lutherbibel von 1912"
+  },
+  {
+    "identify": "ostervald1877",
+    "name": "La Bible Ostervald",
+    "shortname": "French",
+    "year": "1877",
+    "language": {
+      "text": "French",
+      "textdirection": "ltr",
+      "name": "fr"
+    },
+    "version": "1",
+    "description": "La Bible Ostervald a été une référence et largement utilisée pendant 150 ans, jusqu’à la fin du 19ème siècle."
+  },
+  {
+    "identify": "paite1971",
+    "name": "Pathian Laisiangthou",
+    "shortname": "Paite",
+    "year": "1971",
+    "language": {
+      "text": "Zolai, Paite",
+      "textdirection": "ltr",
+      "name": "zo"
+    },
+    "version": "1"
+  },
+  {
+    "identify": "mizo1917",
+    "name": "Pathian Lehkhabu Thianghlim",
+    "shortname": "Mizo",
+    "year": "1917",
+    "language": {
+      "text": "Mizo",
+      "textdirection": "ltr",
+      "name": "zo"
+    },
+    "version": "1"
+  },
+  {
+    "identify": "sizang1932",
+    "name": "Lai Siangtho",
+    "shortname": "Sizang",
+    "year": "1932",
+    "language": {
+      "text": "Zolai, Sizang",
+      "textdirection": "ltr",
+      "name": "zo"
+    },
+    "version": "1"
+  },
+  {
+    "identify": "tedim1932",
+    "name": "Lai Siangtho",
+    "shortname": "Tedim",
+    "year": "1932",
+    "language": {
+      "text": "Zolai, Tedim",
+      "textdirection": "ltr",
+      "name": "zo"
+    },
+    "version": "1"
+  },
+  {
+    "identify": "falam1973",
+    "name": "Baibal Thianghlim",
+    "shortname": "Falam",
+    "year": "1973",
+    "language": {
+      "text": "Lai, Falam",
+      "textdirection": "ltr",
+      "name": "ll"
+    },
+    "version": "1"
+  },
+  {
+    "identify": "hakha1920",
+    "name": "Baibal Thiang",
+    "shortname": "Hakha",
+    "year": "1920",
+    "language": {
+      "text": "Lai, Hakha",
+      "textdirection": "ltr",
+      "name": "ll"
+    },
+    "version": "1"
+  }
+]
