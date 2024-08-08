@@ -83,7 +83,7 @@ class _MainState extends StateAbstract<Main> {
   late final Size sizeOfContext = MediaQuery.of(context).size;
 
   double get hzSpace => 5;
-  double get maxWidth => 200;
+  double get maxWidth => 250;
   double get right => hzSpace;
   double get left => sizeOfContext.width > maxWidth ? sizeOfContext.width - maxWidth : hzSpace;
   double get top => positionOfRender.dy + sizeOfRender.height + 7;
@@ -99,7 +99,7 @@ class _MainState extends StateAbstract<Main> {
   // double get minHeight => 45 * 4;
 
   double get item => hasSelection ? 4 : 1;
-  double get defaultHeight => 45 * item;
+  double get defaultHeight => 60 * item;
   double get maxHeight => sizeOfContext.height * 0.62;
   double get height => defaultHeight > maxHeight ? maxHeight : defaultHeight;
 
@@ -134,7 +134,7 @@ class _MainState extends StateAbstract<Main> {
   Widget body() {
     List<Widget> children = [
       rowCommon(
-        height: 45,
+        height: 60,
         child: GridView(
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
@@ -243,7 +243,7 @@ class _MainState extends StateAbstract<Main> {
           //   },
           // ),
           rowCommon(
-            height: 30,
+            height: 50,
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               border: Border(
@@ -261,6 +261,7 @@ class _MainState extends StateAbstract<Main> {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   // 'Selection',
@@ -273,7 +274,7 @@ class _MainState extends StateAbstract<Main> {
             ),
           ),
           rowCommon(
-            height: 55,
+            height: 70,
             // child: GridView(
             //   physics: const NeverScrollableScrollPhysics(),
             //   // padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
@@ -324,7 +325,7 @@ class _MainState extends StateAbstract<Main> {
             ),
           ),
           rowCommon(
-            height: 50,
+            height: 70,
             decoration: BoxDecoration(
               // color: Colors.red,
               border: Border(
@@ -403,7 +404,7 @@ class _MainState extends StateAbstract<Main> {
             message: preference.language('color-${oj.name}'),
             child: ViewMarks(
               padding: EdgeInsets.zero,
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),
               // constraints: const BoxConstraints(minWidth: 30),
 
               decoration: BoxDecoration(
