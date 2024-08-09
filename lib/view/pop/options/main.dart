@@ -99,7 +99,7 @@ class _MainState extends StateAbstract<Main> {
   // double get minHeight => 45 * 4;
 
   double get item => hasSelection ? 4 : 1;
-  double get defaultHeight => 60 * item;
+  double get defaultHeight => 64 * item;
   double get maxHeight => sizeOfContext.height * 0.62;
   double get height => defaultHeight > maxHeight ? maxHeight : defaultHeight;
 
@@ -243,7 +243,7 @@ class _MainState extends StateAbstract<Main> {
           //   },
           // ),
           rowCommon(
-            height: 50,
+            height: 55,
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               border: Border(
@@ -266,7 +266,7 @@ class _MainState extends StateAbstract<Main> {
                 Text(
                   // 'Selection',
                   preference.text.selection(''),
-                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: Theme.of(context).hintColor,
                       ),
                 ),
