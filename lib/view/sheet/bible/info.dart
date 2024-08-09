@@ -148,6 +148,7 @@ class _State extends SheetsDraggableState<Main> {
                 valueListenable: boxOfBooks.listen(),
                 builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
                   return ViewButtons(
+                    message: App.preference.text.favorite('false'),
                     child: ViewMarks(
                       icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
                       iconColor:

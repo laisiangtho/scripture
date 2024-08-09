@@ -11,9 +11,8 @@ class UserProfileIcon extends UserIconWidget {
   @override
   Widget build(BuildContext context) {
     return ViewButtons(
-      // message: App.preference.text.option('true'),
+      message: App.preference.text.account,
       style: Theme.of(context).textTheme.labelMedium,
-
       onPressed: () => App.route.pushNamed('home/user'),
       child: ViewMarks(
         child: Selector<Authenticate, bool>(

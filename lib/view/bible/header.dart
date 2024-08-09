@@ -21,7 +21,7 @@ mixin _Header on _State {
       ),
       right: [
         ViewButtons(
-          // color: Colors.red,
+          message: preference.text.sort,
           onPressed: onSort,
           child: AnimatedBuilder(
             animation: _dragController,

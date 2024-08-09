@@ -80,6 +80,7 @@ mixin _Header on _State {
         ),
         ViewButtons(
           key: _kOptions,
+          message: preference.text.option('true'),
           // constraints: const BoxConstraints(minWidth: 50.0),
           // color: Theme.of(context).backgroundColor,
           // padding: EdgeInsets.symmetric(
