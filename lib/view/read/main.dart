@@ -36,7 +36,8 @@ class _View extends _State with _Header {
       body: Views(
         scrollBottom: ScrollBottomNavigation(
           listener: scrollController.bottom,
-          notifier: App.viewData.bottom,
+          // notifier: App.viewData.bottom,
+          notifier: app.bottom,
           height: 120,
           pointer: 20,
         ),
@@ -62,20 +63,20 @@ class _View extends _State with _Header {
       // resizeToAvoidBottomInset: true,
       // extendBody: true,
       // bottomNavigationBar: const SheetStack(),
-      // bottomNavigationBar: App.route.show('sheet-parallel').child,
-      // bottomNavigationBar: ViewDelays.milliseconds(
-      //   milliseconds: 1700,
-      //   builder: (_, __) {
-      //     return App.route.show('sheet-parallel').child;
-      //   },
-      // ),
+      // bottomNavigationBar: route.show('sheet-parallel').child,
       bottomNavigationBar: ViewDelays.milliseconds(
         milliseconds: 1700,
         builder: (_, __) {
-          return App.route.show('sheet-bible-persistent').child;
+          return route.show('sheet-bible-persistent').child;
         },
       ),
-      // bottomSheet: App.route.show('sheet-parallel').child,
+      // bottomNavigationBar: ViewDelays.milliseconds(
+      //   milliseconds: 1700,
+      //   builder: (_, __) {
+      //     return route.show('sheet-bible-persistent').child;
+      //   },
+      // ),
+      // bottomSheet: route.show('sheet-parallel').child,
       // extendBody: true,
     );
   }

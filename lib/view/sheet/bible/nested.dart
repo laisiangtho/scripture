@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-bible-section';
@@ -19,25 +19,22 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
-  Scripture get scripture => App.core.scripturePrimary;
+class _State extends DraggableSheets<Main> {
+  @override
+  late final Core app = App.core;
+  Scripture get scripture => app.scripturePrimary;
 
   List<OfBook> get books => scripture.bookList;
 
   final List<int> expandedList = [];
 
-  @override
-  ViewData get viewData => App.viewData;
-
-  // @override
-  // ScrollNotifier get notifier => App.scroll;
-
   // @override
   // bool get persistent => false;
+
   @override
-  double get actualInitialSize => 0.8;
+  late final actualInitialSize = 0.8;
   @override
-  double get actualMinSize => 0.8;
+  late final actualMinSize = 0.8;
 
   @override
   Widget draggableDecoration({Widget? child}) {
@@ -302,7 +299,7 @@ class _State extends SheetsDraggableState<Main> {
   }
 
   Widget bookItem(int index, OfBook book) {
-    bool isCurrentBook = App.core.data.bookId == book.info.id;
+    bool isCurrentBook = app.data.bookId == book.info.id;
 
     bool isExpanded = expandedList.where((e) => e == index).isNotEmpty;
     return ExpansionPanelList(
@@ -425,7 +422,7 @@ class _State extends SheetsDraggableState<Main> {
 
   Widget chapterButton(int bookId, int chapterId) {
     // bool isCurrentChapter = 2 == index;
-    bool isCurrentChapter = App.core.data.chapterId == chapterId;
+    bool isCurrentChapter = app.data.chapterId == chapterId;
 
     return ViewButtons(
       // borderRadius: const BorderRadius.all(Radius.circular(2.0)),

@@ -11,8 +11,10 @@ import 'initialize.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await initializeApp();
   await App.core.ensureInitialized();
+
   runApp(const LaiSiangtho());
 }
 
@@ -27,69 +29,36 @@ class LaiSiangtho extends StatelessWidget {
           create: (context) => App.core,
         ),
         // ChangeNotifierProvider<Preference>(
-        //   create: (context) => App.preference,
+        //   create: (context) => App.core.preference,
         // ),
-        ChangeNotifierProvider<Authenticate>(
-          create: (context) => App.authenticate,
-        ),
+        // ChangeNotifierProvider<Authenticate>(
+        //   create: (context) => App.core.authenticate,
+        // ),
       ],
-      builder: builder,
-    );
-  }
-
-  Widget builder(BuildContext context, Widget? child) {
-    return AnimatedBuilder(
-      animation: App.preference,
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp.router(
-          // key: const ValueKey('laisiangtho'),
-          showSemanticsDebugger: false,
-          debugShowCheckedModeBanner: false,
-
-          restorationScopeId: 'lidea',
-          // // locale: Localizations.localeOf(context),
-          locale: App.preference.locale,
-          localizationsDelegates: App.preference.localeDelegates,
-          supportedLocales: App.preference.listOfLocale,
-          theme: App.preference.light(context),
-          darkTheme: App.preference.dark(context),
-          themeMode: App.preference.themeMode,
-          onGenerateTitle: (BuildContext context) => App.core.data.env.name,
-
-          // routeInformationParser: NavigatorRouteInformationParser(),
-          routeInformationParser: RouteParser(),
-          routerDelegate: App.routeDelegate,
-          backButtonDispatcher: RootBackButtonDispatcher(),
+        final preference = App.core.preference;
+        return AnimatedBuilder(
+          animation: preference,
+          builder: (BuildContext context, Widget? child) {
+            return MaterialApp.router(
+              key: const ValueKey('LaiSiangtho'),
+              showSemanticsDebugger: false,
+              debugShowCheckedModeBanner: false,
+              restorationScopeId: 'lidea',
+              locale: preference.locale,
+              localizationsDelegates: preference.localeDelegates,
+              supportedLocales: preference.listOfLocale,
+              theme: preference.light(context),
+              darkTheme: preference.dark(context),
+              themeMode: preference.themeMode,
+              onGenerateTitle: (BuildContext context) => App.core.data.env.name,
+              routeInformationParser: RouteParser(),
+              routerDelegate: App.core.routeDelegate,
+              backButtonDispatcher: RootBackButtonDispatcher(),
+            );
+          },
         );
       },
     );
   }
-
-  // Widget builder(BuildContext context, Widget? child) {
-  //   return AnimatedBuilder(
-  //     animation: App.preference,
-  //     builder: (BuildContext context, Widget? child) {
-  //       return child!;
-  //     },
-  //     child: child,
-  //   );
-  // }
-
-  // Widget builder(BuildContext context, Widget? child) {
-  //   // return AnnotatedRegion<SystemUiOverlayStyle>(
-  //   //   value: SystemUiOverlayStyle(
-  //   //     systemNavigationBarColor: Theme.of(context).primaryColor,
-  //   //     // systemNavigationBarDividerColor: Colors.transparent,
-  //   //     // systemNavigationBarDividerColor: Colors.red,
-  //   //     systemNavigationBarIconBrightness: App.preference.resolvedSystemBrightness,
-  //   //     systemNavigationBarContrastEnforced: false,
-  //   //     statusBarColor: Colors.transparent,
-  //   //     statusBarBrightness: App.preference.systemBrightness,
-  //   //     statusBarIconBrightness: App.preference.resolvedSystemBrightness,
-  //   //     systemStatusBarContrastEnforced: false,
-  //   //   ),
-  //   //   child: child!,
-  //   // );
-  //   return child!;
-  // }
 }

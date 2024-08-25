@@ -1,18 +1,9 @@
 part of 'main.dart';
 
 abstract class _Searches extends _Engines {
-  // SuggestionType? _cacheSuggestion;
-  // SuggestionType _cacheSuggestion = const SuggestionType<Map<String, String>>();
-  // ConclusionType _cacheConclusion = const ConclusionType();
-
-  // SuggestionType get cacheSuggestion => const SuggestionType();
-  // ConclusionType get cacheConclusion => const ConclusionType();
-  /// ```dart
-  /// [query: String, raw: List<Map<String, Object?>>]
-  /// ```
-  /// typeof [SuggestionType]
-  // Future<void> suggestionGenerate() async {}
-  Future<void> suggestionGenerate() async {
+  @override
+  Future<void> suggestionGenerate({String ord = ''}) async {
+    data.suggestQuery = ord;
     // _cacheSuggestion = SuggestionType(
     //   query: data.suggestQuery,
     // );
@@ -34,18 +25,15 @@ abstract class _Searches extends _Engines {
     // notify();
   }
 
-  // SuggestionType get cacheSuggestion {
-  //   return _cacheSuggestion;
-  // }
-
-  Future<void> conclusionGenerate() async {
+  @override
+  Future<void> conclusionGenerate({String ord = ''}) async {
+    data.searchQuery = ord;
     // _cacheConclusion = ConclusionType(
     //   query: data.searchQuery,
     // );
     // scripturePrimary.bible.info.langCode
-    // debugPrint('cacheConclusion');
-    // data.boxOfRecentSearch.update(data.searchQuery);
-    data.boxOfRecentSearch.update(data.searchQuery, scripturePrimary.bible.info.langCode);
+
+    data.boxOfRecentSearch.update(ord, scripturePrimary.bible.info.langCode);
   }
 
   // ConclusionType get cacheConclusion {

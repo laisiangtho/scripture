@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-bible-chapter';
@@ -18,21 +18,14 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = App.core;
 
-  // late final iso = App.core.iso;
-
-  // @override
-  // ScrollNotifier get notifier => App.scroll;
-
-  // @override
-  // bool get persistent => false;
   @override
-  double get actualInitialSize => 0.5;
+  late final actualInitialSize = 0.5;
   @override
-  double get actualMinSize => 0.3;
+  late final actualMinSize = 0.3;
 
   // @override
   // Widget build(BuildContext context) {
@@ -48,7 +41,7 @@ class _State extends SheetsDraggableState<Main> {
   //   );
   // }
 
-  Scripture get scripture => App.core.scripturePrimary;
+  Scripture get scripture => app.scripturePrimary;
   // int get itemCount => scripture.chapterCount;
   late final itemCount = scripture.chapterCount;
 
@@ -86,7 +79,7 @@ class _State extends SheetsDraggableState<Main> {
               // ),
               OptionButtons.cancel(
                 navigator: state.navigator,
-                label: App.preference.text.cancel,
+                label: app.preference.text.cancel,
               ),
             ],
             primary: ViewHeaderTitle(
@@ -103,7 +96,7 @@ class _State extends SheetsDraggableState<Main> {
               //   const Alignment(0, 0),
               //   vhd.snapShrink,
               // ),
-              label: App.preference.text.chapter('true'),
+              label: app.preference.text.chapter('true'),
               data: vhd,
             ),
           );
@@ -149,7 +142,7 @@ class _State extends SheetsDraggableState<Main> {
 
   Widget chapterButton(int chapterId) {
     // bool isCurrentChapter = false;
-    bool isCurrentChapter = App.core.data.chapterId == chapterId;
+    bool isCurrentChapter = app.data.chapterId == chapterId;
     // bool isCurrentChapter = chapter.id == index;
 
     return ViewButtons.filled(
@@ -179,7 +172,7 @@ class _State extends SheetsDraggableState<Main> {
       onPressed: () {
         // Navigator.pop<int>(context, index);
         // Navigator.maybePop(context, index);
-        // App.core.chapterChange(chapterId: index).whenComplete(() {
+        // core.chapterChange(chapterId: index).whenComplete(() {
         //   Navigator.maybePop(context, index);
         // });
         Navigator.of(context).maybePop({'chapter': chapterId});

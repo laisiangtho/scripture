@@ -49,7 +49,7 @@ class _View extends _State with _Header {
         builder: _header,
       ),
       PullToActivate(
-        onUpdate: core.poll.updateIndividual,
+        onUpdate: app.poll.updateIndividual,
       ),
       ViewSections(
         sliver: true,

@@ -3,7 +3,7 @@ part of 'main.dart';
 abstract class _State extends StateAbstract<Main> {
   late final ScrollController scrollController = ScrollController();
 
-  late final BoxOfBookmarks<BookmarksType> boxOfBookmarks = App.core.data.boxOfBookmarks;
+  late final BoxOfBookmarks<BookmarksType> boxOfBookmarks = app.data.boxOfBookmarks;
 
   // @override
   // void initState() {
@@ -57,11 +57,11 @@ abstract class _State extends StateAbstract<Main> {
 
   void onNav(int book, int chapter) {
     // NotifyNavigationButton.navigation.value = 1;
-    core.chapterChange(bookId: book, chapterId: chapter);
+    app.chapterChange(bookId: book, chapterId: chapter);
     Future.delayed(const Duration(milliseconds: 150), () {
       // core.definitionGenerate(word);
       // core.navigate(at: 1);
-      App.route.pushNamed('read');
+      route.pushNamed('read');
     });
     // Future.delayed(Duration.zero, () {
     //   core.historyAdd(word);

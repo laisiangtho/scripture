@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:scripture/core/main.dart';
 
 import '/app.dart';
 
@@ -15,10 +14,7 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  // late final ScrollController scrollController = ScrollController();
-  // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
-
-  Scripture get scripture => core.scripturePrimary;
+  Scripture get scripture => app.scripturePrimary;
 
   List<SnapOut> snap = [];
 
@@ -91,8 +87,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: App.preference.text.back,
-          cancel: App.preference.text.cancel,
+          back: preference.text.back,
+          cancel: preference.text.cancel,
         ),
       ],
       primary: const ViewHeaderTitle.custom(

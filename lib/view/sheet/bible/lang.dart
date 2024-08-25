@@ -9,7 +9,7 @@ import 'package:lidea/provider.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-bible-lang';
@@ -20,21 +20,19 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = App.core;
 
-  late final iso = App.core.iso;
-
-  // @override
-  // ScrollNotifier get notifier => App.scroll;
+  late final iso = app.iso;
 
   // @override
   // bool get persistent => false;
+
   @override
-  double get actualInitialSize => 0.4;
+  late final actualInitialSize = 0.4;
   @override
-  double get actualMinSize => 0.3;
+  late final actualMinSize = 0.3;
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +81,13 @@ class _State extends SheetsDraggableState<Main> {
               //   vhd.snapShrink,
               // ),
               // label: 'Language filter',
-              label: App.preference.text.language('false'),
+              label: preference.text.language('false'),
               data: vhd,
             ),
             left: [
               OptionButtons.cancel(
                 navigator: state.navigator,
-                label: App.preference.text.cancel,
+                label: preference.text.cancel,
               ),
             ],
             right: [
@@ -194,7 +192,7 @@ class _State extends SheetsDraggableState<Main> {
             //   ),
             // ),
             leading: Text(
-              App.preference.digit(index + 1),
+              preference.digit(index + 1),
               // book.id.toString(),
               textAlign: TextAlign.center,
               // style: TextStyle(
@@ -206,7 +204,7 @@ class _State extends SheetsDraggableState<Main> {
             ),
             title: Paragraphs(
               text: item.langNameList.join(', '),
-              // text: App.preference.language('totalBookLang'),
+              // text: core.preference.language('totalBookLang'),
               style: state.textTheme.bodyMedium!.copyWith(
                 color: isAva ? null : Theme.of(context).hoverColor.darken(amount: .9),
               ),
@@ -215,14 +213,14 @@ class _State extends SheetsDraggableState<Main> {
 
             // subtitle: Paragraphs(
             //   text: '#{{bookCount}} book',
-            //   // text: App.preference.language('totalBookLang'),
+            //   // text: core.preference.language('totalBookLang'),
             //   style: state.textTheme.labelSmall!.copyWith(
             //     color: isAva ? null : Theme.of(context).hoverColor.darken(amount: .9),
             //   ),
             //   // textAlign: TextAlign.center,
             //   decoration: [
             //     TextSpan(
-            //       text: App.preference.digit(item.bible.length),
+            //       text: core.preference.digit(item.bible.length),
             //       semanticsLabel: 'bookCount',
             //       style: TextStyle(
             //         color: state.theme.hintColor,
@@ -231,7 +229,7 @@ class _State extends SheetsDraggableState<Main> {
             //   ],
             // ),
             // trailing: Text(
-            //   App.preference.digit(item.bible.length),
+            //   core.preference.digit(item.bible.length),
             //   style: state.textTheme.labelSmall,
             // ),
             trailing: Container(
@@ -248,7 +246,7 @@ class _State extends SheetsDraggableState<Main> {
                 color: isAva ? Theme.of(context).primaryColorDark : Theme.of(context).focusColor,
               ),
               child: Text(
-                App.preference.digit(item.bible.length),
+                preference.digit(item.bible.length),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Theme.of(context).primaryColor,

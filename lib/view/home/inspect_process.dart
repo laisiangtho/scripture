@@ -32,7 +32,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   // subtitle: const Text('...'),
                   onTap: () {
                     // updateToken
-                    App.data.updateToken().then((e) {
+                    App.core.data.updateToken().then((e) {
                       debugPrint('updateToken done');
                     }).catchError((e) {
                       debugPrint('updateToken $e');
@@ -49,7 +49,6 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('File (test)'),
                   // subtitle: const Text('...'),
                   onTap: () async {
-                    //  App.core.u
                     // final docs = Docs.user;
                     // docs.dir.then((e) {
                     //   final test = e != null;
@@ -61,7 +60,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                     //   }
                     // });
 
-                    core.scripturePrimary.marks.backup();
+                    app.scripturePrimary.marks.backup();
                     // if (docs != null) {
                     //   final dir = docs.path;
                     //   // join(await directory.then((e) => e.path), name);
@@ -81,7 +80,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Card (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.route.pushNamed('home/test-card');
+                    app.route.pushNamed('home/test-card');
                   },
                 ),
               ),
@@ -189,7 +188,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Sliver (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.route.pushNamed('home/test-sliver');
+                    App.core.route.pushNamed('home/test-sliver');
                   },
                 ),
               ),
@@ -202,7 +201,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Search (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.route.pushNamed('home/test-search');
+                    App.core.route.pushNamed('home/test-search');
                   },
                 ),
               ),
@@ -215,7 +214,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),
                   onTap: () {
-                    App.route.pushNamed('home/recto-section');
+                    App.core.route.pushNamed('home/recto-section');
                   },
                 ),
               ),

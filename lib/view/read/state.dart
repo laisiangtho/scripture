@@ -37,11 +37,11 @@ abstract class _State extends StateAbstract<Main> {
   //   primaryScripture.scroll = scrollController;
   // }
 
-  Scripture get primaryScripture => core.scripturePrimary;
+  Scripture get primaryScripture => app.scripturePrimary;
   List<OfVerse> get primaryVerse => primaryScripture.verse;
 
   void showBookmarks() {
-    core.switchBookmarkWithNotify();
+    app.switchBookmarkWithNotify();
   }
 
   void showBooks() {
@@ -53,7 +53,7 @@ abstract class _State extends StateAbstract<Main> {
         .then((e) {
       if (e != null) {
         Future.delayed(const Duration(milliseconds: 300), () {
-          core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+          app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
         });
       }
     });
@@ -67,7 +67,7 @@ abstract class _State extends StateAbstract<Main> {
     ).then((e) {
       if (e != null) {
         Future.delayed(const Duration(milliseconds: 300), () {
-          core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+          app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
         });
       }
     });
@@ -93,7 +93,7 @@ abstract class _State extends StateAbstract<Main> {
               );
             },
             pageBuilder: (_, __, ___) {
-              return App.route.show('pop-options').child;
+              return route.show('pop-options').child;
             },
           ),
         )

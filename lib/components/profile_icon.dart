@@ -4,20 +4,24 @@ class UserProfileIcon extends UserIconWidget {
   const UserProfileIcon({super.key});
 
   @override
-  bool get userSignedIn => App.authenticate.hasUser;
-  @override
-  String? get userPhotoURL => App.authenticate.userPhotoURL;
+  Core get app => App.core;
 
   @override
   Widget build(BuildContext context) {
     return ViewButtons(
-      message: App.preference.text.account,
+      message: app.preference.text.account,
       style: Theme.of(context).textTheme.labelMedium,
-      onPressed: () => App.route.pushNamed('home/user'),
+      onPressed: () => app.route.pushNamed('home/user'),
       child: ViewMarks(
-        child: Selector<Authenticate, bool>(
-          selector: (_, e) => e.hasUser,
-          builder: (BuildContext _, bool hasUser, Widget? child) {
+        // child: Selector<Core, Authenticate>(
+        //   selector: (_, e) => e.authenticate,
+        //   builder: (BuildContext _, Authenticate o, Widget? child) {
+        //     return super.build(context);
+        //   },
+        // ),
+        child: StreamBuilder<dynamic>(
+          stream: authenticate.stream,
+          builder: (context, snapshot) {
             return super.build(context);
           },
         ),

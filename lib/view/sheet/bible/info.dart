@@ -7,7 +7,7 @@ import 'package:lidea/hive.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-bible-info';
@@ -18,11 +18,11 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = App.core;
 
-  late final boxOfBooks = App.data.boxOfBooks;
+  late final boxOfBooks = app.data.boxOfBooks;
 
   late final MapEntry<dynamic, BooksType> item = state.as<MapEntry<dynamic, BooksType>>();
 
@@ -45,10 +45,11 @@ class _State extends SheetsDraggableState<Main> {
 
   // @override
   // bool get persistent => false;
+
   @override
-  double get actualInitialSize => 0.5;
+  late final actualInitialSize = 0.5;
   @override
-  double get actualMinSize => 0.4;
+  late final actualMinSize = 0.4;
 
   void _launchBibleSource() {
     Launcher.universalLink('https://github.com/laisiangtho/bible');
@@ -75,11 +76,11 @@ class _State extends SheetsDraggableState<Main> {
       Navigator.of(context).maybePop();
       return;
     }
-    App.core.analytics.content(isAvailable ? 'Delete' : 'Download', book.identify);
+    analytics.content(isAvailable ? 'Delete' : 'Download', book.identify);
     setState(() {
       isDownloading = !isDownloading;
     });
-    App.core.switchAvailabilityUpdate(book.identify).then((_) {
+    app.switchAvailabilityUpdate(book.identify).then((_) {
       setState(() {
         isDownloading = !isDownloading;
         message = 'finish';
@@ -87,10 +88,10 @@ class _State extends SheetsDraggableState<Main> {
 
       Future.delayed(const Duration(milliseconds: 300), () {
         // Navigator.pop(context, 'done');
-        Navigator.of(context).maybePop();
+        if (mounted) Navigator.of(context).maybePop();
       });
 
-      // App.core.store.googleAnalytics.then((e)=>e.sendEvent(store.identify, store.appVersion));
+      // core.store.googleAnalytics.then((e)=>e.sendEvent(store.identify, store.appVersion));
     }).catchError((error) {
       setState(() {
         isDownloading = !isDownloading;
@@ -110,8 +111,8 @@ class _State extends SheetsDraggableState<Main> {
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
-        heights: const [kTextTabBarHeight, kToolbarHeight],
-        // heights: const [kToolbarHeight, kToolbarHeight],
+        heights: const [kTextTabBarHeight],
+        // heights: const [kTextTabBarHeight, kToolbarHeight],
         backgroundColor: state.theme.primaryColor,
         // backgroundColor: Colors.transparent,
         // padding: state.fromContext.viewPadding,
@@ -124,7 +125,7 @@ class _State extends SheetsDraggableState<Main> {
             left: [
               OptionButtons.cancel(
                 navigator: state.navigator,
-                label: App.preference.text.cancel,
+                label: app.preference.text.cancel,
               ),
             ],
             primary: ViewHeaderTitle(
@@ -148,7 +149,7 @@ class _State extends SheetsDraggableState<Main> {
                 valueListenable: boxOfBooks.listen(),
                 builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
                   return ViewButtons(
-                    message: App.preference.text.favorite('false'),
+                    message: preference.text.favorite('false'),
                     child: ViewMarks(
                       icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
                       iconColor:
@@ -301,8 +302,7 @@ class _State extends SheetsDraggableState<Main> {
                       ),
                       ViewLabels(
                         // constraints: const BoxConstraints(maxHeight: 30),
-                        label:
-                            isAvailable ? App.preference.text.delete : App.preference.text.download,
+                        label: isAvailable ? preference.text.delete : preference.text.download,
                         labelStyle: state.theme.textTheme.bodyLarge!.copyWith(
                           color: state.theme.primaryColor,
                         ),
@@ -329,7 +329,7 @@ class _State extends SheetsDraggableState<Main> {
               ),
               titleAlignment: ListTileTitleAlignment.top,
               title: Paragraphs(
-                text: App.preference.language('whenBibleDownload'),
+                text: preference.language('whenBibleDownload'),
                 style: state.textTheme.titleLarge,
                 decoration: [
                   TextSpan(
@@ -352,7 +352,7 @@ class _State extends SheetsDraggableState<Main> {
               ),
               titleAlignment: ListTileTitleAlignment.top,
               title: Paragraphs(
-                text: App.preference.language('whenBibleDelete'),
+                text: preference.language('whenBibleDelete'),
                 style: state.textTheme.titleLarge,
                 decoration: [
                   TextSpan(
@@ -377,11 +377,11 @@ class _State extends SheetsDraggableState<Main> {
           ),
           titleAlignment: ListTileTitleAlignment.titleHeight,
           title: Paragraphs(
-            text: App.preference.language('availableSource'),
+            text: preference.language('availableSource'),
             style: state.textTheme.titleLarge,
             decoration: [
               TextSpan(
-                text: App.preference.text.holyBible,
+                text: preference.text.holyBible,
                 semanticsLabel: 'sourceBible',
                 style: TextStyle(color: state.theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
@@ -393,7 +393,7 @@ class _State extends SheetsDraggableState<Main> {
                 recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
               ),
               TextSpan(
-                text: App.preference.text.issue('true'),
+                text: preference.text.issue('true'),
                 semanticsLabel: 'Issues',
                 style: TextStyle(color: state.theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,

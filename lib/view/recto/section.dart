@@ -19,9 +19,8 @@ class Main extends StatefulWidget {
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
-  // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
-  Scripture get scripture => App.core.scripturePrimary;
+  Scripture get scripture => app.scripturePrimary;
   // List<OfBook> get books => scripture.bookList;
   List<OfTestament> get testaments => scripture.testamentList;
 
@@ -46,7 +45,7 @@ mixin _Header on _State {
       left: [
         OptionButtons.back(
           navigator: state.navigator,
-          label: App.preference.text.back,
+          label: preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -55,7 +54,7 @@ mixin _Header on _State {
           const Alignment(0, 0),
           vhd.snapShrink,
         ),
-        label: App.preference.text.bible('false'),
+        label: preference.text.bible('false'),
         data: vhd,
       ),
     );
@@ -114,7 +113,7 @@ class _MainState extends _State with _Header {
           elevation: 0,
           shadowColor: null,
           automaticallyImplyLeading: false,
-          title: Text(App.preference.language('testament-$tId')),
+          title: Text(preference.language('testament-$tId')),
           titleSpacing: 20,
           toolbarHeight: 40,
           titleTextStyle: Theme.of(context).textTheme.bodyMedium,
@@ -132,7 +131,7 @@ class _MainState extends _State with _Header {
         //       pinned: true,
         //       primary: false,
         //       automaticallyImplyLeading: false,
-        //       title: Text(App.preference.language('testament-$tId')),
+        //       title: Text(preference.language('testament-$tId')),
         //       titleSpacing: 20,
         //       toolbarHeight: 40,
         //       titleTextStyle: Theme.of(context).textTheme.bodyMedium,
@@ -152,7 +151,7 @@ class _MainState extends _State with _Header {
                     automaticallyImplyLeading: false,
                     elevation: 1,
                     shadowColor: Theme.of(context).shadowColor,
-                    title: Text(App.preference.language('section-$sId')),
+                    title: Text(preference.language('section-$sId')),
                     titleSpacing: 30,
                     toolbarHeight: 30,
                     titleTextStyle: Theme.of(context).textTheme.bodySmall,
@@ -167,19 +166,19 @@ class _MainState extends _State with _Header {
                       return ListTile(
                         // tileColor: Theme.of(context).primaryColor,
                         leading: Text(
-                          App.preference.digit(bId),
+                          preference.digit(bId),
                           // scripture.digit(book.id),
                           // book.id.toString(),
                           textAlign: TextAlign.center,
                           style: state.textTheme.titleSmall,
                         ),
-                        title: Text(App.preference.language('book-$bId')),
+                        title: Text(preference.language('book-$bId')),
                         trailing: ViewMarks(
                           iconLeft: false,
                           icon: LideaIcon.rightOpen,
                           iconSize: 28,
                           iconColor: Theme.of(context).hintColor,
-                          label: App.preference.digit(book.totalChapter),
+                          label: preference.digit(book.totalChapter),
                         ),
                         onTap: () {
                           route.showSheetModal(

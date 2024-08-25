@@ -4,7 +4,7 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   late final ScrollController scrollController = ScrollController();
 
   late final boxOfBooks = data.boxOfBooks;
-  late final iso = core.iso;
+  late final iso = app.iso;
 
   late Box<BooksType> setOfBook;
   late Set<String> setOfLang;
@@ -91,11 +91,11 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
       state.navigator.maybePop();
 
       Future.microtask(() {
-        core.scriptureParallel.init().then((value) {
-          if (core.message.value.isNotEmpty) {
-            core.message.value = '';
+        app.scriptureParallel.init().then((value) {
+          if (app.message.value.isNotEmpty) {
+            app.message.value = '';
           } else {
-            core.state.notify();
+            app.state.notify();
           }
         });
       });
@@ -105,9 +105,8 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     }
   }
 
-  void tmp() {}
-
   Future showBibleInfo(MapEntry<dynamic, BooksType> book) {
+    app.route.showSheetModal(context: context, name: 'sheet-bible-info', arguments: book);
     return route.showSheetModal(context: context, name: 'sheet-bible-info', arguments: book);
   }
 

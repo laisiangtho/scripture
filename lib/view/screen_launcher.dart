@@ -17,22 +17,22 @@ class ScreenLauncher extends StatefulWidget {
   State<ScreenLauncher> createState() => _ScreenLauncherState();
 }
 
-class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
+class _ScreenLauncherState extends StateAbstract<ScreenLauncher> {
   late final _session = widget.delegate.notifier;
   late final PageController pageController = PageController(initialPage: _session.viewIndex);
   // late final Future<void> _initiator = Future.delayed(const Duration(milliseconds: 300));
-  late final Future<void> _initiator = App.core.initialized(context);
+  late final Future<void> _initiator = app.initialized(context);
 
-  @override
-  void initState() {
-    super.initState();
-    // App.scroll.state = ViewState(context);
-    WidgetsBinding.instance.addPostFrameCallback(_mediaData);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // App.scroll.state = OfContexts(context);
+  //   WidgetsBinding.instance.addPostFrameCallback(_mediaData);
+  // }
 
   // Todo: might not needed
   void _mediaData(Duration timestamp) {
-    App.viewData.fromContext = MediaQuery.of(context);
+    // viewData.fromContext = MediaQuery.of(context);
   }
 
   // Deep link
@@ -73,7 +73,7 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
     // ).whenComplete(() {
     //   App.scroll.bottom.update();
     // });
-    App.viewData.bottom.refresh();
+    app.bottom.refresh();
     // Future.microtask(() {
     //   App.scroll.bottom.animationTesting();
     // }).whenComplete(() {
@@ -115,11 +115,11 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
         systemNavigationBarColor: Theme.of(context).primaryColor,
         // systemNavigationBarDividerColor: Colors.transparent,
         // systemNavigationBarDividerColor: Colors.red,
-        systemNavigationBarIconBrightness: App.preference.resolvedSystemBrightness,
+        systemNavigationBarIconBrightness: preference.resolvedSystemBrightness,
         systemNavigationBarContrastEnforced: false,
         statusBarColor: Colors.transparent,
-        statusBarBrightness: App.preference.systemBrightness,
-        statusBarIconBrightness: App.preference.resolvedSystemBrightness,
+        statusBarBrightness: preference.systemBrightness,
+        statusBarIconBrightness: preference.resolvedSystemBrightness,
         systemStatusBarContrastEnforced: false,
       ),
       child: FutureBuilder(
@@ -129,7 +129,7 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
             case ConnectionState.done:
               return OrientationBuilder(
                 builder: (context, orientation) {
-                  if (MediaQuery.of(context).orientation != App.viewData.fromContext.orientation) {
+                  if (MediaQuery.of(context).orientation != state.fromContext.orientation) {
                     _mediaData(const Duration(microseconds: 1));
                   }
                   return launched();
@@ -189,27 +189,9 @@ class _ScreenLauncherState extends ViewStateWidget<ScreenLauncher> {
     );
   }
 
-  // return List.of(
-  //   _session.routesPrimary.map(
-  //     (route) => StateAlive(
-  //       key: Key('ScreenLauncherViewKeepAlive-${route.name}'),
-  //       child: route.child,
-  //     ),
-  //   ),
-  // );
-  // return List.of(
-  //   _session.routesPrimary.map(
-  //     (route) {
-  //       return StateAlive(
-  //         key: Key('ScreenLauncherViewKeepAlive-${route.name}'),
-  //         child: route.child,
-  //       );
-  //     },
-  //   ),
-  // );
   late final List<Widget> _viewChildren = List.of(
     _session.routesPrimary.map(
-      (route) => StateAlive(
+      (route) => ViewKeepAlive(
         key: Key('ScreenLauncherViewKeepAlive-${route.name}'),
         child: NestedView(
           delegate: NestedDelegates(

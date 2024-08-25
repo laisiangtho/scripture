@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 
-// import 'package:lidea/icon.dart';
-// import 'package:lidea/sliver_tools.dart';
-// import 'package:lidea/provider.dart';
-// import 'package:lidea/hive.dart';
-
 import '/app.dart';
 
 class Main extends StatefulWidget {
@@ -22,13 +17,11 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   late final ScrollController _scrollController = ScrollController();
   late final ExpansionTileController _expansionController = ExpansionTileController();
 
-  // final ValueNotifier<double> _overscrollNotifier = ValueNotifier(0);
-
   // ScrollPhysics? physics
   late final ValueNotifier<ScrollPhysics?> _scrollPhysics =
       ValueNotifier<ScrollPhysics?>(const ClampingScrollPhysics());
 
-  Scripture get scripture => App.core.scripturePrimary;
+  Scripture get scripture => app.scripturePrimary;
 
   List<OfBook> get books => scripture.bookList;
 
@@ -42,9 +35,6 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     }
     return 0;
   }
-
-  @override
-  ViewData get viewData => App.viewData;
 
   // @override
   // void initState() {
@@ -146,7 +136,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     Future.delayed(const Duration(milliseconds: 300), () {
       final key = books.elementAt(index).key as GlobalKey;
       final keyContext = key.currentContext;
-      if (keyContext != null) {
+      if (keyContext != null && keyContext.mounted) {
         Scrollable.ensureVisible(
           keyContext,
           duration: const Duration(milliseconds: 350),
@@ -190,8 +180,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: App.preference.text.back,
-          cancel: App.preference.text.cancel,
+          back: preference.text.back,
+          cancel: preference.text.cancel,
         ),
       ],
       primary: ViewHeaderTitle.fixed(
@@ -200,7 +190,7 @@ mixin _Header on _State {
         //   const Alignment(0, 0),
         //   vhd.snapShrink,
         // ),
-        label: App.preference.text.book('true'),
+        label: preference.text.book('true'),
       ),
       right: [
         ViewButtons(
@@ -209,7 +199,7 @@ mixin _Header on _State {
             Navigator.of(context).pushNamed('recto-title');
           },
           child: ViewMarks(
-            label: App.preference.text.title(''),
+            label: preference.text.title(''),
           ),
         ),
       ],
@@ -330,7 +320,7 @@ class _MainState extends _State with _Header {
       // collapsedBackgroundColor: state.theme.scaffoldBackgroundColor,
       backgroundColor: state.theme.scaffoldBackgroundColor,
       leading: Text(
-        // App.preference.digit(book.id.toString()),
+        // preference.digit(book.id.toString()),
         scripture.digit(book.info.id),
         // book.id.toString(),
         textAlign: TextAlign.center,
@@ -354,7 +344,7 @@ class _MainState extends _State with _Header {
       //   icon: Icons.expand_more_rounded,
       //   iconSize: 20,
       //   // iconColor: Theme.of(context).hintColor,
-      //   label: App.preference.digit(book.chapterCount),
+      //   label: preference.digit(book.chapterCount),
       // ),
       onExpansionChanged: (isExpanded) {
         // if (isExpanded) previousOffset = _scrollController.offset;
@@ -477,15 +467,15 @@ class ChapterNameItem extends StatelessWidget {
       : book = null,
         index = null;
 
-  Core get core => App.core;
-  Data get data => core.data;
-  Preference get preference => core.preference;
+  Core get app => App.core;
+  Data get data => app.data;
+  Preference get preference => app.preference;
 
   bool get isCurrentChapter => data.bookId == book?.info.id && data.chapterId == index;
   // bool get isChapter => chapterId != null && chapterId! > 0;
   bool get isChapter => index != null && index! > 0 && index! <= book!.totalChapter;
 
-  Scripture get scripture => core.scripturePrimary;
+  Scripture get scripture => app.scripturePrimary;
 
   @override
   Widget build(BuildContext context) {
@@ -544,7 +534,7 @@ class ChapterNameItem extends StatelessWidget {
       margin: margin,
       // color: theme.primaryColor,
       showShadow: false,
-      message: App.preference.text.title(''),
+      message: preference.text.title(''),
       child: ViewMarks(
         icon: Icons.signpost_rounded,
         iconColor: theme.primaryColorDark.withOpacity(0.3),

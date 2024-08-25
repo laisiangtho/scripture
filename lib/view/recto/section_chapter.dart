@@ -38,7 +38,7 @@ mixin _Header on _State {
       left: [
         OptionButtons.back(
           navigator: state.navigator,
-          label: App.preference.text.back,
+          label: preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -49,7 +49,7 @@ mixin _Header on _State {
         ),
         // label: 'Chapter',
         // label: book.name,
-        label: App.preference.language('book-${book.id}'),
+        label: preference.language('book-${book.id}'),
         data: vhd,
       ),
     );
@@ -103,12 +103,12 @@ class _MainState extends _State with _Header {
         int chapterId = index + 1;
 
         // final bookName = book.name;
-        // final chapterLocale = App.preference.text.chapter('');
-        final chapterName = App.preference.digit(chapterId);
+        // final chapterLocale = preference.text.chapter('');
+        final chapterName = preference.digit(chapterId);
         return ListTile(
           // title: Text('$chapterLocale $chapterName'),
           title: Paragraphs(
-            text: App.preference.language('chapterName'),
+            text: preference.language('chapterName'),
             decoration: [
               TextSpan(
                 text: chapterName,
@@ -121,11 +121,11 @@ class _MainState extends _State with _Header {
             // icon: LideaIcon.rightOpen,
             // iconSize: 26,
             iconColor: Theme.of(context).hintColor,
-            label: App.preference.digit(verse),
+            label: preference.digit(verse),
           ),
           onTap: () {
-            App.route.pushNamed('read');
-            App.core.chapterChange(bookId: book.id, chapterId: chapterId);
+            route.pushNamed('read');
+            app.chapterChange(bookId: book.id, chapterId: chapterId);
           },
         );
       },

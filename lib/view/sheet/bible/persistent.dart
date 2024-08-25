@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-bible-persistent';
@@ -13,19 +13,17 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = App.core;
 
   @override
-  bool get persistent => true;
+  late final persistent = true;
 
   @override
   double get height => kTextTabBarHeight;
 
-  Core get core => App.core;
-  Preference get preference => App.preference;
-  Scripture get primaryScripture => core.scripturePrimary;
+  Scripture get primaryScripture => app.scripturePrimary;
   ScrollController? get primaryScroll => primaryScripture.scroll;
   List<OfVerse> get primaryVerse => primaryScripture.verse;
 
@@ -39,13 +37,13 @@ class _State extends SheetsDraggableState<Main> {
   // }
 
   void setChapterPrevious() {
-    core.chapterPrevious.catchError((e) {
+    app.chapterPrevious.catchError((e) {
       showSnack(e.toString());
     });
   }
 
   void setChapterNext() {
-    core.chapterNext.catchError((e) {
+    app.chapterNext.catchError((e) {
       showSnack(e.toString());
     });
   }

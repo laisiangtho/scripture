@@ -7,7 +7,7 @@ mixin _Header on _State {
       left: [
         OptionButtons.back(
           navigator: state.navigator,
-          label: App.preference.text.back,
+          label: preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(

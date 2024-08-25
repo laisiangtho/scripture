@@ -350,6 +350,7 @@ class Scripture extends _ScriptureInterface {
     return data.bookmarkIndex >= 0;
   }
 
+  /// If `cacheSearch.result` is empty as in change of `identify` and `data.suggestQuery`
   bool get verseSearchCacheIsEmpty {
     final e = cacheSearch.result;
     // if (e.book.isNotEmpty) {
@@ -398,6 +399,7 @@ class Scripture extends _ScriptureInterface {
         query: data.suggestQuery,
       );
     }
+
     return cacheSearch;
   }
 

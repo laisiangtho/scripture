@@ -14,23 +14,9 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  // Scripture get scripture => App.core.scripturePrimary;
-  // CacheTitle get title => scripture.title;
-
   late final _formKey = GlobalKey<FormState>();
   late final _textController = TextEditingController();
   late final _focusNode = FocusNode();
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  // }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   // scrollController.dispose();
-  // }
 
   @override
   void initState() {
@@ -65,7 +51,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
         return args['pageLabel'];
       }
     }
-    return App.preference.text.text('true');
+    return preference.text.text('true');
   }
 
   void onSubmit(String str) {
@@ -79,8 +65,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: App.preference.text.back,
-          cancel: App.preference.text.cancel,
+          back: preference.text.back,
+          cancel: preference.text.cancel,
         ),
       ],
       primary: ViewHeaderTitle.dual(

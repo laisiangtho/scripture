@@ -78,7 +78,7 @@ class VerseItemWidget extends StatelessWidget {
   });
 
   Scripture get primaryScripture => App.core.scripturePrimary;
-  Preference get preference => App.preference;
+  Preference get preference => App.core.preference;
 
   // String get bookName => primaryScripture.bookName;
   // String get chapterName => primaryScripture.chapterName;
@@ -188,7 +188,7 @@ class VerseItemWidget extends StatelessWidget {
                         // color: Theme.of(context).hintColor.withOpacity(0.3),
                         color: Theme.of(context).focusColor,
                         onPressed: () {
-                          App.route.showSheetModal(
+                          App.core.route.showSheetModal(
                             context: context,
                             name: 'sheet-bible-navigation/recto-editor',
                             arguments: {

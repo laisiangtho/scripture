@@ -106,6 +106,7 @@ class RouteDelegates extends RouteMixinDelegate<RouteNotifier> {
               //   label: test_tmp.Main.label,
               //   page: const test_tmp.Main(),
               // ),
+
               RouteType(
                 name: recto_section.Main.route,
                 icon: recto_section.Main.icon,

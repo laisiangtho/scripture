@@ -15,5 +15,3 @@ class Views<T> extends ViewScrolls<T> {
     required super.child,
   });
 }
-
-// class ScrollNotifier extends ViewData {}

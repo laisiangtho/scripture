@@ -5,10 +5,9 @@ mixin _Header on _State {
     return ViewHeaderLayouts(
       data: vhd,
       // left: [
-      //   BackButtonWidget(
-      //     navigator: state.navigator,
+      //   OptionButtons.back(
+      //     label: preference.text.back,
       //   ),
-      //   // BackButton(),
       // ],
       primary: ViewHeaderTitle(
         alignment: Alignment.lerp(

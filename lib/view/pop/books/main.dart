@@ -180,7 +180,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
               // contentPadding: EdgeInsets.zero,
               horizontalTitleGap: 0,
               leading: Text(
-                App.preference.digit(book.info.id),
+                preference.digit(book.info.id),
                 style: TextStyle(
                   color: state.theme.primaryColorDark,
                 ),

@@ -239,7 +239,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       onPressed: () {
         // Navigator.pop<int>(context, index);
         // Navigator.maybePop(context, index);
-        core.chapterChange(chapterId: index).whenComplete(() {
+        app.chapterChange(chapterId: index).whenComplete(() {
           _animationController.reverse().whenComplete(() {
             Navigator.maybePop(context, index);
           });

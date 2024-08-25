@@ -75,9 +75,19 @@ class _View extends _State with _Header {
       //   builder: _header,
       // ),
       ViewSections(
-        duration: const Duration(milliseconds: 400),
+        // duration: const Duration(milliseconds: 400),
+        sliver: true,
+        show: boxOfBookmarks.isNotEmpty,
+
+        onAwait: const ViewFeedbacks.await(),
+        onEmpty: ViewFeedbacks.message(
+          label: preference.text.bookmarkCount(0),
+        ),
+        headerTitle: Text(
+          preference.text.recentSearch('true'),
+          style: state.textTheme.titleSmall,
+        ),
         child: ViewCards.fill(
-          margin: const EdgeInsets.only(top: 2),
           child: listContainer(),
         ),
       ),
@@ -98,10 +108,6 @@ class _View extends _State with _Header {
         return itemContainer(index, items.elementAt(index));
       },
       itemCount: items.length,
-      onEmpty: ViewFeedbacks.message(
-        label: App.preference.text.bookmarkCount(0),
-        // child: Text('abc'),
-      ),
       reorderable: boxOfBookmarks.reorderable,
     );
   }
@@ -138,7 +144,7 @@ class _View extends _State with _Header {
         //   style: const TextStyle(fontSize: 18),
         // ),
         trailing: Text(
-          core.scripturePrimary.digit(item.value.chapterId),
+          app.scripturePrimary.digit(item.value.chapterId),
           // 'chapterId',
           style: Theme.of(context).textTheme.labelMedium,
         ),
@@ -154,7 +160,7 @@ class _View extends _State with _Header {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         child: Text(
-          App.preference.text.delete,
+          preference.text.delete,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.bodyMedium,
         ),

@@ -16,8 +16,7 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends StateAbstract<Main> {
-  // Preference get preference => App.preference;
-  Scripture get primaryScripture => core.scripturePrimary;
+  Scripture get primaryScripture => app.scripturePrimary;
   Marks get marks => primaryScripture.marks;
   List<OfVerse> get primaryVerse => primaryScripture.verse;
   bool get hasSelection => marks.hasSelection;
@@ -49,7 +48,7 @@ class _MainState extends StateAbstract<Main> {
       }
     }
 
-    App.route.showSheetModal(
+    route.showSheetModal(
       context: context,
       name: 'sheet-bible-navigation/recto-editor',
       arguments: {
@@ -70,10 +69,23 @@ class _MainState extends StateAbstract<Main> {
   void doReset() {
     marks.resetSelection();
     // Navigator.maybePop(context);
-    Future.delayed(const Duration(milliseconds: 400), () {
-      Navigator.maybePop(context);
+    // Future.delayed(const Duration(seconds: 2));
+    // if (context.mounted) Navigator.of(context).maybePop();
+
+    Future.delayed(const Duration(milliseconds: 400)).whenComplete(() {
+      // if (context.mounted) Navigator.of(context).maybePop();
+      if (mounted) Navigator.of(context).maybePop();
     });
   }
+  // void doReset() {
+  //   marks.resetSelection();
+  //   // Navigator.maybePop(context);
+
+  //   Future.delayed(const Duration(milliseconds: 400), () {
+  //     if (context.mounted) Navigator.of(context).maybePop();
+  //     // Navigator.maybePop(context);
+  //   });
+  // }
 
   void Function(bool) get fontSize => args['setFontSize'];
 
@@ -99,7 +111,7 @@ class _MainState extends StateAbstract<Main> {
   // double get minHeight => 45 * 4;
 
   double get item => hasSelection ? 4 : 1;
-  double get defaultHeight => 64 * item;
+  double get defaultHeight => 60 * item;
   double get maxHeight => sizeOfContext.height * 0.62;
   double get height => defaultHeight > maxHeight ? maxHeight : defaultHeight;
 
@@ -139,59 +151,16 @@ class _MainState extends StateAbstract<Main> {
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            // childAspectRatio: 1.36,
-            childAspectRatio: 1.4,
+            childAspectRatio: 1.3,
             crossAxisCount: 3,
           ),
           shrinkWrap: true,
           children: <Widget>[
-            // ViewButtons(
-            //   style: state.textTheme.labelLarge,
-            //   message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
-            //   onPressed: () => doFontSize(false),
-            //   child: const Icon(Icons.remove),
-            // ),
-            // ViewButtons(
-            //   onPressed: doFontSizeReset,
-            //   message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
-            //   child: StreamBuilder(
-            //     initialData: bOS.fontSize(),
-            //     stream: bOS.watch(key: 'fontSize'),
-            //     builder: (BuildContext _, AsyncSnapshot<Object> e) {
-            //       return ViewMarks(
-            //         decoration: BoxDecoration(
-            //           border: Border.symmetric(
-            //             vertical: BorderSide(
-            //               width: 1,
-            //               color: Theme.of(context).dividerColor,
-            //             ),
-            //           ),
-            //         ),
-            //         label: bOS.fontSize().asDouble.toStringAsFixed(0),
-            //         labelStyle: TextStyle(
-            //           color: Theme.of(context).hintColor,
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // ViewButtons(
-            //   onPressed: () => doFontSize(true),
-            //   style: state.textTheme.labelLarge,
-            //   message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
-            //   child: const Icon(Icons.add),
-            // ),
             OptionButtons.icon(
               onPressed: () => doFontSize(false),
               message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
               icon: Icons.remove,
             ),
-            // ViewButtons(
-            //   onPressed: () => doFontSize(true),
-            //   style: state.textTheme.labelLarge,
-            //   message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
-            //   child: const Icon(Icons.add),
-            // ),
             ViewButtons(
               onPressed: doFontSizeReset,
               message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
@@ -243,7 +212,7 @@ class _MainState extends StateAbstract<Main> {
           //   },
           // ),
           rowCommon(
-            height: 55,
+            height: 50,
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               border: Border(
@@ -325,7 +294,7 @@ class _MainState extends StateAbstract<Main> {
             ),
           ),
           rowCommon(
-            height: 70,
+            height: 60,
             decoration: BoxDecoration(
               // color: Colors.red,
               border: Border(

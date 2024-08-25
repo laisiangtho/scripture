@@ -1,68 +1,83 @@
 part of 'main.dart';
 
-class _Result extends StatefulWidget {
-  const _Result();
-
-  @override
-  State<_Result> createState() => _ResultView();
-}
-
-class _ResultView extends StateAbstract<_Result> {
-  Scripture get primaryScripture => core.scripturePrimary;
-
-  CacheBible get bible => primaryScripture.verseSearch;
+mixin _Result on _State<Main> {
   // bool get shrinkResult => bible.verseCount > 300;
-  bool get shrinkResult => bible.result.totalVerse > 300;
+  // bool get shrinkResult => bible.result.totalVerse > 300;
 
-  SearchCache cacheResult = SearchCache();
-
-  String get searchQuery => data.searchQuery;
-  set searchQuery(String ord) {
-    data.searchQuery = ord;
-  }
-
-  void onSearch(String ord) {
-    data.searchQuery = ord;
-  }
+  // SearchCache cacheResult = SearchCache();
 
   void toRead(int book, int chapter) {
-    core.chapterChange(bookId: book, chapterId: chapter).whenComplete(() {
-      route.pushNamed('read');
+    app.chapterChange(bookId: book, chapterId: chapter).whenComplete(() {
+      app.route.pushNamed('read');
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ViewDelays.milliseconds(
-      milliseconds: 250,
-      onAwait: const ViewFeedbacks.await(),
-      builder: (_, __) {
-        return Selector<Core, CacheBible>(
-          selector: (_, e) => e.scripturePrimary.verseSearch,
-          builder: (BuildContext context, CacheBible o, Widget? child) {
-            // return resultWords();
-            if (o.query.isEmpty) {
-              return resultEmpty();
-            }
-            if (o.result.ready) {
-              return resultBlocks();
-            }
-            if (o.words.isNotEmpty) {
-              return resultWords();
-            }
-
-            return resultNone();
-          },
-        );
-      },
+  Widget _resultEmptyQuery() {
+    return ViewFeedbacks(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              preference.text.aWordOrTwo,
+            ),
+            Text(
+              primaryScripture.info.name,
+              style: state.textTheme.bodySmall,
+            ),
+            Text(
+              primaryScripture.info.shortname,
+              style: state.textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget resultWords() {
-    // App.preference.text.favorite('true');
-    // App.preference.language('noMatchInVerse');
+  Widget _resultEmpty() {
+    return ViewFeedbacks(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              preference.text.searchNoMatch,
+            ),
+            Text(
+              primaryScripture.info.name,
+              style: state.textTheme.bodySmall,
+            ),
+            Text(
+              primaryScripture.info.shortname,
+              style: state.textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Sticky
+  Widget _resultBlock(CacheBible o) {
+    final shrinks = o.result.totalVerse > 300;
     return CustomScrollView(
-      key: PageStorageKey('search-empty-${bible.query}'),
+      key: PageStorageKey('search-result-${o.query}'),
+      controller: scrollController,
+      slivers: [
+        for (var index = 0; index < o.result.book.length; index++)
+          ofBook(o.result.book.elementAt(index), shrinks),
+      ],
+    );
+  }
+
+  Widget _resultWords(CacheBible o) {
+    //  core.preference.text.favorite('true');
+    //  core.preference.language('noMatchInVerse');
+    return CustomScrollView(
+      key: PageStorageKey('search-empty-${o.query}'),
       slivers: [
         ViewSections(
           // headerTitle: Text(
@@ -70,15 +85,17 @@ class _ResultView extends StateAbstract<_Result> {
           //   style: state.textTheme.titleSmall,
           // ),
           headerTitle: Paragraphs(
-            text: App.preference.language('noMatchInVerse'),
+            text: preference.language('noMatchInVerse'),
             decoration: [
               TextSpan(
-                text: bible.query,
+                text: o.query,
                 semanticsLabel: 'keyword',
-                style: TextStyle(color: state.theme.hintColor),
+                style: TextStyle(color: state.theme.indicatorColor),
               ),
             ],
-            style: state.textTheme.titleSmall,
+            style: state.textTheme.titleSmall!.copyWith(
+              color: state.theme.hintColor,
+            ),
           ),
           child: ViewCards.fill(
             child: ViewLists.separator(
@@ -86,7 +103,7 @@ class _ResultView extends StateAbstract<_Result> {
                 return const ViewDividers();
               },
               itemBuilder: (_, index) {
-                String word = bible.words.elementAt(index);
+                String word = o.words.elementAt(index);
                 return ListTile(
                   leading: const Icon(Icons.arrow_outward_sharp),
                   title: Text(word),
@@ -94,7 +111,7 @@ class _ResultView extends StateAbstract<_Result> {
                 );
                 // return const Placeholder();
               },
-              itemCount: bible.words.length,
+              itemCount: o.words.length,
             ),
           ),
           // child: ViewCards.fill(
@@ -119,69 +136,8 @@ class _ResultView extends StateAbstract<_Result> {
     );
   }
 
-  Widget resultEmpty() {
-    return CustomScrollView(
-      key: const PageStorageKey('search-result-empty'),
-      slivers: [
-        ViewFeedbacks(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(preference.text.aWordOrTwo),
-              Text(
-                primaryScripture.info.name,
-                style: state.textTheme.bodySmall,
-              ),
-              Text(
-                primaryScripture.info.shortname,
-                style: state.textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget resultNone() {
-    return CustomScrollView(
-      key: const PageStorageKey('search-result-none'),
-      slivers: [
-        ViewFeedbacks(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Text(preference.text.aWordOrTwo),
-              // const ViewSectionDivider(primary: false),
-              Text(
-                primaryScripture.info.name,
-                style: state.textTheme.bodySmall,
-              ),
-
-              Text(
-                primaryScripture.info.shortname,
-                style: state.textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Sticky
-  Widget resultBlocks() {
-    return CustomScrollView(
-      key: PageStorageKey('search-result-${bible.query}'),
-      slivers: [
-        for (var index = 0; index < bible.result.book.length; index++)
-          ofBook(bible.result.book.elementAt(index)),
-      ],
-    );
-  }
-
   // List of Book
-  Widget ofBook(OfBook book) {
+  Widget ofBook(OfBook book, bool shrinks) {
     return SliverMainAxisGroup(
       slivers: <Widget>[
         // SliverAppBar.medium
@@ -208,16 +164,16 @@ class _ResultView extends StateAbstract<_Result> {
           // titleSpacing: 20,
           // toolbarHeight: 40,
         ),
-        ofChapter(book),
+        ofChapter(book, shrinks),
       ],
     );
   }
 
   // List of Chapter
-  Widget ofChapter(OfBook book) {
+  Widget ofChapter(OfBook book, bool shrinks) {
     final List<OfChapter> chapters = book.chapter;
     final int totalChapter = chapters.length;
-    final bool shrinkChapter = (totalChapter > 1 && shrinkResult);
+    final bool shrinkChapter = (totalChapter > 1 && shrinks);
     final int shrinkChapterTotal = shrinkChapter ? 1 : totalChapter;
     // final int linkChapter = shrinkChapter ? totalChapter : 1;
 
@@ -261,7 +217,9 @@ class _ResultView extends StateAbstract<_Result> {
                                 Radius.circular(7),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              toRead(book.info.id, e.id);
+                            },
                             child: Text(
                               e.id.toString(),
                             ),
@@ -333,7 +291,7 @@ class _ResultView extends StateAbstract<_Result> {
             //     itemCount: 12,
             //   ),
             // ),
-            ofVerse(chapter.verse),
+            ofVerse(chapter.verse, shrinks),
           ],
         );
       },
@@ -341,8 +299,8 @@ class _ResultView extends StateAbstract<_Result> {
     );
   }
 
-  Widget ofVerse(List<OfVerse> verses) {
-    final bool shrinkVerse = (verses.length > 1 && shrinkResult);
+  Widget ofVerse(List<OfVerse> verses, bool shrinks) {
+    final bool shrinkVerse = (verses.length > 1 && shrinks);
     final int shrinkVerseTotal = shrinkVerse ? 1 : verses.length;
     return ViewLists(
       shrinkWrap: true,
@@ -368,3 +326,18 @@ class _ResultView extends StateAbstract<_Result> {
     );
   }
 }
+
+// class SearchCache {
+//   String keyword;
+//   String iso;
+//   Widget? child;
+//   SearchCache({
+//     this.keyword = "",
+//     this.iso = "",
+//     this.child,
+//   });
+
+//   bool isEmpty(CacheBible o) {
+//     return keyword != o.query || iso != o.result.info.langCode;
+//   }
+// }

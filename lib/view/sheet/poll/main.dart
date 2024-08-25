@@ -6,7 +6,7 @@ import 'package:lidea/provider.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-poll';
@@ -17,18 +17,16 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = context.read<Core>();
 
   @override
   double get actualInitialSize => 0.5;
   @override
   double get actualMinSize => 0.4;
 
-  late final Core core = context.read<Core>();
-  late final Preference preference = core.preference;
-  late final Poll poll = core.poll;
+  late final Poll poll = app.poll;
 
   late final List<PollMemberType> member = poll.pollBoard.member
     ..sort((a, b) => a.name.compareTo(b.name));

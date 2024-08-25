@@ -113,19 +113,19 @@ class _View extends _State with _Header {
         // available-book-lang
         sliver: SliverToBoxAdapter(
           child: Paragraphs(
-            text: App.preference.language('totalBookLang'),
+            text: preference.language('totalBookLang'),
             style: state.textTheme.bodySmall,
             textAlign: TextAlign.center,
             decoration: [
               TextSpan(
-                text: App.preference.digit(setOfBook.length),
+                text: preference.digit(setOfBook.length),
                 semanticsLabel: 'totalBook',
                 style: TextStyle(
                   color: state.theme.highlightColor,
                 ),
               ),
               TextSpan(
-                text: App.preference.digit(iso.all.length),
+                text: preference.digit(iso.all.length),
                 semanticsLabel: 'totalLanguage',
                 style: TextStyle(
                   color: state.theme.highlightColor,
@@ -239,6 +239,7 @@ class _View extends _State with _Header {
     final book = item.value;
     final isAva = book.available > 0;
     // bool isPrimary = book.identify == collection.primaryId;
+    // bool isPrimary = book.identify == App.core.data.primaryId;
     bool isPrimary = book.identify == App.core.data.primaryId;
     return ListTile(
       title: Text(

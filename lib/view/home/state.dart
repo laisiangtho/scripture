@@ -4,7 +4,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
-  late final Scripture scripturePrimary = core.scripturePrimary;
+  late final Scripture scripturePrimary = app.scripturePrimary;
 
   // @override
   // void initState() {
@@ -21,15 +21,15 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     if (data.primaryId != bible.identify) {
       data.primaryId = bible.identify;
       if (!scripturePrimary.isReady) {
-        core.message.value = App.preference.text.aMoment;
+        app.message.value = preference.text.aMoment;
       }
     }
 
     route.pushNamed('read');
     scripturePrimary.init().whenComplete(() {
-      if (core.message.value.isNotEmpty) {
+      if (app.message.value.isNotEmpty) {
         Future.delayed(const Duration(milliseconds: 1000), () {
-          core.message.value = '';
+          app.message.value = '';
         });
       }
     });

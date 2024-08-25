@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:lidea/icon.dart';
 import 'package:lidea/provider.dart';
 
@@ -7,12 +6,9 @@ import '/app.dart';
 
 part 'state.dart';
 part 'header.dart';
-part 'gadget.dart';
-part 'result.dart';
 part 'suggest.dart';
-part 'recent.dart';
-
-// final _textController = TextEditingController();
+part 'histories.dart';
+part 'result.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -20,42 +16,49 @@ class Main extends StatefulWidget {
   static String route = 'search';
   static String label = 'Search';
   static IconData icon = LideaIcon.search;
-
   @override
-  State<Main> createState() => _View();
+  State<StatefulWidget> createState() => _View();
 }
 
-class _View extends _State with _Header {
+class _View extends _State<Main> with _Suggest, _Result {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ViewBars(
-        padding: state.fromContext.viewPadding,
-        // forceOverlaps: false,
-        // forceStretch: true,
-        // backgroundColor: Theme.of(context).primaryColor,
-        overlapsBackgroundColor: Theme.of(context).primaryColor,
-        overlapsBorderColor: Theme.of(context).dividerColor,
-        child: _header(),
-      ),
-      body: Views(
-        child: ValueListenableBuilder<bool>(
-          valueListenable: _focusNotifier,
-          builder: (_, focus, header) {
-            return ViewDelays.milliseconds(
-              onAwait: const ViewFeedbacks.await(),
-              builder: (_, __) {
-                if (focus) {
-                  return const _Suggest();
-                } else {
-                  return const _Result();
-                }
-              },
-            );
-            // return ViewFeedbacks.message(label: focus.toString());
+  Widget suggestView() {
+    return ViewDelays.milliseconds(
+      onAwait: const ViewFeedbacks.await(),
+      builder: (_, __) {
+        return Selector<Core, CacheBible>(
+          selector: (_, e) => e.scripturePrimary.verseSearch,
+          builder: (BuildContext context, CacheBible o, Widget? child) {
+            if (o.query.isEmpty) {
+              return child!;
+            }
+            return _suggestBlock(o);
           },
-        ),
-      ),
+          child: const _Histories(),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget resultView() {
+    return ViewDelays.milliseconds(
+      onAwait: const ViewFeedbacks.await(),
+      builder: (_, __) {
+        return Selector<Core, CacheBible>(
+          selector: (_, e) => e.scripturePrimary.verseSearch,
+          builder: (BuildContext context, CacheBible o, Widget? child) {
+            if (o.query.isEmpty) {
+              return _resultEmptyQuery();
+            } else if (o.result.ready) {
+              return _resultBlock(o);
+            } else if (o.words.isNotEmpty) {
+              return _resultWords(o);
+            }
+            return _resultEmpty();
+          },
+        );
+      },
     );
   }
 }

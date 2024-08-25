@@ -7,7 +7,7 @@ mixin _Header on _State {
       left: [
         OptionButtons.back(
           navigator: state.navigator,
-          label: App.preference.text.back,
+          label: preference.text.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -16,7 +16,7 @@ mixin _Header on _State {
           const Alignment(0, .5),
           vhd.snapShrink,
         ),
-        label: App.preference.text.bible('false'),
+        label: preference.text.bible('false'),
         data: vhd,
       ),
       right: [

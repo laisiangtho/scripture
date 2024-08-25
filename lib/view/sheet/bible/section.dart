@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-bible-section';
@@ -20,26 +20,20 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
-  Scripture get scripture => App.core.scripturePrimary;
+class _State extends DraggableSheets<Main> {
+  @override
+  late final Core app = App.core;
+
+  Scripture get scripture => app.scripturePrimary;
 
   List<OfBook> get books => scripture.bookList;
 
   final List<int> expandedList = [];
 
   @override
-  ViewData get viewData => App.viewData;
-
-  // @override
-  // ScrollNotifier get notifier => App.scroll;
-
-  // @override
-  // bool get persistent => false;
+  late final actualInitialSize = 0.5;
   @override
-  double get actualInitialSize => 0.5;
-  @override
-  double get actualMinSize => 0.4;
-
+  late final actualMinSize = 0.4;
   @override
   List<Widget> slivers() {
     return <Widget>[
@@ -83,7 +77,7 @@ class _State extends SheetsDraggableState<Main> {
                 const Alignment(0, 0),
                 vhd.snapShrink,
               ),
-              label: App.preference.text.book('true'),
+              label: preference.text.book('true'),
               data: vhd,
             ),
             right: [
@@ -159,7 +153,7 @@ class _State extends SheetsDraggableState<Main> {
   }
 
   Widget bookItem(int index, OfBook book) {
-    bool isCurrentBook = App.core.data.bookId == book.info.id;
+    bool isCurrentBook = app.data.bookId == book.info.id;
 
     bool isExpanded = expandedList.where((e) => e == index).isNotEmpty;
     return ExpansionPanelList(
@@ -211,7 +205,7 @@ class _State extends SheetsDraggableState<Main> {
               // contentPadding: EdgeInsets.zero,
               // horizontalTitleGap: 0,
               leading: Text(
-                // App.preference.digit(book.id.toString()),
+                // core.preference.digit(book.id.toString()),
                 scripture.digit(book.info.id),
                 // book.id.toString(),
                 textAlign: TextAlign.center,
@@ -230,7 +224,7 @@ class _State extends SheetsDraggableState<Main> {
                 ),
               ),
               // trailing: Text(
-              //   // App.preference.digit(book.id.toString()),
+              //   // core.preference.digit(book.id.toString()),
               //   // book.chapterCount.toString(),
               //   scripture.digit(book.chapterCount),
               //   textAlign: TextAlign.center,
@@ -279,7 +273,7 @@ class _State extends SheetsDraggableState<Main> {
 
   Widget chapterButton(int bookId, int chapterId) {
     // bool isCurrentChapter = 2 == index;
-    bool isCurrentChapter = App.core.data.chapterId == chapterId;
+    bool isCurrentChapter = app.data.chapterId == chapterId;
 
     return ViewButtons(
       // borderRadius: const BorderRadius.all(Radius.circular(2.0)),

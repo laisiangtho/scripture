@@ -1,68 +1,18 @@
 part of 'main.dart';
 
-class _Suggest extends StatefulWidget {
-  const _Suggest();
-
-  @override
-  State<_Suggest> createState() => _SuggestView();
-}
-
-class _SuggestView extends StateAbstract<_Suggest> {
-  Scripture get primaryScripture => core.scripturePrimary;
-
-  CacheBible get bible => primaryScripture.verseSearch;
-  // bool get shrinkResult => bible.verseCount > 300;
-  bool get shrinkResult => bible.suggest.totalVerse > 300;
-
-  String get suggestQuery => data.suggestQuery;
-  set suggestQuery(String ord) {
-    data.suggestQuery = ord;
-    // _textController.text = ord;
-    // setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ViewDelays.milliseconds(
-      // milliseconds: 400,
-      onAwait: const ViewFeedbacks.await(),
-      builder: (_, __) {
-        return Selector<Core, CacheBible>(
-          selector: (_, e) => e.scripturePrimary.verseSearch,
-          builder: (BuildContext context, CacheBible o, Widget? child) {
-            if (o.query.isEmpty) {
-              return resultRecents();
-            }
-            return resultSuggests();
-            // return scrollView(o.query.isEmpty ? resultRecent : resultBlock);
-          },
-        );
-      },
-    );
-  }
-
-  Widget resultRecents() {
-    return const CustomScrollView(
-      key: PageStorageKey('search-suggest-empty'),
-      // controller: scrollController,
-      // primary: true,
-      // slivers: [_resultSliver],
-      slivers: [
-        _Recent(),
-      ],
-    );
-  }
-
-  Widget resultSuggests() {
+mixin _Suggest on _State<Main> {
+  // bool get shrinkResult => o.verseCount > 300;
+  // bool get shrinkResult => o.suggest.totalVerse > 300;
+  Widget _suggestBlock(CacheBible o) {
+    final shrinks = o.suggest.totalVerse > 300;
     return CustomScrollView(
-      key: PageStorageKey('search-suggest-${bible.query}'),
-      // controller: scrollController,
-      // primary: true,
+      key: PageStorageKey('search-suggest-${o.query}'),
+      controller: scrollController,
       slivers: [
         ViewLists(
           itemBuilder: (BuildContext _, int bookIndex) {
             // return _suggestItem(index, o.raw.elementAt(index));
-            OfBook book = bible.suggest.book.elementAt(bookIndex);
+            OfBook book = o.suggest.book.elementAt(bookIndex);
             return Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,13 +22,13 @@ class _SuggestView extends StateAbstract<_Suggest> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(book.info.name.toUpperCase()),
                 ),
-                _suggestChapter(book.chapter),
+                _suggestChapter(book.chapter, shrinks),
               ],
             );
           },
-          itemCount: bible.suggest.book.length,
+          itemCount: o.suggest.book.length,
           onEmpty: ViewFeedbacks.message(
-            label: App.preference.text.searchNoMatch,
+            label: app.preference.text.searchNoMatch,
           ),
         ),
       ],
@@ -93,7 +43,7 @@ class _SuggestView extends StateAbstract<_Suggest> {
       primary: true,
       slivers: [
         SliverToBoxAdapter(
-          child: Text('working b:${bible.bookCount} c:${bible.chapterCount} v:${bible.verseCount}'),
+          child: Text('working b:${o.bookCount} c:${o.chapterCount} v:${o.verseCount}'),
         ),
         Selector<Core, BIBLE>(
           selector: (_, e) => e.scripturePrimary.verseSearch,
@@ -106,7 +56,7 @@ class _SuggestView extends StateAbstract<_Suggest> {
             }
             // o.verseCount > 0
             return _suggestBlock();
-            // return message(App.preference.text.searchNoMatch);
+            // return message( core.preference.text.searchNoMatch);
           },
         ),
       ],
@@ -114,8 +64,8 @@ class _SuggestView extends StateAbstract<_Suggest> {
   }
   */
 
-  Widget _suggestChapter(List<OfChapter> chapters) {
-    final bool shrinkChapter = (chapters.length > 1 && shrinkResult);
+  Widget _suggestChapter(List<OfChapter> chapters, bool shrinks) {
+    final bool shrinkChapter = (chapters.length > 1 && shrinks);
     final int shrinkChapterTotal = shrinkChapter ? 1 : chapters.length;
     return ListView.builder(
       shrinkWrap: true,
@@ -147,15 +97,15 @@ class _SuggestView extends StateAbstract<_Suggest> {
                 style: const TextStyle(color: Colors.black54, fontSize: 18),
               ),
             ),
-            _suggestVerse(chapter.verse),
+            _suggestVerse(chapter.verse, shrinks),
           ],
         );
       },
     );
   }
 
-  Widget _suggestVerse(List<OfVerse> verses) {
-    final bool shrinkVerse = (verses.length > 1 && shrinkResult);
+  Widget _suggestVerse(List<OfVerse> verses, bool shrinks) {
+    final bool shrinkVerse = (verses.length > 1 && shrinks);
     final int shrinkVerseTotal = shrinkVerse ? 1 : verses.length;
     return ListView.builder(
       shrinkWrap: true,

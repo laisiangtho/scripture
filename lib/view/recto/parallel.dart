@@ -16,11 +16,10 @@ class Main extends StatefulWidget {
 }
 
 abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
-  // late final ScrollController _scrollController = ScrollController();
-  Scripture get primaryScripture => core.scripturePrimary;
+  Scripture get primaryScripture => app.scripturePrimary;
   List<OfVerse> get primaryVerse => primaryScripture.verse;
 
-  Scripture get parallelScripture => core.scriptureParallel;
+  Scripture get parallelScripture => app.scriptureParallel;
   List<OfVerse> get parallelVerse => parallelScripture.verse;
 
   late final headerHeight = kTextTabBarHeight;
@@ -42,13 +41,13 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   }
 
   void setChapterPrevious() {
-    core.chapterPrevious.catchError((e) {
+    app.chapterPrevious.catchError((e) {
       showSnack(e.toString());
     });
   }
 
   void setChapterNext() {
-    core.chapterNext.catchError((e) {
+    app.chapterNext.catchError((e) {
       showSnack(e.toString());
     });
   }
@@ -116,7 +115,7 @@ mixin _Header on _State {
             ).then((e) {
               if (e != null) {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+                  app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
                 });
               }
             });
@@ -138,7 +137,7 @@ mixin _Header on _State {
             ).then((e) {
               if (e != null) {
                 Future.delayed(const Duration(milliseconds: 300), () {
-                  core.chapterChange(bookId: e['book'], chapterId: e['chapter']);
+                  app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
                 });
               }
             });

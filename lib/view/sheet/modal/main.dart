@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../../app.dart';
 
-class Main extends SheetsDraggable {
+class Main extends StatefulWidget {
   const Main({super.key});
 
   static String route = 'sheet-modal';
@@ -12,12 +13,14 @@ class Main extends SheetsDraggable {
   State<Main> createState() => _State();
 }
 
-class _State extends SheetsDraggableState<Main> {
+class _State extends DraggableSheets<Main> {
   @override
-  ViewData get viewData => App.viewData;
+  late final Core app = App.core;
 
   @override
-  double get actualInitialSize => 0.4;
+  late final actualInitialSize = 0.4;
+  @override
+  late final actualMinSize = 0.3;
 
   @override
   List<Widget> slivers() {

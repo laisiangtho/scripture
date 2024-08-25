@@ -57,7 +57,7 @@ class _View extends _State with _Header {
 
       const PullToRefresh(),
       // const InspectProcess(),
-      // const InspectRoute(),
+      const InspectRoute(),
 
       // featureWidget(),
 
@@ -337,7 +337,7 @@ class _PullToRefreshState extends PullOfState {
     await App.core.updateBookMeta();
     // await Future.delayed(const Duration(milliseconds: 100));
     // debugPrint('refreshUpdate');
-    await App.data.updateToken();
+    await App.core.data.updateToken();
     await Future.delayed(const Duration(milliseconds: 700));
   }
 }

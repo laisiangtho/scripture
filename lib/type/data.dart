@@ -9,6 +9,12 @@ class Data extends DataNest {
   /// ```
   Data({required super.state});
 
+  @override
+  SuggestionType cacheSuggestion = const SuggestionType();
+
+  @override
+  ConclusionType cacheConclusion = const ConclusionType();
+
   late final boxOfBooks = BoxOfBooks<BooksType>();
   late final boxOfBookmarks = BoxOfBookmarks<BookmarksType>();
 
