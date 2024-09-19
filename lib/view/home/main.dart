@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:lidea/icon.dart';
+// import 'package:lidea/icon.dart';
 // import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
@@ -15,10 +15,6 @@ part 'inspect_route.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-
-  static String route = 'home';
-  static String label = 'Home';
-  static IconData icon = LideaIcon.flag;
 
   @override
   State<Main> createState() => _View();
@@ -46,18 +42,18 @@ class _View extends _State with _Header {
       ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         // padding: const EdgeInsets.only(top: 30),
         // heights: const [kToolbarHeight, 100],
         heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
         builder: _header,
       ),
 
       const PullToRefresh(),
       // const InspectProcess(),
-      const InspectRoute(),
+      // const InspectRoute(),
 
       // featureWidget(),
 
@@ -103,47 +99,80 @@ class _View extends _State with _Header {
     return ViewSections(
       // headerLeading: const Icon(Icons.ac_unit),
       headerTitle: Text(
-        preference.text.favorite('true'),
-        style: state.textTheme.titleSmall,
+        app.preference.of(context).favorite('true'),
+        style: style.titleSmall,
       ),
 
       headerTrailing: ViewButtons(
         show: items.isNotEmpty,
-        message: preference.text.addTo(preference.text.favorite('true').toLowerCase()),
+        message: app.preference
+            .of(context)
+            .addTo(app.preference.of(context).favorite('true').toLowerCase()),
         onPressed: () {
-          route.pushNamed('home/bible');
+          app.route.page.push('/bible');
         },
-        child: ViewMarks(
-          icon: LideaIcon.dotHoriz,
-          iconSize: 19,
-          iconColor: state.theme.hintColor,
+        child: Icon(
+          Icons.more_horiz,
+          color: theme.shadowColor,
         ),
       ),
       footer: items.isNotEmpty,
-      footerTitle: ViewButtons(
-        // padding: EdgeInsets.zero,
-        // style: const TextStyle(
-        //   color: Colors.red,
-        //   fontSize: 12,
-        // ),
-        // color: Colors.red,
+      // footerTitle: ViewButtons(
+      //   // padding: EdgeInsets.zero,
+      //   // style: const TextStyle(
+      //   //   color: Colors.red,
+      //   //   fontSize: 12,
+      //   // ),
+      //   // color: Colors.red,
+      //   onPressed: () {
+      //     app.route.page.push('/bible');
+      //   },
+      //   // child: ViewMarks(
+      //   //   label: app.preference.of(context).addMore(app.preference.of(context).favorite(true)),
+      //   // ),
+      //   child: Text(
+      //     app.preference
+      //         .of(context)
+      //         .addMore(app.preference.of(context).favorite('true').toLowerCase()),
+      //     textAlign: TextAlign.center,
+      //   ),
+      // ),
+      footerTitle: OptionButtons.label(
+        // current: false,
         onPressed: () {
-          route.pushNamed('home/bible');
+          app.route.page.push('/bible');
         },
         // child: ViewMarks(
-        //   label: preference.text.addMore(preference.text.favorite(true)),
+        //   label: app.preference.of(context).addMore(app.preference.of(context).favorite(true)),
         // ),
-        child: Text(
-          preference.text.addMore(preference.text.favorite('true').toLowerCase()),
-          textAlign: TextAlign.center,
-        ),
+        // style: style.labelSmall,
+        // style: style.labelSmall?.copyWith(
+        //   // color: theme.buttonTheme.colorScheme?.onPrimary,
+        //   // color: colorScheme.onError,
+        //   // color: Colors.red,
+        //   color: theme.hintColor,
+        // ),
+
+        label: app.preference
+            .of(context)
+            .addMore(app.preference.of(context).favorite('true').toLowerCase()),
       ),
+      // footerTitle: TextButton(
+      //   onPressed: () {},
+      //   // style: TextButton.styleFrom(
+      //   //   foregroundColor: Colors.pink,
+      //   // ),
+      //   child: const Text(
+      //     'TextButton (New)',
+      //     // style: TextStyle(fontSize: 30),
+      //   ),
+      // ),
       // footerTitle: Text(
-      //   preference.text.addMore(preference.text.favorite(true)),
+      //   app.preference.of(context).addMore(app.preference.of(context).favorite(true)),
       //   textAlign: TextAlign.center,
       // ),
       // footerOnPressed: () {
-      //   route.pushNamed('home/bible');
+      //   app.route.page.push('/bible');
       // },
 
       child: ViewCards(
@@ -161,14 +190,14 @@ class _View extends _State with _Header {
           onEmpty: ViewButtons(
             padding: const EdgeInsets.symmetric(vertical: 30),
             // child: ViewMarks(
-            //   label: preference.text.addTo(preference.text.favorite(true)),
+            //   label: app.preference.of(context).addTo(app.preference.of(context).favorite(true)),
             // ),
             child: Text(
-              preference.text.addTo(preference.text.favorite('true')),
+              app.preference.of(context).addTo(app.preference.of(context).favorite('true')),
               textAlign: TextAlign.center,
             ),
             onPressed: () {
-              route.pushNamed('home/bible');
+              app.route.page.push('/bible');
             },
           ),
           itemCount: items.length,
@@ -212,16 +241,16 @@ class _View extends _State with _Header {
               borderRadius: const BorderRadius.all(Radius.circular(3)),
               color: isAvailable
                   ? isPrimary
-                      ? Theme.of(context).highlightColor
-                      : Theme.of(context).primaryColorDark
-                  : Theme.of(context).disabledColor,
+                      ? theme.highlightColor
+                      : theme.primaryColorDark
+                  : theme.disabledColor,
             ),
             child: Text(
               book.langCode.toUpperCase(),
               textAlign: TextAlign.center,
               style: DefaultTextStyle.of(context).style.copyWith(
                     fontSize: 12,
-                    color: isAvailable ? Theme.of(context).primaryColor : null,
+                    color: isAvailable ? theme.primaryColor : null,
                   ),
             ),
           ),
@@ -234,30 +263,22 @@ class _View extends _State with _Header {
           )
         ],
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            book.year.toString(),
-            // style: DefaultTextStyle.of(context).style.copyWith(
-            //       fontSize: 16,
-            //       color: isAvailable ? null : Theme.of(context).hintColor,
-            //     ),
-            style: state.textTheme.bodySmall,
-          ),
-        ],
+
+      trailing: ViewMarks(
+        child: Text(
+          book.year.toString(),
+        ),
       ),
       // onTap: () => isAvailable ? showBible(book) : showMore(book),
       onTap: () {
         if (isAvailable) {
           showBibleContent(book);
         } else {
-          showBibleInfo(item);
+          showBibleInfo(item.value);
         }
       },
       onLongPress: () {
-        showBibleInfo(item);
+        showBibleInfo(item.value);
       },
     );
   }
@@ -275,48 +296,45 @@ class _View extends _State with _Header {
     return ViewSections(
       show: items.isNotEmpty,
       sliver: true,
-      headerTitle: Text(
-        preference.text.recentSearch('true'),
-        style: state.textTheme.titleSmall,
-      ),
-      headerTrailing: ViewButtons(
-        message: preference.text.addTo(preference.text.recentSearch('true')),
+      footerTitle: ViewButtons(
+        show: items.isNotEmpty,
+        message: app.preference.of(context).more,
         onPressed: () {
-          route.pushNamed('home/recent-search');
+          app.route.page.push('/recent-search');
         },
-        child: ViewMarks(
-          icon: LideaIcon.dotHoriz,
-          iconSize: 19,
-          iconColor: state.theme.hintColor,
+        child: Icon(
+          Icons.more_horiz,
+          color: theme.shadowColor,
         ),
       ),
-      child: ViewCards(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            textDirection: TextDirection.ltr,
-            children: items.take(3).map(
-              (e) {
-                return ViewButtons(
-                  style: state.theme.textTheme.bodyLarge,
-                  child: ViewMarks(
-                    // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                    label: e.word,
-                  ),
-                  // onPressed: () => onSearch(e.value.word),
-                  onPressed: () {
-                    route.pushNamed(
-                      'home/search',
-                      arguments: {'keyword': e.word},
-                    );
-                  },
-                );
-              },
-            ).toList(),
-          ),
-        ),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        textDirection: TextDirection.ltr,
+        spacing: 7,
+        children: items.take(3).map(
+          (e) {
+            return TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                backgroundColor: theme.dividerColor,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+              onPressed: () => onSearch(e),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 150),
+                child: Text(
+                  e.word,
+                  overflow: TextOverflow.ellipsis,
+                  semanticsLabel: 'Keyword',
+                  style: style.labelLarge,
+                ),
+              ),
+            );
+          },
+        ).toList(),
       ),
     );
   }

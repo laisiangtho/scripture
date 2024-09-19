@@ -10,18 +10,11 @@ import '../../../app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'sheet-bible-chapter';
-  static String label = 'Chapter';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
-
+class _State extends SheetStates<Main> {
   @override
   late final actualInitialSize = 0.5;
   @override
@@ -56,12 +49,12 @@ class _State extends DraggableSheets<Main> {
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kTextTabBarHeight],
-        backgroundColor: state.theme.primaryColor,
+        backgroundColor: theme.primaryColor,
         // backgroundColor: Colors.transparent,
-        // padding: state.fromContext.viewPadding,
-        overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
+        // padding: state.media.viewPadding,
+        overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         // overlapsBorderColor: Theme.of(context).shadowColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        overlapsBorderColor: theme.dividerColor,
         // overlapsBorderColor: Colors.black,
         builder: (_, vhd) {
           return ViewHeaderLayouts(
@@ -78,8 +71,7 @@ class _State extends DraggableSheets<Main> {
               //   },
               // ),
               OptionButtons.cancel(
-                navigator: state.navigator,
-                label: app.preference.text.cancel,
+                label: app.preference.of(context).cancel,
               ),
             ],
             primary: ViewHeaderTitle(
@@ -96,7 +88,7 @@ class _State extends DraggableSheets<Main> {
               //   const Alignment(0, 0),
               //   vhd.snapShrink,
               // ),
-              label: app.preference.text.chapter('true'),
+              label: app.preference.of(context).chapter('true'),
               data: vhd,
             ),
           );
@@ -152,12 +144,12 @@ class _State extends DraggableSheets<Main> {
       // ),
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
       // color: Theme.of(context).cardColor.withOpacity(0.05),
-      color: state.theme.scaffoldBackgroundColor.withOpacity(isCurrentChapter ? 0.4 : 1),
+      color: theme.scaffoldBackgroundColor.withOpacity(isCurrentChapter ? 0.4 : 1),
       // showShadow: true,
       showShadow: isCurrentChapter,
       // offsetShadow: const Offset(0, 0),
-      // border: Border.all(width: isCurrentChapter ? 1.0 : 0.3, color: state.theme.dividerColor),
-      // border: isCurrentChapter ? Border.all(width: 1, color: state.theme.dividerColor) : null,
+      // border: Border.all(width: isCurrentChapter ? 1.0 : 0.3, color: theme.dividerColor),
+      // border: isCurrentChapter ? Border.all(width: 1, color: theme.dividerColor) : null,
       child: ViewMarks(
         label: scripture.digit(chapterId),
         // labelColor: isCurrentChapter ? Colors.red : null,
@@ -165,7 +157,7 @@ class _State extends DraggableSheets<Main> {
         //   fontSize: 22,
         //   // color: isCurrentChapter ? Theme.of(context).cardColor : null,
         // ),
-        labelStyle: state.textTheme.labelLarge?.copyWith(
+        labelStyle: style.labelLarge?.copyWith(
           color: isCurrentChapter ? Theme.of(context).cardColor : null,
         ),
       ),
@@ -202,15 +194,15 @@ class ChapterItemSnap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final tpl = Theme.of(context);
     return ViewButtons.filled(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-      color: theme.primaryColor.withOpacity(0.4),
+      color: tpl.primaryColor.withOpacity(0.4),
       // showShadow: true,
       enable: false,
       child: ViewMarks(
         icon: Icons.linear_scale_rounded,
-        iconColor: theme.disabledColor,
+        iconColor: tpl.disabledColor,
       ),
       // onPressed: () {},
     );

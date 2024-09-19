@@ -1,7 +1,8 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> {
+abstract class _State extends CommonStates<Main> {
   late final ScrollController scrollController = ScrollController();
+  late final ValueNotifier<double> _itemFavoriteBackgroundNotifier = ValueNotifier(0.0);
 
   late final BoxOfBookmarks<BookmarksType> boxOfBookmarks = app.data.boxOfBookmarks;
 
@@ -13,10 +14,10 @@ abstract class _State extends StateAbstract<Main> {
   void onDeleteAllConfirmWithDialog() {
     doConfirmWithDialog(
       context: context,
-      message: preference.text.confirmToDelete('all'),
-      title: preference.text.confirmation,
-      cancel: preference.text.cancel,
-      confirm: preference.text.confirm,
+      message: app.preference.of(context).confirmToDelete('all'),
+      title: app.preference.of(context).confirmation,
+      cancel: app.preference.of(context).cancel,
+      confirm: app.preference.of(context).confirm,
     ).then((bool? confirmation) {
       // if (confirmation != null && confirmation) onClearAll();
       if (confirmation != null && confirmation) {
@@ -42,10 +43,10 @@ abstract class _State extends StateAbstract<Main> {
   //   return doConfirmWithDialog(
   //     context: context,
   //     // message: 'Do you want to delete this Bookmark?',
-  //     message: preference.text.confirmToDelete(''),
-  //     title: preference.text.confirmation,
-  //     cancel: preference.text.cancel,
-  //     confirm: preference.text.confirm,
+  //     message: app.preference.of(context).confirmToDelete(''),
+  //     title: app.preference.of(context).confirmation,
+  //     cancel: app.preference.of(context).cancel,
+  //     confirm: app.preference.of(context).confirm,
   //   ).then((confirmation) {
   //     if (confirmation != null && confirmation) {
   //       core.deleteBookmarkWithNotify(index);
@@ -60,8 +61,8 @@ abstract class _State extends StateAbstract<Main> {
     app.chapterChange(bookId: book, chapterId: chapter);
     Future.delayed(const Duration(milliseconds: 150), () {
       // core.definitionGenerate(word);
-      // core.navigate(at: 1);
-      route.pushNamed('read');
+
+      app.route.page.go('/read');
     });
     // Future.delayed(Duration.zero, () {
     //   core.historyAdd(word);

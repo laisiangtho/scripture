@@ -12,10 +12,6 @@ part 'header.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'poll';
-  static String label = 'Poll';
-  static IconData icon = Icons.how_to_vote_outlined;
-
   @override
   State<Main> createState() => _View();
 }
@@ -42,10 +38,10 @@ class _View extends _State with _Header {
       ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
         builder: _header,
       ),
       PullToActivate(
@@ -87,12 +83,12 @@ class _View extends _State with _Header {
                   ViewLabels(
                     alignment: Alignment.center,
                     icon: Icons.verified_user_outlined,
-                    iconColor: Theme.of(context).hintColor,
+                    iconColor: theme.hintColor,
                     label: result.memberId.length.toString(),
                     // label: '34579',
                     iconSize: 18,
                     // labelPadding: const EdgeInsets.only(left: 10),
-                    labelStyle: TextStyle(color: Theme.of(context).hintColor, fontSize: 15),
+                    labelStyle: TextStyle(color: theme.hintColor, fontSize: 15),
                   ),
                 ],
               ),
@@ -133,7 +129,7 @@ class _View extends _State with _Header {
                       label: pollBoard.info.expireDatetime,
                       // iconSize: 18,
                       labelPadding: const EdgeInsets.only(left: 10),
-                      labelStyle: TextStyle(color: Theme.of(context).hintColor, fontSize: 15),
+                      labelStyle: TextStyle(color: theme.hintColor, fontSize: 15),
                     ),
                     if (pollBoard.listicle.used.isNotEmpty)
                       ViewLabels(
@@ -146,7 +142,7 @@ class _View extends _State with _Header {
                         // label: pollBoard.data.remaining,
                         // iconSize: 18,
                         labelPadding: const EdgeInsets.only(left: 10),
-                        labelStyle: TextStyle(color: Theme.of(context).hintColor, fontSize: 15),
+                        labelStyle: TextStyle(color: theme.hintColor, fontSize: 15),
                       ),
                   ],
                 ),
@@ -179,18 +175,18 @@ class _View extends _State with _Header {
                   // alignment: Alignment.centerLeft,
                   Icons.person,
                   // icon: Icons.check_rounded,
-                  // iconColor: hasSelected ? Theme.of(context).highlightColor : null,
-                  // color: hasSelected ? Theme.of(context).errorColor : Theme.of(context).hintColor,
-                  color: hasSelected ? null : Theme.of(context).hintColor,
+                  // iconColor: hasSelected ? theme.highlightColor : null,
+                  // color: hasSelected ? theme.errorColor : theme.hintColor,
+                  color: hasSelected ? null : theme.hintColor,
                 ),
                 selected: hasSelected,
-                selectedColor: Theme.of(context).colorScheme.error,
+                selectedColor: colorScheme.error,
                 title: Text(member.name),
                 trailing: Icon(
                   // hasSelected ? Icons.remove_done_outlined : Icons.done_outlined,
                   Icons.done_outlined,
-                  // color: hasVoted ? Theme.of(context).primaryColorDark : Colors.transparent,
-                  color: hasVoted ? Theme.of(context).hintColor : Colors.transparent,
+                  // color: hasVoted ? theme.primaryColorDark : Colors.transparent,
+                  color: hasVoted ? theme.hintColor : Colors.transparent,
                 ),
                 // remove_done_outlined
                 onTap: () {

@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> with SingleTickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
 
   late final AnimationController busyController = AnimationController(
@@ -40,7 +40,6 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
 
   // int get userMemberId => pollBoard.memberId(authenticate.userEmail);
 
-  void showMember() {
-    route.showSheetModal(context: context, name: 'sheet-poll');
-  }
+  /// app.route.sheetConfig('/sheet-poll')
+  void showMember() {}
 }

@@ -5,24 +5,22 @@ import '../../../app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-  static String route = 'pop-bookmarks';
-  static String label = 'Bookmarks';
-  static IconData icon = Icons.opacity_outlined;
 
   @override
   State<Main> createState() => _MainState();
 }
 
-class _MainState extends StateAbstract<Main> {
+class _MainState extends CommonStates<Main> {
   void setFontSize(bool increase) {
     setState(() {
       fontSize.call(increase);
     });
   }
 
-  void Function(bool) get fontSize => args['setFontSize'];
+  // void Function(bool) get fontSize => args['setFontSize'];
+  void Function(bool) get fontSize => state.param.map['setFontSize'];
 
-  late final RenderBox render = args['render'];
+  late final RenderBox render = state.param.map['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -51,7 +49,7 @@ class _MainState extends StateAbstract<Main> {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.3),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       child: SizedBox(
         height: height,
         child: view(),
@@ -65,7 +63,7 @@ class _MainState extends StateAbstract<Main> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.background,
+              color: colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -77,7 +75,7 @@ class _MainState extends StateAbstract<Main> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.background,
+              color: colorScheme.background,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -95,7 +93,7 @@ class _MainState extends StateAbstract<Main> {
         shrinkWrap: true,
         children: <Widget>[
           ViewButtons(
-            style: Theme.of(context).textTheme.labelSmall,
+            style: style.labelSmall,
             onPressed: () => setFontSize(false),
             child: const Align(alignment: Alignment.center, child: Text('A')),
           ),
@@ -104,15 +102,15 @@ class _MainState extends StateAbstract<Main> {
               border: Border.symmetric(
                 vertical: BorderSide(
                   width: 0.5,
-                  color: Theme.of(context).primaryColor,
+                  color: theme.primaryColor,
                 ),
               ),
             ),
-            label: App.core.data.boxOfSettings.fontSize().asDouble.toStringAsFixed(0),
+            label: data.boxOfSettings.fontSize().asDouble.toStringAsFixed(0),
           ),
           ViewButtons(
             onPressed: () => setFontSize(true),
-            style: Theme.of(context).textTheme.labelLarge,
+            style: style.labelLarge,
             child: const Align(alignment: Alignment.center, child: Text('A')),
           ),
         ],

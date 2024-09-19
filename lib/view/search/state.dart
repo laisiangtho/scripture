@@ -5,13 +5,16 @@ abstract class _State<T extends StatefulWidget> extends SearchViews<T> {
   late final Core app = App.core;
 
   @override
-  String? get labelSearchHint => preference.text.aWordOrTwo;
+  String? get labelBackButton => app.preference.of(context).back;
 
   @override
-  String? get labelSearchCancel => preference.text.cancel;
+  String? get labelSearchHint => app.preference.of(context).aWordOrTwo;
 
   @override
-  String? get labelSearchClear => preference.text.clear;
+  String? get labelSearchCancel => app.preference.of(context).cancel;
+
+  @override
+  String? get labelSearchClear => app.preference.of(context).clear;
 
   @override
   Widget? get iconSearchPrefix {

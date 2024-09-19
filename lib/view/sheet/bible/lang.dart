@@ -12,18 +12,11 @@ import '../../../app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'sheet-bible-lang';
-  static String label = 'Bible';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
-
+class _State extends SheetStates<Main> {
   late final iso = app.iso;
 
   // @override
@@ -57,12 +50,14 @@ class _State extends DraggableSheets<Main> {
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kTextTabBarHeight],
-        backgroundColor: state.theme.primaryColor,
-        // padding: state.fromContext.viewPadding,
-        // overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
+        backgroundColor: theme.primaryColor,
+        // padding: state.media.viewPadding,
+        // overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         overlapsBorderColor: Theme.of(context).dividerColor,
+
         borderWidth: 0.3,
-        // overlapsBorderColor: state.theme.dividerColor,
+        // forceOverlaps: true,
+        // overlapsBorderColor: theme.dividerColor,
         builder: (_, vhd) {
           return ViewHeaderLayouts(
             data: vhd,
@@ -81,13 +76,12 @@ class _State extends DraggableSheets<Main> {
               //   vhd.snapShrink,
               // ),
               // label: 'Language filter',
-              label: preference.text.language('false'),
+              label: app.preference.of(context).language('false'),
               data: vhd,
             ),
             left: [
               OptionButtons.cancel(
-                navigator: state.navigator,
-                label: preference.text.cancel,
+                label: app.preference.of(context).cancel,
               ),
             ],
             right: [
@@ -192,29 +186,29 @@ class _State extends DraggableSheets<Main> {
             //   ),
             // ),
             leading: Text(
-              preference.digit(index + 1),
+              preference.digit(context, index + 1),
               // book.id.toString(),
               textAlign: TextAlign.center,
               // style: TextStyle(
-              //   color: state.theme.primaryColorDark,
+              //   color: theme.primaryColorDark,
               // ),
-              style: state.textTheme.titleMedium?.copyWith(
-                color: state.theme.hintColor,
+              style: style.titleMedium?.copyWith(
+                color: theme.hintColor,
               ),
             ),
             title: Paragraphs(
               text: item.langNameList.join(', '),
               // text: core.preference.language('totalBookLang'),
-              style: state.textTheme.bodyMedium!.copyWith(
+              style: style.bodyMedium!.copyWith(
                 color: isAva ? null : Theme.of(context).hoverColor.darken(amount: .9),
               ),
             ),
-            // backgroundColor: state.theme.scaffoldBackgroundColor,
+            // backgroundColor: theme.scaffoldBackgroundColor,
 
             // subtitle: Paragraphs(
             //   text: '#{{bookCount}} book',
             //   // text: core.preference.language('totalBookLang'),
-            //   style: state.textTheme.labelSmall!.copyWith(
+            //   style: style.labelSmall!.copyWith(
             //     color: isAva ? null : Theme.of(context).hoverColor.darken(amount: .9),
             //   ),
             //   // textAlign: TextAlign.center,
@@ -223,14 +217,14 @@ class _State extends DraggableSheets<Main> {
             //       text: core.preference.digit(item.bible.length),
             //       semanticsLabel: 'bookCount',
             //       style: TextStyle(
-            //         color: state.theme.hintColor,
+            //         color: theme.hintColor,
             //       ),
             //     ),
             //   ],
             // ),
             // trailing: Text(
             //   core.preference.digit(item.bible.length),
-            //   style: state.textTheme.labelSmall,
+            //   style: style.labelSmall,
             // ),
             trailing: Container(
               constraints: const BoxConstraints(
@@ -246,7 +240,7 @@ class _State extends DraggableSheets<Main> {
                 color: isAva ? Theme.of(context).primaryColorDark : Theme.of(context).focusColor,
               ),
               child: Text(
-                preference.digit(item.bible.length),
+                preference.digit(context, item.bible.length),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Theme.of(context).primaryColor,

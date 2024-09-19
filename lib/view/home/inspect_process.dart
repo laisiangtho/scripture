@@ -3,15 +3,11 @@ part of 'main.dart';
 class InspectProcess extends StatefulWidget {
   const InspectProcess({super.key});
 
-  static String route = 'test-inspect';
-  static String label = 'Inspect';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<InspectProcess> createState() => _InspectProcessState();
 }
 
-abstract class _InspectProcessAbstract extends StateAbstract<InspectProcess> {}
+abstract class _InspectProcessAbstract extends CommonStates<InspectProcess> {}
 
 class _InspectProcessState extends _InspectProcessAbstract {
   @override
@@ -80,7 +76,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Card (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    app.route.pushNamed('home/test-card');
+                    app.route.page.push('/test-card');
                   },
                 ),
               ),
@@ -188,7 +184,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Sliver (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.core.route.pushNamed('home/test-sliver');
+                    app.route.page.push('/test-sliver');
                   },
                 ),
               ),
@@ -201,7 +197,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Search (test)'),
                   // subtitle: const Text('...'),
                   onTap: () {
-                    App.core.route.pushNamed('home/test-search');
+                    app.route.page.push('/test-search');
                   },
                 ),
               ),
@@ -214,7 +210,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                   title: const Text('Section (test)'),
                   subtitle: const Text('preferred language'),
                   onTap: () {
-                    App.core.route.pushNamed('home/recto-section');
+                    app.route.page.push('/recto-section');
                   },
                 ),
               ),

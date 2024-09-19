@@ -50,11 +50,11 @@ class ISOFilter extends Notify {
       item.bible.add(item.shortname);
       _items.add(item);
     } else {
-      final tmp = _items[index];
-      // if (!tmp.bible.contains(item.shortname)) {
-      //   tmp.bible.add(item.shortname);
+      final e = _items[index];
+      // if (!e.bible.contains(item.shortname)) {
+      //   e.bible.add(item.shortname);
       // }
-      tmp.bible.add(item.shortname);
+      e.bible.add(item.shortname);
     }
   }
 

@@ -90,6 +90,8 @@ class VerseItemWidget extends StatelessWidget {
     final scripture = userVerse.scripture;
     final marks = scripture.marks;
 
+    final tpl = Theme.of(context);
+
     // userVerse.scripture.marks.verseBackground(verse.id);
     // final verseNote = userVerse.marks?.verseNote(verse.id);
     final verseNote = hasMarks ? marks.verseNote(verse.id) : null;
@@ -106,10 +108,10 @@ class VerseItemWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               semanticsLabel: verse.title,
               textDirection: TextDirection.ltr,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontSize: userVerse.titleSize,
-                    fontWeight: FontWeight.w300,
-                  ),
+              style: tpl.textTheme.bodySmall?.copyWith(
+                fontSize: userVerse.titleSize,
+                fontWeight: FontWeight.w300,
+              ),
             ),
           ),
         ViewCards(
@@ -136,13 +138,13 @@ class VerseItemWidget extends StatelessWidget {
                           ],
                         ),
                     ],
-                    // style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    //       color: Theme.of(context).hintColor,
+                    // style: tpl.textTheme.labelMedium?.copyWith(
+                    //       color: tpl.hintColor,
                     //       fontSize: userVerse.titleSize,
                     //       fontWeight: FontWeight.w300,
                     //     ),
                     style: TextStyle(
-                      color: Theme.of(context).hintColor,
+                      color: tpl.hintColor,
                       fontSize: userVerse.titleSize,
                       fontWeight: FontWeight.w300,
                     ),
@@ -156,17 +158,15 @@ class VerseItemWidget extends StatelessWidget {
                     ),
                     semanticsLabel: verse.text,
                     style: TextStyle(
-                      color: userVerse.selected
-                          ? Theme.of(context).primaryColorDark.withOpacity(0.6)
-                          : null,
+                      color: userVerse.selected ? tpl.primaryColorDark.withOpacity(0.6) : null,
                       decoration: userVerse.selected ? TextDecoration.underline : null,
 
                       background: verseBackground,
 
                       decorationStyle: TextDecorationStyle.wavy,
                       // decorationThickness: 2,
-                      // decorationColor: Theme.of(context).colorScheme.error,
-                      decorationColor: Theme.of(context).primaryColorDark,
+                      // decorationColor: tpl.colorScheme.error,
+                      decorationColor: tpl.primaryColorDark,
                     ),
                   ),
 
@@ -185,26 +185,27 @@ class VerseItemWidget extends StatelessWidget {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           alignment: Alignment.center,
                         ),
-                        // color: Theme.of(context).hintColor.withOpacity(0.3),
-                        color: Theme.of(context).focusColor,
+                        // color: tpl.hintColor.withOpacity(0.3),
+                        color: tpl.focusColor,
                         onPressed: () {
-                          App.core.route.showSheetModal(
-                            context: context,
-                            name: 'sheet-bible-navigation/recto-editor',
-                            arguments: {
-                              'text': verseNote,
-                              // 'focus': true,
-                              'pageLabel': preference.text.addTo(
-                                preference.text.note('').toLowerCase(),
-                              ),
+                          final msh = App.core.route.showModalSheet<Map<String, dynamic>?>(
+                            child: App.core.route.sheetConfig(
+                              name: '/recto-editor',
+                              extra: {
+                                'text': verseNote,
+                                // 'focus': true,
+                                'pageLabel': preference.of(context).addTo(
+                                      preference.of(context).note('').toLowerCase(),
+                                    ),
+                                // 'pageTitle': '$bookName $chapterName:${verse.id}',
+                                'pageTitle':
+                                    '${scripture.bookName} ${scripture.chapterName}:${verse.id}',
+                              },
+                            ),
+                          );
 
-                              // 'pageTitle': '$bookName $chapterName:${verse.id}',
-                              'pageTitle':
-                                  '${scripture.bookName} ${scripture.chapterName}:${verse.id}',
-                            },
-                          ).then((e) {
+                          msh.then((e) {
                             if (e != null) {
-                              // userVerse.marks?.selectionApply(note: e['text'], verses: [verse.id]);
                               if (hasMarks) {
                                 marks.selectionApply(note: e['text'], verses: [verse.id]);
                               }
@@ -240,10 +241,10 @@ class VerseItemWidget extends StatelessWidget {
               //   fontSize: userVerse.fontSize,
               //   // height: userVerse.fontHeight,
               // ),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: userVerse.fontSize,
-                  ),
+              style: tpl.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+                fontSize: userVerse.fontSize,
+              ),
               onTap: onPressed == null ? null : () => onPressed!(verse.id),
             ),
           ),
@@ -254,10 +255,11 @@ class VerseItemWidget extends StatelessWidget {
 
   /// [quoted] Joined quoted in multi verses
   List<TextSpan> highLight({required BuildContext context, required String text}) {
-    ThemeData theme = Theme.of(context);
+    ThemeData tpl = Theme.of(context);
+    ColorScheme scheme = tpl.colorScheme;
 
-    Color? quoteTextColor = theme.colorScheme.primary.lerp(theme.indicatorColor, 0.7);
-    Color? quoteMarkColor = theme.colorScheme.primary.lerp(theme.dividerColor, 1.0);
+    Color? quoteTextColor = tpl.colorScheme.primary.lerp(scheme.error, 1);
+    Color? quoteMarkColor = tpl.colorScheme.primary.lerp(tpl.dividerColor, 1.0);
 
     List<TextSpan> spans = [];
     int start = 0;
@@ -360,7 +362,7 @@ class VerseItemWidget extends StatelessWidget {
         spans.add(TextSpan(
           text: spanText,
           style: TextStyle(
-            color: theme.highlightColor,
+            color: tpl.highlightColor,
           ),
         ));
         // mark the boundary to start the next search from
@@ -388,8 +390,8 @@ class VerseItemSnap extends StatelessWidget {
   const VerseItemSnap({super.key});
   @override
   Widget build(BuildContext context) {
+    final tpl = Theme.of(context);
     return ViewCards(
-      // color: Theme.of(context).primaryColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         child: Column(
@@ -397,13 +399,11 @@ class VerseItemSnap extends StatelessWidget {
           children: [
             Container(
               height: 20,
-              // width: 120,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor,
+                color: tpl.disabledColor,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
-              // color: Colors.grey[200],
             ),
             const Divider(
               height: 5,
@@ -413,7 +413,7 @@ class VerseItemSnap extends StatelessWidget {
               height: 15,
               width: 250,
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor,
+                color: tpl.disabledColor,
                 borderRadius: const BorderRadius.all(Radius.circular(7)),
               ),
             ),
@@ -425,7 +425,7 @@ class VerseItemSnap extends StatelessWidget {
               height: 10,
               width: 50,
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor,
+                color: tpl.disabledColor,
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
             ),

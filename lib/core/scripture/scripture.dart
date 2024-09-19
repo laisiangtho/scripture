@@ -252,32 +252,6 @@ class Scripture extends _ScriptureInterface {
     }
   }
 
-  void chapterSnapPreviousTmp() {
-    int bookId = data.bookId;
-    int chapterId = data.chapterId;
-
-    int totalBook = bible.book.length;
-    int cId = chapterId - 1;
-
-    if (cId > 0) {
-      // data.chapterId = cId;
-      chapterId = cId;
-    } else {
-      int bId = data.bookId - 1;
-      if (bId > 0) {
-        // data.bookId = bId;
-        bookId = bId;
-      } else {
-        // data.bookId = totalBook;
-        bookId = totalBook;
-      }
-
-      int totalChapter = bookById(bookId).totalChapter;
-      // data.chapterId = totalChapter;
-      chapterId = totalChapter;
-    }
-  }
-
   /// Update next chapterId, if require its update bookId too
   // Future<void> get chapterNext => init().then((o){
   //   int totalBook = o.book.keys.length;

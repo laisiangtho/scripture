@@ -1,8 +1,7 @@
 # Todo
 
-zotune.willsol.zo.laisiangtho
-version: 1.1.9
-build: 44
+version: 1.2.8
+build: 101
 
 - initial
   - [x] default bibleIdentify

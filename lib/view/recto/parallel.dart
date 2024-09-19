@@ -8,14 +8,11 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'recto-parallel';
-  static String label = 'Parallel';
-  static IconData icon = Icons.ac_unit;
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   Scripture get primaryScripture => app.scripturePrimary;
   List<OfVerse> get primaryVerse => primaryScripture.verse;
 
@@ -36,8 +33,9 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     // home/bible
     // Navigator.of(context, rootNavigator: true).pushNamed('/launch/bible');
     // Navigator.of(context, rootNavigator: true).pushNamed('/home/bible');
-    route.pushNamed('/read/bible', arguments: {'parallel': true});
-    // core.navigate();
+    // app.route.page.go('/read', extra: {'parallel': true});
+
+    app.route.page.push('/bible', extra: {'parallel': true});
   }
 
   void setChapterPrevious() {
@@ -73,7 +71,7 @@ mixin _Header on _State {
       //   //   const Alignment(0, 0),
       //   //   vhd.snapShrink,
       //   // ),
-      //   label: preference.text.book('true'),
+      //   label: app.preference.of(context).book('true'),
       // ),
       primary: buttonList(),
     );
@@ -87,32 +85,34 @@ mixin _Header on _State {
       children: [
         buttonItem(
           width: buttonWidth,
-          message: preference.text.previousTo(preference.text.chapter('false')),
+          message:
+              app.preference.of(context).previousTo(app.preference.of(context).chapter('false')),
           onPressed: setChapterPrevious,
           child: const ViewMarks(icon: LideaIcon.chapterPrevious, iconSize: 22),
         ),
         buttonItem(
           width: buttonWidth,
-          message: preference.text.nextTo(preference.text.chapter('false')),
+          message: app.preference.of(context).nextTo(app.preference.of(context).chapter('false')),
           onPressed: setChapterNext,
           child: const ViewMarks(icon: LideaIcon.chapterNext, iconSize: 22),
         ),
         buttonItem(
           width: buttonWidth,
-          message: preference.text.compareTo(preference.text.parallel),
-          // onPressed: scrollAnimateToggle,
-          onPressed: state.asMap['presistentToggle'],
+          message: app.preference.of(context).compareTo(app.preference.of(context).parallel),
+          onPressed: state.param.map['scrollToggle'],
           child: const ViewMarks(icon: LideaIcon.language, iconSize: 20),
         ),
         buttonItem(
           width: buttonWidth,
-          message: preference.text.title("true"),
+          message: app.preference.of(context).title("true"),
           onPressed: () {
-            route.showSheetModal(
-              context: context,
-              name: 'sheet-bible-navigation/recto-title',
-              arguments: {'book': primaryScripture.bookCurrent.info.id},
-            ).then((e) {
+            final msh = app.route.showModalSheet<Map<String, dynamic>?>(
+              child: app.route.sheetConfig(
+                name: '/recto-title',
+              ),
+            );
+
+            msh.then((e) {
               if (e != null) {
                 Future.delayed(const Duration(milliseconds: 300), () {
                   app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
@@ -123,18 +123,20 @@ mixin _Header on _State {
           child: ViewMarks(
             // icon: Icons.linear_scale_rounded,
             icon: Icons.signpost_rounded,
-            iconColor: state.theme.primaryColorDark.withOpacity(0.6),
+            iconColor: theme.primaryColorDark.withOpacity(0.6),
             iconSize: 20,
           ),
         ),
         buttonItem(
           width: buttonWidth,
           onPressed: () {
-            route.showSheetModal(
-              context: context,
-              name: 'sheet-bible-navigation/recto-merge',
-              arguments: {'book': primaryScripture.bookCurrent.info.id},
-            ).then((e) {
+            final msh = app.route.showModalSheet<Map<String, dynamic>?>(
+              child: app.route.sheetConfig(
+                name: '/recto-merge',
+              ),
+            );
+
+            msh.then((e) {
               if (e != null) {
                 Future.delayed(const Duration(milliseconds: 300), () {
                   app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
@@ -144,7 +146,7 @@ mixin _Header on _State {
           },
           child: ViewMarks(
             icon: Icons.merge,
-            iconColor: state.theme.primaryColorDark.withOpacity(0.6),
+            iconColor: theme.primaryColorDark.withOpacity(0.6),
             iconSize: 20,
           ),
         ),
@@ -175,22 +177,23 @@ class _MainState extends _State with _Header {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      primary: false,
       // extendBody: true,
       // extendBodyBehindAppBar: true,
       appBar: ViewBars(
         height: headerHeight,
         // forceOverlaps: false,
         // forceStretch: true,
-        // backgroundColor: state.theme.primaryColor,
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        // backgroundColor: theme.primaryColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
         overlapsBorderWidth: 0.2,
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            state.theme.primaryColor,
-            state.theme.scaffoldBackgroundColor,
+            theme.primaryColor,
+            theme.scaffoldBackgroundColor,
           ],
         ),
         child: _header(),
@@ -203,8 +206,11 @@ class _MainState extends _State with _Header {
               case ConnectionState.done:
                 return body();
               default:
-                return Center(
-                  child: Text(preference.text.aMoment),
+                // return Center(
+                //   child: Text(app.preference.of(context).aMoment),
+                // );
+                return ViewFeedbacks.message(
+                  label: app.preference.of(context).aMoment,
                 );
             }
           },
@@ -223,7 +229,7 @@ class _MainState extends _State with _Header {
           // pinned: true,
           // floating: true,
           // heights: const [kTextTabBarHeight - 15],
-          // overlapsBorderColor: state.theme.dividerColor,
+          // overlapsBorderColor: theme.dividerColor,
 
           builder: (BuildContext _, ViewHeaderData vhd) {
             return Padding(
@@ -235,7 +241,7 @@ class _MainState extends _State with _Header {
                     selector: (_, e) => e.scriptureParallel.read,
                     builder: (BuildContext _, CacheBible i, Widget? child) => Text(
                       i.result.info.shortname,
-                      style: state.theme.textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                   ),
                   // ViewButtons(
@@ -248,7 +254,9 @@ class _MainState extends _State with _Header {
                   // ),
 
                   ViewButtons(
-                    message: preference.text.chooseTo(preference.text.bible('false')),
+                    message: app.preference
+                        .of(context)
+                        .chooseTo(app.preference.of(context).bible('false')),
                     onPressed: _showParallelList,
                     child: const ViewLabels(
                       icon: Icons.linear_scale,
@@ -259,20 +267,39 @@ class _MainState extends _State with _Header {
             );
           },
         ),
+        // const SliverToBoxAdapter(
+        //   child: Text('????'),
+        // ),
         StreamBuilder(
           initialData: data.boxOfSettings.fontSize(),
           stream: data.boxOfSettings.watch(key: 'fontSize'),
           builder: (BuildContext _, e) {
             return Selector<Core, CacheBible>(
               selector: (_, e) => e.scriptureParallel.read,
-              builder: (BuildContext _, CacheBible message, Widget? child) => SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext _, int index) => _inheritedVerse(parallelVerse.elementAt(index)),
-                  childCount: parallelVerse.length,
-                  // addAutomaticKeepAlives: true
-                ),
-              ),
+              builder: (BuildContext _, CacheBible i, Widget? child) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext _, int index) => _inheritedVerse(parallelVerse.elementAt(index)),
+                    childCount: parallelVerse.length,
+                    // addAutomaticKeepAlives: true
+                  ),
+                );
+              },
+              // builder: (BuildContext _, CacheBible message, Widget? child) => SliverList(
+              //   delegate: SliverChildBuilderDelegate(
+              //     (BuildContext _, int index) => _inheritedVerse(parallelVerse.elementAt(index)),
+              //     childCount: parallelVerse.length,
+              //     // addAutomaticKeepAlives: true
+              //   ),
+              // ),
             );
+            // return ViewCards(
+            //   sliver: true,
+            //   child: Text('test: ${parallelVerse.length}'),
+            // );
+            // return const SliverToBoxAdapter(
+            //   child: Text('????'),
+            // );
           },
         ),
       ],

@@ -5,18 +5,11 @@ import '../../../app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'sheet-modal';
-  static String label = 'Sheet';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
-
+class _State extends SheetStates<Main> {
   @override
   late final actualInitialSize = 0.4;
   @override
@@ -55,23 +48,21 @@ class _State extends DraggableSheets<Main> {
 // import 'package:flutter/material.dart';
 // import 'package:explorer/lidea/view/draggable_sheet.dart';
 
-// // class ViewDraggableSheetState<ViewDraggableSheetWidget extends StatefulWidget>
+// // class ViewStateSheettate<ViewDraggableSheetWidget extends StatefulWidget>
 // //     extends State<ViewDraggableSheetWidget> with TickerProviderStateMixin
 // // State<_SheetWidget> createState() => _SheetWidgetState();
-// // class _SheetWidgetState extends ViewDraggableSheetState<_SheetWidget>
+// // class _SheetWidgetState extends ViewStateSheettate<_SheetWidget>
 
 // class Main extends ViewDraggableSheet {
 //   const Main({Key? key}) : super(key: key);
 
-//   static String route = 'sheet-modal';
-//   static String label = 'Sheet';
-//   static IconData icon = Icons.ac_unit;
+
 
 //   @override
 //   State<Main> createState() => _MainState();
 // }
 
-// class _MainState extends ViewDraggableSheetState<Main> {
+// class _MainState extends ViewStateSheettate<Main> {
 //   @override
 //   // Widget build(BuildContext context) {
 //   //   return ElevatedButton(

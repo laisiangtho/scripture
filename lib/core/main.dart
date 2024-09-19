@@ -13,6 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 /// NOTE: Lidea view ???
 import 'package:lidea/view/main.dart' show ViewScrolls;
 export 'package:lidea/view/main.dart';
+export 'package:lidea/routes.dart';
 
 /// NOTE: Route
 import '/view/routes.dart';
@@ -57,18 +58,15 @@ class Core extends _Searches {
 
     // await store.init();
     // await sql.init();
-    await poll.init();
+    // await poll.init();
 
     data.suggestQuery = data.searchQuery;
 
     switchIdentifyPrimary();
     await primaryInit.catchError((e) {
-      // debugPrint('scripturePrimary: $e');
+      message.value = e;
     });
     switchIdentifyParallel();
-    // await scriptureParallel.init().catchError((e) {
-    //   debugPrint('scriptureParallel: $e');
-    // });
     await scriptureParallel.init();
 
     message.value = '';

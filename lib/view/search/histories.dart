@@ -12,14 +12,14 @@ class _HistoriesView extends HistoriesState<_Histories> {
   late final Core app = App.core;
 
   @override
-  String? labelHeaderTitle(test) => preference.text.recentSearch(test.toString());
+  String labelHeaderTitle(test) => app.preference.of(context).recentSearch(test.toString());
 
   @override
   String? labelItemTrailing(item) => app.scripturePrimary.digit(item.hit);
 
   @override
-  String? get messageAWordOrTwo => preference.text.aWordOrTwo;
+  String? get messageAWordOrTwo => app.preference.of(context).aWordOrTwo;
 
   @override
-  String? get messageDismissibleBackground => preference.text.delete;
+  String? get messageDismissibleBackground => app.preference.of(context).delete;
 }

@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> {
+abstract class _State extends CommonStates<Main> {
   late final ScrollController scrollController = ScrollController();
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -18,9 +18,9 @@ abstract class _State extends StateAbstract<Main> {
     primaryScripture.scroll = scrollController;
 
     // Future.delayed(const Duration(milliseconds: 1000), () {
-    //   App.core.message.value = 'Testing';
+    //   app.message.value = 'Testing';
     //   Future.delayed(const Duration(milliseconds: 1000), () {
-    //     App.core.message.value = '';
+    //     app.message.value = '';
     //   });
     // });
   }
@@ -45,12 +45,13 @@ abstract class _State extends StateAbstract<Main> {
   }
 
   void showBooks() {
-    route
-        .showSheetModal(
-      context: context,
-      name: 'sheet-bible-navigation/recto-book',
-    )
-        .then((e) {
+    final msh = app.route.showModalSheet<Map<String, dynamic>?>(
+      child: app.route.sheetConfig(
+        name: '/recto-book',
+      ),
+    );
+
+    msh.then((e) {
       if (e != null) {
         Future.delayed(const Duration(milliseconds: 300), () {
           app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
@@ -60,11 +61,14 @@ abstract class _State extends StateAbstract<Main> {
   }
 
   void showChapters() {
-    route.showSheetModal(
-      context: context,
-      name: 'sheet-bible-navigation/recto-book',
-      arguments: {'book': primaryScripture.bookCurrent.info.id},
-    ).then((e) {
+    final msh = app.route.showModalSheet<Map<String, dynamic>?>(
+      child: app.route.sheetConfig(
+        name: '/recto-book',
+        extra: {'book': primaryScripture.bookCurrent.info.id},
+      ),
+    );
+
+    msh.then((e) {
       if (e != null) {
         Future.delayed(const Duration(milliseconds: 300), () {
           app.chapterChange(bookId: e['book'], chapterId: e['chapter']);
@@ -74,29 +78,11 @@ abstract class _State extends StateAbstract<Main> {
   }
 
   void showOptions() {
-    Navigator.of(context)
-        .push(
-          PageRouteBuilder<int>(
-            settings: RouteSettings(
-              arguments: {
-                'render': _kOptions.currentContext!.findRenderObject() as RenderBox,
-                // 'setFontSize': setFontSize,
-                // 'test': 'hello world',
-              },
-            ),
-            opaque: false,
-            barrierDismissible: true,
-            transitionsBuilder: (BuildContext _, Animation<double> x, __, Widget child) {
-              return FadeTransition(
-                opacity: x,
-                child: child,
-              );
-            },
-            pageBuilder: (_, __, ___) {
-              return route.show('pop-options').child;
-            },
-          ),
-        )
-        .then((value) {});
+    context.push(
+      '/pop-options',
+      extra: {
+        'render': _kOptions.currentContext!.findRenderObject() as RenderBox,
+      },
+    );
   }
 }

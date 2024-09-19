@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/icon.dart';
-
 import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-
-  static String route = 'recent-search';
-  static String label = 'Recent search';
-  static IconData icon = LideaIcon.listNested;
 
   @override
   State<StatefulWidget> createState() => _View();
@@ -21,30 +15,28 @@ class _View extends SearchRecents<Main> {
 
   @override
   void onSearch(RecentSearchType item) {
-    route.pushNamed(
-      'home/search',
-      arguments: {'keyword': item.word},
-    );
+    context.push('/search', extra: {'keyword': item.word});
   }
 
   @override
-  String get doConfirmMessage => preference.text.confirmToDelete('all');
+  String get doConfirmMessage => app.preference.of(context).confirmToDelete('all');
   @override
-  String get doConfirmTitle => preference.text.confirmation;
+  String get doConfirmTitle => app.preference.of(context).confirmation;
   @override
-  String get doConfirmCancel => preference.text.cancel;
+  String get doConfirmCancel => app.preference.of(context).cancel;
   @override
-  String get doConfirmSubmit => preference.text.confirm;
+  String get doConfirmSubmit => app.preference.of(context).confirm;
   @override
-  String get labelBack => preference.text.back;
+  String get labelBack => app.preference.of(context).back;
   @override
-  String get labelHeaderTitle => preference.text.keyword(boxOfRecentSearch.plural.toString());
+  String get labelHeaderTitle =>
+      app.preference.of(context).keyword(boxOfRecentSearch.plural.toString());
   @override
-  String get labelSectionTitle => preference.text.recentSearch('false');
+  String get labelSectionTitle => app.preference.of(context).recentSearch('false');
   @override
-  String get labelDismissibleBackground => preference.text.delete;
+  String get labelDismissibleBackground => app.preference.of(context).delete;
   @override
-  String messageOnEmpty(int test) => preference.text.recentSearchCount(0);
+  String messageOnEmpty(int test) => app.preference.of(context).recentSearchCount(0);
   @override
   String labelItemTrailing(RecentSearchType item) => app.scripturePrimary.digit(item.hit);
 }

@@ -119,7 +119,6 @@ abstract class _Engines extends _Mocks {
     // }
   }
 
-  // TODO: StateError (Bad state: No element)
   void switchIdentifyPrimary({bool force = false}) {
     final val = data.boxOfBooks.values;
     if (data.primaryId.isEmpty) {
@@ -173,7 +172,6 @@ abstract class _Engines extends _Mocks {
   }
 
   Future<void> switchAvailabilityUpdate(String identify) {
-    // Scripture scripture = new Scripture(identify:identify,collection:collection);
     try {
       data.primaryId = identify;
       switchIdentifyParallel();
@@ -242,109 +240,4 @@ abstract class _Engines extends _Mocks {
       // debugPrint('53? $e');
     }).whenComplete(scripturePrimary.changeNotify);
   }
-
-  // void verseSelectionWithNotify(int id) {
-  //   // scripturePrimary.init().then((o) {
-
-  //   // }).catchError((e) {
-  //   //   debugPrint('10: $e');
-  //   // }).whenComplete(() {
-  //   //   debugPrint('verseSelectionWithNotify ${scripturePrimary.verseSelectionWorking}');
-  //   //   notify();
-  //   // });
-  //   final tmp = scripturePrimary.verseSelectionWorking;
-  //   int index = tmp.indexWhere((i) => i == id);
-  //   if (index >= 0) {
-  //     tmp.removeAt(index);
-  //   } else {
-  //     tmp.add(id);
-  //   }
-  //   scripturePrimary.verseSelectionWorking = tmp;
-  //   Future.microtask(() {
-  //     notify();
-  //   });
-  // }
-
-  // String _testQuery = '';
-
-  // String get testQuery => _testQuery;
-  // set testQuery(String ord) {
-  //   // notifyIf<String>(_testQuery, _testQuery = ord);
-  //   int index = scripturePrimary.verseSelectionWorking.indexWhere((i) => i == id);
-  //     if (index >= 0) {
-  //       scripturePrimary.verseSelectionWorking.removeAt(index);
-  //     } else {
-  //       scripturePrimary.verseSelectionWorking.add(id);
-  //     }
-  // }
-
-  /*
-  Future<void> initBible() async {
-    if (collection.requireInitialized) {
-      APIType api = collection.env.api.firstWhere(
-        (e) => e.asset.isNotEmpty,
-      );
-      await UtilArchive.extractBundle(api.asset);
-    }
-    // if (requireInitialized) {
-    //   final localData = collection.env.api.where((e) => e.asset.isNotEmpty);
-    //   for (APIType api in localData) {
-    //     await UtilArchive.extractBundle(api.assetName).then((_) {
-    //       debugPrint('Ok ${api.uid}');
-    //     }).catchError((e) {
-    //       debugPrint('Error ${api.uid} $e');
-    //     });
-    //   }
-    // }
-  }
-  Future<void> initDictionary() async {
-    if (collection.requireInitialized) {
-      APIType api = collection.env.api.firstWhere(
-        (e) => e.asset.isNotEmpty,
-      );
-      await UtilArchive.extractBundle(api.asset);
-    }
-  }
-  Future<void> initMusic() async {
-    final localData = collection.env.api.where(
-      (e) => e.local.isNotEmpty && !e.local.contains('!'),
-    );
-    if (collection.requireInitialized) {
-      APIType api = collection.env.api.firstWhere((e) => e.asset.isNotEmpty);
-      await UtilArchive.extractBundle(api.asset);
-    }
-    collection.cacheBucket = AudioBucketType.fromJSON(
-      Map.fromEntries(
-        await Future.wait(
-          localData.map(
-            (e) async => MapEntry(
-              e.uid,
-              await UtilDocument.readAsJSON<List<dynamic>>(e.localName),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  */
-
-  // Future<void> deleteOldLocalData(Iterable<APIType> localData) async {
-  //   if (requireInitialized) {
-  //     for (APIType api in localData) {
-  //       await Docs.app.exists(api.localName).then((String e) {
-  //         if (e.isNotEmpty) {
-  //           Docs.app.delete(e);
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-
-  // void userObserver(User? user) {
-  //   debugPrint('userObserver begin');
-  // }
-
-  // Future<void> analyticsFromCollection() async {
-  //   analyticsSearch('keyword goes here');
-  // }
 }

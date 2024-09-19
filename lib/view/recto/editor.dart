@@ -5,15 +5,11 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'recto-editor';
-  static String label = 'Editor';
-  static IconData icon = Icons.edit;
-
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   late final _formKey = GlobalKey<FormState>();
   late final _textController = TextEditingController();
   late final _focusNode = FocusNode();
@@ -23,7 +19,7 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     super.initState();
 
     Future.microtask(() {
-      _textController.text = state.asMap['text'];
+      _textController.text = state.param.map['text'];
       if (_focusNode.canRequestFocus && autoFocus) {
         _focusNode.requestFocus();
       }
@@ -31,14 +27,14 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   }
 
   bool get autoFocus {
-    return args.isNotEmpty && args['focus'] != null;
+    return state.param.map.isNotEmpty && state.param.map['focus'] != null;
   }
 
   String get pageTitle {
     // return args.isNotEmpty && args['title'] != null;
-    if (args.isNotEmpty) {
-      if (args['pageTitle'] != null) {
-        return args['pageTitle'];
+    if (state.param.map.isNotEmpty) {
+      if (state.param.map['pageTitle'] != null) {
+        return state.param.map['pageTitle'];
       }
     }
     return '...';
@@ -46,12 +42,12 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 
   String get pageLabel {
     // return args.isNotEmpty && args['title'] != null;
-    if (args.isNotEmpty) {
-      if (args['pageLabel'] != null) {
-        return args['pageLabel'];
+    if (state.param.map.isNotEmpty) {
+      if (state.param.map['pageLabel'] != null) {
+        return state.param.map['pageLabel'];
       }
     }
-    return preference.text.text('true');
+    return app.preference.of(context).text('true');
   }
 
   void onSubmit(String str) {
@@ -65,8 +61,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: preference.text.back,
-          cancel: preference.text.cancel,
+          back: app.preference.of(context).back,
+          cancel: app.preference.of(context).cancel,
         ),
       ],
       primary: ViewHeaderTitle.dual(

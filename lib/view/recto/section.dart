@@ -9,15 +9,11 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'recto-section';
-  static String label = 'Section';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
 
   Scripture get scripture => app.scripturePrimary;
@@ -44,8 +40,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          navigator: state.navigator,
-          label: preference.text.back,
+          label: app.preference.of(context).back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -54,7 +49,7 @@ mixin _Header on _State {
           const Alignment(0, 0),
           vhd.snapShrink,
         ),
-        label: preference.text.bible('false'),
+        label: app.preference.of(context).bible('false'),
         data: vhd,
       ),
     );
@@ -84,10 +79,10 @@ class _MainState extends _State with _Header {
         // floating: false,
         // padding: const EdgeInsets.only(top: 30),
         // heights: const [kToolbarHeight, 100],
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         heights: const [kToolbarHeight],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        // overlapsBorderColor: state.theme.dividerColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        // overlapsBorderColor: theme.dividerColor,
         builder: _header,
       ),
 
@@ -166,11 +161,11 @@ class _MainState extends _State with _Header {
                       return ListTile(
                         // tileColor: Theme.of(context).primaryColor,
                         leading: Text(
-                          preference.digit(bId),
+                          preference.digit(context, bId),
                           // scripture.digit(book.id),
                           // book.id.toString(),
                           textAlign: TextAlign.center,
-                          style: state.textTheme.titleSmall,
+                          style: style.titleSmall,
                         ),
                         title: Text(preference.language('book-$bId')),
                         trailing: ViewMarks(
@@ -178,13 +173,14 @@ class _MainState extends _State with _Header {
                           icon: LideaIcon.rightOpen,
                           iconSize: 28,
                           iconColor: Theme.of(context).hintColor,
-                          label: preference.digit(book.totalChapter),
+                          label: preference.digit(context, book.totalChapter),
                         ),
                         onTap: () {
-                          route.showSheetModal(
-                            context: context,
-                            name: 'sheet-bible-navigation/recto-book',
-                            arguments: {'book': book.id},
+                          app.route.showModalSheet<Map<String, dynamic>?>(
+                            child: app.route.sheetConfig(
+                              name: '/recto-book',
+                              extra: {'book': book.id},
+                            ),
                           );
                         },
                       );

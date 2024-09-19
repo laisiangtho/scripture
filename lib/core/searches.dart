@@ -4,6 +4,8 @@ abstract class _Searches extends _Engines {
   @override
   Future<void> suggestionGenerate({String ord = ''}) async {
     data.suggestQuery = ord;
+    // scripturePrimary.verseSearch;
+
     // _cacheSuggestion = SuggestionType(
     //   query: data.suggestQuery,
     // );
@@ -28,6 +30,7 @@ abstract class _Searches extends _Engines {
   @override
   Future<void> conclusionGenerate({String ord = ''}) async {
     data.searchQuery = ord;
+    data.suggestQuery = ord;
     // _cacheConclusion = ConclusionType(
     //   query: data.searchQuery,
     // );

@@ -4,7 +4,7 @@ class Preference extends PreferenceNest<Data> {
   Preference(super.data);
 
   @override
-  AppLocalizations get text => AppLocalizations.of(context)!;
+  AppLocalizations of(BuildContext context) => AppLocalizations.of(context)!;
 
   // @override
   // List<Locale> get supportedLocales => AppLocalizations.supportedLocales;

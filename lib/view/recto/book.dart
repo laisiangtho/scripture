@@ -5,15 +5,11 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'recto-book';
-  static String label = 'Book';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   late final ScrollController _scrollController = ScrollController();
   late final ExpansionTileController _expansionController = ExpansionTileController();
 
@@ -30,8 +26,8 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   bool showBookInitiated = false;
 
   int get showBookId {
-    if (args.isNotEmpty && args['book'] != null) {
-      return args['book'] as int;
+    if (state.param.map.isNotEmpty && state.param.map['book'] != null) {
+      return state.param.map['book'] as int;
     }
     return 0;
   }
@@ -180,8 +176,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: preference.text.back,
-          cancel: preference.text.cancel,
+          back: app.preference.of(context).back,
+          cancel: app.preference.of(context).cancel,
         ),
       ],
       primary: ViewHeaderTitle.fixed(
@@ -190,16 +186,17 @@ mixin _Header on _State {
         //   const Alignment(0, 0),
         //   vhd.snapShrink,
         // ),
-        label: preference.text.book('true'),
+        label: app.preference.of(context).book('true'),
       ),
       right: [
         ViewButtons(
-          style: Theme.of(context).textTheme.titleSmall,
+          style: style.titleSmall,
           onPressed: () {
-            Navigator.of(context).pushNamed('recto-title');
+            // Navigator.of(context).pushNamed('recto-title');
+            context.push('/recto-title');
           },
           child: ViewMarks(
-            label: preference.text.title(''),
+            label: app.preference.of(context).title(''),
           ),
         ),
       ],
@@ -215,9 +212,10 @@ class _MainState extends _State with _Header {
         height: kTextTabBarHeight,
         // forceOverlaps: false,
         forceStretch: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        // overlapsBackgroundColor: Theme.of(context).primaryColor,
-        overlapsBorderColor: Theme.of(context).dividerColor,
+        backgroundColor: theme.primaryColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
+
         child: _header(),
       ),
       body: Views(
@@ -238,16 +236,6 @@ class _MainState extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      // ViewHeaderSliver(
-      //   pinned: true,
-      //   heights: const [kTextTabBarHeight],
-      //   // overlapsBackgroundColor: state.theme.primaryColor,
-      //   backgroundColor: state.theme.primaryColor,
-      //   overlapsBorderColor: state.theme.dividerColor,
-      //   overlapsForce: true,
-      //   // padding: const EdgeInsets.symmetric(horizontal: 7),
-      //   builder: headerTmpDelete,
-      // ),
       ViewLists.separator(
         // sliver: true,
         decoration: BoxDecoration(
@@ -262,11 +250,11 @@ class _MainState extends _State with _Header {
           // ],
           border: Border(
             top: BorderSide(
-              color: Theme.of(context).dividerColor,
+              color: theme.dividerColor,
               width: 0.5,
             ),
             bottom: BorderSide(
-              color: Theme.of(context).dividerColor,
+              color: theme.dividerColor,
               width: 0.5,
             ),
           ),
@@ -294,10 +282,10 @@ class _MainState extends _State with _Header {
     return ExpansionTile(
       key: book.key,
       controller: showBookId == book.info.id ? _expansionController : null,
-      textColor: state.theme.hintColor,
+      textColor: theme.hintColor,
       // selectedTileColor: Colors.blue,
-      // selectedTileColor: state.theme.cardColor,
-      // selectedColor: state.theme.dividerColor,
+      // selectedTileColor: theme.cardColor,
+      // selectedColor: theme.dividerColor,
       // contentPadding: EdgeInsets.zero,
       // horizontalTitleGap: 0,
       collapsedShape: const RoundedRectangleBorder(
@@ -310,25 +298,25 @@ class _MainState extends _State with _Header {
       // shape: Border(
       //   top: BorderSide(
       //     width: 0.4,
-      //     color: state.theme.dividerColor,
+      //     color: theme.dividerColor,
       //   ),
       // ),
-      iconColor: state.theme.highlightColor,
-      collapsedIconColor: state.theme.focusColor,
+      iconColor: theme.highlightColor,
+      collapsedIconColor: theme.focusColor,
       // initiallyExpanded: showBookId == book.id,
       // maintainState: true,
-      // collapsedBackgroundColor: state.theme.scaffoldBackgroundColor,
-      backgroundColor: state.theme.scaffoldBackgroundColor,
+      // collapsedBackgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       leading: Text(
         // preference.digit(book.id.toString()),
         scripture.digit(book.info.id),
         // book.id.toString(),
         textAlign: TextAlign.center,
         // style: TextStyle(
-        //   color: state.theme.primaryColorDark,
+        //   color: theme.primaryColorDark,
         // ),
-        style: state.textTheme.titleMedium?.copyWith(
-          color: state.theme.hintColor,
+        style: style.titleMedium?.copyWith(
+          color: theme.hintColor,
         ),
       ),
 
@@ -336,14 +324,14 @@ class _MainState extends _State with _Header {
         book.info.name,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.start,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: style.titleMedium,
       ),
       // trailing: ViewMarks(
       //   iconLeft: false,
       //   // icon: Icons.arrow_forward_ios_rounded,
       //   icon: Icons.expand_more_rounded,
       //   iconSize: 20,
-      //   // iconColor: Theme.of(context).hintColor,
+      //   // iconColor: theme.hintColor,
       //   label: preference.digit(book.chapterCount),
       // ),
       onExpansionChanged: (isExpanded) {
@@ -399,6 +387,7 @@ class BookNameItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tpl = Theme.of(context);
     if (child == null) {
       return ListTile(
         leading: Container(
@@ -407,7 +396,7 @@ class BookNameItem extends StatelessWidget {
             maxWidth: 20,
           ),
           decoration: BoxDecoration(
-            color: Theme.of(context).disabledColor,
+            color: tpl.disabledColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
         ),
@@ -415,7 +404,7 @@ class BookNameItem extends StatelessWidget {
           margin: const EdgeInsets.only(right: 57),
           height: 20,
           decoration: BoxDecoration(
-            color: Theme.of(context).disabledColor,
+            color: tpl.disabledColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
         ),
@@ -431,7 +420,7 @@ class BookNameItem extends StatelessWidget {
     //           maxWidth: 20,
     //         ),
     //         decoration: BoxDecoration(
-    //           color: Theme.of(context).disabledColor,
+    //           color: theme.disabledColor,
     //           borderRadius: const BorderRadius.all(Radius.circular(10)),
     //         ),
     //       ),
@@ -439,7 +428,7 @@ class BookNameItem extends StatelessWidget {
     //         margin: const EdgeInsets.only(right: 57),
     //         height: 20,
     //         decoration: BoxDecoration(
-    //           color: Theme.of(context).disabledColor,
+    //           color: theme.disabledColor,
     //           borderRadius: const BorderRadius.all(Radius.circular(10)),
     //         ),
     //       ),
@@ -479,7 +468,7 @@ class ChapterNameItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final tpl = Theme.of(context);
     const margin = EdgeInsets.symmetric(vertical: 4, horizontal: 4);
     // book?.totalChapter
 
@@ -490,7 +479,7 @@ class ChapterNameItem extends StatelessWidget {
         child: ViewMarks(
           icon: Icons.signpost_rounded,
           // iconColor: theme.disabledColor,
-          iconColor: theme.primaryColorDark.withOpacity(0.3),
+          iconColor: tpl.primaryColorDark.withOpacity(0.3),
         ),
       );
     }
@@ -498,19 +487,21 @@ class ChapterNameItem extends StatelessWidget {
     if (isChapter) {
       return ViewButtons.filled(
         margin: margin,
-        color: theme.primaryColor.withOpacity(isCurrentChapter ? 0.4 : 1),
+        color: tpl.primaryColor.withOpacity(isCurrentChapter ? 0.4 : 1),
         showShadow: isCurrentChapter,
-        message: preference.text.chapter(''),
+        message: app.preference.of(context).chapter(''),
         child: ViewMarks(
           label: scripture.digit(index),
-          labelStyle: theme.textTheme.labelLarge?.copyWith(
-            color: isCurrentChapter ? theme.hintColor.withOpacity(0.3) : null,
+          labelStyle: tpl.textTheme.labelLarge?.copyWith(
+            color: isCurrentChapter ? tpl.hintColor.withOpacity(0.3) : null,
           ),
         ),
         onPressed: () {
-          Navigator.of(context, rootNavigator: true).maybePop(
-            {'book': book?.info.id, 'chapter': index},
-          );
+          // Navigator.of(context, rootNavigator: true).maybePop(
+          //   {'book': book?.info.id, 'chapter': index},
+          // );
+
+          app.route.context.pop({'book': book?.info.id, 'chapter': index});
         },
       );
     }
@@ -522,10 +513,11 @@ class ChapterNameItem extends StatelessWidget {
         message: preference.language('verse-merged'),
         child: ViewMarks(
           icon: Icons.merge,
-          iconColor: theme.primaryColorDark.withOpacity(0.3),
+          iconColor: tpl.primaryColorDark.withOpacity(0.3),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed('recto-merge', arguments: {'book': book?.info.id});
+          // Navigator.of(context).pushNamed('recto-merge', arguments: {'book': book?.info.id});
+          context.push('/recto-merge', extra: {'book': book?.info.id});
         },
       );
     }
@@ -534,13 +526,14 @@ class ChapterNameItem extends StatelessWidget {
       margin: margin,
       // color: theme.primaryColor,
       showShadow: false,
-      message: preference.text.title(''),
+      message: app.preference.of(context).title(''),
       child: ViewMarks(
         icon: Icons.signpost_rounded,
-        iconColor: theme.primaryColorDark.withOpacity(0.3),
+        iconColor: tpl.primaryColorDark.withOpacity(0.3),
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed('recto-title', arguments: {'book': book?.info.id});
+        // Navigator.of(context).pushNamed('recto-title', arguments: {'book': book?.info.id});
+        context.push('/recto-title', extra: {'book': book?.info.id});
       },
     );
   }

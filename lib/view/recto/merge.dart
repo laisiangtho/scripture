@@ -5,15 +5,11 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'recto-merge';
-  static String label = 'Merge';
-  static IconData icon = Icons.merge;
-
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   Scripture get scripture => app.scripturePrimary;
 
   List<SnapOut> snap = [];
@@ -30,8 +26,8 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
   // Todo: might not needed
   void _mediaData() {
     bookId = scripture.bookCurrent.info.id;
-    if (state.hasArguments) {
-      final ob = state.asMap['book'];
+    if (state.param.map.isNotEmpty) {
+      final ob = state.param.map['book'];
       if (ob != null) {
         bookId = ob as int;
       }
@@ -87,8 +83,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: preference.text.back,
-          cancel: preference.text.cancel,
+          back: app.preference.of(context).back,
+          cancel: app.preference.of(context).cancel,
         ),
       ],
       primary: const ViewHeaderTitle.custom(
@@ -107,9 +103,9 @@ class _MainState extends _State with _Header {
         height: kTextTabBarHeight,
         // forceOverlaps: false,
         forceStretch: true,
-        backgroundColor: state.theme.primaryColor,
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        backgroundColor: theme.primaryColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
         child: _header(),
       ),
       body: Views(
@@ -138,11 +134,11 @@ class _MainState extends _State with _Header {
           // ],
           border: Border(
             top: BorderSide(
-              color: state.theme.dividerColor,
+              color: theme.dividerColor,
               width: 0.5,
             ),
             bottom: BorderSide(
-              color: state.theme.dividerColor,
+              color: theme.dividerColor,
               width: 0.5,
             ),
           ),
@@ -159,32 +155,30 @@ class _MainState extends _State with _Header {
               child: Text(
                 scripture.digit('${verse.id}-${verse.merge}'),
                 textAlign: TextAlign.center,
-                style: state.textTheme.labelSmall?.copyWith(
-                  color: state.theme.hintColor,
+                style: style.labelSmall?.copyWith(
+                  color: theme.hintColor,
                 ),
               ),
             ),
             title: Text(
               // 'verse.title',
               scripture.bookById(obj.bookId).info.name,
-              style: state.textTheme.titleMedium,
+              style: style.titleMedium,
             ),
             trailing: Text(
               scripture.digit(obj.chapterId),
               textAlign: TextAlign.center,
-              style: state.textTheme.labelSmall?.copyWith(
-                color: state.theme.hintColor,
+              style: style.labelSmall?.copyWith(
+                color: theme.hintColor,
               ),
             ),
-            onTap: () {
-              Navigator.of(
-                context,
-                rootNavigator: true,
-              ).maybePop({
-                'book': obj.bookId,
-                'chapter': obj.chapterId,
-              });
-            },
+            // onTap: () {
+            //   Navigator.of(context, rootNavigator: true).maybePop({
+            //     'book': obj.bookId,
+            //     'chapter': obj.chapterId,
+            //   });
+            // },
+            onTap: state.maybePop({'book': obj.bookId, 'chapter': obj.chapterId}),
           );
         },
         itemCount: snap.length,

@@ -3,15 +3,11 @@ part of 'main.dart';
 class InspectRoute extends StatefulWidget {
   const InspectRoute({super.key});
 
-  static String route = 'test-inspect';
-  static String label = 'Inspect';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<InspectRoute> createState() => _InspectRouteState();
 }
 
-abstract class _InspectRouteAbstract extends StateAbstract<InspectRoute> {}
+abstract class _InspectRouteAbstract extends CommonStates<InspectRoute> {}
 
 class _InspectRouteState extends _InspectRouteAbstract {
   @override
@@ -26,54 +22,58 @@ class _InspectRouteState extends _InspectRouteAbstract {
               children: [
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search');
+                    context.go('/search');
                   },
                   child: const Text('to search'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search', arguments: {'keyword': 'love you as'});
+                    // data.suggestQuery = 'love you as';
+                    // app.conclusionGenerate(ord: 'love you as');
+                    context.go('/search', extra: {'keyword': 'love you as'});
                   },
-                  child: const Text('search:love you as, see if notifier'),
+                  child: const Text('push:love you as, see if notifier'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search', arguments: {'keyword': 'king of all'});
+                    // data.suggestQuery = 'king of all';
+                    // app.conclusionGenerate(ord: 'king of all');
+                    context.go('/search', extra: {'keyword': 'king of all'});
                   },
-                  child: const Text('search:king of all, see if notifier'),
+                  child: const Text('push:king of all, see if notifier'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search', arguments: {'focus': true, 'keyword': 'love'});
+                    context.go('/search', extra: {'focus': true, 'keyword': 'love'});
                   },
-                  child: const Text('search:love and focus'),
+                  child: const Text('go:love and focus'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    route.pushNamed('home/search', arguments: {'keyword': 'kings'});
+                    context.go('/search', extra: {'keyword': 'kings'});
                   },
-                  child: const Text('search:kings, see if responsive'),
+                  child: const Text('go:kings, see if responsive'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    data.searchQuery = 'loves';
-                    route.pushNamed('search', arguments: {'keyword': 'loves', 'focus': true});
+                    // data.searchQuery = 'loves';
+                    app.route.page.go('/search', extra: {'keyword': 'loves', 'focus': true});
                   },
-                  child: const Text('search in tab:loves and focus'),
+                  child: const Text('go:loves and focus'),
                 ),
                 ViewButtons(
                   onPressed: () {
                     data.searchQuery = 'kings';
-                    route.pushNamed('search', arguments: {'keyword': 'kings'});
+                    app.route.page.go('/search', extra: {'keyword': 'kings'});
                   },
                   child: const Text('search in tab:kings'),
                 ),
                 ViewButtons(
                   onPressed: () {
-                    // route.pushNamed('search', arguments: {'keyword': 'kings'});
-                    Navigator.pushNamed(context, 'home/search', arguments: {'keyword': 'kings'});
+                    // routeOld.pushNamed('search', arguments: {'keyword': 'kings'});
+                    Navigator.pushNamed(context, '/search', arguments: {'keyword': 'kings'});
                   },
-                  child: const Text('route'),
+                  child: const Text('Navigator.pushNamed'),
                 ),
               ],
             ),

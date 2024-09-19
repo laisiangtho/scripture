@@ -1,21 +1,17 @@
 // import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:lidea/icon.dart';
 import 'package:lidea/share.dart';
 import '../../../app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-  static String route = 'pop-options';
-  static String label = 'Options';
-  static IconData icon = LideaIcon.popup;
 
   @override
   State<Main> createState() => _MainState();
 }
 
-class _MainState extends StateAbstract<Main> {
+class _MainState extends CommonStates<Main> {
   Scripture get primaryScripture => app.scripturePrimary;
   Marks get marks => primaryScripture.marks;
   List<OfVerse> get primaryVerse => primaryScripture.verse;
@@ -48,18 +44,21 @@ class _MainState extends StateAbstract<Main> {
       }
     }
 
-    route.showSheetModal(
-      context: context,
-      name: 'sheet-bible-navigation/recto-editor',
-      arguments: {
-        'text': toEdit,
-        'focus': true,
-        // 'pageLabel': prefence.text.addTo(prefence.text.data('').toLowerCase()),
-        // 'pageTitle': prefence.text.note('true'),
-        'pageLabel': preference.text.addTo(preference.text.note('').toLowerCase()),
-        'pageTitle': '$bookName $chapterName:$svs',
-      },
-    ).then((e) {
+    final msh = app.route.showModalSheet<Map<String, dynamic>?>(
+      child: app.route.sheetConfig(
+        name: '/recto-editor',
+        extra: {
+          'text': toEdit,
+          'focus': true,
+          'pageLabel': app.preference.of(context).addTo(
+                app.preference.of(context).note('').toLowerCase(),
+              ),
+          'pageTitle': '$bookName $chapterName:$svs',
+        },
+      ),
+    );
+
+    msh.then((e) {
       if (e != null) {
         marks.selectionApply(note: e['text']);
       }
@@ -87,9 +86,9 @@ class _MainState extends StateAbstract<Main> {
   //   });
   // }
 
-  void Function(bool) get fontSize => args['setFontSize'];
+  void Function(bool) get fontSize => state.param.map['setFontSize'];
 
-  late final RenderBox render = args['render'];
+  late final RenderBox render = state.param.map['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -126,9 +125,9 @@ class _MainState extends StateAbstract<Main> {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.3),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      // backgroundColor: Theme.of(context).colorScheme.surface,
-      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      backgroundColor: Theme.of(context).primaryColor,
+      // backgroundColor: colorScheme.surface,
+      // backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.primaryColor,
       elevation: elevation,
       child: SizedBox(
         height: height,
@@ -158,12 +157,16 @@ class _MainState extends StateAbstract<Main> {
           children: <Widget>[
             OptionButtons.icon(
               onPressed: () => doFontSize(false),
-              message: preference.text.decreaseSize(preference.text.fontSize.toLowerCase()),
+              message: app.preference
+                  .of(context)
+                  .decreaseSize(app.preference.of(context).fontSize.toLowerCase()),
               icon: Icons.remove,
             ),
             ViewButtons(
               onPressed: doFontSizeReset,
-              message: preference.text.resetSize(preference.text.fontSize.toLowerCase()),
+              message: app.preference
+                  .of(context)
+                  .resetSize(app.preference.of(context).fontSize.toLowerCase()),
               padding: EdgeInsets.zero,
               child: StreamBuilder(
                 initialData: bOS.fontSize(),
@@ -174,13 +177,13 @@ class _MainState extends StateAbstract<Main> {
                       border: Border.symmetric(
                         vertical: BorderSide(
                           width: 1,
-                          color: Theme.of(context).dividerColor,
+                          color: theme.dividerColor,
                         ),
                       ),
                     ),
-                    label: preference.digit(bOS.fontSize().asDouble.toStringAsFixed(0)),
+                    label: preference.digit(context, bOS.fontSize().asDouble.toStringAsFixed(0)),
                     labelStyle: TextStyle(
-                      color: Theme.of(context).hintColor,
+                      color: theme.hintColor,
                     ),
                   );
                 },
@@ -188,7 +191,9 @@ class _MainState extends StateAbstract<Main> {
             ),
             OptionButtons.icon(
               onPressed: () => doFontSize(true),
-              message: preference.text.increaseSize(preference.text.fontSize.toLowerCase()),
+              message: app.preference
+                  .of(context)
+                  .increaseSize(app.preference.of(context).fontSize.toLowerCase()),
               icon: Icons.add,
             )
           ],
@@ -206,7 +211,7 @@ class _MainState extends StateAbstract<Main> {
           //       color: color.withOpacity(0.2),
           //       borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           //       onPressed: marks.hasSelection ? onPressed : null,
-          //       border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+          //       border: Border.all(width: 1, color: theme.dividerColor),
           //       child: const SizedBox(),
           //     );
           //   },
@@ -214,15 +219,15 @@ class _MainState extends StateAbstract<Main> {
           rowCommon(
             height: 50,
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
+              color: theme.scaffoldBackgroundColor,
               border: Border(
                 top: BorderSide(
-                  color: Theme.of(context).dividerColor,
+                  color: theme.dividerColor,
                   // color: Colors.black,
                   width: 1,
                 ),
                 bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
+                  color: theme.dividerColor,
                   // color: Colors.black,
                   width: 1,
                 ),
@@ -234,10 +239,10 @@ class _MainState extends StateAbstract<Main> {
               children: [
                 Text(
                   // 'Selection',
-                  preference.text.selection(''),
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).hintColor,
-                      ),
+                  app.preference.of(context).selection(''),
+                  style: style.labelMedium!.copyWith(
+                    color: theme.hintColor,
+                  ),
                 ),
               ],
             ),
@@ -299,7 +304,7 @@ class _MainState extends StateAbstract<Main> {
               // color: Colors.red,
               border: Border(
                 top: BorderSide(
-                  color: Theme.of(context).dividerColor,
+                  color: theme.dividerColor,
                   // color: Colors.black,
                   width: 1,
                 ),
@@ -319,18 +324,18 @@ class _MainState extends StateAbstract<Main> {
               shrinkWrap: true,
               children: <Widget>[
                 actionButton(
-                  msg: preference.text.share,
+                  msg: app.preference.of(context).share,
                   onPressed: doShare,
                   icon: Icons.ios_share_outlined,
                 ),
                 actionButton(
-                  msg: preference.text.note(''),
+                  msg: app.preference.of(context).note(''),
                   onPressed: doNote,
                   // icon: Icons.chat_rounded,
                   icon: Icons.edit_note_rounded,
                 ),
                 actionButton(
-                  msg: preference.text.reset,
+                  msg: app.preference.of(context).reset,
                   onPressed: doReset,
                   icon: Icons.remove_circle_outline_rounded,
                 ),
@@ -369,7 +374,7 @@ class _MainState extends StateAbstract<Main> {
             padding: EdgeInsets.zero,
             margin: EdgeInsets.zero,
             onPressed: marks.hasSelection ? () => marks.selectionApply(color: index) : null,
-            // message: preference.text.color(''),
+            // message: app.preference.of(context).color(''),
             message: preference.language('color-${oj.name}'),
             child: ViewMarks(
               padding: EdgeInsets.zero,
@@ -380,10 +385,10 @@ class _MainState extends StateAbstract<Main> {
                 // color: color.lighten(amount: 0.39),
                 color: color.withOpacity(marks.colorOpacityButton),
                 borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                // border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                // border: Border.all(width: 1, color: theme.dividerColor),
                 // boxShadow: [
                 //   BoxShadow(
-                //     color: Theme.of(context).shadowColor,
+                //     color: theme.shadowColor,
                 //     blurRadius: 1, // soften the shadow
                 //     spreadRadius: 0, //extend the shadow
                 //     offset: const Offset(

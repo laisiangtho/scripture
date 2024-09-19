@@ -20,9 +20,17 @@ class App {
   static final Core core = Core();
 }
 
-abstract class StateAbstract<T extends StatefulWidget> extends SharedState<T> {
-  late final Map<String, dynamic> args = state.asMap;
+/// Common state
+abstract class CommonStates<T extends StatefulWidget> extends SharedState<T> {
+  @override
+  late final Core app = App.core;
 
+  @override
+  late final Data data = app.data;
+}
+
+/// Draggable sheet state
+abstract class SheetStates<T extends StatefulWidget> extends DraggableSheets<T> {
   @override
   late final Core app = App.core;
 

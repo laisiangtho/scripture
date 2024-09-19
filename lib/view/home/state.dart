@@ -1,6 +1,6 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
 
@@ -21,11 +21,11 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     if (data.primaryId != bible.identify) {
       data.primaryId = bible.identify;
       if (!scripturePrimary.isReady) {
-        app.message.value = preference.text.aMoment;
+        app.message.value = app.preference.of(context).aMoment;
       }
     }
 
-    route.pushNamed('read');
+    app.route.page.go('/read');
     scripturePrimary.init().whenComplete(() {
       if (app.message.value.isNotEmpty) {
         Future.delayed(const Duration(milliseconds: 1000), () {
@@ -35,15 +35,11 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
     });
   }
 
-  Future showBibleInfo(MapEntry<dynamic, BooksType> book) {
-    return route.showSheetModal(
-      context: context,
-      name: 'sheet-bible-info',
-      arguments: book,
-      // isScrollControlled: true,
-      // constraints: const BoxConstraints(
-      //   maxHeight: double.infinity,
-      // ),
-    );
+  Future<T?> showBibleInfo<T>(BooksType book) {
+    return context.push<T>('/sheet-bible-info', extra: book);
+  }
+
+  void onSearch(RecentSearchType item) {
+    context.go('/search', extra: {'keyword': item.word});
   }
 }

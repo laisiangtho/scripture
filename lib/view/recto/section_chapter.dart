@@ -11,18 +11,14 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'section-chapter';
-  static String label = 'Chapter';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
 
-  late final CategoryBook book = state.as<CategoryBook>();
+  late final CategoryBook book = state.param.as<CategoryBook>();
 
   @override
   void dispose() {
@@ -37,8 +33,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          navigator: state.navigator,
-          label: preference.text.back,
+          label: app.preference.of(context).back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -77,10 +72,10 @@ class _MainState extends _State with _Header {
         // floating: false,
         // padding: const EdgeInsets.only(top: 30),
         // heights: const [kToolbarHeight, 100],
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         heights: const [kToolbarHeight, 100],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        // overlapsBorderColor: state.theme.dividerColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        // overlapsBorderColor: theme.dividerColor,
         builder: _header,
       ),
       // SliverList.builder(
@@ -103,8 +98,8 @@ class _MainState extends _State with _Header {
         int chapterId = index + 1;
 
         // final bookName = book.name;
-        // final chapterLocale = preference.text.chapter('');
-        final chapterName = preference.digit(chapterId);
+        // final chapterLocale = app.preference.of(context).chapter('');
+        final chapterName = preference.digit(context, chapterId);
         return ListTile(
           // title: Text('$chapterLocale $chapterName'),
           title: Paragraphs(
@@ -121,10 +116,10 @@ class _MainState extends _State with _Header {
             // icon: LideaIcon.rightOpen,
             // iconSize: 26,
             iconColor: Theme.of(context).hintColor,
-            label: preference.digit(verse),
+            label: preference.digit(context, verse),
           ),
           onTap: () {
-            route.pushNamed('read');
+            app.route.page.go('/read');
             app.chapterChange(bookId: book.id, chapterId: chapterId);
           },
         );

@@ -1,24 +1,23 @@
-part of 'screen_launcher.dart';
+import 'package:flutter/material.dart';
+import 'package:lidea/icon.dart';
 
-class BottomNavigationWidget extends StatelessWidget {
-  const BottomNavigationWidget({super.key});
+/// NOTE: Core, Components
+import '/app.dart';
 
-  Core get app => App.core;
-
-  RouteNotifier get route => app.routeDelegate.notifier;
+class BottomNavigation extends StatelessWidget {
+  final StatefulNavigationShell shell;
+  const BottomNavigation({super.key, required this.shell});
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<double>(
-      // valueListenable: App.scroll.bottomFactor,
-      valueListenable: app.bottom.factor,
+      valueListenable: App.core.bottom.factor,
       builder: (_, factor, child) {
-        // scrollNavigation.bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Align(
           alignment: const Alignment(0, -1),
           heightFactor: factor,
           child: Padding(
-            // padding: EdgeInsets.only(bottom: App.viewData.fromContext.viewPadding.bottom),
+            // padding: EdgeInsets.only(bottom: App.viewData.media.viewPadding.bottom),
             padding: const EdgeInsets.only(bottom: 0),
             child: bottomNavigationToggle(),
           ),
@@ -29,78 +28,62 @@ class BottomNavigationWidget extends StatelessWidget {
 
   Widget bottomNavigationToggle() {
     return ValueListenableBuilder<double>(
-      valueListenable: app.bottom.toggle,
+      valueListenable: App.core.bottom.toggle,
       builder: (context, toggle, child) {
         return Align(
           alignment: const Alignment(0, -1),
           heightFactor: toggle,
-          child: child,
+          // child: bottomNavigationDecoration(context),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).dividerColor,
+                  offset: const Offset(0, -0.5),
+                )
+              ],
+            ),
+            child: bottomNavigationBar(context),
+          ),
         );
       },
-      child: bottomNavigationDecoration(),
     );
   }
 
-  Widget bottomNavigationDecoration() {
-    // return Container(
-    //   decoration: const BoxDecoration(
-    //     borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
-    //     boxShadow: [
-    //       BoxShadow(
-    //         color: Colors.red,
-    //         blurRadius: 0.1,
-    //         spreadRadius: 0.0,
-    //       )
-    //     ],
-    //   ),
-    //   child: bottomNavigationBar(),
-    // );
-    return bottomNavigationBar();
-  }
-
-  Widget bottomNavigationBar() {
-    return AnimatedBuilder(
-      animation: app.routeDelegate.notifier,
-      builder: (context, child) {
-        return BottomNavigationBar(
-          // backgroundColor: Colors.transparent,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          // useLegacyColorScheme: false,
-          selectedIconTheme: Theme.of(context).iconTheme.copyWith(
-                size: 25,
-              ),
-          items: route.routesPrimary.map((e) {
-            return BottomNavigationBarItem(
-              // icon: AnimatedOpacity(
-              //   opacity: App.scroll.bottomFactor.value,
-              //   duration: Duration.zero,
-              //   child: Icon(e.icon),
-              // ),
-              icon: Icon(e.icon),
-              label: e.label,
-            );
-          }).toList(),
-          currentIndex: route.viewIndex,
-          // elevation: 3,
-          onTap: (index) {
-            if (route.viewIndex == index) {
-              // final abc = App.routeDelegate.navigatorKey.currentState;
-              // debugPrint('bottomNavigationBar $index');
-              // if (abc != null) {
-              //   debugPrint('bottomNavigationBar abc $index');
-              //   abc.
-              // }
-              // Navigator.of(context).maybePop();
-              // App.routeDelegate.notifier.pop();
-              // App.route.pop();
-              // App.route.viewIndex
-            } else {
-              route.viewIndex = index;
-            }
-          },
-        );
+  Widget bottomNavigationBar(BuildContext context) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      // selectedIconTheme: Theme.of(context).iconTheme.copyWith(
+      //       size: 25,
+      //     ),
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(LideaIcon.flag),
+          label: 'Home',
+          tooltip: App.core.preference.of(context).home,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(LideaIcon.bookOpen),
+          label: 'Read',
+          tooltip: App.core.preference.of(context).holyBible,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(LideaIcon.listNested),
+          label: 'Note',
+          tooltip: App.core.preference.of(context).note(''),
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(LideaIcon.search),
+          label: 'search',
+          tooltip: App.core.preference.of(context).search(''),
+        ),
+      ],
+      elevation: 0,
+      currentIndex: shell.currentIndex,
+      onTap: (index) {
+        shell.goBranch(index, initialLocation: index == shell.currentIndex);
       },
     );
   }

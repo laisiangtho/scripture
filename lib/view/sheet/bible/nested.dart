@@ -11,17 +11,11 @@ import '../../../app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'sheet-bible-section';
-  static String label = 'Section';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
+class _State extends SheetStates<Main> {
   Scripture get scripture => app.scripturePrimary;
 
   List<OfBook> get books => scripture.bookList;
@@ -115,12 +109,12 @@ class _State extends DraggableSheets<Main> {
       //   floating: false,
       //   // padding: MediaQuery.of(context).viewPadding,
       //   heights: const [kTextTabBarHeight],
-      //   backgroundColor: state.theme.primaryColor,
+      //   backgroundColor: theme.primaryColor,
       //   // backgroundColor: Colors.transparent,
-      //   // padding: state.fromContext.viewPadding,
-      //   overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
+      //   // padding: state.media.viewPadding,
+      //   overlapsBackgroundColor: theme.scaffoldBackgroundColor,
       //   // overlapsBorderColor: Theme.of(context).shadowColor,
-      //   overlapsBorderColor: state.theme.dividerColor,
+      //   overlapsBorderColor: theme.dividerColor,
       //   builder: (_, vhd) {
       //     return ViewHeaderLayoutStack(
       //       data: vhd,
@@ -141,7 +135,7 @@ class _State extends DraggableSheets<Main> {
       //           const Alignment(0, 0),
       //           vhd.snapShrink,
       //         ),
-      //         label: App.preference.text.book('true'),
+      //         label: App.app.preference.of(context).book('true'),
       //         data: vhd,
       //       ),
       //       // secondary: TabBar(
@@ -328,10 +322,10 @@ class _State extends DraggableSheets<Main> {
               // alignment: Alignment.centerLeft,
               // enabled: !isCurrentBook,
               selected: isCurrentBook,
-              textColor: state.theme.hintColor,
+              textColor: theme.hintColor,
               // selectedTileColor: Colors.blue,
-              // selectedTileColor: state.theme.cardColor,
-              // selectedColor: state.theme.dividerColor,
+              // selectedTileColor: theme.cardColor,
+              // selectedColor: theme.dividerColor,
               // contentPadding: EdgeInsets.zero,
               // horizontalTitleGap: 0,
               leading: Text(
@@ -340,9 +334,9 @@ class _State extends DraggableSheets<Main> {
                 // book.id.toString(),
                 textAlign: TextAlign.center,
                 // style: TextStyle(
-                //   color: state.theme.primaryColorDark,
+                //   color: theme.primaryColorDark,
                 // ),
-                style: state.textTheme.titleSmall,
+                style: style.titleSmall,
               ),
 
               title: Text(
@@ -359,9 +353,9 @@ class _State extends DraggableSheets<Main> {
               //   scripture.digit(book.chapterCount),
               //   textAlign: TextAlign.center,
               //   // style: TextStyle(
-              //   //   color: state.theme.primaryColorDark,
+              //   //   color: theme.primaryColorDark,
               //   // ),
-              //   style: state.textTheme.titleSmall,
+              //   style: style.titleSmall,
               // ),
             );
           },

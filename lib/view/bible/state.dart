@@ -1,13 +1,12 @@
 part of 'main.dart';
 
-abstract class _State extends StateAbstract<Main> with SingleTickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
 
   late final boxOfBooks = data.boxOfBooks;
   late final iso = app.iso;
 
-  late Box<BooksType> setOfBook;
-  late Set<String> setOfLang;
+  late Box<BooksType> items;
 
   late final AnimationController _dragController = AnimationController(
     duration: const Duration(milliseconds: 100),
@@ -19,27 +18,26 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   ).animate(_dragController);
   late final Animation<Color?> _colorAnimation = ColorTween(
     begin: null,
-    end: Theme.of(context).colorScheme.error,
+    end: colorScheme.error,
   ).animate(_dragController);
 
   @override
   void initState() {
     super.initState();
-    setOfBook = boxOfBooks.box;
-    _addISO(setOfBook);
+    _addISO();
 
     boxOfBooks.watch().listen((event) {
-      setOfBook = boxOfBooks.box;
-      _addISO(setOfBook);
+      _addISO();
     });
   }
 
-  void _addISO(Box<BooksType> setOfBook) {
-    final setOfLang = setOfBook.values.map((e) => e.langCode).toSet();
+  void _addISO() {
+    final setOfBook = boxOfBooks.box.values;
+    final setOfLang = setOfBook.map((e) => e.langCode).toSet();
     if (setOfLang.length != iso.all.length) {
       iso.all.clear();
 
-      for (var e in setOfBook.values) {
+      for (var e in setOfBook) {
         // final obj = setOfBook.values.firstWhere((e) => e.langCode == e.langCode);
         iso.insert(
           ISOModel(
@@ -53,20 +51,20 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     }
   }
 
-  /// booksFiltered userBooks userLangs
-  List<MapEntry<dynamic, BooksType>> get booksFilter {
-    // return boxOfBooks.entries.where(
-    //   (e) {
-    //     return iso.all
-    //         .firstWhere(
-    //           (element) => element.code == e.value.langCode,
-    //           orElse: () => iso.all.first,
-    //         )
-    //         .show;
-    //   },
-    // ).toList();
-    return boxOfBooks.entries.toList();
-  }
+  // /// booksFiltered userBooks userLangs
+  // List<MapEntry<dynamic, BooksType>> get booksFilter {
+  //   // return boxOfBooks.entries.where(
+  //   //   (e) {
+  //   //     return iso.all
+  //   //         .firstWhere(
+  //   //           (element) => element.code == e.value.langCode,
+  //   //           orElse: () => iso.all.first,
+  //   //         )
+  //   //         .show;
+  //   //   },
+  //   // ).toList();
+  //   return boxOfBooks.entries.toList();
+  // }
 
   void onSort() {
     if (_dragController.isCompleted) {
@@ -77,7 +75,7 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
   }
 
   void showBibleContent(BooksType bible, int index) async {
-    if (state.asMap.isNotEmpty) {
+    if (state.param.map.isNotEmpty) {
       // debugPrint('from:${data.parallelId} to:${bible.identify}');
 
       if (data.parallelId != bible.identify) {
@@ -88,7 +86,8 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
       // }
 
       // Navigator.of(context).pop();
-      state.navigator.maybePop();
+      // state.navigator.maybePop();
+      Navigator.of(context).maybePop();
 
       Future.microtask(() {
         app.scriptureParallel.init().then((value) {
@@ -105,12 +104,14 @@ abstract class _State extends StateAbstract<Main> with SingleTickerProviderState
     }
   }
 
-  Future showBibleInfo(MapEntry<dynamic, BooksType> book) {
-    app.route.showSheetModal(context: context, name: 'sheet-bible-info', arguments: book);
-    return route.showSheetModal(context: context, name: 'sheet-bible-info', arguments: book);
+  Future<T?> showBibleInfo<T>(BooksType book) {
+    return context.push<T>('/sheet-bible-info', extra: book);
   }
+  // Future<T?> showBibleInfo<T>(MapEntry<dynamic, BooksType> book) {
+  //   return context.push<T>('/sheet-bible-info', extra: book);
+  // }
 
-  Future showBibleLang() {
-    return route.showSheetModal(context: context, name: 'sheet-bible-lang');
+  Future<T?> showLangFilter<T>() {
+    return context.push<T>('/sheet-bible-lang');
   }
 }

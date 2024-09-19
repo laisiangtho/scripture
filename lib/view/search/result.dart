@@ -8,7 +8,9 @@ mixin _Result on _State<Main> {
 
   void toRead(int book, int chapter) {
     app.chapterChange(bookId: book, chapterId: chapter).whenComplete(() {
-      app.route.pushNamed('read');
+      if (mounted) {
+        context.go('/read');
+      }
     });
   }
 
@@ -20,15 +22,15 @@ mixin _Result on _State<Main> {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              preference.text.aWordOrTwo,
+              app.preference.of(context).aWordOrTwo,
             ),
             Text(
               primaryScripture.info.name,
-              style: state.textTheme.bodySmall,
+              style: style.bodySmall,
             ),
             Text(
               primaryScripture.info.shortname,
-              style: state.textTheme.headlineMedium,
+              style: style.headlineMedium,
             ),
           ],
         ),
@@ -44,15 +46,15 @@ mixin _Result on _State<Main> {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              preference.text.searchNoMatch,
+              app.preference.of(context).searchNoMatch,
             ),
             Text(
               primaryScripture.info.name,
-              style: state.textTheme.bodySmall,
+              style: style.bodySmall,
             ),
             Text(
               primaryScripture.info.shortname,
-              style: state.textTheme.headlineMedium,
+              style: style.headlineMedium,
             ),
           ],
         ),
@@ -63,18 +65,21 @@ mixin _Result on _State<Main> {
   /// Sticky
   Widget _resultBlock(CacheBible o) {
     final shrinks = o.result.totalVerse > 300;
-    return CustomScrollView(
-      key: PageStorageKey('search-result-${o.query}'),
-      controller: scrollController,
-      slivers: [
-        for (var index = 0; index < o.result.book.length; index++)
-          ofBook(o.result.book.elementAt(index), shrinks),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: CustomScrollView(
+        key: PageStorageKey('search-result-${o.query}'),
+        controller: scrollController,
+        slivers: [
+          for (var index = 0; index < o.result.book.length; index++)
+            ofBook(o.result.book.elementAt(index), shrinks),
+        ],
+      ),
     );
   }
 
   Widget _resultWords(CacheBible o) {
-    //  core.preference.text.favorite('true');
+    //  core.app.preference.of(context).favorite('true');
     //  core.preference.language('noMatchInVerse');
     return CustomScrollView(
       key: PageStorageKey('search-empty-${o.query}'),
@@ -82,7 +87,7 @@ mixin _Result on _State<Main> {
         ViewSections(
           // headerTitle: Text(
           //   'did not match any verses with ABC, but found some words that you might',
-          //   style: state.textTheme.titleSmall,
+          //   style: style.titleSmall,
           // ),
           headerTitle: Paragraphs(
             text: preference.language('noMatchInVerse'),
@@ -90,11 +95,11 @@ mixin _Result on _State<Main> {
               TextSpan(
                 text: o.query,
                 semanticsLabel: 'keyword',
-                style: TextStyle(color: state.theme.indicatorColor),
+                style: TextStyle(color: theme.indicatorColor),
               ),
             ],
-            style: state.textTheme.titleSmall!.copyWith(
-              color: state.theme.hintColor,
+            style: style.titleSmall!.copyWith(
+              color: theme.hintColor,
             ),
           ),
           child: ViewCards.fill(
@@ -145,7 +150,7 @@ mixin _Result on _State<Main> {
           pinned: true,
           primary: false,
           elevation: 0,
-          shadowColor: state.theme.dividerColor,
+          shadowColor: theme.dividerColor,
           automaticallyImplyLeading: false,
           toolbarHeight: 35,
           // leading: Center(
@@ -153,12 +158,12 @@ mixin _Result on _State<Main> {
           //     // primaryScripture.digit(iB + 1),
           //     primaryScripture.digit(book.info.id),
           //     textAlign: TextAlign.center,
-          //     style: state.textTheme.labelMedium,
+          //     style: style.labelMedium,
           //   ),
           // ),
           title: Text(
             book.info.name.toUpperCase(),
-            style: state.textTheme.titleMedium,
+            style: style.titleMedium,
             semanticsLabel: 'book: ${book.info.name}',
           ),
           // titleSpacing: 20,
@@ -179,8 +184,9 @@ mixin _Result on _State<Main> {
 
     return ViewLists(
       // key: UniqueKey(),
-      // padding: const EdgeInsets.symmetric(vertical: 20),
-      padding: const EdgeInsets.only(bottom: 20),
+      // padding: const EdgeInsets.symmetric(vertical: 30),
+      // padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(top: 30, bottom: 20),
       itemBuilder: (context, index) {
         final OfChapter chapter = chapters.elementAt(index);
         return Column(
@@ -207,10 +213,10 @@ mixin _Result on _State<Main> {
                             elevation: 0.3,
                             // padding: const EdgeInsets.symmetric(vertical: 4),
                             // fillColor: Colors.grey[300],
-                            // fillColor: active ? state.theme.focusColor : state.theme.primaryColor,
-                            // fillColor: state.theme.primaryColor,
-                            fillColor: active ? state.theme.focusColor : state.theme.primaryColor,
-                            // fillColor: state.theme.focusColor,
+                            // fillColor: active ? theme.focusColor : theme.primaryColor,
+                            // fillColor: theme.primaryColor,
+                            fillColor: active ? theme.focusColor : theme.primaryColor,
+                            // fillColor: theme.focusColor,
                             // shape: const CircleBorder(),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -236,9 +242,9 @@ mixin _Result on _State<Main> {
                 elevation: 0.7,
                 padding: const EdgeInsets.all(8),
                 // fillColor: Colors.grey[300],
-                // fillColor: active ? state.theme.focusColor : state.theme.primaryColor,
-                fillColor: state.theme.primaryColor,
-                // fillColor: state.theme.focusColor,
+                // fillColor: active ? theme.focusColor : theme.primaryColor,
+                fillColor: theme.primaryColor,
+                // fillColor: theme.focusColor,
                 // shape: const CircleBorder(),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
@@ -252,45 +258,9 @@ mixin _Result on _State<Main> {
                 child: Text(
                   chapter.name,
                   semanticsLabel: 'chapter: ${chapter.name}',
-                  style: state.textTheme.labelMedium,
+                  style: style.labelMedium,
                 ),
               ),
-            // SizedBox(
-            //   height: 70,
-            //   child: ViewLists(
-            //     shrinkWrap: true,
-            //     primary: false,
-            //     scrollDirection: Axis.horizontal,
-            //     physics: const ClampingScrollPhysics(),
-            //     itemBuilder: (BuildContext _, int index) {
-            //       return Padding(
-            //         padding: const EdgeInsets.all(8),
-            //         child: SizedBox(
-            //           width: 50,
-            //           child: RawMaterialButton(
-            //             elevation: 0.3,
-            //             padding: const EdgeInsets.all(8),
-            //             // fillColor: Colors.grey[300],
-            //             // fillColor: active ? state.theme.focusColor : state.theme.primaryColor,
-            //             fillColor: state.theme.primaryColor,
-            //             // fillColor: state.theme.focusColor,
-            //             // shape: const CircleBorder(),
-            //             shape: const RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.all(
-            //                 Radius.circular(7),
-            //               ),
-            //             ),
-            //             onPressed: () {},
-            //             child: Text(
-            //               index.toString(),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //     itemCount: 12,
-            //   ),
-            // ),
             ofVerse(chapter.verse, shrinks),
           ],
         );

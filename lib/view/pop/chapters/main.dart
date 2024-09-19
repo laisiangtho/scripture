@@ -3,16 +3,13 @@ import '../../../app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-  static String route = 'pop-chapters';
-  static String label = 'Chapters';
-  static IconData icon = Icons.opacity_outlined;
 
   @override
   State<Main> createState() => _MainState();
 }
 
 // TickerProviderStateMixin SingleTickerProviderStateMixin
-class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
+class _MainState extends CommonStates<Main> with TickerProviderStateMixin {
   late final AnimationController _animationController = AnimationController(
     duration: const Duration(milliseconds: 700),
     reverseDuration: const Duration(milliseconds: 300),
@@ -36,7 +33,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  late final RenderBox render = args['render'];
+  late final RenderBox render = state.param.map['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -102,9 +99,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
   }
 
   double? get buttonFontSize {
-    // Theme.of(context).textTheme.labelLarge!.fontSize
-    // return 0;
-    final textSize = state.textTheme.labelLarge!.fontSize!;
+    final textSize = style.labelLarge!.fontSize!;
     switch (itemCount) {
       case 1:
         return textSize + 16;
@@ -128,7 +123,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.18),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       // child: SizedBox(
       //   height: height,
       //   child: view(),
@@ -154,7 +149,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.surface,
+              color: colorScheme.surface,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -166,7 +161,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.surface,
+              color: colorScheme.surface,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -233,7 +228,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         label: scripture.digit(index),
         // labelColor: isCurrentChapter ? Colors.red : null,
         labelStyle: TextStyle(
-          color: isCurrentChapter ? Theme.of(context).cardColor : null,
+          color: isCurrentChapter ? theme.cardColor : null,
         ),
       ),
       onPressed: () {
@@ -252,11 +247,11 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     //     // minSize: 55,
     //     // borderRadius: BorderRadius.all(Radius.circular(2.0)),
     //     padding: EdgeInsets.zero,
-    //     // color: Theme.of(context).scaffoldBackgroundColor,
+    //     // color: theme.scaffoldBackgroundColor,
     //     child: Text(
     //       scripture.digit(index),
     //       style: TextStyle(
-    //         color: isCurrentChapter ? Theme.of(context).highlightColor : null,
+    //         color: isCurrentChapter ? theme.highlightColor : null,
     //       ),
     //     ),
     //     onPressed: () => Navigator.pop<int>(context, index),

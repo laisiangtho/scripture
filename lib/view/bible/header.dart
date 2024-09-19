@@ -6,8 +6,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          navigator: state.navigator,
-          label: preference.text.back,
+          label: app.preference.of(context).back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -16,12 +15,29 @@ mixin _Header on _State {
           const Alignment(0, .5),
           vhd.snapShrink,
         ),
-        label: preference.text.bible('false'),
+        label: app.preference.of(context).bible('false'),
         data: vhd,
       ),
       right: [
+        // Align(
+        //   alignment: Alignment.lerp(
+        //     const Alignment(0, 0),
+        //     const Alignment(0, 4.4),
+        //     vhd.snapShrink,
+        //   )!,
+        //   child: ViewDelays.milliseconds(
+        //     milliseconds: 1200,
+        //     builder: (_, __) {
+        //       return ViewButtons(
+        //         onPressed: () {},
+        //         badge: iso.selection.length.toString(),
+        //         child: const Icon(LideaIcon.language, size: 21),
+        //       );
+        //     },
+        //   ),
+        // ),
         ViewButtons(
-          message: preference.text.sort,
+          message: app.preference.of(context).sort,
           onPressed: onSort,
           child: AnimatedBuilder(
             animation: _dragController,

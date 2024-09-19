@@ -28,7 +28,7 @@ mixin _Suggest on _State<Main> {
           },
           itemCount: o.suggest.book.length,
           onEmpty: ViewFeedbacks.message(
-            label: app.preference.text.searchNoMatch,
+            label: app.preference.of(context).searchNoMatch,
           ),
         ),
       ],
@@ -56,7 +56,7 @@ mixin _Suggest on _State<Main> {
             }
             // o.verseCount > 0
             return _suggestBlock();
-            // return message( core.preference.text.searchNoMatch);
+            // return message( core.app.preference.of(context).searchNoMatch);
           },
         ),
       ],

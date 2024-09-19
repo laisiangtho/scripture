@@ -3,15 +3,12 @@ import '../../../app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-  static String route = 'pop-books';
-  static String label = 'Books';
-  static IconData icon = Icons.opacity_outlined;
 
   @override
   State<Main> createState() => _MainState();
 }
 
-class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
+class _MainState extends CommonStates<Main> with TickerProviderStateMixin {
   late final AnimationController _animationController = AnimationController(
     duration: const Duration(milliseconds: 700),
     reverseDuration: const Duration(milliseconds: 300),
@@ -35,7 +32,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  late final RenderBox render = args['render'];
+  late final RenderBox render = state.param.map['render'];
   late final Size sizeOfRender = render.size;
   late final Offset positionOfRender = render.localToGlobal(Offset.zero);
   late final Size sizeOfContext = MediaQuery.of(context).size;
@@ -82,7 +79,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       arrow: positionOfRender.dx - left + (sizeOfRender.width * 0.40),
       arrowWidth: arrowWidth,
       arrowHeight: arrowHeight,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       // child: SizedBox(
       //   height: height,
       //   child: view(),
@@ -105,7 +102,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.surface,
+              color: colorScheme.surface,
               blurRadius: 5,
               spreadRadius: 7,
               offset: const Offset(0, 0),
@@ -117,7 +114,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.surface,
+              color: colorScheme.surface,
               blurRadius: 9,
               spreadRadius: 15,
               offset: const Offset(0, 0),
@@ -156,10 +153,10 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       children: [
         ExpansionPanel(
           body: chapterList(isExpanded, book),
-          // backgroundColor: isCurrentBook ? Theme.of(context).disabledColor : Colors.transparent,
+          // backgroundColor: isCurrentBook ? theme.disabledColor : Colors.transparent,
           // backgroundColor: Colors.transparent,
 
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: colorScheme.surface,
           // backgroundColor: Colors.red,
           // canTapOnHeader: isCurrentBook,
           headerBuilder: (BuildContext context, bool isExpanded) {
@@ -173,16 +170,16 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
               // alignment: Alignment.centerLeft,
               // enabled: !isCurrentBook,
               selected: isCurrentBook,
-              textColor: state.theme.hintColor,
+              textColor: theme.hintColor,
               // selectedTileColor: Colors.blue,
-              // selectedTileColor: state.theme.cardColor,
-              // selectedColor: state.theme.dividerColor,
+              // selectedTileColor: theme.cardColor,
+              // selectedColor: theme.dividerColor,
               // contentPadding: EdgeInsets.zero,
               horizontalTitleGap: 0,
               leading: Text(
-                preference.digit(book.info.id),
+                preference.digit(context, book.info.id),
                 style: TextStyle(
-                  color: state.theme.primaryColorDark,
+                  color: theme.primaryColorDark,
                 ),
               ),
 
@@ -191,7 +188,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+                  fontSize: style.labelLarge!.fontSize,
                 ),
               ),
             );
@@ -200,7 +197,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
             //   overflow: TextOverflow.ellipsis,
             //   textAlign: TextAlign.start,
             //   style: TextStyle(
-            //     fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+            //     fontSize: style.labelLarge!.fontSize,
             //   ),
             // );
             // return ViewButtons(
@@ -211,7 +208,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
             //   //   overflow: TextOverflow.ellipsis,
             //   //   textAlign: TextAlign.start,
             //   //   labelStyle: TextStyle(
-            //   //     color: isCurrentBook ? Theme.of(context).highlightColor : null,
+            //   //     color: isCurrentBook ? theme.highlightColor : null,
             //   //   ),
             //   // ),
             //   onPressed: () {
@@ -227,7 +224,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
             //     overflow: TextOverflow.ellipsis,
             //     textAlign: TextAlign.start,
             //     style: TextStyle(
-            //       fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+            //       fontSize: style.labelLarge!.fontSize,
             //     ),
             //   ),
             // );
@@ -302,7 +299,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
       //   // label: scripture.digit(chapterId),
       //   label: chapterId.toString(),
       //   labelStyle: TextStyle(
-      //     color: isCurrentChapter ? Theme.of(context).highlightColor : null,
+      //     color: isCurrentChapter ? theme.highlightColor : null,
       //   ),
       // ),
       enable: !isCurrentChapter,
@@ -314,7 +311,7 @@ class _MainState extends StateAbstract<Main> with TickerProviderStateMixin {
         scripture.digit(chapterId),
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+          fontSize: style.labelLarge!.fontSize,
         ),
       ),
     );

@@ -8,6 +8,8 @@ import 'package:lidea/hive.dart';
 
 import '/app.dart';
 
+import '/view/sheet/bible/persistent.dart' as persistent;
+
 part 'state.dart';
 part 'header.dart';
 part 'snackbar.dart';
@@ -18,10 +20,6 @@ part 'motile.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'read';
-  static String label = 'Read';
-  static IconData icon = LideaIcon.bookOpen;
-
   @override
   State<Main> createState() => _View();
 }
@@ -29,8 +27,6 @@ class Main extends StatefulWidget {
 class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
-    // final double statusBarHeight = MediaQuery.of(context).padding.top;
-    // debugPrint("statusBarHeight $statusBarHeight $");
     return Scaffold(
       key: _scaffoldKey,
       body: Views(
@@ -63,20 +59,26 @@ class _View extends _State with _Header {
       // resizeToAvoidBottomInset: true,
       // extendBody: true,
       // bottomNavigationBar: const SheetStack(),
-      // bottomNavigationBar: route.show('sheet-parallel').child,
+      // bottomNavigationBar: routeOld.show('sheet-parallel').child,
       bottomNavigationBar: ViewDelays.milliseconds(
         milliseconds: 1700,
         builder: (_, __) {
-          return route.show('sheet-bible-persistent').child;
+          return const persistent.Main();
         },
       ),
+      // bottomSheet: ViewDelays.milliseconds(
+      //   milliseconds: 1700,
+      //   builder: (_, __) {
+      //     return const parallel.Main();
+      //   },
+      // ),
       // bottomNavigationBar: ViewDelays.milliseconds(
       //   milliseconds: 1700,
       //   builder: (_, __) {
-      //     return route.show('sheet-bible-persistent').child;
+      //     return routeOld.show('sheet-bible-persistent').child;
       //   },
       // ),
-      // bottomSheet: route.show('sheet-parallel').child,
+      // bottomSheet: routeOld.show('sheet-parallel').child,
       // extendBody: true,
     );
   }
@@ -86,27 +88,38 @@ class _View extends _State with _Header {
       ViewHeaderSliver(
         pinned: true,
         floating: false,
-        padding: state.fromContext.viewPadding,
+        padding: state.media.viewPadding,
         // padding: EdgeInsets.only(top: statusBarHeight),
         heights: const [kToolbarHeight - 20, 20],
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
         builder: _header,
       ),
-      ViewFlats(
-        child: ValueListenableBuilder<String>(
-          valueListenable: App.core.message,
-          builder: (_, message, child) {
-            if (message.isEmpty) return child!;
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Center(
-                child: Text(message),
-              ),
-            );
-          },
-          child: const SizedBox(),
-        ),
+      // ViewFlats(
+      //   child: ValueListenableBuilder<String>(
+      //     valueListenable: app.message,
+      //     builder: (_, message, child) {
+      //       if (message.isEmpty) return child!;
+      //       // return Padding(
+      //       //   padding: const EdgeInsets.symmetric(vertical: 10),
+      //       //   child: Center(
+      //       //     child: Text(message),
+      //       //   ),
+      //       // );
+      //       return ViewFeedbacks.message(label: message);
+      //     },
+      //     child: const SizedBox(),
+      //   ),
+      // ),
+      ValueListenableBuilder<String>(
+        valueListenable: app.message,
+        builder: (_, message, child) {
+          return ViewFlats(
+            show: message.isNotEmpty,
+            sliver: true,
+            child: ViewFeedbacks.message(sliver: false, label: message),
+          );
+        },
       ),
       StreamBuilder(
         initialData: data.boxOfSettings.fontSize(),
@@ -121,14 +134,14 @@ class _View extends _State with _Header {
                   child: Paragraphs(
                     text: '{{shortname}}\n{{copyright}}\n{{description}}\n({{identify}})',
                     textAlign: TextAlign.center,
-                    style: state.textTheme.labelSmall,
+                    style: style.labelSmall,
                     decoration: [
                       // TextSpan(
                       //   // text: 'App.data.cacheBible',
                       //   text: primaryScripture.info.langCode,
                       //   semanticsLabel: 'language',
                       //   style: TextStyle(
-                      //     color: state.theme.highlightColor,
+                      //     color: theme.highlightColor,
                       //   ),
                       // ),
                       TextSpan(
@@ -164,15 +177,6 @@ class _View extends _State with _Header {
                   itemSnap: const VerseItemSnap(),
                   itemCount: primaryVerse.length,
                 ),
-                // child: ViewLists(
-                //   // physics: const NeverScrollableScrollPhysics(),
-                //   duration: const Duration(milliseconds: 400),
-                //   itemBuilder: (BuildContext _, int index) {
-                //     return _inheritedVerse(primaryVerse.elementAt(index));
-                //   },
-                //   itemSnap: const VerseItemSnap(),
-                //   itemCount: primaryVerse.length,
-                // ),
               );
             },
           );
@@ -180,67 +184,6 @@ class _View extends _State with _Header {
       ),
     ];
   }
-
-  // Widget _inheritedVerse(OfVerse verse) {
-  //   return ValueListenableBuilder<List<int>>(
-  //     key: verse.key,
-  //     valueListenable: primaryScripture.data.verseSelection,
-  //     builder: (context, value, _) {
-  //       return marks(verse, value);
-  //       // return VerseWidgetInherited(
-  //       //   size: data.boxOfSettings.fontSize().asDouble,
-  //       //   lang: primaryScripture.info.langCode,
-  //       //   selected: value.indexWhere((id) => id == verse.id) >= 0,
-  //       //   marks: primaryScripture.marks,
-  //       //   child: VerseItemWidget(
-  //       //     verse: verse.updateName(primaryScripture.digit(verse.id)),
-  //       //     onPressed: (int id) {
-  //       //       // primaryScripture.digit(verse.id);
-  //       //       int index = value.indexWhere((i) => i == id);
-  //       //       if (index >= 0) {
-  //       //         // value.removeAt(index);
-  //       //         primaryScripture.verseSelection.value = List.from(value)..removeAt(index);
-  //       //       } else {
-  //       //         // value.add(id);
-  //       //         primaryScripture.verseSelection.value = List.from(value)..add(id);
-  //       //       }
-  //       //       // primaryScripture.count.value = List.from(value)..add(...);
-  //       //       // primaryScripture.count = value;
-  //       //     },
-  //       //   ),
-  //       // );
-  //     },
-  //   );
-
-  //   // return AnimatedBuilder(
-  //   //   animation: Listenable.merge([primaryScripture.verseSelection, primaryScripture.verseColor]),
-  //   //   builder: (BuildContext context, _) {
-  //   //     final select = primaryScripture.verseSelection.value;
-  //   //     final color = primaryScripture.verseColor.value;
-  //   //     return VerseWidgetInherited(
-  //   //       size: data.boxOfSettings.fontSize().asDouble,
-  //   //       lang: primaryScripture.info.langCode,
-  //   //       selected: select.indexWhere((id) => id == verse.id) >= 0,
-  //   //       child: VerseItemWidget(
-  //   //         verse: verse.updateName(primaryScripture.digit(verse.id)),
-  //   //         onPressed: (int id) {
-  //   //           // primaryScripture.digit(verse.id);
-  //   //           int index = select.indexWhere((i) => i == id);
-  //   //           if (index >= 0) {
-  //   //             // value.removeAt(index);
-  //   //             primaryScripture.verseSelection.value = List.from(select)..removeAt(index);
-  //   //           } else {
-  //   //             // value.add(id);
-  //   //             primaryScripture.verseSelection.value = List.from(select)..add(id);
-  //   //           }
-  //   //           // primaryScripture.count.value = List.from(value)..add(...);
-  //   //           // primaryScripture.count = value;
-  //   //         },
-  //   //       ),
-  //   //     );
-  //   //   },
-  //   // );
-  // }
 
   Widget _inheritedVerse(OfVerse verse) {
     return ListenableBuilder(
@@ -261,22 +204,3 @@ class _View extends _State with _Header {
     );
   }
 }
-
-// class PullToRefresh extends PullToActivate {
-//   const PullToRefresh({Key? key}) : super(key: key);
-
-//   @override
-//   State<PullToActivate> createState() => _PullToRefreshState();
-// }
-
-// class _PullToRefreshState extends PullOfState {
-//   // late final Core core = context.read<Core>();
-//   @override
-//   Future<void> refreshUpdate() async {
-//     await Future.delayed(const Duration(milliseconds: 50));
-//     // await core.updateBookMeta();
-//     // await Future.delayed(const Duration(milliseconds: 100));
-//     // await core.collection.updateToken();
-//     // await Future.delayed(const Duration(milliseconds: 400));
-//   }
-// }

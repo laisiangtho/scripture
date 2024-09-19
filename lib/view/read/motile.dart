@@ -1,5 +1,6 @@
 part of 'main.dart';
 
+/// GestureDetector
 class Motile extends StatefulWidget {
   final Widget child;
   const Motile({super.key, required this.child});
@@ -15,6 +16,8 @@ class _MotileState extends State<Motile> {
   static const activePos = 0.0;
   double initial = 0.0;
   // double distance = 0.0;
+
+  late final tpl = Theme.of(context);
 
   final ValueNotifier<double> nextChapterPosition = ValueNotifier(defaultPos);
   final ValueNotifier<double> previousChapterPosition = ValueNotifier(defaultPos);
@@ -98,8 +101,6 @@ class _MotileState extends State<Motile> {
     yield calcd.roundToDouble();
   }
 
-  ThemeData get theme => Theme.of(context);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -133,7 +134,7 @@ class _MotileState extends State<Motile> {
                     decoration: BoxDecoration(
                       // border: Border(
                       //   left: BorderSide(
-                      //     color: theme.colorScheme.error,
+                      //     color: colorScheme.error,
                       //     width: 1.0,
                       //   ),
                       // ),
@@ -145,20 +146,20 @@ class _MotileState extends State<Motile> {
                         begin: Alignment.centerRight,
                         end: Alignment.centerLeft,
                         colors: [
-                          // theme.highlightColor,
-                          theme.scaffoldBackgroundColor,
-                          // active ? theme.indicatorColor : theme.scaffoldBackgroundColor,
-                          // active ? theme.colorScheme.error : theme.scaffoldBackgroundColor,
-                          // active ? theme.indicatorColor : theme.scaffoldBackgroundColor,
-                          theme.disabledColor,
+                          // tpl.highlightColor,
+                          tpl.scaffoldBackgroundColor,
+                          // active ? tpl.indicatorColor : tpl.scaffoldBackgroundColor,
+                          // active ? colorScheme.error : tpl.scaffoldBackgroundColor,
+                          // active ? tpl.indicatorColor : tpl.scaffoldBackgroundColor,
+                          tpl.disabledColor,
                           // Color(0xffF25D50),
                           // Color(0xffF2BB77),
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.shadowColor,
-                          // color: active ? theme.hintColor : theme.shadowColor,
+                          color: tpl.shadowColor,
+                          // color: active ? tpl.hintColor : tpl.shadowColor,
                           blurRadius: blurRadius,
                           spreadRadius: 1,
                           offset: const Offset(1, 0),
@@ -170,9 +171,9 @@ class _MotileState extends State<Motile> {
                       child: Icon(
                         Icons.arrow_back_ios_new_rounded,
                         // Icons.arrow_back_rounded,
-                        color: theme.primaryColorDark.withOpacity(active ? 1 : 0.2),
+                        color: tpl.primaryColorDark.withOpacity(active ? 1 : 0.2),
                         size: 25,
-                        // color: active ? theme.primaryColor : null,
+                        // color: active ? tpl.primaryColor : null,
                       ),
                     ),
                   ),
@@ -198,7 +199,7 @@ class _MotileState extends State<Motile> {
                     decoration: BoxDecoration(
                       // border: Border(
                       //   right: BorderSide(
-                      //     color: theme.colorScheme.error,
+                      //     color: colorScheme.error,
                       //     width: 1.0,
                       //   ),
                       // ),
@@ -208,18 +209,18 @@ class _MotileState extends State<Motile> {
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          theme.scaffoldBackgroundColor,
-                          // active ? theme.primaryColorDark : theme.scaffoldBackgroundColor,
-                          // active ? theme.colorScheme.error : theme.scaffoldBackgroundColor,
-                          theme.disabledColor,
+                          tpl.scaffoldBackgroundColor,
+                          // active ? tpl.primaryColorDark : tpl.scaffoldBackgroundColor,
+                          // active ? colorScheme.error : tpl.scaffoldBackgroundColor,
+                          tpl.disabledColor,
                           // Color(0xffF25D50),
                           // Color(0xffF2BB77),
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.shadowColor,
-                          // color: active ? theme.hintColor : theme.shadowColor,
+                          color: tpl.shadowColor,
+                          // color: active ? tpl.hintColor : tpl.shadowColor,
                           blurRadius: blurRadius,
                           spreadRadius: 1,
                           offset: const Offset(-1, 0),
@@ -232,9 +233,9 @@ class _MotileState extends State<Motile> {
                       child: Icon(
                         Icons.arrow_forward_ios_rounded,
                         // Icons.arrow_forward_rounded,
-                        color: theme.primaryColorDark.withOpacity(active ? 1 : 0.2),
+                        color: tpl.primaryColorDark.withOpacity(active ? 1 : 0.2),
                         size: 25,
-                        // color: active ? theme.primaryColor : null,
+                        // color: active ? tpl.primaryColor : null,
                       ),
                     ),
                   ),

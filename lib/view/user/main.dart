@@ -9,10 +9,6 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = '/user';
-  static String label = 'User';
-  static IconData icon = Icons.person;
-
   @override
   State<Main> createState() => _View();
 }
@@ -57,8 +53,8 @@ class _View extends UserProfiles<Main> {
           ),
           onPressed: () {
             poll.tokenId = element.gist.token.id;
-            // core.navigate(to: '/launch/poll');
-            route.pushNamed('/home/user/poll');
+
+            app.route.page.push('/user/poll');
           },
         );
       },

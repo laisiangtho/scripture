@@ -461,6 +461,7 @@ class OfVerse {
   factory OfVerse.fromJSON(String identify, MapEntry<String, dynamic> o) {
     return OfVerse(
       key: GlobalKey(),
+      // key: ValueKey('$identify-verse-${o.key}'),
       id: int.parse(o.key),
       name: o.key,
       // text: o.value['text'],

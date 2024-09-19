@@ -6,17 +6,15 @@ import '/app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'recto-title';
-  static String label = 'Title';
-  static IconData icon = Icons.signpost_rounded;
-
   @override
   State<Main> createState() => _MainState();
 }
 
-abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin {
+abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   // late final ScrollController scrollController = ScrollController();
   // late final Future<void> _viewSnap = Future.delayed(const Duration(milliseconds: 1000));
+
+  late final nav = app.route.backMethod(root: true);
 
   Scripture get scripture => app.scripturePrimary;
 
@@ -24,6 +22,11 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 
   int bookId = 0;
   String bookName = '';
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   void didChangeDependencies() {
@@ -33,11 +36,10 @@ abstract class _State extends StateAbstract<Main> with TickerProviderStateMixin 
 
   /// TODO: might not needed
   void _mediaData() {
-    // viewData.fromContext = MediaQuery.of(context);
     bookId = scripture.bookCurrent.info.id;
-    if (state.hasArguments) {
+    if (state.param.map.isNotEmpty) {
       // bookId = state.asMap['book'] as int;
-      final ob = state.asMap['book'];
+      final ob = state.param.map['book'];
       if (ob != null) {
         bookId = ob as int;
       }
@@ -85,12 +87,12 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: preference.text.back,
-          cancel: preference.text.cancel,
+          back: app.preference.of(context).back,
+          cancel: app.preference.of(context).cancel,
         ),
       ],
       primary: ViewHeaderTitle.dual(
-        label: preference.text.title('true'),
+        label: app.preference.of(context).title('true'),
         header: bookName,
         shrinkMax: 16,
       ),
@@ -107,9 +109,9 @@ class _MainState extends _State with _Header {
         height: kTextTabBarHeight,
         // forceOverlaps: false,
         forceStretch: true,
-        backgroundColor: state.theme.primaryColor,
-        // overlapsBackgroundColor: state.theme.primaryColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        backgroundColor: theme.primaryColor,
+        // overlapsBackgroundColor: theme.primaryColor,
+        overlapsBorderColor: theme.dividerColor,
         child: _header(),
       ),
       body: Views(
@@ -138,11 +140,11 @@ class _MainState extends _State with _Header {
           // ],
           border: Border(
             top: BorderSide(
-              color: state.theme.dividerColor,
+              color: theme.dividerColor,
               width: 0.5,
             ),
             bottom: BorderSide(
-              color: state.theme.dividerColor,
+              color: theme.dividerColor,
               width: 0.5,
             ),
           ),
@@ -160,34 +162,24 @@ class _MainState extends _State with _Header {
                 // '${verse.chapterId}:${verse.verseId}',
                 scripture.digit('${obj.chapterId}:${verse.id}'),
                 textAlign: TextAlign.center,
-                style: state.textTheme.labelSmall?.copyWith(
-                  color: state.theme.hintColor,
+                style: style.labelSmall?.copyWith(
+                  color: theme.hintColor,
                 ),
               ),
             ),
             title: Text(
               verse.title,
-              style: state.textTheme.titleMedium,
+              style: style.titleMedium,
             ),
-            onTap: () {
-              Navigator.of(
-                context,
-                rootNavigator: true,
-              ).maybePop({
-                'book': obj.bookId,
-                'chapter': obj.chapterId,
-              });
-            },
+            onTap: state.maybePop({'book': obj.bookId, 'chapter': obj.chapterId}),
           );
         },
         itemCount: snap.length,
-
-        // onEmpty: const ViewFeedbacks.empty(),
         onEmpty: ViewFeedbacks.message(
           label:
               preference.language('noTitleOnBook').replaceFirst('{{book}}', bookName).replaceFirst(
                     '{{title}}',
-                    preference.text.title(''),
+                    app.preference.of(context).title(''),
                   ),
         ),
       )

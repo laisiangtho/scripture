@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 
-import '../../../app.dart';
+import '/app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
-
-  static String route = 'sheet-bible-persistent';
-  static String label = 'Persistent';
-  static IconData icon = Icons.ac_unit;
 
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
-
+class _State extends SheetStates<Main> {
   @override
   late final persistent = true;
 
   @override
   double get height => kTextTabBarHeight;
 
-  Scripture get primaryScripture => app.scripturePrimary;
-  ScrollController? get primaryScroll => primaryScripture.scroll;
-  List<OfVerse> get primaryVerse => primaryScripture.verse;
+  late final Map<String, dynamic> extra = {
+    'scrollToggle': scrollToggle,
+  }..addAll(state.param.map);
+
+  late final parallelConfig = app.route.parallelConfig(extra: extra);
+  // late final parallelConfig = app.route.parallelConfig();
+
+  // Scripture get primaryScripture => app.scripturePrimary;
+  // ScrollController? get primaryScroll => primaryScripture.scroll;
+  // List<OfVerse> get primaryVerse => primaryScripture.verse;
 
   // void setChapter(int? id) {
   //   if (id == null) return;
@@ -36,25 +36,23 @@ class _State extends DraggableSheets<Main> {
   //   });
   // }
 
-  void setChapterPrevious() {
-    app.chapterPrevious.catchError((e) {
-      showSnack(e.toString());
-    });
-  }
+  // void setChapterPrevious() {
+  //   app.chapterPrevious.catchError((e) {
+  //     showSnack(e.toString());
+  //   });
+  // }
 
-  void setChapterNext() {
-    app.chapterNext.catchError((e) {
-      showSnack(e.toString());
-    });
-  }
+  // void setChapterNext() {
+  //   app.chapterNext.catchError((e) {
+  //     showSnack(e.toString());
+  //   });
+  // }
 
-  void showSnack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-
-  late final RouteNotifier notifier = RouteNotifier();
+  // void showSnack(String message) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(content: Text(message)),
+  //   );
+  // }
 
   // void copyVerseSelection() {
   //   primaryScripture.getSelection().then(Share.share);
@@ -62,23 +60,11 @@ class _State extends DraggableSheets<Main> {
 
   @override
   List<Widget> slivers() {
-    Map<String, dynamic> nestArguments = {
-      'presistentToggle': scrollToggle,
-    }..addAll(state.asMap);
-
     return <Widget>[
       SliverFillRemaining(
         // hasScrollBody: false,
         // fillOverscroll: true,
-        child: NestedView(
-          delegate: PersistentDelegates(
-            bridge: notifier,
-            name: rootPath(Main.route),
-            // arguments: state.arguments,
-
-            arguments: nestArguments,
-          ),
-        ),
+        child: parallelConfig,
       ),
     ];
   }

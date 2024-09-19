@@ -11,10 +11,10 @@ abstract class _Abstracts extends UnitCore {
   late final Authenticate authenticate = Authenticate(data);
 
   @override
-  late final Analytics analytics = Analytics();
+  late final RouteConfig route = RouteConfig();
 
   @override
-  late final RouteDelegates routeDelegate = RouteDelegates();
+  late final Analytics analytics = Analytics();
 
   @override
   late final Store store = Store(data);

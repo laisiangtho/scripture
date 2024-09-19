@@ -10,46 +10,35 @@ import '../../../app.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'sheet-bible-info';
-  static String label = 'Bible';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = App.core;
-
+class _State extends SheetStates<Main> {
   late final boxOfBooks = app.data.boxOfBooks;
 
-  late final MapEntry<dynamic, BooksType> item = state.as<MapEntry<dynamic, BooksType>>();
+  // late final MapEntry<dynamic, BooksType> item = state.param.as<MapEntry<dynamic, BooksType>>();
+  late final BooksType book = state.param.as<BooksType>();
 
   bool isDownloading = false;
   String message = '';
 
-  BooksType get book => item.value;
+  // BooksType get book => item;
   // BooksType get book => boxOfBooks.box.values
   //     .firstWhere((e) => e.identify == item.value.identify, orElse: () => boxOfBooks.values.first);
 
-  int get bookIndex => boxOfBooks.indexOfvalues((e) => e.identify == item.value.identify);
+  int get bookIndex => boxOfBooks.indexOfvalues((e) => e.identify == book.identify);
 
   /// if book.available > 0 or params.identify is empty
   bool get isAvailable => book.identify.isEmpty || book.available > 0;
 
   String get bookName => book.name;
 
-  // @override
-  // ScrollNotifier get notifier => App.scroll;
-
-  // @override
-  // bool get persistent => false;
-
   @override
   late final actualInitialSize = 0.5;
+
   @override
-  late final actualMinSize = 0.4;
+  late final actualMinSize = 0.3;
 
   void _launchBibleSource() {
     Launcher.universalLink('https://github.com/laisiangtho/bible');
@@ -90,8 +79,6 @@ class _State extends DraggableSheets<Main> {
         // Navigator.pop(context, 'done');
         if (mounted) Navigator.of(context).maybePop();
       });
-
-      // core.store.googleAnalytics.then((e)=>e.sendEvent(store.identify, store.appVersion));
     }).catchError((error) {
       setState(() {
         isDownloading = !isDownloading;
@@ -113,19 +100,18 @@ class _State extends DraggableSheets<Main> {
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kTextTabBarHeight],
         // heights: const [kTextTabBarHeight, kToolbarHeight],
-        backgroundColor: state.theme.primaryColor,
+        backgroundColor: theme.primaryColor,
         // backgroundColor: Colors.transparent,
-        // padding: state.fromContext.viewPadding,
-        // overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
+        // padding: state.media.viewPadding,
+        // overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         // overlapsBorderColor: Theme.of(context).shadowColor,
-        overlapsBorderColor: state.theme.dividerColor,
+        overlapsBorderColor: theme.dividerColor,
         builder: (_, vhd) {
           return ViewHeaderLayouts(
             data: vhd,
             left: [
               OptionButtons.cancel(
-                navigator: state.navigator,
-                label: app.preference.text.cancel,
+                label: app.preference.of(context).cancel,
               ),
             ],
             primary: ViewHeaderTitle(
@@ -142,18 +128,17 @@ class _State extends DraggableSheets<Main> {
               // ViewMarks(
               //   padding: const EdgeInsets.only(right: 15),
               //   icon: Icons.verified_user_rounded,
-              //   iconColor: state.theme.primaryColorDark,
+              //   iconColor: theme.primaryColorDark,
               //   show: isAvailable,
               // ),
               ValueListenableBuilder(
                 valueListenable: boxOfBooks.listen(),
                 builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
                   return ViewButtons(
-                    message: preference.text.favorite('false'),
+                    message: app.preference.of(context).favorite('false'),
                     child: ViewMarks(
                       icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
-                      iconColor:
-                          book.selected ? state.theme.highlightColor : state.theme.primaryColorDark,
+                      iconColor: book.selected ? theme.highlightColor : theme.primaryColorDark,
                     ),
                     onPressed: () {
                       book.selected = !book.selected;
@@ -171,90 +156,67 @@ class _State extends DraggableSheets<Main> {
           children: [
             ListTile(
               // leading: const Icon(Icons.lightbulb_outlined),
-              // iconColor: Theme.of(context).primaryColorDark,
-              // tileColor: Colors.red,
-              // textColor: Colors.blueGrey,
-              titleTextStyle: state.textTheme.titleLarge,
-              // visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-              title: Row(
-                children: [
-                  Expanded(
-                    // child: Text(book.langName.toUpperCase()),
-                    child: Text(
-                      book.langName,
-                      style: state.textTheme.titleLarge,
-                    ),
-                  ),
-                  Text(
-                    book.year.toString(),
-                    style: state.textTheme.labelMedium?.copyWith(
-                      color: state.theme.hintColor,
-                    ),
-                  ),
-                ],
-              ),
-
-              subtitle: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+              titleTextStyle: style.labelSmall,
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   textDirection: TextDirection.ltr,
                   spacing: 15,
-                  runSpacing: 5,
+                  runSpacing: 0,
                   children: [
-                    ViewMarks(
-                      icon: LideaIcon.bible,
-                      iconSize: 18,
-                      iconColor: state.theme.focusColor,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          book.name,
-                          style: state.textTheme.labelLarge,
-                        ),
+                    Chip(
+                      side: const BorderSide(style: BorderStyle.none),
+                      avatar: Icon(
+                        LideaIcon.bible,
+                        color: theme.focusColor,
+                      ),
+                      label: Text(book.name),
+                    ),
+                    Chip(
+                      side: const BorderSide(style: BorderStyle.none),
+                      avatar: Icon(
+                        LideaIcon.global,
+                        color: theme.focusColor,
+                      ),
+                      label: Paragraphs(
+                        text: '{{langCode}} {{langName}}',
+                        style: style.labelMedium,
+                        decoration: [
+                          TextSpan(
+                            text: book.langCode.toUpperCase(),
+                            semanticsLabel: 'langCode',
+                          ),
+                          TextSpan(
+                            text: '(${book.langName})',
+                            semanticsLabel: 'langName',
+                            style: TextStyle(color: theme.primaryColorDark),
+                          ),
+                        ],
                       ),
                     ),
-                    ViewMarks(
-                      icon: LideaIcon.global,
-                      iconColor: state.theme.focusColor,
-                      iconSize: 20,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          book.langCode.toUpperCase(),
-                          style: state.textTheme.labelLarge,
-                        ),
+                    Chip(
+                      side: const BorderSide(style: BorderStyle.none),
+                      avatar: Icon(
+                        Icons.compare_arrows,
+                        color: theme.focusColor,
+                      ),
+                      label: Text(
+                        book.langDirection.toUpperCase(),
                       ),
                     ),
-                    ViewMarks(
-                      icon: Icons.compare_arrows,
-                      iconColor: state.theme.focusColor,
-                      iconSize: 20,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          book.langDirection.toUpperCase(),
-                          style: state.textTheme.labelLarge,
-                        ),
+                    Chip(
+                      side: const BorderSide(style: BorderStyle.none),
+                      avatar: Icon(
+                        Icons.timeline_outlined,
+                        color: theme.focusColor,
                       ),
-                    ),
-                    ViewMarks(
-                      icon: LideaIcon.dotTwo,
-                      iconColor: state.theme.focusColor,
-                      iconSize: 18,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          book.identify,
-                          style: state.textTheme.labelLarge,
-                        ),
-                      ),
+                      label: Text(book.year.toString()),
                     ),
                   ],
                 ),
               ),
-              // trailing: Text(book.),
             ),
             ViewMarks(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -269,9 +231,9 @@ class _State extends DraggableSheets<Main> {
                   margin: const EdgeInsets.only(bottom: 30),
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   // borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  // color: isAvailable ? state.theme.primaryColorDark : state.theme.highlightColor,
-                  color: isAvailable ? state.theme.colorScheme.error : state.theme.highlightColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+                  // color: isAvailable ? theme.primaryColorDark : theme.highlightColor,
+                  color: isAvailable ? colorScheme.error : theme.highlightColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                   onPressed: download(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -283,7 +245,7 @@ class _State extends DraggableSheets<Main> {
                           height: 30,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: state.theme.primaryColor,
+                            color: theme.primaryColor,
                           ),
                         )
                       else
@@ -294,7 +256,7 @@ class _State extends DraggableSheets<Main> {
                             // isAvailable ? Icons.remove_circle : Icons.add_circle,
                             isAvailable ? LideaIcon.circleRemove : LideaIcon.circleAdd,
                             size: 29,
-                            color: state.theme.primaryColor,
+                            color: theme.primaryColor,
                           ),
                         ),
                       const Divider(
@@ -302,9 +264,11 @@ class _State extends DraggableSheets<Main> {
                       ),
                       ViewLabels(
                         // constraints: const BoxConstraints(maxHeight: 30),
-                        label: isAvailable ? preference.text.delete : preference.text.download,
-                        labelStyle: state.theme.textTheme.bodyLarge!.copyWith(
-                          color: state.theme.primaryColor,
+                        label: isAvailable
+                            ? app.preference.of(context).delete
+                            : app.preference.of(context).download,
+                        labelStyle: theme.textTheme.bodyLarge!.copyWith(
+                          color: theme.primaryColor,
                         ),
                       ),
                     ],
@@ -321,8 +285,8 @@ class _State extends DraggableSheets<Main> {
           children: [
             ListTile(
               selected: true,
-              iconColor: state.theme.iconTheme.color,
-              selectedColor: state.theme.primaryColorDark,
+              iconColor: theme.iconTheme.color,
+              selectedColor: theme.primaryColorDark,
               leading: const Icon(
                 LideaIcon.circleAdd,
                 // size: 25,
@@ -330,13 +294,13 @@ class _State extends DraggableSheets<Main> {
               titleAlignment: ListTileTitleAlignment.top,
               title: Paragraphs(
                 text: preference.language('whenBibleDownload'),
-                style: state.textTheme.titleLarge,
+                style: style.bodyLarge,
                 decoration: [
                   TextSpan(
                     text: bookName,
                     semanticsLabel: 'bookName',
                     style: TextStyle(
-                      color: state.theme.primaryColorDark,
+                      color: theme.primaryColorDark,
                     ),
                   ),
                 ],
@@ -344,8 +308,8 @@ class _State extends DraggableSheets<Main> {
             ),
             ListTile(
               selected: true,
-              iconColor: state.theme.iconTheme.color,
-              selectedColor: state.theme.primaryColorDark,
+              iconColor: theme.iconTheme.color,
+              selectedColor: theme.primaryColorDark,
               leading: const Icon(
                 LideaIcon.circleRemove,
                 // size: 25,
@@ -353,13 +317,13 @@ class _State extends DraggableSheets<Main> {
               titleAlignment: ListTileTitleAlignment.top,
               title: Paragraphs(
                 text: preference.language('whenBibleDelete'),
-                style: state.textTheme.titleLarge,
+                style: style.bodyLarge,
                 decoration: [
                   TextSpan(
                     text: bookName,
                     semanticsLabel: 'bookName',
                     style: TextStyle(
-                      color: state.theme.hintColor,
+                      color: theme.hintColor,
                     ),
                   ),
                 ],
@@ -378,24 +342,24 @@ class _State extends DraggableSheets<Main> {
           titleAlignment: ListTileTitleAlignment.titleHeight,
           title: Paragraphs(
             text: preference.language('availableSource'),
-            style: state.textTheme.titleLarge,
+            style: style.bodyLarge,
             decoration: [
               TextSpan(
-                text: preference.text.holyBible,
+                text: app.preference.of(context).holyBible,
                 semanticsLabel: 'sourceBible',
-                style: TextStyle(color: state.theme.highlightColor),
+                style: TextStyle(color: theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
               ),
               TextSpan(
                 text: 'app',
                 semanticsLabel: 'sourceCode',
-                style: TextStyle(color: state.theme.highlightColor),
+                style: TextStyle(color: theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
               ),
               TextSpan(
-                text: preference.text.issue('true'),
+                text: app.preference.of(context).issue('true'),
                 semanticsLabel: 'Issues',
-                style: TextStyle(color: state.theme.highlightColor),
+                style: TextStyle(color: theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,
               ),
             ],
@@ -403,18 +367,15 @@ class _State extends DraggableSheets<Main> {
         ),
       ),
       ViewFlats(
-        // padding: const EdgeInsets.symmetric(vertical: 30),
         child: ListBody(
           children: [
             note(icon: Icons.description_outlined, label: book.description),
             note(icon: Icons.copyright_outlined, label: book.copyright),
             note(icon: Icons.group_work_outlined, label: book.contributors),
             note(icon: LideaIcon.copyright, label: book.publisher),
+            note(icon: Icons.info_outline_rounded, label: book.identify),
           ],
         ),
-      ),
-      const SliverPadding(
-        padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
       ),
     ];
   }
@@ -429,9 +390,9 @@ class _State extends DraggableSheets<Main> {
       ),
 
       title: Text(label),
-      // textColor: state.textTheme.bodySmall?.color,
-      textColor: state.textTheme.bodySmall?.color,
-      titleTextStyle: state.textTheme.bodySmall,
+      // textColor: style.bodySmall?.color,
+      // textColor: style.bodySmall?.color,
+      titleTextStyle: style.bodyMedium,
       titleAlignment: ListTileTitleAlignment.titleHeight,
     );
   }

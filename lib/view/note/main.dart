@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:lidea/icon.dart';
-// import 'package:lidea/provider.dart';
 import 'package:lidea/hive.dart';
 
 import '/app.dart';
@@ -12,10 +10,6 @@ part 'header.dart';
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'note';
-  static String label = 'Note';
-  static IconData icon = LideaIcon.listNested;
-
   @override
   State<Main> createState() => _View();
 }
@@ -25,33 +19,14 @@ class _View extends _State with _Header {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ViewBars(
-        padding: state.fromContext.viewPadding,
-        // forceOverlaps: false,
-        // forceStretch: true,
-        // backgroundColor: Theme.of(context).primaryColor,
-        // overlapsBackgroundColor: Theme.of(context).primaryColor,
-        overlapsBorderColor: Theme.of(context).dividerColor,
-        child: _headerNormal(),
+        padding: state.media.viewPadding,
+        overlapsBorderColor: theme.dividerColor,
+        child: _header(),
       ),
       body: Views(
-        // scrollBottom: ScrollBottomNavigation(
-        //   listener: scrollController.bottom,
-        //   notifier: viewData.bottom,
-        // ),
-        // child: CustomScrollView(
-        //   controller: scrollController,
-        //   slivers: _slivers,
-        // ),
-
         child: ValueListenableBuilder(
           valueListenable: boxOfBookmarks.listen(),
           builder: (BuildContext _, Box<BookmarksType> __, Widget? ___) {
-            // boxOfBookmarks = a;
-            // final abc = a;
-            // a.l
-            // final b = a.values;
-            // final c = a.toMap();
-
             return CustomScrollView(
               controller: scrollController,
               slivers: _slivers,
@@ -63,17 +38,8 @@ class _View extends _State with _Header {
   }
 
   List<Widget> get _slivers {
+    final plural = boxOfBookmarks.values.length > 1;
     return [
-      // ViewHeaderSliver(
-      //   pinned: true,
-      //   floating: false,
-      //   padding: state.fromContext.viewPadding,
-      //   heights: const [kToolbarHeight, kToolbarHeight],
-      //   // backgroundColor: state.theme.primaryColor,
-      //   overlapsBackgroundColor: state.theme.primaryColor,
-      //   overlapsBorderColor: state.theme.dividerColor,
-      //   builder: _header,
-      // ),
       ViewSections(
         // duration: const Duration(milliseconds: 400),
         sliver: true,
@@ -81,26 +47,23 @@ class _View extends _State with _Header {
 
         onAwait: const ViewFeedbacks.await(),
         onEmpty: ViewFeedbacks.message(
-          label: preference.text.bookmarkCount(0),
+          label: app.preference.of(context).bookmarkCount(0),
         ),
         headerTitle: Text(
-          preference.text.recentSearch('true'),
-          style: state.textTheme.titleSmall,
+          app.preference.of(context).bookmark(plural.toString()),
+          style: style.titleSmall,
         ),
-        child: ViewCards.fill(
+        child: ViewCards.separator(
           child: listContainer(),
         ),
       ),
-      // listContainer(),
     ];
   }
 
   Widget listContainer() {
     // final items = box.toMap().entries.toList();
     final items = boxOfBookmarks.entries.toList();
-
     // items.sort((a, b) => b.value.date!.compareTo(a.value.date!));
-
     // final items = boxOfBookmarks.values.toList();
     // items.sort((a, b) => b.date!.compareTo(a.date!));
     return ViewLists.reorderable(
@@ -113,56 +76,77 @@ class _View extends _State with _Header {
   }
 
   Widget itemContainer(int index, MapEntry<dynamic, BookmarksType> item) {
-    final book = App.core.scripturePrimary.bookById(item.value.bookId);
+    final book = app.scripturePrimary.bookById(item.value.bookId);
+    const direction2RemoveItem = DismissDirection.startToEnd;
     return Dismissible(
       // key: Key(index.toString()),
-      key: Key(item.value.date.toString()),
-      direction: DismissDirection.endToStart,
-      background: dismissiblesFromRight(),
+      // key: Key(item.value.date.toString()),
+      key: ValueKey(item),
+      direction: direction2RemoveItem,
+      background: _dismissibleBackground(),
 
       confirmDismiss: (direction) async {
-        if (direction == DismissDirection.endToStart) {
+        if (direction == direction2RemoveItem) {
           return await onDelete(item.key);
         }
         return false;
       },
+      onUpdate: (detail) {
+        _itemFavoriteBackgroundNotifier.value = detail.progress;
+      },
 
-      child: ListTile(
-        // contentPadding: EdgeInsets.zero,
-        title: Text(
-          book.info.name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodyMedium,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: CardTheme.of(context).color,
+          boxShadow: [
+            BoxShadow(
+              color: theme.dividerColor,
+              offset: const Offset(0, -0.7),
+            )
+          ],
         ),
-        minLeadingWidth: 10,
-        leading: const Icon(Icons.bookmark_added),
-
-        // trailing: Text(
-        //   core.scripturePrimary.digit(item.value.chapterId),
-        //   // 'chapterId',
-        //   style: const TextStyle(fontSize: 18),
-        // ),
-        trailing: Text(
-          app.scripturePrimary.digit(item.value.chapterId),
-          // 'chapterId',
-          style: Theme.of(context).textTheme.labelMedium,
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+          title: Text(
+            book.info.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodyMedium,
+          ),
+          // minLeadingWidth: 10,
+          leading: const Icon(Icons.bookmark_added),
+          // trailing: Text(
+          //   core.scripturePrimary.digit(item.value.chapterId),
+          //   // 'chapterId',
+          //   style: const TextStyle(fontSize: 18),
+          // ),
+          trailing: Text(
+            app.scripturePrimary.digit(item.value.chapterId),
+            // 'chapterId',
+            style: theme.textTheme.labelMedium,
+          ),
+          onTap: () => onNav(item.value.bookId, item.value.chapterId),
         ),
-        onTap: () => onNav(item.value.bookId, item.value.chapterId),
       ),
     );
   }
 
-  Widget dismissiblesFromRight() {
+  Widget _dismissibleBackground() {
     return Container(
-      color: Theme.of(context).disabledColor,
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      color: theme.disabledColor,
+      alignment: Alignment.centerLeft,
+      // padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: ValueListenableBuilder<double>(
+        valueListenable: _itemFavoriteBackgroundNotifier,
+        builder: (context, val, child) {
+          return Padding(
+            padding: EdgeInsets.only(left: 50 * val),
+            child: child,
+          );
+        },
         child: Text(
-          preference.text.delete,
-          textAlign: TextAlign.right,
-          style: Theme.of(context).textTheme.bodyMedium,
+          app.preference.of(context).delete,
+          style: theme.textTheme.bodyMedium,
         ),
       ),
     );

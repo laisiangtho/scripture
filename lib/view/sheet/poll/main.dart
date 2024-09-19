@@ -1,26 +1,15 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/gestures.dart';
-
-// import 'package:lidea/icon.dart';
-import 'package:lidea/provider.dart';
 
 import '../../../app.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
 
-  static String route = 'sheet-poll';
-  static String label = 'Poll';
-  static IconData icon = Icons.ac_unit;
-
   @override
   State<Main> createState() => _State();
 }
 
-class _State extends DraggableSheets<Main> {
-  @override
-  late final Core app = context.read<Core>();
-
+class _State extends SheetStates<Main> {
   @override
   double get actualInitialSize => 0.5;
   @override
@@ -47,7 +36,7 @@ class _State extends DraggableSheets<Main> {
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kToolbarHeight, 50],
         backgroundColor: Colors.transparent,
-        overlapsBackgroundColor: state.theme.scaffoldBackgroundColor,
+        overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         overlapsBorderColor: Theme.of(context).shadowColor,
         builder: (_, vhd) {
           return ViewHeaderLayouts(
