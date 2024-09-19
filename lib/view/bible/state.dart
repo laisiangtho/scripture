@@ -12,10 +12,7 @@ abstract class _State extends CommonStates<Main> with SingleTickerProviderStateM
     duration: const Duration(milliseconds: 100),
     vsync: this,
   );
-  late final Animation<double> _dragAnimation = Tween(
-    begin: 0.0,
-    end: 1.0,
-  ).animate(_dragController);
+
   late final Animation<Color?> _colorAnimation = ColorTween(
     begin: null,
     end: colorScheme.error,

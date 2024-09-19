@@ -5,6 +5,9 @@ class BoxOfBooks<E> extends BoxOfAbstract<BooksType> {
   //   final abc = box.values.firstWhere((e) => e.identify == identify);
   //   return 0;
   // }
+
+  @override
+  Box<BooksType> get box => instance.box<BooksType>(boxName);
 }
 
 @HiveType(typeId: 1)

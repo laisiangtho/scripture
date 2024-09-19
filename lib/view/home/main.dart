@@ -97,12 +97,10 @@ class _View extends _State with _Header {
     // items.sort((a, b) => a.value.order.compareTo(b.value.order));
 
     return ViewSections(
-      // headerLeading: const Icon(Icons.ac_unit),
       headerTitle: Text(
         app.preference.of(context).favorite('true'),
         style: style.titleSmall,
       ),
-
       headerTrailing: ViewButtons(
         show: items.isNotEmpty,
         message: app.preference
@@ -117,71 +115,34 @@ class _View extends _State with _Header {
         ),
       ),
       footer: items.isNotEmpty,
-      // footerTitle: ViewButtons(
-      //   // padding: EdgeInsets.zero,
-      //   // style: const TextStyle(
-      //   //   color: Colors.red,
-      //   //   fontSize: 12,
-      //   // ),
-      //   // color: Colors.red,
-      //   onPressed: () {
-      //     app.route.page.push('/bible');
-      //   },
-      //   // child: ViewMarks(
-      //   //   label: app.preference.of(context).addMore(app.preference.of(context).favorite(true)),
-      //   // ),
-      //   child: Text(
-      //     app.preference
-      //         .of(context)
-      //         .addMore(app.preference.of(context).favorite('true').toLowerCase()),
-      //     textAlign: TextAlign.center,
-      //   ),
-      // ),
       footerTitle: OptionButtons.label(
         // current: false,
         onPressed: () {
           app.route.page.push('/bible');
         },
-        // child: ViewMarks(
-        //   label: app.preference.of(context).addMore(app.preference.of(context).favorite(true)),
-        // ),
-        // style: style.labelSmall,
-        // style: style.labelSmall?.copyWith(
-        //   // color: theme.buttonTheme.colorScheme?.onPrimary,
-        //   // color: colorScheme.onError,
-        //   // color: Colors.red,
-        //   color: theme.hintColor,
-        // ),
 
         label: app.preference
             .of(context)
             .addMore(app.preference.of(context).favorite('true').toLowerCase()),
       ),
-      // footerTitle: TextButton(
-      //   onPressed: () {},
-      //   // style: TextButton.styleFrom(
-      //   //   foregroundColor: Colors.pink,
-      //   // ),
-      //   child: const Text(
-      //     'TextButton (New)',
-      //     // style: TextStyle(fontSize: 30),
-      //   ),
-      // ),
-      // footerTitle: Text(
-      //   app.preference.of(context).addMore(app.preference.of(context).favorite(true)),
-      //   textAlign: TextAlign.center,
-      // ),
-      // footerOnPressed: () {
-      //   app.route.page.push('/bible');
-      // },
-
       child: ViewCards(
         child: ViewLists.separator(
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return bookItem(
-              index,
-              items.elementAt(index),
+            final book = items.elementAt(index).value;
+            return BookListItem(
+              book: book,
+              index: index,
+              onPress: () {
+                if (book.available > 0) {
+                  showBibleContent(book);
+                } else {
+                  showBibleInfo(book);
+                }
+              },
+              onLongPress: () {
+                showBibleInfo(book);
+              },
             );
           },
           separator: (BuildContext context, int index) {
@@ -189,9 +150,6 @@ class _View extends _State with _Header {
           },
           onEmpty: ViewButtons(
             padding: const EdgeInsets.symmetric(vertical: 30),
-            // child: ViewMarks(
-            //   label: app.preference.of(context).addTo(app.preference.of(context).favorite(true)),
-            // ),
             child: Text(
               app.preference.of(context).addTo(app.preference.of(context).favorite('true')),
               textAlign: TextAlign.center,
@@ -203,83 +161,6 @@ class _View extends _State with _Header {
           itemCount: items.length,
         ),
       ),
-    );
-  }
-
-  Widget bookItem(int index, MapEntry<dynamic, BooksType> item) {
-    final book = item.value;
-    bool isAvailable = book.available > 0;
-    bool isPrimary = book.identify == data.primaryId;
-    return ListTile(
-      minVerticalPadding: 10,
-      title: Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Text(
-          book.name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          semanticsLabel: book.name,
-          style: DefaultTextStyle.of(context).style.copyWith(
-                fontSize: 20,
-                fontWeight: isAvailable ? FontWeight.w400 : FontWeight.w300,
-                // color: isAvailable?Colors.black:Colors.grey,
-              ),
-        ),
-      ),
-      subtitle: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        textBaseline: TextBaseline.alphabetic,
-        children: <Widget>[
-          Container(
-            constraints: const BoxConstraints(
-              minWidth: 40.0,
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 2),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(3)),
-              color: isAvailable
-                  ? isPrimary
-                      ? theme.highlightColor
-                      : theme.primaryColorDark
-                  : theme.disabledColor,
-            ),
-            child: Text(
-              book.langCode.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: DefaultTextStyle.of(context).style.copyWith(
-                    fontSize: 12,
-                    color: isAvailable ? theme.primaryColor : null,
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              book.shortname,
-              style: DefaultTextStyle.of(context).style.copyWith(fontSize: 14),
-            ),
-          )
-        ],
-      ),
-
-      trailing: ViewMarks(
-        child: Text(
-          book.year.toString(),
-        ),
-      ),
-      // onTap: () => isAvailable ? showBible(book) : showMore(book),
-      onTap: () {
-        if (isAvailable) {
-          showBibleContent(book);
-        } else {
-          showBibleInfo(item.value);
-        }
-      },
-      onLongPress: () {
-        showBibleInfo(item.value);
-      },
     );
   }
 

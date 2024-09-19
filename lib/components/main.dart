@@ -11,3 +11,4 @@ part 'profile_icon.dart';
 
 /// NOTE: individual
 part 'verse.dart';
+part 'book_item.dart';
