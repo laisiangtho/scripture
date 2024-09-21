@@ -14,10 +14,10 @@ abstract class _State extends CommonStates<Main> {
   void onDeleteAllConfirmWithDialog() {
     doConfirmWithDialog(
       context: context,
-      message: app.preference.of(context).confirmToDelete('all'),
-      title: app.preference.of(context).confirmation,
-      cancel: app.preference.of(context).cancel,
-      confirm: app.preference.of(context).confirm,
+      message: lang.confirmToDelete('all'),
+      title: lang.confirmation,
+      cancel: lang.cancel,
+      confirm: lang.confirm,
     ).then((bool? confirmation) {
       // if (confirmation != null && confirmation) onClearAll();
       if (confirmation != null && confirmation) {
@@ -43,10 +43,10 @@ abstract class _State extends CommonStates<Main> {
   //   return doConfirmWithDialog(
   //     context: context,
   //     // message: 'Do you want to delete this Bookmark?',
-  //     message: app.preference.of(context).confirmToDelete(''),
-  //     title: app.preference.of(context).confirmation,
-  //     cancel: app.preference.of(context).cancel,
-  //     confirm: app.preference.of(context).confirm,
+  //     message: lang.confirmToDelete(''),
+  //     title: lang.confirmation,
+  //     cancel: lang.cancel,
+  //     confirm: lang.confirm,
   //   ).then((confirmation) {
   //     if (confirmation != null && confirmation) {
   //       core.deleteBookmarkWithNotify(index);

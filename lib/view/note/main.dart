@@ -47,10 +47,10 @@ class _View extends _State with _Header {
 
         onAwait: const ViewFeedbacks.await(),
         onEmpty: ViewFeedbacks.message(
-          label: app.preference.of(context).bookmarkCount(0),
+          label: lang.bookmarkCount(0),
         ),
         headerTitle: Text(
-          app.preference.of(context).bookmark(plural.toString()),
+          lang.bookmark(plural.toString()),
           style: style.titleSmall,
         ),
         child: ViewCards.separator(
@@ -145,7 +145,7 @@ class _View extends _State with _Header {
           );
         },
         child: Text(
-          app.preference.of(context).delete,
+          lang.delete,
           style: theme.textTheme.bodyMedium,
         ),
       ),

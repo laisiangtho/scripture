@@ -76,12 +76,12 @@ class _State extends SheetStates<Main> {
               //   vhd.snapShrink,
               // ),
               // label: 'Language filter',
-              label: app.preference.of(context).language('false'),
+              label: lang.language('false'),
               data: vhd,
             ),
             left: [
               OptionButtons.cancel(
-                label: app.preference.of(context).cancel,
+                label: lang.cancel,
               ),
             ],
             right: [

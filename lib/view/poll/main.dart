@@ -44,7 +44,7 @@ class _View extends _State with _Header {
         overlapsBorderColor: theme.dividerColor,
         builder: _header,
       ),
-      PullToActivate(
+      ViewPulls(
         onUpdate: app.poll.updateIndividual,
       ),
       ViewSections(

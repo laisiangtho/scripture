@@ -71,7 +71,7 @@ class _State extends SheetStates<Main> {
               //   },
               // ),
               OptionButtons.cancel(
-                label: app.preference.of(context).cancel,
+                label: lang.cancel,
               ),
             ],
             primary: ViewHeaderTitle(
@@ -88,7 +88,7 @@ class _State extends SheetStates<Main> {
               //   const Alignment(0, 0),
               //   vhd.snapShrink,
               // ),
-              label: app.preference.of(context).chapter('true'),
+              label: lang.chapter('true'),
               data: vhd,
             ),
           );

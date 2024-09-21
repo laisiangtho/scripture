@@ -194,8 +194,8 @@ class VerseItemWidget extends StatelessWidget {
                               extra: {
                                 'text': verseNote,
                                 // 'focus': true,
-                                'pageLabel': preference.of(context).addTo(
-                                      preference.of(context).note('').toLowerCase(),
+                                'pageLabel': preference.lang(context).addTo(
+                                      preference.lang(context).note('').toLowerCase(),
                                     ),
                                 // 'pageTitle': '$bookName $chapterName:${verse.id}',
                                 'pageTitle':

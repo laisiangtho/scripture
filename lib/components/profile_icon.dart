@@ -9,7 +9,7 @@ class UserProfileIcon extends UserIconWidget {
   @override
   Widget build(BuildContext context) {
     return ViewButtons(
-      message: app.preference.of(context).account,
+      message: app.preference.lang(context).account,
       style: Theme.of(context).textTheme.labelMedium,
       onPressed: () => context.push('/user'),
       child: ViewMarks(

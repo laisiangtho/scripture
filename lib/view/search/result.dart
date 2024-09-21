@@ -22,7 +22,7 @@ mixin _Result on _State<Main> {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              app.preference.of(context).aWordOrTwo,
+              lang.aWordOrTwo,
             ),
             Text(
               primaryScripture.info.name,
@@ -46,7 +46,7 @@ mixin _Result on _State<Main> {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              app.preference.of(context).searchNoMatch,
+              lang.searchNoMatch,
             ),
             Text(
               primaryScripture.info.name,
@@ -79,8 +79,6 @@ mixin _Result on _State<Main> {
   }
 
   Widget _resultWords(CacheBible o) {
-    //  core.app.preference.of(context).favorite('true');
-    //  core.preference.language('noMatchInVerse');
     return CustomScrollView(
       key: PageStorageKey('search-empty-${o.query}'),
       slivers: [
@@ -90,7 +88,7 @@ mixin _Result on _State<Main> {
           //   style: style.titleSmall,
           // ),
           headerTitle: Paragraphs(
-            text: preference.language('noMatchInVerse'),
+            text: preference.text('noMatchInVerse'),
             decoration: [
               TextSpan(
                 text: o.query,

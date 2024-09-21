@@ -70,7 +70,7 @@ class _State extends SheetStates<Main> {
                 const Alignment(0, 0),
                 vhd.snapShrink,
               ),
-              label: app.preference.of(context).book('true'),
+              label: lang.book('true'),
               data: vhd,
             ),
             right: [

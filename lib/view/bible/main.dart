@@ -89,7 +89,7 @@ class _View extends _State with _Header {
         sliver: true,
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
         child: Paragraphs(
-          text: preference.language('totalBookLang'),
+          text: preference.text('totalBookLang'),
           style: style.bodySmall,
           textAlign: TextAlign.center,
           decoration: [
@@ -160,7 +160,7 @@ class _View extends _State with _Header {
       // key: ValueKey(item),
       menu: [
         ViewButtons(
-          message: app.preference.of(context).more,
+          message: lang.more,
           onPressed: () => showBibleInfo(book),
           child: const ViewLabels(
             icon: LideaIcon.dotHoriz,
@@ -242,15 +242,9 @@ class BookListItemCorner extends StatelessWidget {
   }
 }
 
-class PullToRefresh extends PullToActivate {
+class PullToRefresh extends ViewPulls {
   const PullToRefresh({super.key});
 
-  @override
-  State<PullToActivate> createState() => _PullToRefreshState();
-}
-
-class _PullToRefreshState extends PullOfState {
-  // late final Core core = context.read<Core>();
   @override
   Future<void> refreshUpdate() async {
     await Future.delayed(const Duration(milliseconds: 50));

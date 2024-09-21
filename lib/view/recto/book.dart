@@ -176,8 +176,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: app.preference.of(context).back,
-          cancel: app.preference.of(context).cancel,
+          back: lang.back,
+          cancel: lang.cancel,
         ),
       ],
       primary: ViewHeaderTitle.fixed(
@@ -186,7 +186,7 @@ mixin _Header on _State {
         //   const Alignment(0, 0),
         //   vhd.snapShrink,
         // ),
-        label: app.preference.of(context).book('true'),
+        label: lang.book('true'),
       ),
       right: [
         ViewButtons(
@@ -196,7 +196,7 @@ mixin _Header on _State {
             context.push('/recto-title');
           },
           child: ViewMarks(
-            label: app.preference.of(context).title(''),
+            label: lang.title(''),
           ),
         ),
       ],
@@ -489,7 +489,7 @@ class ChapterNameItem extends StatelessWidget {
         margin: margin,
         color: tpl.primaryColor.withOpacity(isCurrentChapter ? 0.4 : 1),
         showShadow: isCurrentChapter,
-        message: app.preference.of(context).chapter(''),
+        message: preference.lang(context).chapter(''),
         child: ViewMarks(
           label: scripture.digit(index),
           labelStyle: tpl.textTheme.labelLarge?.copyWith(
@@ -510,7 +510,7 @@ class ChapterNameItem extends StatelessWidget {
       /// NOTE: verse merge
       return ViewButtons.filled(
         margin: margin,
-        message: preference.language('verse-merged'),
+        message: preference.text('verse-merged'),
         child: ViewMarks(
           icon: Icons.merge,
           iconColor: tpl.primaryColorDark.withOpacity(0.3),
@@ -526,7 +526,7 @@ class ChapterNameItem extends StatelessWidget {
       margin: margin,
       // color: theme.primaryColor,
       showShadow: false,
-      message: app.preference.of(context).title(''),
+      message: preference.lang(context).title(''),
       child: ViewMarks(
         icon: Icons.signpost_rounded,
         iconColor: tpl.primaryColorDark.withOpacity(0.3),

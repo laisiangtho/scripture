@@ -50,9 +50,9 @@ class _MainState extends CommonStates<Main> {
         extra: {
           'text': toEdit,
           'focus': true,
-          'pageLabel': app.preference.of(context).addTo(
-                app.preference.of(context).note('').toLowerCase(),
-              ),
+          'pageLabel': lang.addTo(
+            lang.note('').toLowerCase(),
+          ),
           'pageTitle': '$bookName $chapterName:$svs',
         },
       ),
@@ -157,16 +157,12 @@ class _MainState extends CommonStates<Main> {
           children: <Widget>[
             OptionButtons.icon(
               onPressed: () => doFontSize(false),
-              message: app.preference
-                  .of(context)
-                  .decreaseSize(app.preference.of(context).fontSize.toLowerCase()),
+              message: lang.decreaseSize(lang.fontSize.toLowerCase()),
               icon: Icons.remove,
             ),
             ViewButtons(
               onPressed: doFontSizeReset,
-              message: app.preference
-                  .of(context)
-                  .resetSize(app.preference.of(context).fontSize.toLowerCase()),
+              message: lang.resetSize(lang.fontSize.toLowerCase()),
               padding: EdgeInsets.zero,
               child: StreamBuilder(
                 initialData: bOS.fontSize(),
@@ -191,9 +187,7 @@ class _MainState extends CommonStates<Main> {
             ),
             OptionButtons.icon(
               onPressed: () => doFontSize(true),
-              message: app.preference
-                  .of(context)
-                  .increaseSize(app.preference.of(context).fontSize.toLowerCase()),
+              message: lang.increaseSize(lang.fontSize.toLowerCase()),
               icon: Icons.add,
             )
           ],
@@ -239,7 +233,7 @@ class _MainState extends CommonStates<Main> {
               children: [
                 Text(
                   // 'Selection',
-                  app.preference.of(context).selection(''),
+                  lang.selection(''),
                   style: style.labelMedium!.copyWith(
                     color: theme.hintColor,
                   ),
@@ -324,18 +318,18 @@ class _MainState extends CommonStates<Main> {
               shrinkWrap: true,
               children: <Widget>[
                 actionButton(
-                  msg: app.preference.of(context).share,
+                  msg: lang.share,
                   onPressed: doShare,
                   icon: Icons.ios_share_outlined,
                 ),
                 actionButton(
-                  msg: app.preference.of(context).note(''),
+                  msg: lang.note(''),
                   onPressed: doNote,
                   // icon: Icons.chat_rounded,
                   icon: Icons.edit_note_rounded,
                 ),
                 actionButton(
-                  msg: app.preference.of(context).reset,
+                  msg: lang.reset,
                   onPressed: doReset,
                   icon: Icons.remove_circle_outline_rounded,
                 ),
@@ -374,8 +368,8 @@ class _MainState extends CommonStates<Main> {
             padding: EdgeInsets.zero,
             margin: EdgeInsets.zero,
             onPressed: marks.hasSelection ? () => marks.selectionApply(color: index) : null,
-            // message: app.preference.of(context).color(''),
-            message: preference.language('color-${oj.name}'),
+            // message: lang.color(''),
+            message: preference.text('color-${oj.name}'),
             child: ViewMarks(
               padding: EdgeInsets.zero,
               margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),

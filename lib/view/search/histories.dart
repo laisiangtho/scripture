@@ -7,19 +7,16 @@ class _Histories extends StatefulWidget {
   State<StatefulWidget> createState() => _HistoriesView();
 }
 
-class _HistoriesView extends HistoriesState<_Histories> {
+class _HistoriesView extends SearchHistoriesStates<_Histories> {
   @override
-  late final Core app = App.core;
-
-  @override
-  String labelHeaderTitle(test) => app.preference.of(context).recentSearch(test.toString());
+  String labelHeaderTitle(test) => lang.recentSearch(test.toString());
 
   @override
   String? labelItemTrailing(item) => app.scripturePrimary.digit(item.hit);
 
   @override
-  String? get messageAWordOrTwo => app.preference.of(context).aWordOrTwo;
+  String? get messageAWordOrTwo => lang.aWordOrTwo;
 
   @override
-  String? get messageDismissibleBackground => app.preference.of(context).delete;
+  String? get messageDismissibleBackground => lang.delete;
 }

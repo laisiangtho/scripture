@@ -62,22 +62,22 @@ class BottomNavigation extends StatelessWidget {
         BottomNavigationBarItem(
           icon: const Icon(LideaIcon.flag),
           label: 'Home',
-          tooltip: App.core.preference.of(context).home,
+          tooltip: App.core.preference.lang(context).home,
         ),
         BottomNavigationBarItem(
           icon: const Icon(LideaIcon.bookOpen),
           label: 'Read',
-          tooltip: App.core.preference.of(context).holyBible,
+          tooltip: App.core.preference.lang(context).holyBible,
         ),
         BottomNavigationBarItem(
           icon: const Icon(LideaIcon.listNested),
           label: 'Note',
-          tooltip: App.core.preference.of(context).note(''),
+          tooltip: App.core.preference.lang(context).note(''),
         ),
         BottomNavigationBarItem(
           icon: const Icon(LideaIcon.search),
           label: 'search',
-          tooltip: App.core.preference.of(context).search(''),
+          tooltip: App.core.preference.lang(context).search(''),
         ),
       ],
       elevation: 0,

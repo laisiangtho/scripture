@@ -47,7 +47,7 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
         return state.param.map['pageLabel'];
       }
     }
-    return app.preference.of(context).text('true');
+    return lang.text('true');
   }
 
   void onSubmit(String str) {
@@ -61,8 +61,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: app.preference.of(context).back,
-          cancel: app.preference.of(context).cancel,
+          back: lang.back,
+          cancel: lang.cancel,
         ),
       ],
       primary: ViewHeaderTitle.dual(

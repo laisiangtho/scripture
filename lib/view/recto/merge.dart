@@ -83,8 +83,8 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: app.preference.of(context).back,
-          cancel: app.preference.of(context).cancel,
+          back: lang.back,
+          cancel: lang.cancel,
         ),
       ],
       primary: const ViewHeaderTitle.custom(

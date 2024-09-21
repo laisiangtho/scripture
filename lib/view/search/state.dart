@@ -1,20 +1,17 @@
 part of 'main.dart';
 
-abstract class _State<T extends StatefulWidget> extends SearchViews<T> {
+abstract class _State<T extends StatefulWidget> extends SearchEngineStates<T> {
   @override
-  late final Core app = App.core;
+  String? get labelBackButton => lang.back;
 
   @override
-  String? get labelBackButton => app.preference.of(context).back;
+  String? get labelSearchHint => lang.aWordOrTwo;
 
   @override
-  String? get labelSearchHint => app.preference.of(context).aWordOrTwo;
+  String? get labelSearchCancel => lang.cancel;
 
   @override
-  String? get labelSearchCancel => app.preference.of(context).cancel;
-
-  @override
-  String? get labelSearchClear => app.preference.of(context).clear;
+  String? get labelSearchClear => lang.clear;
 
   @override
   Widget? get iconSearchPrefix {

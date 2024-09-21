@@ -87,12 +87,12 @@ mixin _Header on _State {
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
-          back: app.preference.of(context).back,
-          cancel: app.preference.of(context).cancel,
+          back: lang.back,
+          cancel: lang.cancel,
         ),
       ],
       primary: ViewHeaderTitle.dual(
-        label: app.preference.of(context).title('true'),
+        label: lang.title('true'),
         header: bookName,
         shrinkMax: 16,
       ),
@@ -176,11 +176,10 @@ class _MainState extends _State with _Header {
         },
         itemCount: snap.length,
         onEmpty: ViewFeedbacks.message(
-          label:
-              preference.language('noTitleOnBook').replaceFirst('{{book}}', bookName).replaceFirst(
-                    '{{title}}',
-                    app.preference.of(context).title(''),
-                  ),
+          label: preference.text('noTitleOnBook').replaceFirst('{{book}}', bookName).replaceFirst(
+                '{{title}}',
+                lang.title(''),
+              ),
         ),
       )
     ];

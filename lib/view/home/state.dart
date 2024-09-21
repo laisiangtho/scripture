@@ -21,7 +21,7 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
     if (data.primaryId != bible.identify) {
       data.primaryId = bible.identify;
       if (!scripturePrimary.isReady) {
-        app.message.value = app.preference.of(context).aMoment;
+        app.message.value = lang.aMoment;
       }
     }
 

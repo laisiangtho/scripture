@@ -9,34 +9,30 @@ class Main extends StatefulWidget {
   State<StatefulWidget> createState() => _View();
 }
 
-class _View extends SearchRecents<Main> {
-  @override
-  late final Core app = App.core;
-
+class _View extends SearchRecentsStates<Main> {
   @override
   void onSearch(RecentSearchType item) {
     context.push('/search', extra: {'keyword': item.word});
   }
 
   @override
-  String get doConfirmMessage => app.preference.of(context).confirmToDelete('all');
+  String get doConfirmMessage => lang.confirmToDelete('all');
   @override
-  String get doConfirmTitle => app.preference.of(context).confirmation;
+  String get doConfirmTitle => lang.confirmation;
   @override
-  String get doConfirmCancel => app.preference.of(context).cancel;
+  String get doConfirmCancel => lang.cancel;
   @override
-  String get doConfirmSubmit => app.preference.of(context).confirm;
+  String get doConfirmSubmit => lang.confirm;
   @override
-  String get labelBack => app.preference.of(context).back;
+  String get labelBack => lang.back;
   @override
-  String get labelHeaderTitle =>
-      app.preference.of(context).keyword(boxOfRecentSearch.plural.toString());
+  String get labelHeaderTitle => lang.keyword(boxOfRecentSearch.plural.toString());
   @override
-  String get labelSectionTitle => app.preference.of(context).recentSearch('false');
+  String get labelSectionTitle => lang.recentSearch('false');
   @override
-  String get labelDismissibleBackground => app.preference.of(context).delete;
+  String get labelDismissibleBackground => lang.delete;
   @override
-  String messageOnEmpty(int test) => app.preference.of(context).recentSearchCount(0);
+  String messageOnEmpty(int test) => lang.recentSearchCount(0);
   @override
   String labelItemTrailing(RecentSearchType item) => app.scripturePrimary.digit(item.hit);
 }

@@ -22,7 +22,7 @@ mixin _Header on _State {
               borderRadius: const BorderRadius.horizontal(left: Radius.elliptical(5, 7)),
               padding: EdgeInsets.fromLTRB(12, 1, vhd.snapShrink * 12, 1),
               message: 'books- bookName'
-                  .replaceFirst('books', app.preference.of(context).book(''))
+                  .replaceFirst('books', lang.book(''))
                   .replaceFirst('bookName', primaryScripture.bookName),
               onPressed: showBooks,
               child: Selector<Core, String>(
@@ -49,7 +49,7 @@ mixin _Header on _State {
               ),
               borderRadius: const BorderRadius.horizontal(right: Radius.elliptical(5, 7)),
               padding: EdgeInsets.fromLTRB(1, 1, vhd.snapShrink * 2, 1),
-              message: app.preference.of(context).chapter(''),
+              message: lang.chapter(''),
               onPressed: showChapters,
               child: Selector<Core, String>(
                 key: _kChapters,
@@ -73,8 +73,8 @@ mixin _Header on _State {
           builder: (_, snap) {
             return ViewButtons(
               key: _kBookmarks,
-              // message:app.preference.of(context).addTo(app.preference.of(context).bookmark('true')),
-              message: app.preference.of(context).bookmark(''),
+              // message:lang.addTo(lang.bookmark('true')),
+              message: lang.bookmark(''),
               onPressed: showBookmarks,
 
               child: ValueListenableBuilder(
@@ -102,7 +102,7 @@ mixin _Header on _State {
             return ViewButtons(
               key: _kOptions,
               padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
-              message: app.preference.of(context).more,
+              message: lang.more,
               onPressed: showOptions,
               child: ViewMarks(
                 icon: vse.isEmpty ? LideaIcon.textSize : LideaIcon.popup,

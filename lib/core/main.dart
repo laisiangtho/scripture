@@ -11,8 +11,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// NOTE: Lidea view ???
-import 'package:lidea/view/main.dart' show ViewScrolls;
+import 'package:lidea/view/main.dart';
 export 'package:lidea/view/main.dart';
+
 export 'package:lidea/routes.dart';
 
 /// NOTE: Route
@@ -27,6 +28,7 @@ part 'mocks.dart';
 part 'searches.dart';
 part 'engines.dart';
 part 'view.dart';
+part 'app.dart';
 
 part 'preference.dart';
 part 'authenticate.dart';

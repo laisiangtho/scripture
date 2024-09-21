@@ -58,45 +58,7 @@ class _State extends SheetStates<Main> {
           title: const Text("Books"),
         ),
       ),
-      // body: NestedScrollView(
-      //   // controller: scrollController,
-      //   headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-      //     // These are the slivers that show up in the "outer" scroll view.
-      //     return <Widget>[
-      //       SliverOverlapAbsorber(
-      //         // This widget takes the overlapping behavior of the SliverAppBar,
-      //         // and redirects it to the SliverOverlapInjector below. If it is
-      //         // missing, then it is possible for the nested "inner" scroll view
-      //         // below to end up under the SliverAppBar even when the inner
-      //         // scroll view thinks it has not been scrolled.
-      //         // This is not necessary if the "headerSliverBuilder" only builds
-      //         // widgets that do not overlap the next sliver.
-      //         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-      //         sliver: SliverAppBar(
-      //           title: Text('Books  $innerBoxIsScrolled'), // This is the title in the app bar.
-      //           pinned: true,
-      //           // expandedHeight: 150.0,
-      //           // The "forceElevated" property causes the SliverAppBar to show
-      //           // a shadow. The "innerBoxIsScrolled" parameter is true when the
-      //           // inner scroll view is scrolled beyond its "zero" point, i.e.
-      //           // when it appears to be scrolled below the SliverAppBar.
-      //           // Without this, there are cases where the shadow would appear
-      //           // or not appear inappropriately, because the SliverAppBar is
-      //           // not actually aware of the precise position of the inner
-      //           // scroll views.
-      //           forceElevated: innerBoxIsScrolled,
-      //         ),
-      //       ),
 
-      //       // SliverAppBar(
-      //       //   title: Text('Books $innerBoxIsScrolled'),
-      //       //   pinned: true,
-      //       //   forceElevated: innerBoxIsScrolled,
-      //       // ),
-      //     ];
-      //   },
-      //   body: child!,
-      // ),
       body: child!,
     );
   }
@@ -104,61 +66,6 @@ class _State extends SheetStates<Main> {
   @override
   List<Widget> slivers() {
     return <Widget>[
-      // ViewHeaderSliver(
-      //   pinned: true,
-      //   floating: false,
-      //   // padding: MediaQuery.of(context).viewPadding,
-      //   heights: const [kTextTabBarHeight],
-      //   backgroundColor: theme.primaryColor,
-      //   // backgroundColor: Colors.transparent,
-      //   // padding: state.media.viewPadding,
-      //   overlapsBackgroundColor: theme.scaffoldBackgroundColor,
-      //   // overlapsBorderColor: Theme.of(context).shadowColor,
-      //   overlapsBorderColor: theme.dividerColor,
-      //   builder: (_, vhd) {
-      //     return ViewHeaderLayoutStack(
-      //       data: vhd,
-      //       // left: const [
-      //       //   // BackButton(),
-      //       // ],
-      //       primary: ViewHeaderTitle(
-      //         // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      //         shrinkMin: 17,
-      //         shrinkMax: 20,
-      //         // alignment: Alignment.lerp(
-      //         //   const Alignment(0, 0),
-      //         //   const Alignment(0, 0.2),
-      //         //   vhd.snapShrink,
-      //         // ),
-      //         alignment: Alignment.lerp(
-      //           const Alignment(0, 0),
-      //           const Alignment(0, 0),
-      //           vhd.snapShrink,
-      //         ),
-      //         label: App.app.preference.of(context).book('true'),
-      //         data: vhd,
-      //       ),
-      //       // secondary: TabBar(
-      //       //   controller: _tabController,
-      //       //   labelStyle: TextStyle(
-      //       //     fontFamily: 'Raleway',
-      //       //     fontSize: 17,
-      //       //     fontWeight: FontWeight.w400,
-      //       //     color: Theme.of(context).colorScheme.background,
-      //       //   ),
-      //       //   indicatorColor: Theme.of(context).hintColor,
-      //       //   // labelColor: Theme.of(context).buttonColor,
-      //       //   unselectedLabelColor: Theme.of(context).dividerColor,
-      //       //   tabs: const [
-      //       //     Tab(text: "Menu"),
-      //       //     Tab(text: "About"),
-      //       //     Tab(text: "Contact"),
-      //       //   ],
-      //       // ),
-      //     );
-      //   },
-      // ),
-      // const SliverPadding(padding: EdgeInsets.all(50)),
       SliverMainAxisGroup(
         slivers: <Widget>[
           SliverAppBar(

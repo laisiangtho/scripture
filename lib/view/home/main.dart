@@ -52,7 +52,7 @@ class _View extends _State with _Header {
       ),
 
       const PullToRefresh(),
-      // const InspectProcess(),
+      const InspectProcess(),
       // const InspectRoute(),
 
       // featureWidget(),
@@ -98,14 +98,12 @@ class _View extends _State with _Header {
 
     return ViewSections(
       headerTitle: Text(
-        app.preference.of(context).favorite('true'),
+        lang.favorite('true'),
         style: style.titleSmall,
       ),
       headerTrailing: ViewButtons(
         show: items.isNotEmpty,
-        message: app.preference
-            .of(context)
-            .addTo(app.preference.of(context).favorite('true').toLowerCase()),
+        message: lang.addTo(lang.favorite('true').toLowerCase()),
         onPressed: () {
           app.route.page.push('/bible');
         },
@@ -121,9 +119,10 @@ class _View extends _State with _Header {
           app.route.page.push('/bible');
         },
 
-        label: app.preference
-            .of(context)
-            .addMore(app.preference.of(context).favorite('true').toLowerCase()),
+        // label: app.preference
+        //     .of(context)
+        //     .addMore(lang.favorite('true').toLowerCase()),
+        label: lang.addMore(lang.favorite('true').toLowerCase()),
       ),
       child: ViewCards(
         child: ViewLists.separator(
@@ -151,7 +150,7 @@ class _View extends _State with _Header {
           onEmpty: ViewButtons(
             padding: const EdgeInsets.symmetric(vertical: 30),
             child: Text(
-              app.preference.of(context).addTo(app.preference.of(context).favorite('true')),
+              lang.addTo(lang.favorite('true')),
               textAlign: TextAlign.center,
             ),
             onPressed: () {
@@ -179,7 +178,7 @@ class _View extends _State with _Header {
       sliver: true,
       footerTitle: ViewButtons(
         show: items.isNotEmpty,
-        message: app.preference.of(context).more,
+        message: lang.more,
         onPressed: () {
           app.route.page.push('/recent-search');
         },
@@ -221,22 +220,16 @@ class _View extends _State with _Header {
   }
 }
 
-class PullToRefresh extends PullToActivate {
+class PullToRefresh extends ViewPulls {
   const PullToRefresh({super.key, super.distance, super.extent});
 
   @override
-  State<PullToActivate> createState() => _PullToRefreshState();
-}
-
-class _PullToRefreshState extends PullOfState {
-  // late final Core core = context.read<Core>();
-  @override
   Future<void> refreshUpdate() async {
     await Future.delayed(const Duration(milliseconds: 50));
-    await App.core.updateBookMeta();
+    // await App.core.updateBookMeta();
     // await Future.delayed(const Duration(milliseconds: 100));
-    // debugPrint('refreshUpdate');
-    await App.core.data.updateToken();
-    await Future.delayed(const Duration(milliseconds: 700));
+    // await App.core.data.updateToken();
+    await Future.delayed(const Duration(milliseconds: 1500));
+    debugPrint('refreshUpdate');
   }
 }

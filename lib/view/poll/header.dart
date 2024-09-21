@@ -6,7 +6,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          label: app.preference.of(context).back,
+          label: lang.back,
         ),
       ],
       primary: ViewHeaderTitle(

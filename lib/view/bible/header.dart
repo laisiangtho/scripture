@@ -6,7 +6,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          label: app.preference.of(context).back,
+          label: lang.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -15,7 +15,7 @@ mixin _Header on _State {
           const Alignment(0, .5),
           vhd.snapShrink,
         ),
-        label: app.preference.of(context).bible('false'),
+        label: lang.bible('false'),
         data: vhd,
       ),
       right: [
@@ -37,7 +37,7 @@ mixin _Header on _State {
         //   ),
         // ),
         ViewButtons(
-          message: app.preference.of(context).sort,
+          message: lang.sort,
           onPressed: onSort,
           child: AnimatedBuilder(
             animation: _dragController,

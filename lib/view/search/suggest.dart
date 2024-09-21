@@ -28,41 +28,12 @@ mixin _Suggest on _State<Main> {
           },
           itemCount: o.suggest.book.length,
           onEmpty: ViewFeedbacks.message(
-            label: app.preference.of(context).searchNoMatch,
+            label: lang.searchNoMatch,
           ),
         ),
       ],
     );
   }
-
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      key: const PageStorageKey('search-suggest'),
-      primary: true,
-      slivers: [
-        SliverToBoxAdapter(
-          child: Text('working b:${o.bookCount} c:${o.chapterCount} v:${o.verseCount}'),
-        ),
-        Selector<Core, BIBLE>(
-          selector: (_, e) => e.scripturePrimary.verseSearch,
-          builder: (BuildContext context, BIBLE o, Widget? child) {
-            if (o.query.isEmpty) {
-              // return _Recents(onSuggest: onSuggest);
-              return const ViewFeedbacks.message(
-                label: 'working _Recents',
-              );
-            }
-            // o.verseCount > 0
-            return _suggestBlock();
-            // return message( core.app.preference.of(context).searchNoMatch);
-          },
-        ),
-      ],
-    );
-  }
-  */
 
   Widget _suggestChapter(List<OfChapter> chapters, bool shrinks) {
     final bool shrinkChapter = (chapters.length > 1 && shrinks);

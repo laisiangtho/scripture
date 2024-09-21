@@ -71,7 +71,7 @@ mixin _Header on _State {
       //   //   const Alignment(0, 0),
       //   //   vhd.snapShrink,
       //   // ),
-      //   label: app.preference.of(context).book('true'),
+      //   label: lang.book('true'),
       // ),
       primary: buttonList(),
     );
@@ -85,26 +85,25 @@ mixin _Header on _State {
       children: [
         buttonItem(
           width: buttonWidth,
-          message:
-              app.preference.of(context).previousTo(app.preference.of(context).chapter('false')),
+          message: lang.previousTo(lang.chapter('false')),
           onPressed: setChapterPrevious,
           child: const ViewMarks(icon: LideaIcon.chapterPrevious, iconSize: 22),
         ),
         buttonItem(
           width: buttonWidth,
-          message: app.preference.of(context).nextTo(app.preference.of(context).chapter('false')),
+          message: lang.nextTo(lang.chapter('false')),
           onPressed: setChapterNext,
           child: const ViewMarks(icon: LideaIcon.chapterNext, iconSize: 22),
         ),
         buttonItem(
           width: buttonWidth,
-          message: app.preference.of(context).compareTo(app.preference.of(context).parallel),
+          message: lang.compareTo(lang.parallel),
           onPressed: state.param.map['scrollToggle'],
           child: const ViewMarks(icon: LideaIcon.language, iconSize: 20),
         ),
         buttonItem(
           width: buttonWidth,
-          message: app.preference.of(context).title("true"),
+          message: lang.title("true"),
           onPressed: () {
             final msh = app.route.showModalSheet<Map<String, dynamic>?>(
               child: app.route.sheetConfig(
@@ -207,10 +206,10 @@ class _MainState extends _State with _Header {
                 return body();
               default:
                 // return Center(
-                //   child: Text(app.preference.of(context).aMoment),
+                //   child: Text(lang.aMoment),
                 // );
                 return ViewFeedbacks.message(
-                  label: app.preference.of(context).aMoment,
+                  label: lang.aMoment,
                 );
             }
           },
@@ -254,9 +253,7 @@ class _MainState extends _State with _Header {
                   // ),
 
                   ViewButtons(
-                    message: app.preference
-                        .of(context)
-                        .chooseTo(app.preference.of(context).bible('false')),
+                    message: lang.chooseTo(lang.bible('false')),
                     onPressed: _showParallelList,
                     child: const ViewLabels(
                       icon: Icons.linear_scale,

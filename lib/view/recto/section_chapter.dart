@@ -33,7 +33,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          label: app.preference.of(context).back,
+          label: lang.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -44,7 +44,7 @@ mixin _Header on _State {
         ),
         // label: 'Chapter',
         // label: book.name,
-        label: preference.language('book-${book.id}'),
+        label: preference.text('book-${book.id}'),
         data: vhd,
       ),
     );
@@ -98,12 +98,12 @@ class _MainState extends _State with _Header {
         int chapterId = index + 1;
 
         // final bookName = book.name;
-        // final chapterLocale = app.preference.of(context).chapter('');
+        // final chapterLocale = lang.chapter('');
         final chapterName = preference.digit(context, chapterId);
         return ListTile(
           // title: Text('$chapterLocale $chapterName'),
           title: Paragraphs(
-            text: preference.language('chapterName'),
+            text: preference.text('chapterName'),
             decoration: [
               TextSpan(
                 text: chapterName,

@@ -111,7 +111,7 @@ class _State extends SheetStates<Main> {
             data: vhd,
             left: [
               OptionButtons.cancel(
-                label: app.preference.of(context).cancel,
+                label: lang.cancel,
               ),
             ],
             primary: ViewHeaderTitle(
@@ -135,7 +135,7 @@ class _State extends SheetStates<Main> {
                 valueListenable: boxOfBooks.listen(),
                 builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
                   return ViewButtons(
-                    message: app.preference.of(context).favorite('false'),
+                    message: lang.favorite('false'),
                     child: ViewMarks(
                       icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
                       iconColor: book.selected ? theme.highlightColor : theme.primaryColorDark,
@@ -264,9 +264,7 @@ class _State extends SheetStates<Main> {
                       ),
                       ViewLabels(
                         // constraints: const BoxConstraints(maxHeight: 30),
-                        label: isAvailable
-                            ? app.preference.of(context).delete
-                            : app.preference.of(context).download,
+                        label: isAvailable ? lang.delete : lang.download,
                         labelStyle: theme.textTheme.bodyLarge!.copyWith(
                           color: theme.primaryColor,
                         ),
@@ -293,7 +291,7 @@ class _State extends SheetStates<Main> {
               ),
               titleAlignment: ListTileTitleAlignment.top,
               title: Paragraphs(
-                text: preference.language('whenBibleDownload'),
+                text: preference.text('whenBibleDownload'),
                 style: style.bodyLarge,
                 decoration: [
                   TextSpan(
@@ -316,7 +314,7 @@ class _State extends SheetStates<Main> {
               ),
               titleAlignment: ListTileTitleAlignment.top,
               title: Paragraphs(
-                text: preference.language('whenBibleDelete'),
+                text: preference.text('whenBibleDelete'),
                 style: style.bodyLarge,
                 decoration: [
                   TextSpan(
@@ -341,11 +339,11 @@ class _State extends SheetStates<Main> {
           ),
           titleAlignment: ListTileTitleAlignment.titleHeight,
           title: Paragraphs(
-            text: preference.language('availableSource'),
+            text: preference.text('availableSource'),
             style: style.bodyLarge,
             decoration: [
               TextSpan(
-                text: app.preference.of(context).holyBible,
+                text: lang.holyBible,
                 semanticsLabel: 'sourceBible',
                 style: TextStyle(color: theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchBibleSource,
@@ -357,7 +355,7 @@ class _State extends SheetStates<Main> {
                 recognizer: TapGestureRecognizer()..onTap = _launchAppCode,
               ),
               TextSpan(
-                text: app.preference.of(context).issue('true'),
+                text: lang.issue('true'),
                 semanticsLabel: 'Issues',
                 style: TextStyle(color: theme.highlightColor),
                 recognizer: TapGestureRecognizer()..onTap = _launchAppIssues,

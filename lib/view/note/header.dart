@@ -6,11 +6,11 @@ mixin _Header on _State {
       height: kToolbarHeight,
       left: [
         OptionButtons.back(
-          label: app.preference.of(context).back,
+          label: lang.back,
         ),
       ],
       primary: ViewHeaderTitle.fixed(
-        label: app.preference.of(context).note('false'),
+        label: lang.note('false'),
       ),
       right: [
         ValueListenableBuilder(

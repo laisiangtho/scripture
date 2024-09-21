@@ -40,7 +40,7 @@ mixin _Header on _State {
       data: vhd,
       left: [
         OptionButtons.back(
-          label: app.preference.of(context).back,
+          label: lang.back,
         ),
       ],
       primary: ViewHeaderTitle(
@@ -49,7 +49,7 @@ mixin _Header on _State {
           const Alignment(0, 0),
           vhd.snapShrink,
         ),
-        label: app.preference.of(context).bible('false'),
+        label: lang.bible('false'),
         data: vhd,
       ),
     );
@@ -108,7 +108,7 @@ class _MainState extends _State with _Header {
           elevation: 0,
           shadowColor: null,
           automaticallyImplyLeading: false,
-          title: Text(preference.language('testament-$tId')),
+          title: Text(preference.text('testament-$tId')),
           titleSpacing: 20,
           toolbarHeight: 40,
           titleTextStyle: Theme.of(context).textTheme.bodyMedium,
@@ -146,7 +146,7 @@ class _MainState extends _State with _Header {
                     automaticallyImplyLeading: false,
                     elevation: 1,
                     shadowColor: Theme.of(context).shadowColor,
-                    title: Text(preference.language('section-$sId')),
+                    title: Text(preference.text('section-$sId')),
                     titleSpacing: 30,
                     toolbarHeight: 30,
                     titleTextStyle: Theme.of(context).textTheme.bodySmall,
@@ -167,7 +167,7 @@ class _MainState extends _State with _Header {
                           textAlign: TextAlign.center,
                           style: style.titleSmall,
                         ),
-                        title: Text(preference.language('book-$bId')),
+                        title: Text(preference.text('book-$bId')),
                         trailing: ViewMarks(
                           iconLeft: false,
                           icon: LideaIcon.rightOpen,
