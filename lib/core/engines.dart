@@ -240,4 +240,47 @@ abstract class _Engines extends _Mocks {
       // debugPrint('53? $e');
     }).whenComplete(scripturePrimary.changeNotify);
   }
+
+  /// TODO: Export
+  /// /storage/emulated/0/Android/data/com.laisiangtho.bible/files/backup_user_data_v1.txt
+  /// - [ ] file path
+  /// - [ ] file type
+  /// - [ ] collect
+  /// - [ ] save
+  /// - [ ] response
+  Future<void> exportData() async {
+    // scripturePrimary.marks.exportData();
+
+    // final raw = Docs.raw.encodeJSON(_marks.toJSON(), space: 2);
+
+    Map<String, dynamic> tmp = {
+      "date": DateTime.now().toString(),
+      "test": true,
+      "user": {},
+    };
+    final raw = Docs.raw.encodeJSON<Map<String, dynamic>>(tmp, space: 2);
+
+    final api = data.env.url('backups');
+    final file = api.cache('backup_user_data_v1');
+    String fileName = file.replaceFirst('.json', '.txt');
+    // return Docs.user.writeAsString(fileName, raw).then((e) {
+    //   // debugPrint('marks: backup ${e.path}');
+    // }).catchError((e) {
+    //   /// NOTE: Future.error
+    //   // debugPrint('marks: backup $e');
+    //   // return e;
+    // });
+    return Docs.user.writeAsString(fileName, raw).then((e) {
+      debugPrint('export: path ${e.path}');
+      final size = data.byteUnit(bytes: e.lengthSync());
+      debugPrint('export: size $size');
+    }).catchError((e) {
+      /// NOTE: Future.error
+      debugPrint('export: backup $e');
+      // return e;
+    });
+  }
+
+  /// TODO: Import
+  Future<void> importData() async {}
 }

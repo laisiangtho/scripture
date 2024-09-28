@@ -66,6 +66,7 @@ class _View extends _State with _Header {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ViewButtons(
+                  message: lang.language('true'),
                   onPressed: showLangFilter,
                   child: ViewMarks(
                     icon: LideaIcon.language,
@@ -109,7 +110,80 @@ class _View extends _State with _Header {
             ),
           ],
         ),
-      )
+      ),
+
+      ViewFlats(
+        sliver: true,
+        show: items.length < 57,
+        padding: const EdgeInsets.only(bottom: 30),
+        child: Center(
+          child: ValueListenableBuilder(
+            valueListenable: updateProgress,
+            builder: (_, update, child) {
+              debugPrint('??? update:$update');
+              /*
+              return TextButton.icon(
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                  backgroundColor: theme.dividerColor,
+                  elevation: 30,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  disabledBackgroundColor: theme.disabledColor,
+                  iconColor: theme.hintColor,
+                ),
+                onPressed: update
+                    ? null
+                    : () {
+                        updateProgress.value = true;
+                        // app.updateBookMeta().whenComplete(() {
+                        //   updateProgress.value = false;
+                        // });
+
+                        Future.delayed(const Duration(milliseconds: 1900)).whenComplete(() {
+                          updateProgress.value = false;
+                        });
+                      },
+                icon: update
+                    ? const SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Icon(
+                        Icons.tips_and_updates,
+                        size: 25,
+                      ),
+                label: Text(
+                  lang.updateTo(lang.available('').toLowerCase()),
+                  semanticsLabel: 'Update',
+                  style: style.labelLarge,
+                ),
+              );
+              */
+              if (update) {
+                return child!;
+              }
+              return BookListUpdate(
+                onPress: () {
+                  updateProgress.value = true;
+                  app.updateBookMeta().whenComplete(() {
+                    updateProgress.value = false;
+                  });
+
+                  // Future.delayed(const Duration(milliseconds: 1900)).whenComplete(() {
+                  //   updateProgress.value = false;
+                  // });
+                },
+              );
+            },
+            child: const BookListUpdate(),
+          ),
+        ),
+      ),
     ];
   }
 
@@ -303,6 +377,55 @@ class BookListItemSnap extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class BookListUpdate extends StatelessWidget {
+  const BookListUpdate({super.key, this.onPress});
+
+  final void Function()? onPress;
+
+  bool get update => onPress == null;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme;
+    final lang = App.core.preference.lang(context);
+    return TextButton.icon(
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        backgroundColor: theme.dividerColor,
+        elevation: 30,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        disabledBackgroundColor: theme.disabledColor,
+        // iconColor: theme.hintColor,
+      ),
+      onPressed: onPress,
+      // onPressed: update ? null : App.core.updateBookMeta,
+      // icon: const Icon(Icons.tips_and_updates),
+
+      icon: update
+          ? SizedBox(
+              width: 25,
+              height: 25,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: theme.colorScheme.error,
+              ),
+            )
+          : const Icon(
+              Icons.tips_and_updates,
+              size: 25,
+            ),
+      label: Text(
+        lang.updateTo(lang.available('').toLowerCase()),
+        semanticsLabel: 'Update',
+        style: style.labelLarge,
       ),
     );
   }

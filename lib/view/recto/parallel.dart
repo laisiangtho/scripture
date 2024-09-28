@@ -143,6 +143,7 @@ mixin _Header on _State {
               }
             });
           },
+          message: 'Verse merges',
           child: ViewMarks(
             icon: Icons.merge,
             iconColor: theme.primaryColorDark.withOpacity(0.6),
@@ -157,15 +158,17 @@ mixin _Header on _State {
     );
   }
 
-  Widget buttonItem(
-      {required double width,
-      required Widget child,
-      void Function()? onPressed,
-      String message = ''}) {
+  Widget buttonItem({
+    required double width,
+    required Widget child,
+    void Function()? onPressed,
+    String? message,
+  }) {
     return ViewButtons(
       constraints: BoxConstraints(minWidth: width, maxWidth: width),
       padding: EdgeInsets.zero,
-      // message: message,
+      message: message,
+      tooltip: false,
       onPressed: onPressed,
       child: child,
     );

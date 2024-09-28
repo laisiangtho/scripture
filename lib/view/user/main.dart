@@ -32,32 +32,40 @@ class _View extends UserProfiles<Main> {
     Launcher.universalLink('https://github.com/laisiangtho/scripture/issues/new');
   }
 
-  late final poll = app.poll;
+  // dynamic get lang => app.preference.lang(context);
 
   @override
-  List<ViewButtons> userDesk() {
-    return List.generate(
-      poll.userPollBoard.length,
-      (index) {
-        final element = poll.userPollBoard.elementAt(index);
-        return ViewButtons(
-          child: ViewLabels(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-            alignment: Alignment.centerLeft,
-            icon: Icons.how_to_vote_outlined,
-            label: element.info.title,
-            labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-            labelStyle: Theme.of(context).textTheme.bodyLarge,
-            softWrap: true,
-            maxLines: 3,
-          ),
-          onPressed: () {
-            poll.tokenId = element.gist.token.id;
-
-            app.route.page.push('/user/poll');
-          },
-        );
-      },
-    );
+  List<Widget> userDesk() {
+    return [
+      // const UserDeskData(),
+    ];
   }
+
+  // late final poll = app.poll;
+  // @override
+  // List<ViewButtons> userDesk() {
+  //   return List.generate(
+  //     poll.userPollBoard.length,
+  //     (index) {
+  //       final element = poll.userPollBoard.elementAt(index);
+  //       return ViewButtons(
+  //         child: ViewLabels(
+  //           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+  //           alignment: Alignment.centerLeft,
+  //           icon: Icons.how_to_vote_outlined,
+  //           label: element.info.title,
+  //           labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+  //           labelStyle: Theme.of(context).textTheme.bodyLarge,
+  //           softWrap: true,
+  //           maxLines: 3,
+  //         ),
+  //         onPressed: () {
+  //           poll.tokenId = element.gist.token.id;
+
+  //           app.route.page.push('/user/poll');
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 }

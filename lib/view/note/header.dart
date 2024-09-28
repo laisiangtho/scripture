@@ -21,6 +21,7 @@ mixin _Header on _State {
             return ViewButtons(
               enable: box.isNotEmpty,
               onPressed: onDeleteAllConfirmWithDialog,
+              message: lang.clear,
               child: const ViewMarks(
                 icon: Icons.clear_all_rounded,
               ),

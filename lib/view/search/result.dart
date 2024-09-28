@@ -15,51 +15,82 @@ mixin _Result on _State<Main> {
   }
 
   Widget _resultEmptyQuery() {
-    return ViewFeedbacks(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              lang.aWordOrTwo,
+    return Selector<Core, BooksType>(
+      selector: (_, e) => e.scripturePrimary.info,
+      builder: (BuildContext _, BooksType info, Widget? child) {
+        return ViewFeedbacks(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  lang.aWordOrTwo,
+                ),
+                Text(
+                  info.name,
+                  style: style.bodySmall,
+                ),
+                Text(
+                  info.shortname,
+                  style: style.headlineMedium,
+                ),
+              ],
             ),
-            Text(
-              primaryScripture.info.name,
-              style: style.bodySmall,
-            ),
-            Text(
-              primaryScripture.info.shortname,
-              style: style.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _resultEmpty() {
-    return ViewFeedbacks(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              lang.searchNoMatch,
+    return Selector<Core, BooksType>(
+      selector: (_, e) => e.scripturePrimary.info,
+      builder: (BuildContext _, BooksType info, Widget? child) {
+        return ViewFeedbacks(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  lang.searchNoMatch,
+                ),
+                Text(
+                  info.name,
+                  style: style.bodySmall,
+                ),
+                Text(
+                  info.shortname,
+                  style: style.headlineMedium,
+                ),
+              ],
             ),
-            Text(
-              primaryScripture.info.name,
-              style: style.bodySmall,
-            ),
-            Text(
-              primaryScripture.info.shortname,
-              style: style.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
+
+    // return ViewFeedbacks(
+    //   child: Center(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       // crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: [
+    //         Text(
+    //           lang.searchNoMatch,
+    //         ),
+    //         Text(
+    //           primaryScripture.info.name,
+    //           style: style.bodySmall,
+    //         ),
+    //         Text(
+    //           primaryScripture.info.shortname,
+    //           style: style.headlineMedium,
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   /// Sticky

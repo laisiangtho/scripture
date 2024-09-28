@@ -52,10 +52,8 @@ class _View extends _State with _Header {
       ),
 
       const PullToRefresh(),
-      const InspectProcess(),
+      // const InspectProcess(),
       // const InspectRoute(),
-
-      // featureWidget(),
 
       /// Favorite book
       ValueListenableBuilder(
@@ -71,46 +69,61 @@ class _View extends _State with _Header {
     ];
   }
 
-  Widget featureWidget() {
-    return ViewFlats(
-      child: ViewCards(
-        child: ViewLists(
-          // shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (BuildContext context, int index) {
-            return const SizedBox(
-              width: 100,
-              height: 100,
-              child: Text('abc'),
-            );
-          },
-          itemCount: 10,
-        ),
-      ),
-    );
-  }
-
   Widget bookList(BuildContext context, Box<BooksType> box, Widget? child) {
     // final items = box.toMap().entries.toList();
     // final items = box.values.where((e) => e.selected).toList();
     final items = box.toMap().entries.where((e) => e.value.selected).toList();
     // items.sort((a, b) => a.value.order.compareTo(b.value.order));
 
+    if (items.isEmpty) {
+      return ViewFlats(
+        padding: const EdgeInsets.only(top: 40, bottom: 20),
+        child: Center(
+          child: TextButton.icon(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              backgroundColor: theme.dividerColor,
+              elevation: 30,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
+            onPressed: () {
+              app.route.page.push('/bible');
+            },
+            icon: const Icon(Icons.add_circle),
+            label: Text(
+              lang.addTo(lang.favorite('true').toLowerCase()),
+              semanticsLabel: 'Keyword',
+              style: style.labelLarge,
+            ),
+          ),
+        ),
+      );
+    }
+
     return ViewSections(
       headerTitle: Text(
         lang.favorite('true'),
         style: style.titleSmall,
       ),
-      headerTrailing: ViewButtons(
-        show: items.isNotEmpty,
+      // headerTrailing: ViewButtons(
+      //   show: items.isNotEmpty,
+      //   message: lang.addTo(lang.favorite('true').toLowerCase()),
+      //   onPressed: () {
+      //     app.route.page.push('/bible');
+      //   },
+      //   child: Icon(
+      //     Icons.more_horiz,
+      //     color: theme.shadowColor,
+      //   ),
+      // ),
+      headerTrailing: OptionButtons.icon(
         message: lang.addTo(lang.favorite('true').toLowerCase()),
         onPressed: () {
           app.route.page.push('/bible');
         },
-        child: Icon(
-          Icons.more_horiz,
-          color: theme.shadowColor,
-        ),
+        icon: Icons.more_horiz,
       ),
       footer: items.isNotEmpty,
       footerTitle: OptionButtons.label(
@@ -147,16 +160,22 @@ class _View extends _State with _Header {
           separator: (BuildContext context, int index) {
             return const ViewDividers();
           },
-          onEmpty: ViewButtons(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Text(
-              lang.addTo(lang.favorite('true')),
-              textAlign: TextAlign.center,
-            ),
+          onEmpty: OptionButtons.label(
+            label: lang.addTo(lang.favorite('true').toLowerCase()),
             onPressed: () {
               app.route.page.push('/bible');
             },
           ),
+          // onEmpty: ViewButtons(
+          //   padding: const EdgeInsets.symmetric(vertical: 30),
+          //   child: Text(
+          //     lang.addTo(lang.favorite('true')),
+          //     textAlign: TextAlign.center,
+          //   ),
+          //   onPressed: () {
+          //     app.route.page.push('/bible');
+          //   },
+          // ),
           itemCount: items.length,
         ),
       ),

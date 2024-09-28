@@ -62,6 +62,14 @@ Lai Siangtho is not just providing builded/packaged app. But opensource that you
 
 Take a look: [https://en.wikipedia.org/wiki/Zo_people]
 
+## Data
+
+Preferences and configurations such as Bookmarks, Verse marks and Verse notes would be saved on your device as a flat file using JSON format, where the platform might provide cloud services. Please do keep in mind that {{App}} does not export or import automatically.
+
+If you have previously {{Exported}}, you might have data to be imported and merged.
+
+This is aimed to help, if the application have to uninstalled and reinstalled with the same preferences.
+
 ## analytics (debug on windows)
 
 ```sh
@@ -122,8 +130,12 @@ This is a JSON formated file, you can get it from `Google console -> IAM & ADMIN
 
 [Android][tool-android], [iOS][tool-ios]
 
+## Early Access
+
+Source [Code][Home], join testing for [Android][playStore-Join].
+
 [playStore]: https://play.google.com/store/apps/details?id=com.laisiangtho.bible
-[playStore Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
+[playStore-Join]: https://play.google.com/apps/testing/com.laisiangtho.bible/join
 [appstore]: https://apps.apple.com/au/app/lai-siangtho/id600127635
 
 [Home]: https://github.com/laisiangtho/scripture

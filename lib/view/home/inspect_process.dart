@@ -56,7 +56,7 @@ class _InspectProcessState extends _InspectProcessAbstract {
                     //   }
                     // });
 
-                    app.scripturePrimary.marks.backup();
+                    app.scripturePrimary.marks.exportData();
                     // if (docs != null) {
                     //   final dir = docs.path;
                     //   // join(await directory.then((e) => e.path), name);

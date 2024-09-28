@@ -266,18 +266,33 @@ class Marks extends Notify {
     });
   }
 
-  /// Backup to supported device library
+  /// Export data on supported device library
   /// TODO: To be integrated
-  Future<void> backup() {
+  Future<void> exportData() {
     final raw = Docs.raw.encodeJSON(_marks.toJSON(), space: 2);
     String fileName = file.replaceFirst('.json', '.txt');
+    // return Docs.user.writeAsString(fileName, raw).then((e) {
+    //   // debugPrint('marks: backup ${e.path}');
+    // }).catchError((e) {
+    //   /// NOTE: Future.error
+    //   // debugPrint('marks: backup $e');
+    //   // return e;
+    // });
     return Docs.user.writeAsString(fileName, raw).then((e) {
-      // debugPrint('marks: backup ${e.path}');
+      debugPrint('marks: path ${e.path}');
+      final size = data.byteUnit(bytes: e.lengthSync());
+      debugPrint('marks: size $size');
     }).catchError((e) {
       /// NOTE: Future.error
-      // debugPrint('marks: backup $e');
+      debugPrint('marks: backup $e');
       // return e;
     });
+  }
+
+  /// Import data on supported device library
+  /// TODO: To be integrated
+  Future<void> importData() {
+    return Future.value();
   }
 
   Future<void> delete() {

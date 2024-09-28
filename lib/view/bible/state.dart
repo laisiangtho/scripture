@@ -2,6 +2,7 @@ part of 'main.dart';
 
 abstract class _State extends CommonStates<Main> with SingleTickerProviderStateMixin {
   late final ScrollController scrollController = ScrollController();
+  late final updateProgress = ValueNotifier<bool>(false);
 
   late final boxOfBooks = data.boxOfBooks;
   late final iso = app.iso;

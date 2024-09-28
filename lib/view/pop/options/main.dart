@@ -1,5 +1,3 @@
-// import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lidea/share.dart';
 import '../../../app.dart';
@@ -412,16 +410,5 @@ class _MainState extends CommonStates<Main> {
         );
       },
     );
-    // return ViewButtons(
-    //   onPressed: hasSelection ? onPressed : null,
-    //   message: msg,
-    //   child: ViewMarks(
-    //     icon: icon,
-    //     // labelPadding: const EdgeInsets.only(left: 7),
-    //     // iconSize: 17,
-    //     // label: 'Note',
-    //     // label: prefence.text.note(''),
-    //   ),
-    // );
   }
 }
