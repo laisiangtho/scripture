@@ -2,8 +2,8 @@
   "name": "Lai Siangtho",
   "description": "the Holy Bible in languages",
   "package": "",
-  "version": "1.2.7",
-  "buildNumber": "98",
+  "version": "1.2.8",
+  "buildNumber": "103",
   "settingName": "preferences",
   "settingKey": "",
   "settings": {
@@ -335,8 +335,8 @@
       "type": "gist",
       "tag": "0",
       "owns": "<nomolosnehk>",
-      "name": "??",
-      "key": "??"
+      "name": "?",
+      "key": "?"
     },
     {
       "id": "repo",
@@ -372,8 +372,19 @@
     {
       "uid": "marks",
       "local": "<nosj.?>",
+      "stop":"delete it",
+      "src": []
+    },
+    {
+      "uid": "backups",
+      "local": "<nosj.?>",
       "src": []
     }
   ],
-  "attach": {}
+  "attach": {},
+  "tmp":{
+    "settings":[],
+    "bookmarks":[],
+    "versemarks":[]
+  }
 }
