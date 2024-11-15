@@ -4,7 +4,7 @@ mixin _Header on _State {
   Widget _headerMobile(BuildContext context, ViewBarData vbd) {
     return ViewBarLayouts(
       data: vbd,
-      defaultVerticalPadding: 60,
+      primaryVerticalPadding: 60,
       left: [
         OptionButtons.back(
           label: lang.back,

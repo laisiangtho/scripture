@@ -341,18 +341,15 @@ class BookUpdateAvailable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme;
-    final lang = App.core.preference.lang(context);
     return TextButton.icon(
       style: TextButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-        backgroundColor: theme.dividerColor,
+        backgroundColor: context.theme.dividerColor,
         elevation: 30,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        disabledBackgroundColor: theme.disabledColor,
+        disabledBackgroundColor: context.theme.disabledColor,
         // iconColor: theme.hintColor,
       ),
       onPressed: onPress,
@@ -365,7 +362,7 @@ class BookUpdateAvailable extends StatelessWidget {
               height: 25,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                color: theme.colorScheme.error,
+                color: context.theme.colorScheme.error,
               ),
             )
           : const Icon(
@@ -373,9 +370,9 @@ class BookUpdateAvailable extends StatelessWidget {
               size: 25,
             ),
       label: Text(
-        lang.updateTo(lang.available('').toLowerCase()),
+        context.lang.updateTo(context.lang.available('').toLowerCase()),
         semanticsLabel: 'Update',
-        style: style.labelLarge,
+        style: context.style.labelLarge,
       ),
     );
   }

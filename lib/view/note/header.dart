@@ -3,11 +3,8 @@ part of 'main.dart';
 mixin _Header on _State {
   Widget _header(BuildContext context, ViewBarData vbd) {
     return ViewBarLayouts.fixed(
-      height: kToolbarHeight,
-      left: [
-        OptionButtons.back(
-          label: lang.back,
-        ),
+      left: const [
+        Buttons.backOrMenu(),
       ],
       primary: ViewBarTitle(
         label: lang.note('false'),

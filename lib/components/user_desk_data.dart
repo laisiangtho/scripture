@@ -44,7 +44,7 @@ class _UserDeskDataState extends CommonStates<UserDeskData> {
 
       title: Text(
         // lang.backup,
-        app.preference.lang(context).data('true'),
+        context.lang.data('true'),
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.start,
         style: style.bodyLarge,

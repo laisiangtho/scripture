@@ -7,6 +7,9 @@ mixin _Header on _State {
     return ViewBarLayouts.column(
       data: vbd,
       alignment: Alignment.center,
+      left: const [
+        Buttons.backOrMenu(),
+      ],
       primary: Padding(
         padding: const EdgeInsets.only(left: 7),
         child: Row(

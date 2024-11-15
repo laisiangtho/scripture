@@ -4,10 +4,9 @@ mixin _Header on _State {
   Widget _headerMobile(BuildContext context, ViewBarData vbd) {
     return ViewBarLayouts(
       data: vbd,
-      left: [
-        OptionButtons.back(
-          label: lang.back,
-        ),
+      primaryVerticalPadding: 60,
+      left: const [
+        Buttons.backOrMenu(),
       ],
       primary: ViewBarTitle(
         alignment: Alignment.lerp(

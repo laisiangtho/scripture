@@ -19,6 +19,7 @@ import '/view/routes.dart';
 import '/type/main.dart';
 export '/type/main.dart';
 
+part 'extension.dart';
 part 'abstracts.dart';
 part 'mocks.dart';
 part 'searches.dart';

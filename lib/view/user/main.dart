@@ -32,8 +32,6 @@ class _View extends UserProfiles<Main> {
     Launcher.universalLink('https://github.com/laisiangtho/scripture/issues/new');
   }
 
-  // dynamic get lang => app.preference.lang(context);
-
   @override
   List<Widget> userDesk() {
     return [

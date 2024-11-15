@@ -494,7 +494,7 @@ class ChapterNameItem extends StatelessWidget {
         margin: margin,
         color: tpl.primaryColor.withOpacity(isCurrentChapter ? 0.4 : 1),
         showShadow: isCurrentChapter,
-        message: preference.lang(context).chapter(''),
+        message: context.lang.chapter(''),
         child: ViewMarks(
           label: scripture.digit(index),
           labelStyle: tpl.textTheme.labelLarge?.copyWith(
@@ -531,7 +531,7 @@ class ChapterNameItem extends StatelessWidget {
       margin: margin,
       // color: theme.primaryColor,
       showShadow: false,
-      message: preference.lang(context).title(''),
+      message: context.lang.title(''),
       child: ViewMarks(
         icon: Icons.signpost_rounded,
         iconColor: tpl.primaryColorDark.withOpacity(0.3),

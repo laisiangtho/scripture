@@ -6,8 +6,9 @@ import '/app.dart';
 /// NOTE: Launcher
 import 'screen_launcher.dart' as launcher;
 
-/// NOTE: Bottom navigation
+/// NOTE: Sidebar & Bottom navigation
 import 'menu_bottom.dart';
+import 'menu_sidebar.dart';
 
 /// NOTE: Menu
 import 'home/main.dart' as home;
@@ -157,7 +158,7 @@ class RouteConfig extends RouteNavigations {
       ],
       pageBuilder: (BuildContext context, GoRouterState state, StatefulNavigationShell shell) {
         return pages(
-          child: _CustomShell(
+          child: _RouteLayouts(
             shell: shell,
           ),
           state: state,
@@ -269,15 +270,44 @@ class RouteConfig extends RouteNavigations {
   }
 }
 
-class _CustomShell extends RouteShellNavigationBottom {
-  /// MenuBottom, Sheet etc
-  const _CustomShell({required super.shell});
+///
+class _RouteLayouts extends StatefulWidget {
+  const _RouteLayouts({required this.shell});
+
+  final StatefulNavigationShell shell;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: shell,
-      bottomNavigationBar: MenuBottom(shell: shell),
-    );
+  State<_RouteLayouts> createState() => _SizedLayoutsState();
+}
+
+class _SizedLayoutsState extends LayoutState<_RouteLayouts> {
+  @override
+  StatefulNavigationShell get shell => widget.shell;
+
+  @override
+  Core get app => App.core;
+
+  @override
+  Widget? get sideBarPrimary {
+    return MenuSidebar(shell: shell);
   }
+
+  @override
+  Widget? get bottomPrimary {
+    return MenuBottom(shell: shell);
+  }
+
+  // @override
+  // List<Widget> get sidebarSecondary {
+  //   if (screen.isMobile) {
+  //     return super.sidebarSecondary;
+  //   }
+  //   return const [
+  //     // SizedBox(width: kToolbarHeight),
+  //     Expanded(
+  //       // flex: 2,
+  //       child: SizedBox(width: 300, child: Text('sidebar')),
+  //     ),
+  //   ];
+  // }
 }

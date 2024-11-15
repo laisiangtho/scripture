@@ -22,7 +22,7 @@ abstract class CommonStates<T extends StatefulWidget> extends SharedState<T> {
   late final Preference preference = app.preference;
 
   @override
-  AppLocalizations get lang => preference.lang(context);
+  AppLocalizations get lang => context.lang;
 }
 
 /// Draggable sheet state
@@ -37,7 +37,7 @@ abstract class SheetStates<T extends StatefulWidget> extends DraggableSheets<T> 
   late final Preference preference = app.preference;
 
   @override
-  AppLocalizations get lang => preference.lang(context);
+  AppLocalizations get lang => context.lang;
 }
 
 /// Search state
@@ -52,7 +52,7 @@ abstract class SearchEngineStates<T extends StatefulWidget> extends SearchViews<
   late final Preference preference = app.preference;
 
   @override
-  AppLocalizations get lang => preference.lang(context);
+  AppLocalizations get lang => context.lang;
 }
 
 /// Search state
@@ -67,7 +67,7 @@ abstract class SearchRecentsStates<T extends StatefulWidget> extends SearchRecen
   late final Preference preference = app.preference;
 
   @override
-  AppLocalizations get lang => preference.lang(context);
+  AppLocalizations get lang => context.lang;
 }
 
 /// Search state
@@ -82,5 +82,5 @@ abstract class SearchHistoriesStates<T extends StatefulWidget> extends Histories
   late final Preference preference = app.preference;
 
   @override
-  AppLocalizations get lang => preference.lang(context);
+  AppLocalizations get lang => context.lang;
 }
