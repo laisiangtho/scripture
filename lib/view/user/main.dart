@@ -55,7 +55,7 @@ class _View extends UserProfiles<Main> {
   //           icon: Icons.how_to_vote_outlined,
   //           label: element.info.title,
   //           labelPadding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-  //           labelStyle: Theme.of(context).textTheme.bodyLarge,
+  //           labelStyle: context.style.bodyLarge,
   //           softWrap: true,
   //           maxLines: 3,
   //         ),
