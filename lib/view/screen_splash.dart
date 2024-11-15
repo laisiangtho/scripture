@@ -16,9 +16,9 @@ class ScreenSplash extends StatelessWidget {
                 text: TextSpan(
                   text: '"',
                   semanticsLabel: "open quotation mark",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
+                  style: context.style.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w300,
+                  ),
                   children: const <TextSpan>[
                     TextSpan(
                       text: 'the',
@@ -64,7 +64,7 @@ class ScreenSplash extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 50),
                 child: Text(
                   App.core.message.value,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: context.style.bodySmall,
                 ),
               ),
             ),

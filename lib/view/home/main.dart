@@ -24,9 +24,6 @@ class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('abc'),
-      // ),
       body: Views(
         child: CustomScrollView(
           // physics: const AlwaysScrollableScrollPhysics(),
@@ -39,16 +36,13 @@ class _View extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        padding: state.media.viewPadding,
-        // padding: const EdgeInsets.only(top: 30),
-        // heights: const [kToolbarHeight, 100],
-        heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: theme.primaryColor,
-        overlapsBorderColor: theme.dividerColor,
-        builder: _header,
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kToolbarHeight, kToolbarHeight],
+            builder: _headerMobile,
+          ),
+        ],
       ),
 
       const PullToRefresh(),

@@ -19,7 +19,7 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
   Scripture get parallelScripture => app.scriptureParallel;
   List<OfVerse> get parallelVerse => parallelScripture.verse;
 
-  late final headerHeight = kTextTabBarHeight;
+  late final headerHeight = kTextTabBarHeight - 7;
 
   // late final Future<OfBible> initiator = parallelScripture.init();
 
@@ -62,14 +62,14 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
 
 mixin _Header on _State {
   Widget _header() {
-    return ViewHeaderLayouts.fixed(
+    return ViewBarLayouts.fixed(
       height: headerHeight,
 
-      // primary: ViewHeaderTitle.fixed(
+      // primary: ViewBarTitle.fixed(
       //   // alignment: Alignment.lerp(
       //   //   const Alignment(0, 0),
       //   //   const Alignment(0, 0),
-      //   //   vhd.snapShrink,
+      //   //   vbd.snapShrink,
       //   // ),
       //   label: lang.book('true'),
       // ),
@@ -182,14 +182,30 @@ class _MainState extends _State with _Header {
       primary: false,
       // extendBody: true,
       // extendBodyBehindAppBar: true,
-      appBar: ViewBars(
-        height: headerHeight,
+      /*
+      appBar: ViewBarPreferred(
+        heights: [headerHeight],
         // forceOverlaps: false,
         // forceStretch: true,
         // backgroundColor: theme.primaryColor,
         // overlapsBackgroundColor: theme.primaryColor,
         overlapsBorderColor: theme.dividerColor,
-        overlapsBorderWidth: 0.2,
+        borderWidth: 0.2,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            theme.primaryColor,
+            theme.scaffoldBackgroundColor,
+          ],
+        ),
+        child: _header(),
+      ),
+      */
+      appBar: AppBarPreferred.decoration(
+        padding: EdgeInsets.zero,
+        height: [headerHeight],
+        borderWidth: 0.2,
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -225,7 +241,8 @@ class _MainState extends _State with _Header {
   Widget body() {
     return CustomScrollView(
       slivers: <Widget>[
-        ViewHeaderSliver(
+        /*
+        ViewBarSliver(
           pinned: false,
           floating: false,
           // pinned: true,
@@ -233,7 +250,7 @@ class _MainState extends _State with _Header {
           // heights: const [kTextTabBarHeight - 15],
           // overlapsBorderColor: theme.dividerColor,
 
-          builder: (BuildContext _, ViewHeaderData vhd) {
+          builder: (BuildContext context, ViewBarData vbd) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Row(
@@ -266,6 +283,48 @@ class _MainState extends _State with _Header {
               ),
             );
           },
+        ),
+        */
+        AppBarSliver.adaptive(
+          children: [
+            AdaptiveAppBar(
+              // floating: true,
+              pinned: false,
+              height: const [kTextTabBarHeight - 10],
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+              builder: (BuildContext context, ViewBarData vbd) {
+                // padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Selector<Core, CacheBible>(
+                      selector: (_, e) => e.scriptureParallel.read,
+                      builder: (BuildContext _, CacheBible i, Widget? child) => Text(
+                        i.result.info.shortname,
+                        style: theme.textTheme.titleSmall,
+                      ),
+                    ),
+                    // ViewButtons(
+                    //   onPressed: () {
+                    //     Navigator.of(context).pushNamed('recto-title');
+                    //   },
+                    //   child: const ViewLabels(
+                    //     icon: Icons.abc_outlined,
+                    //   ),
+                    // ),
+
+                    ViewButtons(
+                      message: lang.chooseTo(lang.bible('false')),
+                      onPressed: _showParallelList,
+                      child: const ViewLabels(
+                        icon: Icons.linear_scale,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
         // const SliverToBoxAdapter(
         //   child: Text('????'),

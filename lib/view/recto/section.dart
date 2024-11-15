@@ -35,22 +35,22 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
 }
 
 mixin _Header on _State {
-  Widget _header(BuildContext context, ViewHeaderData vhd) {
-    return ViewHeaderLayouts(
-      data: vhd,
+  Widget _headerMobile(BuildContext context, ViewBarData vbd) {
+    return ViewBarLayouts(
+      data: vbd,
       left: [
         OptionButtons.back(
           label: lang.back,
         ),
       ],
-      primary: ViewHeaderTitle(
+      primary: ViewBarTitle(
         alignment: Alignment.lerp(
           const Alignment(0, 0),
           const Alignment(0, 0),
-          vhd.snapShrink,
+          vbd.snapShrink,
         ),
         label: lang.bible('false'),
-        data: vhd,
+        data: vbd,
       ),
     );
   }
@@ -74,16 +74,23 @@ class _MainState extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        // floating: false,
-        // padding: const EdgeInsets.only(top: 30),
-        // heights: const [kToolbarHeight, 100],
-        padding: state.media.viewPadding,
-        heights: const [kToolbarHeight],
-        // overlapsBackgroundColor: theme.primaryColor,
-        // overlapsBorderColor: theme.dividerColor,
-        builder: _header,
+      // ViewBarSliver(
+      //   pinned: true,
+      //   // floating: false,
+      //   // padding: const EdgeInsets.only(top: 30),
+      //   // heights: const [kToolbarHeight, 100],
+      //   padding: context.viewPaddingOf,
+      //   heights: const [kToolbarHeight],
+      //   // overlapsBackgroundColor: theme.primaryColor,
+      //   // overlapsBorderColor: theme.dividerColor,
+      //   builder: _header,
+      // ),
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            builder: _headerMobile,
+          ),
+        ],
       ),
 
       testamentBuilder(1),
@@ -111,7 +118,7 @@ class _MainState extends _State with _Header {
           title: Text(preference.text('testament-$tId')),
           titleSpacing: 20,
           toolbarHeight: 40,
-          titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+          titleTextStyle: context.style.bodyMedium,
           // backgroundColor: Colors.blue,
           // flexibleSpace: FlexibleSpaceBar(
           //   background: Container(
@@ -129,7 +136,7 @@ class _MainState extends _State with _Header {
         //       title: Text(preference.language('testament-$tId')),
         //       titleSpacing: 20,
         //       toolbarHeight: 40,
-        //       titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+        //       titleTextStyle: context.style.bodyMedium,
         //       backgroundColor: scrolled ? Colors.blue : Colors.red,
         //     );
         //   },
@@ -149,7 +156,7 @@ class _MainState extends _State with _Header {
                     title: Text(preference.text('section-$sId')),
                     titleSpacing: 30,
                     toolbarHeight: 30,
-                    titleTextStyle: Theme.of(context).textTheme.bodySmall,
+                    titleTextStyle: context.style.bodySmall,
                   ),
                   ViewLists.separator(
                     separator: (BuildContext _, int index) {

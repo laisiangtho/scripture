@@ -267,7 +267,7 @@ class Marks extends Notify {
   }
 
   /// Export data on supported device library
-  /// TODO: To be integrated
+  /// TODO: To be integrated data export
   Future<void> exportData() {
     final raw = Docs.raw.encodeJSON(_marks.toJSON(), space: 2);
     String fileName = file.replaceFirst('.json', '.txt');
@@ -290,7 +290,7 @@ class Marks extends Notify {
   }
 
   /// Import data on supported device library
-  /// TODO: To be integrated
+  /// TODO: To be integrated data import
   Future<void> importData() {
     return Future.value();
   }

@@ -1,5 +1,3 @@
-library data.type;
-
 import "package:flutter/material.dart";
 
 /// NOTE: Core API manager

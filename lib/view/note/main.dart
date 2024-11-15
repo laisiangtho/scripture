@@ -18,10 +18,10 @@ class _View extends _State with _Header {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ViewBars(
-        padding: state.media.viewPadding,
-        overlapsBorderColor: theme.dividerColor,
-        child: _header(),
+      appBar: AppBarPreferred.decoration(
+        // forceOverlaps: true,
+        // child: _header(),
+        builder: _header,
       ),
       body: Views(
         child: ValueListenableBuilder(

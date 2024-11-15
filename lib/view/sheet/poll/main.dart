@@ -30,7 +30,8 @@ class _State extends SheetStates<Main> {
   @override
   List<Widget> slivers() {
     return <Widget>[
-      ViewHeaderSliver(
+      /*
+      ViewBarSliver(
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
@@ -38,38 +39,78 @@ class _State extends SheetStates<Main> {
         backgroundColor: Colors.transparent,
         overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         overlapsBorderColor: Theme.of(context).shadowColor,
-        builder: (_, vhd) {
-          return ViewHeaderLayouts(
-            data: vhd,
-            primary: ViewHeaderTitle(
+        builder: (_, vbd) {
+          return ViewBarLayouts(
+            data: vbd,
+            primary: ViewBarTitle(
               // alignment: Alignment.lerp(
               //   const Alignment(0, 0),
               //   const Alignment(0, .5),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               alignment: const Alignment(0, -.5),
-              data: vhd,
+              data: vbd,
               label: 'Member',
               // label: 'အဖွဲ့ဝင်',
             ),
-            secondary: ViewHeaderTitle(
+            secondary: ViewBarTitle(
               // alignment: Alignment.lerp(
               //   const Alignment(0, .5),
               //   const Alignment(0, .5),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               alignment: const Alignment(0, .7),
-              data: vhd,
+              data: vbd,
               shrinkMax: 20,
               shrinkMin: 12,
               label: 'MV: $countMember/$countVotedMember',
             ),
             // secondary: ViewHeaderBar(
-            //   shrink: vhd.snapShrink,
+            //   shrink: vbd.snapShrink,
             //   label: 'MV: $countMember/$countVotedMember',
             // ),
           );
         },
+      ),
+      */
+
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+              height: const [kToolbarHeight, 50],
+              builder: (_, vbd) {
+                return ViewBarLayouts(
+                  data: vbd,
+                  primary: ViewBarTitle(
+                    // alignment: Alignment.lerp(
+                    //   const Alignment(0, 0),
+                    //   const Alignment(0, .5),
+                    //   vbd.snapShrink,
+                    // ),
+                    alignment: const Alignment(0, -.5),
+                    data: vbd,
+                    label: 'Member',
+                    // label: 'အဖွဲ့ဝင်',
+                  ),
+                  secondary: ViewBarTitle(
+                    // alignment: Alignment.lerp(
+                    //   const Alignment(0, .5),
+                    //   const Alignment(0, .5),
+                    //   vbd.snapShrink,
+                    // ),
+                    alignment: const Alignment(0, .7),
+                    data: vbd,
+                    shrinkMax: 20,
+                    shrinkMin: 12,
+                    label: 'MV: $countMember/$countVotedMember',
+                  ),
+                  // secondary: ViewHeaderBar(
+                  //   shrink: vbd.snapShrink,
+                  //   label: 'MV: $countMember/$countVotedMember',
+                  // ),
+                );
+              }),
+        ],
       ),
       ViewSections(
         // headerTitle: const WidgetLabel(
@@ -132,9 +173,9 @@ class _State extends SheetStates<Main> {
                       message: email,
                       child: Text(
                         email.substring(0, email.indexOf('@')),
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                              color: Theme.of(context).primaryColorDark,
-                            ),
+                        style: context.style.labelSmall!.copyWith(
+                          color: Theme.of(context).primaryColorDark,
+                        ),
                       ),
                     );
                   },

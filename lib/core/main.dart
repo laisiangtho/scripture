@@ -1,8 +1,3 @@
-library data.core;
-
-// import 'dart:async';
-// import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show compute;
 
@@ -13,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 /// NOTE: Lidea view ???
 import 'package:lidea/view/main.dart';
 export 'package:lidea/view/main.dart';
+export 'package:lidea/extension.dart';
 
 export 'package:lidea/routes.dart';
 

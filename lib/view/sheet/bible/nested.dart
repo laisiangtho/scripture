@@ -70,7 +70,7 @@ class _State extends SheetStates<Main> {
         slivers: <Widget>[
           SliverAppBar(
             title: const Text('Old Testament'),
-            titleTextStyle: Theme.of(context).textTheme.labelMedium,
+            titleTextStyle: context.style.labelMedium,
             pinned: true,
             automaticallyImplyLeading: false,
             toolbarHeight: 30.0,
@@ -118,7 +118,7 @@ class _State extends SheetStates<Main> {
         slivers: <Widget>[
           SliverAppBar(
             title: const Text('New Testament'),
-            titleTextStyle: Theme.of(context).textTheme.labelMedium,
+            titleTextStyle: context.style.labelMedium,
             pinned: true,
             automaticallyImplyLeading: false,
             toolbarHeight: 30.0,
@@ -151,7 +151,7 @@ class _State extends SheetStates<Main> {
         slivers: <Widget>[
           SliverAppBar(
             title: const Text('New Testament'),
-            titleTextStyle: Theme.of(context).textTheme.labelMedium,
+            titleTextStyle: context.style.labelMedium,
             pinned: true,
             automaticallyImplyLeading: false,
             toolbarHeight: 30.0,
@@ -251,7 +251,7 @@ class _State extends SheetStates<Main> {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+                  fontSize: context.style.labelLarge!.fontSize,
                 ),
               ),
               // trailing: Text(
@@ -349,12 +349,12 @@ class _State extends SheetStates<Main> {
         scripture.digit(chapterId),
         textAlign: TextAlign.center,
         // style: TextStyle(
-        //   fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+        //   fontSize: context.style.labelLarge!.fontSize,
         //   color: isCurrentChapter ? Theme.of(context).highlightColor : null,
         // ),
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: isCurrentChapter ? Theme.of(context).highlightColor : null,
-            ),
+        style: context.style.labelLarge?.copyWith(
+          color: isCurrentChapter ? Theme.of(context).highlightColor : null,
+        ),
       ),
     );
   }

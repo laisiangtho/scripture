@@ -14,7 +14,7 @@ class _State extends SheetStates<Main> {
   late final persistent = true;
 
   @override
-  double get height => kTextTabBarHeight;
+  double get height => kTextTabBarHeight - 7;
 
   late final Map<String, dynamic> extra = {
     'scrollToggle': scrollToggle,

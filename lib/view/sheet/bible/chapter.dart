@@ -44,21 +44,22 @@ class _State extends SheetStates<Main> {
   @override
   List<Widget> slivers() {
     return <Widget>[
-      ViewHeaderSliver(
+      /*
+      ViewBarSliver(
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kTextTabBarHeight],
         backgroundColor: theme.primaryColor,
         // backgroundColor: Colors.transparent,
-        // padding: state.media.viewPadding,
+        // padding: context.viewPaddingOf,
         overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         // overlapsBorderColor: Theme.of(context).shadowColor,
         overlapsBorderColor: theme.dividerColor,
         // overlapsBorderColor: Colors.black,
-        builder: (_, vhd) {
-          return ViewHeaderLayouts(
-            data: vhd,
+        builder: (_, vbd) {
+          return ViewBarLayouts(
+            data: vbd,
             left: [
               // ViewButtons(
               //   padding: EdgeInsets.zero,
@@ -74,25 +75,70 @@ class _State extends SheetStates<Main> {
                 label: lang.cancel,
               ),
             ],
-            primary: ViewHeaderTitle(
+            primary: ViewBarTitle(
               // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               // shrinkMin: 17,
               // shrinkMax: 20,
               // alignment: Alignment.lerp(
               //   const Alignment(0, 0),
               //   const Alignment(0, 0.2),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               // alignment: Alignment.lerp(
               //   const Alignment(0, 0),
               //   const Alignment(0, 0),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               label: lang.chapter('true'),
-              data: vhd,
+              data: vbd,
             ),
           );
         },
+      ),
+      */
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kTextTabBarHeight],
+            builder: (_, vbd) {
+              return ViewBarLayouts(
+                data: vbd,
+                left: [
+                  // ViewButtons(
+                  //   padding: EdgeInsets.zero,
+                  //   child: const ViewLabels(
+                  //     icon: Icons.close,
+                  //     iconSize: 20,
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.maybePop(context);
+                  //   },
+                  // ),
+                  OptionButtons.cancel(
+                    label: lang.cancel,
+                  ),
+                ],
+                primary: ViewBarTitle(
+                  // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  // shrinkMin: 17,
+                  // shrinkMax: 20,
+                  // alignment: Alignment.lerp(
+                  //   const Alignment(0, 0),
+                  //   const Alignment(0, 0.2),
+                  //   vbd.snapShrink,
+                  // ),
+                  // alignment: Alignment.lerp(
+                  //   const Alignment(0, 0),
+                  //   const Alignment(0, 0),
+                  //   vbd.snapShrink,
+                  // ),
+                  label: lang.chapter('true'),
+                  data: vbd,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       ViewSections(
         child: ViewGrids(

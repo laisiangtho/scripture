@@ -7,7 +7,7 @@ import '/app.dart';
 import 'screen_launcher.dart' as launcher;
 
 /// NOTE: Bottom navigation
-import 'bottom_navigation.dart';
+import 'menu_bottom.dart';
 
 /// NOTE: Menu
 import 'home/main.dart' as home;
@@ -270,14 +270,14 @@ class RouteConfig extends RouteNavigations {
 }
 
 class _CustomShell extends RouteShellNavigationBottom {
-  /// BottomNavigation, Sheet etc
+  /// MenuBottom, Sheet etc
   const _CustomShell({required super.shell});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: shell,
-      bottomNavigationBar: BottomNavigation(shell: shell),
+      bottomNavigationBar: MenuBottom(shell: shell),
     );
   }
 }

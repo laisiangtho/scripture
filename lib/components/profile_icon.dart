@@ -10,7 +10,7 @@ class UserProfileIcon extends UserIconWidget {
   Widget build(BuildContext context) {
     return ViewButtons(
       message: app.preference.lang(context).account,
-      style: Theme.of(context).textTheme.labelMedium,
+      style: context.style.labelMedium,
       onPressed: () => context.push('/user'),
       child: ViewMarks(
         // child: Selector<Core, Authenticate>(

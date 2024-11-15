@@ -57,7 +57,7 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
 
 mixin _Header on _State {
   Widget _header() {
-    return ViewHeaderLayouts.fixed(
+    return ViewBarLayouts.fixed(
       height: kTextTabBarHeight,
       left: [
         OptionButtons.backOrCancel(
@@ -65,7 +65,7 @@ mixin _Header on _State {
           cancel: lang.cancel,
         ),
       ],
-      primary: ViewHeaderTitle.dual(
+      primary: ViewBarTitle.dual(
         label: pageLabel,
         // header: '....',
         // header: title.result.book.first.info.name,
@@ -91,13 +91,18 @@ class _MainState extends _State with _Header {
     return Scaffold(
       // primary: true,
       resizeToAvoidBottomInset: false,
-      appBar: ViewBars(
-        height: kTextTabBarHeight,
-        // forceOverlaps: false,
+      // appBar: ViewBarPreferred(
+      //   heights: const [kTextTabBarHeight],
+      //   // forceOverlaps: false,
+      //   forceStretch: true,
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   // overlapsBackgroundColor: Theme.of(context).primaryColor,
+      //   overlapsBorderColor: Theme.of(context).dividerColor,
+      //   child: _header(),
+      // ),
+      appBar: AppBarPreferred(
+        height: const [kTextTabBarHeight],
         forceStretch: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        // overlapsBackgroundColor: Theme.of(context).primaryColor,
-        overlapsBorderColor: Theme.of(context).dividerColor,
         child: _header(),
       ),
       body: Views(

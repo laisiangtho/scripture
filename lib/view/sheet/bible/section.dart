@@ -30,20 +30,21 @@ class _State extends SheetStates<Main> {
   @override
   List<Widget> slivers() {
     return <Widget>[
-      ViewHeaderSliver(
+      /*
+      ViewBarSliver(
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kTextTabBarHeight],
         backgroundColor: theme.primaryColor,
         // backgroundColor: Colors.transparent,
-        // padding: state.media.viewPadding,
+        // padding: context.viewPaddingOf,
         overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         // overlapsBorderColor: Theme.of(context).shadowColor,
         overlapsBorderColor: theme.dividerColor,
-        builder: (_, vhd) {
-          return ViewHeaderLayouts(
-            data: vhd,
+        builder: (_, vbd) {
+          return ViewBarLayouts(
+            data: vbd,
             left: [
               ViewButtons(
                 padding: EdgeInsets.zero,
@@ -56,22 +57,22 @@ class _State extends SheetStates<Main> {
                 },
               ),
             ],
-            primary: ViewHeaderTitle(
+            primary: ViewBarTitle(
               // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               shrinkMin: 17,
               shrinkMax: 20,
               // alignment: Alignment.lerp(
               //   const Alignment(0, 0),
               //   const Alignment(0, 0.2),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               alignment: Alignment.lerp(
                 const Alignment(0, 0),
                 const Alignment(0, 0),
-                vhd.snapShrink,
+                vbd.snapShrink,
               ),
               label: lang.book('true'),
-              data: vhd,
+              data: vbd,
             ),
             right: [
               ViewButtons(
@@ -85,6 +86,58 @@ class _State extends SheetStates<Main> {
             ],
           );
         },
+      ),
+      */
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kTextTabBarHeight],
+            builder: (_, vbd) {
+              return ViewBarLayouts(
+                data: vbd,
+                left: [
+                  ViewButtons(
+                    padding: EdgeInsets.zero,
+                    child: const ViewLabels(
+                      icon: Icons.close,
+                      iconSize: 20,
+                    ),
+                    onPressed: () {
+                      Navigator.maybePop(context);
+                    },
+                  ),
+                ],
+                primary: ViewBarTitle(
+                  // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  shrinkMin: 17,
+                  shrinkMax: 20,
+                  // alignment: Alignment.lerp(
+                  //   const Alignment(0, 0),
+                  //   const Alignment(0, 0.2),
+                  //   vbd.snapShrink,
+                  // ),
+                  alignment: Alignment.lerp(
+                    const Alignment(0, 0),
+                    const Alignment(0, 0),
+                    vbd.snapShrink,
+                  ),
+                  label: lang.book('true'),
+                  data: vbd,
+                ),
+                right: [
+                  ViewButtons(
+                    padding: EdgeInsets.zero,
+                    child: const ViewLabels(
+                      icon: Icons.ac_unit_outlined,
+                      iconSize: 20,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
       ViewSections(
         sliver: true,
@@ -183,7 +236,7 @@ class _State extends SheetStates<Main> {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+                  fontSize: context.style.labelLarge!.fontSize,
                 ),
               ),
               // trailing: Text(
@@ -262,12 +315,12 @@ class _State extends SheetStates<Main> {
         scripture.digit(chapterId),
         textAlign: TextAlign.center,
         // style: TextStyle(
-        //   fontSize: Theme.of(context).textTheme.labelLarge!.fontSize,
+        //   fontSize: context.style.labelLarge!.fontSize,
         //   color: isCurrentChapter ? Theme.of(context).highlightColor : null,
         // ),
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: isCurrentChapter ? Theme.of(context).highlightColor : null,
-            ),
+        style: context.style.labelLarge?.copyWith(
+          color: isCurrentChapter ? Theme.of(context).highlightColor : null,
+        ),
       ),
     );
   }

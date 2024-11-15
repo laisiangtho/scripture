@@ -28,24 +28,24 @@ abstract class _State extends CommonStates<Main> with TickerProviderStateMixin {
 }
 
 mixin _Header on _State {
-  Widget _header(BuildContext context, ViewHeaderData vhd) {
-    return ViewHeaderLayouts(
-      data: vhd,
+  Widget _headerMobile(BuildContext context, ViewBarData vbd) {
+    return ViewBarLayouts(
+      data: vbd,
       left: [
         OptionButtons.back(
           label: lang.back,
         ),
       ],
-      primary: ViewHeaderTitle(
+      primary: ViewBarTitle(
         alignment: Alignment.lerp(
           const Alignment(0, 0),
           const Alignment(0, 0),
-          vhd.snapShrink,
+          vbd.snapShrink,
         ),
         // label: 'Chapter',
         // label: book.name,
         label: preference.text('book-${book.id}'),
-        data: vhd,
+        data: vbd,
       ),
     );
   }
@@ -67,16 +67,24 @@ class _MainState extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        // floating: false,
-        // padding: const EdgeInsets.only(top: 30),
-        // heights: const [kToolbarHeight, 100],
-        padding: state.media.viewPadding,
-        heights: const [kToolbarHeight, 100],
-        // overlapsBackgroundColor: theme.primaryColor,
-        // overlapsBorderColor: theme.dividerColor,
-        builder: _header,
+      // ViewBarSliver(
+      //   pinned: true,
+      //   // floating: false,
+      //   // padding: const EdgeInsets.only(top: 30),
+      //   // heights: const [kToolbarHeight, 100],
+      //   padding: context.viewPaddingOf,
+      //   heights: const [kToolbarHeight, 100],
+      //   // overlapsBackgroundColor: theme.primaryColor,
+      //   // overlapsBorderColor: theme.dividerColor,
+      //   builder: _header,
+      // ),
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kToolbarHeight, 100],
+            builder: _headerMobile,
+          ),
+        ],
       ),
       // SliverList.builder(
       //   itemBuilder: (BuildContext _, int index) {

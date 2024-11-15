@@ -45,39 +45,40 @@ class _State extends SheetStates<Main> {
   @override
   List<Widget> slivers() {
     return <Widget>[
-      ViewHeaderSliver(
+      /*
+      ViewBarSliver(
         pinned: true,
         floating: false,
         // padding: MediaQuery.of(context).viewPadding,
         heights: const [kTextTabBarHeight],
         backgroundColor: theme.primaryColor,
-        // padding: state.media.viewPadding,
+        // padding: context.viewPaddingOf,
         // overlapsBackgroundColor: theme.scaffoldBackgroundColor,
         overlapsBorderColor: Theme.of(context).dividerColor,
 
         borderWidth: 0.3,
         // forceOverlaps: true,
         // overlapsBorderColor: theme.dividerColor,
-        builder: (_, vhd) {
-          return ViewHeaderLayouts(
-            data: vhd,
-            primary: ViewHeaderTitle(
+        builder: (_, vbd) {
+          return ViewBarLayouts(
+            data: vbd,
+            primary: ViewBarTitle(
               // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               // shrinkMin: 17,
               // shrinkMax: 20,
               // alignment: Alignment.lerp(
               //   const Alignment(0, 0),
               //   const Alignment(0, 0.2),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               // alignment: Alignment.lerp(
               //   const Alignment(-1, 0),
               //   const Alignment(0, 0),
-              //   vhd.snapShrink,
+              //   vbd.snapShrink,
               // ),
               // label: 'Language filter',
               label: lang.language('false'),
-              data: vhd,
+              data: vbd,
             ),
             left: [
               OptionButtons.cancel(
@@ -94,7 +95,7 @@ class _State extends SheetStates<Main> {
               //   // ),
               //   child: Text(
               //     'Toggle',
-              //     style: Theme.of(context).textTheme.labelSmall,
+              //     style: context.style.labelSmall,
               //   ),
               // ),
               // ViewButtons(
@@ -116,6 +117,73 @@ class _State extends SheetStates<Main> {
             ],
           );
         },
+      ),
+      */
+
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kTextTabBarHeight],
+            builder: (_, vbd) {
+              return ViewBarLayouts(
+                data: vbd,
+                primary: ViewBarTitle(
+                  // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  // shrinkMin: 17,
+                  // shrinkMax: 20,
+                  // alignment: Alignment.lerp(
+                  //   const Alignment(0, 0),
+                  //   const Alignment(0, 0.2),
+                  //   vbd.snapShrink,
+                  // ),
+                  // alignment: Alignment.lerp(
+                  //   const Alignment(-1, 0),
+                  //   const Alignment(0, 0),
+                  //   vbd.snapShrink,
+                  // ),
+                  // label: 'Language filter',
+                  label: lang.language('false'),
+                  data: vbd,
+                ),
+                left: [
+                  OptionButtons.cancel(
+                    label: lang.cancel,
+                  ),
+                ],
+                right: [
+                  // ViewButtons(
+                  //   // color: Colors.red,
+                  //   onPressed: iso.toggleAll,
+                  //   // child: const ViewMarks(
+                  //   //   // icon: LideaIcon.loop,
+                  //   //   label: 'Toggle',
+                  //   // ),
+                  //   child: Text(
+                  //     'Toggle',
+                  //     style: context.style.labelSmall,
+                  //   ),
+                  // ),
+                  // ViewButtons(
+                  //   // color: Theme.of(context).highlightColor,
+                  //   opacity: 0.6,
+                  //   onPressed: iso.toggleAll,
+                  //   message: 'Toggle',
+                  //   child: ViewMarks(
+                  //     icon: Icons.graphic_eq,
+                  //     iconColor: Theme.of(context).highlightColor,
+                  //   ),
+                  // ),
+                  OptionButtons.icon(
+                    opacity: 0.6,
+                    onPressed: iso.toggleAll,
+                    // message: 'Toggle',
+                    icon: Icons.graphic_eq,
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
       ViewLists.separator(
         decoration: BoxDecoration(
@@ -179,7 +247,7 @@ class _State extends SheetStates<Main> {
             //     child: Text(
             //       item.code.toUpperCase(),
             //       textAlign: TextAlign.center,
-            //       style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            //       style: context.style.bodySmall!.copyWith(
             //             color: Theme.of(context).primaryColor,
             //           ),
             //     ),
@@ -242,9 +310,9 @@ class _State extends SheetStates<Main> {
               child: Text(
                 preference.digit(context, item.bible.length),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                    ),
+                style: context.style.bodySmall!.copyWith(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
             onTap: () {

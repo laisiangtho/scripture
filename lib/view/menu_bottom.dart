@@ -4,9 +4,9 @@ import 'package:lidea/icon.dart';
 /// NOTE: Core, Components
 import '/app.dart';
 
-class BottomNavigation extends StatelessWidget {
+class MenuBottom extends StatelessWidget {
   final StatefulNavigationShell shell;
-  const BottomNavigation({super.key, required this.shell});
+  const MenuBottom({super.key, required this.shell});
 
   @override
   Widget build(BuildContext context) {

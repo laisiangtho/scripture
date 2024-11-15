@@ -45,15 +45,15 @@ class _View extends _State with _Header {
 
   List<Widget> get _slivers {
     return [
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        padding: state.media.viewPadding,
-        heights: const [kToolbarHeight, kToolbarHeight],
-        // overlapsBackgroundColor: theme.primaryColor,
-        overlapsBorderColor: theme.dividerColor,
-        builder: _header,
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kToolbarHeight, kToolbarHeight],
+            builder: _headerMobile,
+          ),
+        ],
       ),
+
       const PullToRefresh(),
       // bookList(),
       // TODO: To be improved (too slow rendering)
@@ -120,67 +120,19 @@ class _View extends _State with _Header {
           child: ValueListenableBuilder(
             valueListenable: updateProgress,
             builder: (_, update, child) {
-              debugPrint('??? update:$update');
-              /*
-              return TextButton.icon(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                  backgroundColor: theme.dividerColor,
-                  elevation: 30,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  disabledBackgroundColor: theme.disabledColor,
-                  iconColor: theme.hintColor,
-                ),
-                onPressed: update
-                    ? null
-                    : () {
-                        updateProgress.value = true;
-                        // app.updateBookMeta().whenComplete(() {
-                        //   updateProgress.value = false;
-                        // });
-
-                        Future.delayed(const Duration(milliseconds: 1900)).whenComplete(() {
-                          updateProgress.value = false;
-                        });
-                      },
-                icon: update
-                    ? const SizedBox(
-                        width: 25,
-                        height: 25,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Icon(
-                        Icons.tips_and_updates,
-                        size: 25,
-                      ),
-                label: Text(
-                  lang.updateTo(lang.available('').toLowerCase()),
-                  semanticsLabel: 'Update',
-                  style: style.labelLarge,
-                ),
-              );
-              */
               if (update) {
                 return child!;
               }
-              return BookListUpdate(
+              return BookUpdateAvailable(
                 onPress: () {
                   updateProgress.value = true;
                   app.updateBookMeta().whenComplete(() {
                     updateProgress.value = false;
                   });
-
-                  // Future.delayed(const Duration(milliseconds: 1900)).whenComplete(() {
-                  //   updateProgress.value = false;
-                  // });
                 },
               );
             },
-            child: const BookListUpdate(),
+            child: const BookUpdateAvailable(),
           ),
         ),
       ),
@@ -350,7 +302,6 @@ class BookListItemSnap extends StatelessWidget {
                   color: Theme.of(context).disabledColor,
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
-                // color: Colors.grey[200],
               ),
             ),
             Row(
@@ -362,7 +313,6 @@ class BookListItemSnap extends StatelessWidget {
                     color: Theme.of(context).disabledColor,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                   ),
-                  // color: Colors.grey[200],
                 ),
                 Container(
                   height: 15,
@@ -371,7 +321,6 @@ class BookListItemSnap extends StatelessWidget {
                     color: Theme.of(context).hoverColor,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                   ),
-                  // color: Colors.grey[200],
                 ),
               ],
             )
@@ -382,8 +331,9 @@ class BookListItemSnap extends StatelessWidget {
   }
 }
 
-class BookListUpdate extends StatelessWidget {
-  const BookListUpdate({super.key, this.onPress});
+// BookUpdateAvailable
+class BookUpdateAvailable extends StatelessWidget {
+  const BookUpdateAvailable({super.key, this.onPress});
 
   final void Function()? onPress;
 

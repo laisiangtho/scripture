@@ -94,62 +94,58 @@ class _State extends SheetStates<Main> {
   @override
   List<Widget> slivers() {
     return <Widget>[
-      ViewHeaderSliver(
-        pinned: true,
-        floating: false,
-        // padding: MediaQuery.of(context).viewPadding,
-        heights: const [kTextTabBarHeight],
-        // heights: const [kTextTabBarHeight, kToolbarHeight],
-        backgroundColor: theme.primaryColor,
-        // backgroundColor: Colors.transparent,
-        // padding: state.media.viewPadding,
-        // overlapsBackgroundColor: theme.scaffoldBackgroundColor,
-        // overlapsBorderColor: Theme.of(context).shadowColor,
-        overlapsBorderColor: theme.dividerColor,
-        builder: (_, vhd) {
-          return ViewHeaderLayouts(
-            data: vhd,
-            left: [
-              OptionButtons.cancel(
-                label: lang.cancel,
-              ),
-            ],
-            primary: ViewHeaderTitle(
-              alignment: Alignment.lerp(
-                const Alignment(0, 0),
-                const Alignment(0, 0.5),
-                vhd.snapShrink,
-              ),
-              // label: book.name,
-              label: book.shortname,
-              data: vhd,
-            ),
-            right: [
-              // ViewMarks(
-              //   padding: const EdgeInsets.only(right: 15),
-              //   icon: Icons.verified_user_rounded,
-              //   iconColor: theme.primaryColorDark,
-              //   show: isAvailable,
-              // ),
-              ValueListenableBuilder(
-                valueListenable: boxOfBooks.listen(),
-                builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
-                  return ViewButtons(
-                    message: lang.favorite('false'),
-                    child: ViewMarks(
-                      icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
-                      iconColor: book.selected ? theme.highlightColor : theme.primaryColorDark,
-                    ),
-                    onPressed: () {
-                      book.selected = !book.selected;
-                      boxOfBooks.box.putAt(bookIndex, book);
+      AppBarSliver.adaptive(
+        children: [
+          AdaptiveAppBar(
+            height: const [kTextTabBarHeight],
+            backgroundColor: context.theme.primaryColor,
+            overlapsBackgroundColor: context.theme.scaffoldBackgroundColor,
+            builder: (_, vbd) {
+              return ViewBarLayouts(
+                data: vbd,
+                left: [
+                  OptionButtons.cancel(
+                    label: lang.cancel,
+                  ),
+                ],
+                primary: ViewBarTitle(
+                  alignment: Alignment.lerp(
+                    const Alignment(0, 0),
+                    const Alignment(0, 0.5),
+                    vbd.snapShrink,
+                  ),
+                  // label: book.name,
+                  label: book.shortname,
+                  data: vbd,
+                ),
+                right: [
+                  // ViewMarks(
+                  //   padding: const EdgeInsets.only(right: 15),
+                  //   icon: Icons.verified_user_rounded,
+                  //   iconColor: theme.primaryColorDark,
+                  //   show: isAvailable,
+                  // ),
+                  ValueListenableBuilder(
+                    valueListenable: boxOfBooks.listen(),
+                    builder: (BuildContext _, Box<BooksType> __, Widget? ___) {
+                      return ViewButtons(
+                        message: lang.favorite('false'),
+                        child: ViewMarks(
+                          icon: isAvailable ? Icons.favorite : Icons.favorite_border_outlined,
+                          iconColor: book.selected ? theme.highlightColor : theme.primaryColorDark,
+                        ),
+                        onPressed: () {
+                          book.selected = !book.selected;
+                          boxOfBooks.box.putAt(bookIndex, book);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-            ],
-          );
-        },
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
       ViewFlats(
         child: ListBody(
