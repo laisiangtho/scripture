@@ -34,7 +34,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace 'com.laisiangtho.bible'
     compileSdkVersion 34 //flutter.compileSdkVersion
-    ndkVersion "26.1.10909125" //flutter.ndkVersion
+    ndkVersion "27.0.12077973" //flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -97,12 +97,12 @@ flutter {
 dependencies {
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.23"
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.20"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21"
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // implementation platform('com.google.firebase:firebase-bom:32.7.4')
-    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    implementation platform('com.google.firebase:firebase-bom:33.5.1')
     // Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
