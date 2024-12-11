@@ -85,6 +85,7 @@ mixin _Header on _State {
   Widget _header() {
     return ViewBarLayouts.fixed(
       height: kTextTabBarHeight,
+      primaryVerticalPadding: 60,
       left: [
         OptionButtons.backOrCancel(
           back: lang.back,
