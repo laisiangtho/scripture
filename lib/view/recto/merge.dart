@@ -188,7 +188,7 @@ class _MainState extends _State with _Header {
           );
         },
         itemCount: snap.length,
-        onEmpty: const ViewFeedbacks.await(),
+        onEmpty: ViewFeedbacks.message(label: context.lang.noItem(context.lang.info.toLowerCase())),
       )
     ];
   }
