@@ -59,26 +59,6 @@ class _View extends _State with _Header {
       // TODO: To be improved (too slow rendering)
       ViewSections(
         sliver: true,
-        headerTrailing: ViewDelays.milliseconds(
-          milliseconds: 1200,
-          builder: (_, snap) {
-            return Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ViewButtons(
-                  message: lang.language('true'),
-                  onPressed: showLangFilter,
-                  child: ViewMarks(
-                    icon: LideaIcon.language,
-                    iconLeft: false,
-                    iconSize: 19,
-                    badge: iso.selection.length.toString(),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
         child: ViewDelays.milliseconds(
           sliver: false,
           onAwait: const ViewFeedbacks.await(sliver: false),

@@ -589,11 +589,13 @@ class InfoOfBook {
   });
   factory InfoOfBook.fromJSON(MapEntry<String, dynamic> o) {
     final info = o.value['info'];
+
+    String infoName = info['name'] ?? '';
     return InfoOfBook(
       id: int.parse(o.key),
 
-      ///NOTE: replace before rendering
-      name: info['name'].replaceFirst('။', '').trim(),
+      /// NOTE: replace before rendering
+      name: infoName.replaceFirst('။', '').trim(),
       shortName: info['shortname'] ?? '',
       // abbr: (info['abbr'] ?? []) as List<String>,
       abbr: List<String>.from(info['abbr']),

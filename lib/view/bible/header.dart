@@ -20,23 +20,16 @@ mixin _Header on _State {
         data: vbd,
       ),
       right: [
-        // Align(
-        //   alignment: Alignment.lerp(
-        //     const Alignment(0, 0),
-        //     const Alignment(0, 4.4),
-        //     vbd.snapShrink,
-        //   )!,
-        //   child: ViewDelays.milliseconds(
-        //     milliseconds: 1200,
-        //     builder: (_, __) {
-        //       return ViewButtons(
-        //         onPressed: () {},
-        //         badge: iso.selection.length.toString(),
-        //         child: const Icon(LideaIcon.language, size: 21),
-        //       );
-        //     },
-        //   ),
-        // ),
+        ViewDelays.milliseconds(
+          milliseconds: 1000,
+          builder: (_, __) {
+            return ViewButtons(
+              onPressed: showLangFilter,
+              badge: iso.selection.length.toString(),
+              child: const Icon(LideaIcon.language, size: 21),
+            );
+          },
+        ),
         ViewButtons(
           message: lang.sort,
           onPressed: onSort,
