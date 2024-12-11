@@ -83,7 +83,7 @@ class _View extends _State with _Header {
       // key: Key(item.value.date.toString()),
       key: ValueKey(item),
       direction: direction2RemoveItem,
-      background: _dismissibleBackground(),
+      background: dismissibleBackground(),
 
       confirmDismiss: (direction) async {
         if (direction == direction2RemoveItem) {
@@ -131,24 +131,10 @@ class _View extends _State with _Header {
     );
   }
 
-  Widget _dismissibleBackground() {
-    return Container(
-      color: theme.disabledColor,
-      alignment: Alignment.centerLeft,
-      // padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: ValueListenableBuilder<double>(
-        valueListenable: _itemFavoriteBackgroundNotifier,
-        builder: (context, val, child) {
-          return Padding(
-            padding: EdgeInsets.only(left: 50 * val),
-            child: child,
-          );
-        },
-        child: Text(
-          lang.delete,
-          style: theme.textTheme.bodyMedium,
-        ),
-      ),
+  Widget dismissibleBackground() {
+    return DismissibleBackgrounds(
+      valueListenable: _itemFavoriteBackgroundNotifier,
+      label: lang.delete,
     );
   }
 }
