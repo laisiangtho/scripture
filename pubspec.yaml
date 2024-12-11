@@ -38,11 +38,8 @@ flutter:
   assets:
     - assets/env.json
     - assets/bible.json
-    - assets/book.json
+    - assets/book.json # niv2011, tedim1932, judson1835
     - assets/category.json
-    # - assets/niv2011.json
-    # - assets/tedim1932.json
-    # - assets/judson1835.json
 
   # fonts from lidea
   fonts:
