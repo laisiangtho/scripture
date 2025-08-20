@@ -40,7 +40,7 @@ abstract class SheetStates<T extends StatefulWidget> extends DraggableSheets<T> 
   AppLocalizations get lang => context.lang;
 }
 
-/// Search state
+/// Search state of views
 abstract class SearchEngineStates<T extends StatefulWidget> extends SearchViews<T> {
   @override
   late final Core app = App.core;
@@ -55,7 +55,7 @@ abstract class SearchEngineStates<T extends StatefulWidget> extends SearchViews<
   AppLocalizations get lang => context.lang;
 }
 
-/// Search state
+/// Search state of recents
 abstract class SearchRecentsStates<T extends StatefulWidget> extends SearchRecents<T> {
   @override
   late final Core app = App.core;
@@ -70,7 +70,7 @@ abstract class SearchRecentsStates<T extends StatefulWidget> extends SearchRecen
   AppLocalizations get lang => context.lang;
 }
 
-/// Search state
+/// Search state of histories
 abstract class SearchHistoriesStates<T extends StatefulWidget> extends HistoriesState<T> {
   @override
   late final Core app = App.core;
