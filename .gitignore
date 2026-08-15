@@ -4,6 +4,7 @@
 /TODO-*.md
 /assets/*
 !/assets/mock-*.*
+!/assets/psd
 !/assets/bible.json
 !/assets/book.json
 !/assets/category.json

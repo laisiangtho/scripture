@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1024"
+   height="1024"
+   viewBox="0 0 270.93333 270.93333"
+   version="1.1"
+   id="laisiangtho"
+   sodipodi:docname="bible.svg"
+   inkscape:version="1.4.3 (fcd0343856, 2026-01-01)"
+   inkscape:export-filename="book-plain.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="lai">Lai Siangtho</title>
+  <sodipodi:namedview
+     id="scripture"
+     pagecolor="#fff8ff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showguides="true"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="364.33677"
+     inkscape:cy="535.27983"
+     inkscape:current-layer="text"
+     inkscape:export-bgcolor="#757474ff"
+     inkscape:lockguides="false"
+     showgrid="false">
+    <sodipodi:guide
+       position="55.827083,284.95625"
+       orientation="1,0"
+       id="guide7"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-22.754166,45.508333"
+       orientation="0,-1"
+       id="guide8"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="style">
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#979797;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#767676;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient21"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#f9f9f9;stop-opacity:1;"
+         offset="0"
+         id="stop21" />
+      <stop
+         style="stop-color:#b6b6b6;stop-opacity:1;"
+         offset="1"
+         id="stop22" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient13"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#7b7b7b;stop-opacity:1;"
+         offset="0"
+         id="stop13" />
+      <stop
+         style="stop-color:#919191;stop-opacity:1;"
+         offset="1"
+         id="stop14" />
+    </linearGradient>
+    <linearGradient
+       id="swatch37">
+      <stop
+         style="stop-color:#544343;stop-opacity:1;"
+         offset="1"
+         id="stop37" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient13"
+       id="linearGradient14"
+       x1="0.52942158"
+       y1="124.32367"
+       x2="58.167253"
+       y2="124.32367"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient21"
+       id="linearGradient22"
+       x1="8.7312448"
+       y1="135.0698"
+       x2="262.20209"
+       y2="135.0698"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="0.8258667"
+       y1="113.72461"
+       x2="270.25308"
+       y2="113.72461"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter62"
+       x="-0.013437326"
+       y="-0.061049998"
+       width="1.0318575"
+       height="1.1291024">
+      <feFlood
+         result="flood"
+         in="SourceGraphic"
+         flood-opacity="0.498039"
+         flood-color="rgb(0,0,0)"
+         id="feFlood61" />
+      <feGaussianBlur
+         result="blur"
+         in="SourceGraphic"
+         stdDeviation="0.000000"
+         id="feGaussianBlur61" />
+      <feOffset
+         result="offset"
+         in="blur"
+         dx="1.058815"
+         dy="0.327502"
+         id="feOffset61" />
+      <feComposite
+         result="comp1"
+         operator="in"
+         in="flood"
+         in2="offset"
+         id="feComposite61" />
+      <feComposite
+         result="comp2"
+         operator="over"
+         in="SourceGraphic"
+         in2="comp1"
+         id="feComposite62" />
+    </filter>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="book"
+     inkscape:label="b"
+     style="display:inline">
+    <rect
+       style="display:inline;fill:#7b7b7b;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:4.72685;stroke-linejoin:bevel;stroke-opacity:0.0126984"
+       id="bt"
+       width="265.14813"
+       height="265.14816"
+       x="2.8925989"
+       y="2.8925836"
+       ry="50.799992"
+       inkscape:label="bottom" />
+    <rect
+       style="display:inline;fill:url(#linearGradient22);fill-rule:evenodd;stroke:#362626;stroke-width:4.46497;stroke-linejoin:bevel;stroke-opacity:0.0126984;fill-opacity:1"
+       id="pg"
+       width="249.00587"
+       height="251.91634"
+       x="10.96373"
+       y="9.1116314"
+       ry="45.057426"
+       inkscape:label="page" />
+    <rect
+       style="display:inline;opacity:1;fill:url(#linearGradient2);fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:4.31637;stroke-linejoin:bevel;stroke-opacity:0.0126984"
+       id="tp"
+       width="265.11084"
+       height="223.41951"
+       x="2.9840405"
+       y="2.0148554"
+       ry="52.071461"
+       inkscape:label="top" />
+    <path
+       id="fd"
+       style="display:inline;fill:url(#linearGradient14);fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:4.72685;stroke-linejoin:bevel;stroke-opacity:0.0126984"
+       inkscape:label="folder"
+       d="m 53.692846,2.8923299 c -28.143195,0 -50.7999994,22.6568041 -50.7999994,50.7999991 V 217.241 c 0,11.02039 3.4738915,21.19934 9.3911584,29.50621 9.189453,-12.94379 24.303627,-21.3589 41.45535,-21.3589 h 2.064473 V 2.8923299 Z" />
+    <path
+       id="sp"
+       style="display:inline;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:4.73247;stroke-linejoin:bevel;stroke-opacity:0.0126984"
+       inkscape:label="seperator"
+       d="m 53.691456,2.2006204 c -2.008401,0 -3.988745,0.1160608 -5.934975,0.3416005 V 225.73125 c 1.961177,-0.22909 3.957064,-0.34679 5.981451,-0.34679 h 1.957669 V 2.2006204 Z" />
+    <path
+       id="bm"
+       style="display:inline;fill:#ff3737;fill-opacity:1;stroke-width:0.190273"
+       d="m 62.714454,236.65857 h 28.05226 v 28.5301 c -14.04048,-7.09488 -12.0603,-13.76087 -15.57977,-14.22334 -2.51279,-0.3302 -7.14582,5.49004 -12.47249,14.80124 z"
+       sodipodi:nodetypes="cccscc"
+       inkscape:label="bookmark" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="text"
+     inkscape:label="Text"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-size:13.2544px;writing-mode:lr-tb;direction:ltr;display:inline;fill:#c2c2c2;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:1.1021;stroke-dasharray:none;stroke-opacity:0.0126984"
+       x="81.859001"
+       y="228.43758"
+       id="tls"
+       transform="scale(1.0622555,0.94139311)"
+       inkscape:label="lai siangtho"><tspan
+         sodipodi:role="line"
+         id="tspan59"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'URW Bookman';-inkscape-font-specification:'URW Bookman';fill:#c2c2c2;fill-opacity:1;stroke-width:1.1021"
+         x="81.859001"
+         y="228.43758">LAI SIANGTHO</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:9.02163px;writing-mode:lr-tb;direction:ltr;display:inline;fill:#c9c9c9;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:0.750143;stroke-dasharray:none;stroke-opacity:0.0126984"
+       x="114.72242"
+       y="168.66148"
+       id="til"
+       transform="scale(0.94916248,1.0535604)"
+       inkscape:label="in languages"><tspan
+         sodipodi:role="line"
+         id="tspan58"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'URW Bookman';-inkscape-font-specification:'URW Bookman';fill:#c9c9c9;fill-opacity:1;stroke-width:0.750143"
+         x="114.72242"
+         y="168.66148">...in languages</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:68.6786px;font-family:'URW Bookman';-inkscape-font-specification:'URW Bookman';writing-mode:lr-tb;direction:ltr;display:inline;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:5.71063;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:0.0126984;filter:url(#filter62)"
+       x="68.458656"
+       y="133.59076"
+       id="tbi"
+       inkscape:label="Bible"
+       transform="scale(0.88955142,1.1241621)"><tspan
+         sodipodi:role="line"
+         id="tspan57"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'URW Bookman';-inkscape-font-specification:'URW Bookman';fill:#ffffff;stroke-width:5.71063;stroke-linejoin:round;stroke-dasharray:none"
+         x="68.458656"
+         y="133.59076">BIBLE</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:30.8869px;writing-mode:lr-tb;direction:ltr;display:inline;fill:#e2e2e2;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:2.5682;stroke-dasharray:none;stroke-opacity:0.0126984"
+       x="142.24135"
+       y="75.261681"
+       id="tbl"
+       transform="scale(0.96159616,1.0399376)"
+       inkscape:label="holy"><tspan
+         sodipodi:role="line"
+         id="tspan56"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, ';fill:#e2e2e2;fill-opacity:1;stroke-width:2.5682"
+         x="142.24135"
+         y="75.261681">HOLY</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:28.7337px;writing-mode:lr-tb;direction:ltr;display:inline;fill:#e2e2e2;fill-opacity:1;fill-rule:evenodd;stroke:#362626;stroke-width:2.3892;stroke-dasharray:none;stroke-opacity:0.0126984"
+       x="97.209915"
+       y="69.718285"
+       id="tth"
+       transform="scale(0.88849898,1.1254937)"
+       inkscape:label="the"><tspan
+         sodipodi:role="line"
+         id="tspan55"
+         style="font-style:italic;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'URW Bookman';-inkscape-font-specification:'URW Bookman Light Italic';fill:#e2e2e2;fill-opacity:1;stroke-width:2.3892"
+         x="97.209915"
+         y="69.718285">the</tspan></text>
+  </g>
+  <metadata
+     id="meta">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Lai Siangtho</dc:title>
+        <dc:date>25.01.2026</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Khen Solomon Lethil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>bg: 757474ff</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
